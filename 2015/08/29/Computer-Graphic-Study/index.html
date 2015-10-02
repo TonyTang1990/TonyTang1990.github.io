@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Computer_Graphic_Study | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="参考书籍：《OpenGL Programming Guide 8th Edition》 — Addison Wesley《Fundamentals of Computer Graphics (3rd Edition)》 — Peter Shirley, Steve Marschnner《Real-Time Rendering, Third Edition》 — Tomas Akenine-Moll">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Computer_Graphic_Study">
+<meta property="og:url" content="http://yoursite.com/2015/08/29/Computer-Graphic-Study/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="参考书籍：《OpenGL Programming Guide 8th Edition》 — Addison Wesley《Fundamentals of Computer Graphics (3rd Edition)》 — Peter Shirley, Steve Marschnner《Real-Time Rendering, Third Edition》 — Tomas Akenine-Moll">
+<meta property="og:image" content="http://yoursite.com/img/Graphic/Rendering_Stages.PNG">
+<meta property="og:image" content="http://yoursite.com/img/Graphic/Geometry_Stage.PNG">
+<meta property="og:image" content="http://yoursite.com/img/Graphic/Rasterize_Stage.PNG">
+<meta property="og:image" content="http://yoursite.com/img/OpenGL/OpenGL_Render_Pipeline.PNG">
+<meta property="og:image" content="http://yoursite.com/img/Graphic/MIMD.PNG">
+<meta property="og:image" content="http://yoursite.com/img/Graphic/SIMD.PNG">
+<meta property="og:image" content="http://yoursite.com/img/Graphic/US.PNG">
+<meta property="og:image" content="http://yoursite.com/img/Graphic/NThird.PNG">
+<meta property="og:image" content="http://yoursite.com/img/Graphic/N_PE_RE.PNG">
+<meta property="og:image" content="http://yoursite.com/img/Graphic/Shader_Core_Virtual_Machine_Architecture.PNG">
+<meta property="og:image" content="http://yoursite.com/img/Graphic/Shader_Model_Comparision.PNG">
+<meta property="og:updated_time" content="2015-09-20T10:38:20.453Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Computer_Graphic_Study">
+<meta name="twitter:description" content="参考书籍：《OpenGL Programming Guide 8th Edition》 — Addison Wesley《Fundamentals of Computer Graphics (3rd Edition)》 — Peter Shirley, Steve Marschnner《Real-Time Rendering, Third Edition》 — Tomas Akenine-Moll">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Computer-Graphic-Study" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/29/Computer-Graphic-Study/" class="article-date">
+  <time datetime="2015-08-29T10:28:18.000Z" itemprop="datePublished">2015-08-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Rendering/">Rendering</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Computer_Graphic_Study
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>参考书籍：<br>《OpenGL Programming Guide 8th Edition》 — Addison Wesley<br>《Fundamentals of Computer Graphics (3rd Edition)》 — Peter Shirley, Steve Marschnner<br>《Real-Time Rendering, Third Edition》 — Tomas Akenine-Moller, Eric Haines, Naty Hoffman</p>
+<h1 id="Rendering_Knowledge">Rendering Knowledge</h1><p>在进入书籍内容的学习之前，先了解一些必要的知识</p>
+<h2 id="What_is_Rendering?">What is Rendering?</h2><p>“Rendering is a process that takes as its input a set of objects and produces as its output an array of pixels.” — 《Fundamentals of Computer Graphics (3rd Edition)》</p>
+<p>既然Rendering是通过处理一系列的对象数据最终输出成一组一组的像素呈现出来，那接下来的问题就是What is the rendering process(Graphic Pipeline)?</p>
+<h2 id="What_is_the_rendering_process(Graphic_Pipeline)?">What is the rendering process(Graphic Pipeline)?</h2><p>首先我们来看看wiki上对pipieline的解释<br><a href="https://en.wikipedia.org/wiki/Graphics_pipeline" target="_blank" rel="external">the sequence of steps used to create a 2D raster representation of a 3D scene.</a><br>那么结合Rendering的定义，不难看出Rendering pipeline就是一系列的操作（把前一个操作的输出当做输入）使得输入的对象数据最终以像素的形式输出到屏幕上</p>
+<p>Note:<br>“A chain is no stronger than its weakest link.”<br>                                        —Anonymous<br>渲染的速度是由最慢的阶段决定的。</p>
+<p>图形渲染和GPU的是密不可分的。<br>渲染管线最大的变化就是从传统的固定渲染管线转变到了可编程的渲染管线。</p>
+<p>在了解固定渲染管线和可编程渲染管线之前，先让我们来了解一下什么是Rendering Pipeline。</p>
+<h3 id="Rendering_Pipeline_Stages">Rendering Pipeline Stages</h3><p><img src="/img/Graphic/Rendering_Stages.PNG" alt="Rendering_Stages"></p>
+<ol>
+<li><p>Application<br>e.g collision detection, global acceleration algorithms, animation, physics simulation….. (On CPU)<br>Acceleration algorithms, such as hierarchical view frustum culling, are also implemented in this stage. — 《Real-Time Rendering, Third Edition》<br>可以看出Application阶段主要是做一些非渲染相关的一些计算，但部分计算也可以帮助我们减少渲染数量提高渲染效率(比如:hierachical view frustum culling)</p>
+</li>
+<li><p>Geometry<br><img src="/img/Graphic/Geometry_Stage.PNG" alt="Geometry_Stage"><br>Deal with transforms, projection. Computes what is to be draw, how it should be drawn, and where it should be drawn (On GPU)<br>e.g. model and view transform, vertex shading, projection, clipping, and screen mapping — 《Real-Time Rendering, Third Edition》<br>可以看出Geometry阶段主要是负责3D到2D Screen的顶点运算和顶点剔除</p>
+</li>
+<li><p>Rasterizer<br><img src="/img/Graphic/Rasterize_Stage.PNG" alt="Rasterize_Stage"><br>Conversion from two-dimensional vertices in screen space – each with a z-value (depth value), and various shading information associated with each vertex – into pixels on the screen (On GPU) — 《Real-Time Rendering, Third Edition》<br>可以看出Rasterizer阶段主要是负责2D Screen的顶点像素运算(包括Z-Buffer test, Color computation, Alpha test, Stencil buffer等)</p>
+</li>
+</ol>
+<p><strong>Accumulation Buffer</strong> — Images can be accumulated using a set of operators. E,g, motion blur……</p>
+<p>让我们结合OpenGL Rendering Pipeline来学习理解：<br><img src="/img/OpenGL/OpenGL_Render_Pipeline.PNG" alt="OpenGL_Rendering_Pipeline"><br>从上图可以看出，OpenGL的第一个阶段Vertex Data相当于Application阶段所收集的数据</p>
+<p>不难看出从Vertex Shader到Clipping都属于从3D到2D Screen的顶点运算和顶点剔除，所以这一部分处于Geometry阶段(由于后来统一架构的(US)原因，Vertex Shader, Geometry Shader, Pixel Shader很多)</p>
+<p>而从Rasterization到最后的屏幕输出都是对像素的运算，所以是Rasterizer阶段<br><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/" target="_blank" rel="external">OpenGL更多的学习了解</a></p>
+<p>了解了什么是Rendering Pipeline之后，让我们来看看什么是固定管线和可编程管线？他们之间的关系是怎样的？</p>
+<h3 id="传统的固定渲染管线">传统的固定渲染管线</h3><p>什么叫做“像素渲染管线”了？<br>“<a href="http://vga.zol.com.cn/238/2386200_all.html" target="_blank" rel="external">传统的一条渲染管线是由包括Pixel Shader Unit（像素着色单元）+ TMU(纹理贴图单元) + ROP（光栅化引擎）三部分组成的。用公式表达可以简单写作：PS=PSU+TMU+ROP 。从功能上看，PSU完成像素处理，TMU负责纹理渲染，而ROP则负责像素的最终输出。所以，一条完整的像素管线意味着在一个时钟周期完成至少进行1个PS运算，并输出一次纹理。</a>”</p>
+<p>那么什么是PSU(像素着色器单元)？什么是TMU(纹理贴图单元)？什么是ROP(光栅化引擎)了？<br>在统一渲染架构（US(Unified Shader)）出现之前有单独的<strong>顶点着色器单元</strong>和<strong>像素着色器单元</strong>，分别负责顶点数据和像素处理。</p>
+<p><strong>TMU(纹理贴图单元 — Texture Mapping Unit)</strong><br><a href="http://vga.zol.com.cn/243/2433760_all.html" target="_blank" rel="external">归根到底就是对材质的贴图和过滤操作。根据程序的需要，在完成几何处理和光栅化之后，TMU单元会从材质库中找出合适的纹理贴在对应的位置上以实现模型的外形完整化</a>”<br>在可编程渲染管线(Shader)出现后，程序员可以实现对像素级别上的操作，可以实现更加真实的效果(预先烘焙的材质无法真实的实时渲染)。Vertex Texture Fetch(顶点纹理拾取)的出现允许Vertex Shader直接访问材质的一些信息，这也算是TMU进军GPGPU的一个契机。<br><a href="http://vga.zol.com.cn/243/2433760_all.html" target="_blank" rel="external">从DirectX 9.0C开始，TMU单元正式分割成了TA和TF两个部分，TA单元专门负责材质的定址操作，在完成定址之后，TF单元根据定址结果对材质进行拾取并完成贴图作业。</a><br>后续改进<a href="http://vga.zol.com.cn/243/2433760_all.html" target="_blank" rel="external">纹理阵列(处理材质操作的纹理单元阵列)以及Gather指令(Gather指令的作用，在于允许单元从非连续存储器地址中直接读取数据。)</a><br>Computer Shader的出现也使得纯数学的纹理计算成为了可能。</p>
+<p><strong>ROP(光栅化引擎 — Render Output Units)</strong><br><a href="https://en.wikipedia.org/wiki/Render_output_unit" target="_blank" rel="external">The render output unit, often abbreviated as “ROP”, and sometimes called (perhaps more properly) raster operations pipeline.</a><br>Conversion from two-dimensional vertices in screen space – each with a z-value (depth value), and various shading information associated with each vertex – into pixels on the screen (On GPU) — 《Real-Time Rendering, Third Edition》</p>
+<h3 id="可编程渲染管线">可编程渲染管线</h3><p>为什么会有可编程渲染管线了？<br>“<a href="http://vga.zol.com.cn/238/2386200_all.html" target="_blank" rel="external">由于传统的渲染管线不可编辑性，实现的图像效果受到很大限制，Shader(着色器)的引入就替代了传统的固定渲染管线，实现了可编程的渲染管线，各个Shader(着色器)替代了固定渲染管线中相应的功能。</a>”</p>
+<p>那么什么是Shader(着色器)？Shader(着色器)和GPU硬件的关系是怎样的了？<br>“Shaders are programmed using C-like shading languages such as HLSL, Cg and GLSL. These are compiled to a machine-independent assembly language, also called the intermediate language(IL). This assembly language is converted to the actual machine language in a separate step, usually in the drivers. This arrangement allows compatibility across different hardware implementations.” — Real-Time Rendering, Third Edition》<br><a href="http://vga.zol.com.cn/238/2386200_all.html" target="_blank" rel="external">GPU的像素着色器单元和顶点着色器单元就对应了Shader里面的Pixel Shader和Vertex Shader。由于像素在计算机都是以RGB三种颜色构成，加上Alpha总共4个通道，所以GPU的像素着色器单元和顶点着色器单元一开始就被设计成为同时具备4次运算能力的算数逻辑运算器(ALU)</a></p>
+<p>从上面可以看出Shader是machine-independent的，因为事先被编译成了与机器无关的intermediate language(This intermediate language can be seen as defining a <strong>virtual machine</strong>, which is targeted by the shading language compiler — 《Real-Time Rendering, Third Edition》)， 最后才会被机器转换成机器码来运行.</p>
+<p>可编程Shading进化史可参考<br>3.3 The Evolution of Programmable Shading — 《Real-Time Rendering, Third Edition》</p>
+<h2 id="计算机架构与Shader的关系">计算机架构与Shader的关系</h2><h3 id="非同一架构">非同一架构</h3><p>那么影响Pixel Shader和Vertex Shader速度的因素又是什么了？<br>数据流处理速度。</p>
+<p>我们都知道计算机是通过发送指令来对数据进行处理的，而计算机架构则是对指令流和数据处理的设计，是影响数据流处理速度的关键。</p>
+<p>根据Flynn分类法，计算机架构分为：</p>
+<ol>
+<li>SISD(Single Instruction Signle Data Stream) — 单指令单数据流<br>“<a href="http://vga.zol.com.cn/238/2386200_all.html" target="_blank" rel="external">传统的顺序执行的计算机在同一时刻只能执行一条指令（即只有一个控制流）、处理一个数据（即只有一个数据流），因此被称为单指令单数据流计算（Single Instruction Single Data Stream,SISD）</a>”</li>
+<li>MIMD(Multiple Instruction Multiple Data Stream) — 多指令多数据流<br><img src="/img/Graphic/MIMD.PNG" alt="MIMD"><br>“<a href="http://vga.zol.com.cn/238/2386200_all.html" target="_blank" rel="external">而对于大多数并行计算机而言，多个处理单元都是根据不同的控制流程执行不同的操作，处理不同的数据，因此，它们被称作是多指令流多数据流计算机，即MIMD（Multiple Instruction Stream Multiple Data Stream，简称MIMD）计算机，它使用多个控制器来异步地控制多个处理器，从而实现空间上的并行性。</a>”</li>
+<li>SIMD(Single Instruction Multiple Data Stream) — 单指令多数据流<br><img src="/img/Graphic/SIMD.PNG" alt="SIMD"></li>
+<li>MISD(Multiple Instruction Single Data Stream) — 多指令多数据流</li>
+</ol>
+<p>那么各个计算机架构设计之间的优势和劣势分别是什么了？<br>还记得我们之前说的像素着色单元和顶点着色单元已开被设计成具备4次运算能力的算数逻辑运算器(ALU)吗？<br>因为数据的基本单元是Scalar(标量),GPU的ALU一个时钟周期可进行四次这种变量并行运算。<br>那么如果我们传入4D标量进行运算，SIMD可以最大程度满足我们的需求，达到GPU利用率100%。但如果我们传入1D标量进行运算，SIMD的效率就会下降到原来的四分之一（随着API的更新，1D/2D/3D等混合指令开始大幅出现），固传统的SIMD架构效率开始降低。而3D+1D/2D+2D等混合架构设计也并不能最大限度利用ALU运算能力，这也是统一架构出现的契机。</p>
+<h3 id="统一架构">统一架构</h3><p>“<a href="http://vga.zol.com.cn/238/2386200_all.html" target="_blank" rel="external">为了解决ALU利用率的问题，微软在Direct X 10提出了统一渲染架构的概念。<br>核心思想是：将Vertex Shader(顶点着色器)和Pixel Shader(像素着色器)单元合并成一个具备完整执行能力的US(Unified Shader,统一渲染)单元，指令直接面向底层的ALU而非过去的特定单元，所以在硬件层面US可以同时吞吐一切shader指令，同时并不会对指令进行任何修改，也不会对shader program的编写模式提出任何的强迫性的改变要求。</a>”<br><img src="/img/Graphic/US.PNG" alt="US"></p>
+<p>统一架构出来以后，因为有了US(Unified Shader)单元，指令直接面向底层的ALU而非特定单元，所以后来的N卡统一架构把原来的4D着色器单元完全打散，流处理器(SP)统统由矢量设计改为了标量运算单元(由4D矢量运算器改为了1D标量运算器)，采用的是MIMD架构。</p>
+<p>MIMD架构相比SIMD架构需要占用更多的晶体管数，因为4个1D标量ALU和一个4D矢量ALU的运算能力是相当的，但前者需要4个指令发射端和4个控制单元，而后者只需要1个</p>
+<p>而A卡的流处理器(SPU)依然采用的是SIMD(单指令多数据流)架构，每个SPU内包含了5个ALU。</p>
+<p>“<a href="http://vga.zol.com.cn/238/2386200_all.html" target="_blank" rel="external">N卡A卡对比总结：英伟达的所采用的MIMD（多指令流多数据流）标量架构的G80核心需要占用不少额外的晶体管，所以在流处理器数量和理论运算能力方面稍显吃亏，但优点是GPU Shader执行效率很高；而AMD所采用的SIMD(单指令多数据流)超标量架构的R600核心则用较少的晶体管数实现了更多的流处理器数量和更高的理论运算能力，不过在执行效率方面则需要视情况而定了</a>”</p>
+<p>N卡的第二次革新引入的atomic单元以及SIMT(Single Instruction Multiple Thread)特性对N卡并行化设计起到了先到作用。</p>
+<p>“<a href="http://vga.zol.com.cn/238/2386200_all.html" target="_blank" rel="external">N卡的第三次革新引入了四大块就是GPC(Graphics Processing Cluster,图形处理器簇)，每个GPC单元包含独立的集合引擎以及光栅化流水线，GPC模块之间透过新加入的L2 cache进行通讯,kernel和Thread的协调以及数据共享。这无疑使得GF100的三角形吞吐量有了将近300%的提升，也实现了并行的分块化渲染动作，更使得DirectX 11所要求的TS单元直接融入到了整个光栅化流水线内部。</a>”<br><img src="/img/Graphic/NThird.PNG" alt="N_Third"><br><img src="/img/Graphic/N_PE_RE.PNG" alt="N_PE_RE"></p>
+<p><a href="http://vga.zol.com.cn/238/2386200_all.html" target="_blank" rel="external">A卡第二第三次革新</a></p>
+<h2 id="Shader_Virtual_Machine_(Shader_Model)">Shader Virtual Machine (Shader Model)</h2><p>了解了计算机架构与Shader的关系，让我们来看看Common-shader core virtual machine architecture and register layout吧<br><img src="/img/Graphic/Shader_Core_Virtual_Machine_Architecture.PNG" alt="Shader_Core_Virtual_Machine_Architecture_And_Register_Laout"></p>
+<h3 id="Input_Type">Input Type</h3><ol>
+<li><p>Uniform inputs<br>With values that remain constant throughout a draw call(but can be changed between draw calls) — accessed via read-only constant registers or constant buffers</p>
+</li>
+<li><p>Varying inputs<br>Which are different for each vertex or pixel processed by the shader — accessed via varying input registers</p>
+</li>
+</ol>
+<h3 id="Shader_Knowledge">Shader Knowledge</h3><h4 id="Shader">Shader</h4><p>Shader programs can be compiled offline before program load or during run time. As with any compiler, there are options for generating different output files and for using different optimization levels. A compiled shader is stored as a string of text, which is passed to the GPU via the driver.</p>
+<h4 id="MRT(Multiple_Render_Target)">MRT(Multiple Render Target)</h4><p><a href="https://en.wikipedia.org/wiki/Multiple_Render_Targets" target="_blank" rel="external">MRT is a feature of modern graphics processing units, that allows the programmable rendering pipeline to render images to multiple render target textures at once. These textures can then be used as inputs to other shaders or as texture maps applied to 3D models.</a><br>？不是非常明白这里。大概是一次渲染可以对象信息存储在多个buffer里，然后以texture的形式交给后续pass的pixel shader做处理<br><a href="https://en.wikipedia.org/wiki/Deferred_shading" target="_blank" rel="external">wiki上提到MRT的一个使用<strong>deferred shading</strong></a><br>在first pass的时候收集相应信息存储在特定buffer里，在second pass（真正的渲染绘制是在这里）的时候Pixel shader把这些信息用作渲染数据，把整个场景一次性渲染出来而不是针对每个空间物体进行光照，材质等渲染</p>
+<h4 id="Effects">Effects</h4><h5 id="什么是Effects文件了？">什么是Effects文件了？</h5><p><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476136(v=vs.85" target="_blank" rel="external">A DirectX effect is a collection of pipeline state, set by expressions written in HLSL and some syntax that is specific to the effect framework</a>.aspx)</p>
+<p>可以看出Effects文件主要是记录一系列的渲染状态和固定信息用于特定渲染流程里。</p>
+<h5 id="为什么需要Effects文件了？">为什么需要Effects文件了？</h5><p>在我们事先特定效果的渲染时，不仅需要一系列的shader文件，我们同时会设定相应的渲染状态和一些固定的渲染信息，这些状态和信息对于特定效果来说是固定不变的，所以通过Effects文件可以有效的帮助我们记录特定效果所需的渲染状态等信息，方便重复使用。</p>
+<h5 id="Effects_Languages">Effects Languages</h5><p>Such as HLSL FX, CgFX, and COLLADA FX</p>
+<h3 id="Shader_Models_Comparision">Shader Models Comparision</h3><p><img src="/img/Graphic/Shader_Model_Comparision.PNG" alt="Shader_Models_Comparision"></p>
+<h2 id="渲染总结">渲染总结</h2><p>可编程管线的出现主要是由于固定管线能实现的渲染效果有限不够灵活，Shader的出现象征着可编程管线的诞生。</p>
+<p>统一渲染架构主要是为了提高ALU(算数逻辑运算器)利用率的问题。US(Unified Shader)单元的出现象征则统一渲染架构的开始，指令直接面向底层的ALU而非特定单元，流处理器的数量成为了性能的关键，流处理器的设计和架构紧密相关。（并行分块花渲染也随之出现）</p>
+<p>“<a href="http://vga.zol.com.cn/238/2386200_all.html" target="_blank" rel="external">DX9到DX10是一大转折点：结束管线时代，开启GPU统一渲染架构时代。在DX9时代，大家都是通过“(像素)管线”来衡量显卡的性能等级，而到了DX10时代，统一渲染架构的引入使得显卡不再区分“像素”和“顶点”，因此“管线”这种说法逐渐淡出了大家的视野，取而代之的是全新统一渲染架构的“流处理器”，“流处理器”的数量直接影响着显卡的性能。</a>”</p>
+<p><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/" target="_blank" rel="external">OpenGL更多的学习了解</a></p>
+<h1 id="Reference_Website">Reference Website</h1><p><a href="https://en.wikipedia.org/wiki/Pipeline" target="_blank" rel="external">Pipeline</a><br><a href="http://vga.zol.com.cn/238/2386200_all.html" target="_blank" rel="external">GPU架构</a><br><a href="http://vga.zol.com.cn/243/2433760_all.html" target="_blank" rel="external">TMU(纹理贴图单元)</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/08/29/Computer-Graphic-Study/" data-id="cif9i0us1000ngco0e1foajn6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenGL/">OpenGL</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/02/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/08/26/OpenGL-Study/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">OpenGL_Study</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Game-Engine/">Game_Engine</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming-Language/">Programming Language</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Rendering/">Rendering</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL/">OpenGL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Programming/">Programming</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/">Unity</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/OpenGL/" style="font-size: 20px;">OpenGL</a> <a href="/tags/Programming/" style="font-size: 10px;">Programming</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Unity/" style="font-size: 10px;">Unity</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/10/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/29/Computer-Graphic-Study/">Computer_Graphic_Study</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/26/OpenGL-Study/">OpenGL_Study</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/15/CSharp-Study/">C# Study</a>
+          </li>
+        
+          <li>
+            <a href="/2015/07/15/Unity-Study/">Unity Study</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

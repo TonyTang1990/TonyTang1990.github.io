@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>C# Study | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content=".Net FrameworkIntroduction.Net Framework是Microsoft为开发应用程序而创建创的一个具有革命意义的平台。
+Content.Net Framework主要包含一个非常大的代码库，可以在客户语言中通过面向对象编程技术来使用这些代码。这个库分为多个不同的模块。
+.Net Framework还包含.NET公共语言运行库(Common Language Runti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C# Study">
+<meta property="og:url" content="http://yoursite.com/2015/08/15/CSharp-Study/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content=".Net FrameworkIntroduction.Net Framework是Microsoft为开发应用程序而创建创的一个具有革命意义的平台。
+Content.Net Framework主要包含一个非常大的代码库，可以在客户语言中通过面向对象编程技术来使用这些代码。这个库分为多个不同的模块。
+.Net Framework还包含.NET公共语言运行库(Common Language Runti">
+<meta property="og:image" content="http://yoursite.com/img/CSharp/CSharp_Compile_Process1.PNG">
+<meta property="og:image" content="http://yoursite.com/img/CSharp/CSharp_Compile_Process2.PNG">
+<meta property="og:image" content="http://yoursite.com/img/CSharp/CSharp_Compile_Process3.PNG">
+<meta property="og:image" content="http://yoursite.com/img/CSharp/CSharp_Delegate.PNG">
+<meta property="og:image" content="http://yoursite.com/img/CSharp/Static_Constructor_And_Static_Class.PNG">
+<meta property="og:image" content="http://yoursite.com/img/CSharp/Generic.PNG">
+<meta property="og:image" content="http://yoursite.com/img/CSharp/Variance_Contravariance.PNG">
+<meta property="og:updated_time" content="2015-08-26T16:48:44.515Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C# Study">
+<meta name="twitter:description" content=".Net FrameworkIntroduction.Net Framework是Microsoft为开发应用程序而创建创的一个具有革命意义的平台。
+Content.Net Framework主要包含一个非常大的代码库，可以在客户语言中通过面向对象编程技术来使用这些代码。这个库分为多个不同的模块。
+.Net Framework还包含.NET公共语言运行库(Common Language Runti">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-CSharp-Study" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/15/CSharp-Study/" class="article-date">
+  <time datetime="2015-08-15T06:30:53.000Z" itemprop="datePublished">2015-08-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Programming-Language/">Programming Language</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      C# Study
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="-Net_Framework">.Net Framework</h1><h2 id="Introduction">Introduction</h2><p>.Net Framework是Microsoft为开发应用程序而创建创的一个具有革命意义的平台。</p>
+<h2 id="Content">Content</h2><p>.Net Framework主要包含一个非常大的代码库，可以在客户语言中通过面向对象编程技术来使用这些代码。这个库分为多个不同的模块。</p>
+<p>.Net Framework还包含.NET公共语言运行库(Common Language Runtime, CLR)，它负责管理用.NET库开发的所有应用程序的执行</p>
+<h2 id="Using_-NET_Framework">Using .NET Framework</h2><h3 id="Tools">Tools</h3><ol>
+<li>Visual Studio</li>
+<li>VCE(for C#)</li>
+</ol>
+<h3 id="Compile_process">Compile process</h3><ol>
+<li><p>CIL(Common Intermediate Language)<br>首先把代码编译成通用中间语言(Common Intermediate Language, CIL)代码<br><img src="/img/CSharp/CSharp_Compile_Process1.PNG" alt="编译到程序集"></p>
+</li>
+<li><p>JIT(Just-In-Time)<br>把CIL编译为专用于OS和目标机器结构的机器代码<br><img src="/img/CSharp/CSharp_Compile_Process2.PNG" alt="编译为本机代码"></p>
+</li>
+</ol>
+<h3 id="程序集">程序集</h3><p>编译程序时所创建的CIL代码存储在一个程序集中（e.g. .exe .dll）<br>程序集包含程序用到的相关数据信息</p>
+<h3 id="托管代码">托管代码</h3><p>CLR管理着应用程序，其方式是管理内存，处理安全性以及允许进行跨语言调试等。相反，不受CLR控制运行着的应用程序属于非托管类型。<br><img src="/img/CSharp/CSharp_Compile_Process3.PNG" alt="托管到CLR运行"></p>
+<h3 id="垃圾回收">垃圾回收</h3><p>托管代码中的一个功能GC(garbage collection)</p>
+<h3 id="链接">链接</h3><p>模块化</p>
+<h1 id="CSharp">CSharp</h1><h2 id="Introduction-1">Introduction</h2><p>C#是可用于创建要运行在.NET CLR上的应用程序的语言之一，它从C和C++语言演化而来，是Microsoft专门为使用.NET平台而创建的。</p>
+<h2 id="Features">Features</h2><ol>
+<li>语法简单</li>
+<li>类型安全</li>
+<li>为.NET Framework设计的语言</li>
+</ol>
+<h2 id="Development">Development</h2><p>Application Type</p>
+<ol>
+<li>Windows Appliaction Program</li>
+<li>Web Application Program</li>
+<li>Web Service</li>
+</ol>
+<h2 id="Language_Study">Language Study</h2><p>Only record some difference between C# and C++/Java</p>
+<h3 id="1-_delegate">1. delegate</h3><p>(C++里用函数指针实现,Java里通过内部类的闭包和interface去实现)<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">CSharpStudy</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">delegate</span> <span class="keyword">void</span> <span class="title">testDelegate</span>(<span class="params"><span class="keyword">string</span> para</span>)</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doSomething</span>(<span class="params"><span class="keyword">string</span> para</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            Console.WriteLine(<span class="string">"doSomething:"</span> + para);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="preprocessor">#<span class="keyword">region</span> method 1 to use delegate</span></span><br><span class="line">	        testDelegate delegate1;</span><br><span class="line">            delegate1 = <span class="keyword">new</span> testDelegate(doSomething);</span><br><span class="line">            <span class="preprocessor">#<span class="keyword">endregion</span></span></span><br><span class="line">            delegate1(<span class="string">"delegate1"</span>);</span><br><span class="line">            </span><br><span class="line">            <span class="preprocessor">#<span class="keyword">region</span> method 2 to use delegate(lambda expression)</span></span><br><span class="line">            testDelegate delegate2 = s =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">"doSomething:"</span> + s);</span><br><span class="line">            &#125;;</span><br><span class="line">            <span class="preprocessor">#<span class="keyword">endregion</span></span></span><br><span class="line">            delegate2(<span class="string">"delegate2"</span>);</span><br><span class="line">              </span><br><span class="line">           <span class="preprocessor">#<span class="keyword">region</span> method 3 to use delegate(anonymous method)</span></span><br><span class="line">            testDelegate delegate3 = <span class="keyword">delegate</span>(<span class="keyword">string</span> para)</span><br><span class="line">           &#123;</span><br><span class="line">               Console.WriteLine(<span class="string">"delegate3's para = "</span> + para);</span><br><span class="line">           &#125;;</span><br><span class="line">           <span class="preprocessor">#<span class="keyword">endregion</span></span></span><br><span class="line">           delegate3(<span class="string">"delegate3"</span>);</span><br><span class="line">           Console.ReadKey();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Output:<br><img src="/img/CSharp/CSharp_Delegate.PNG" alt="CSharp_Delegate"></p>
+<h3 id="2-_Class_&amp;_interface">2. Class &amp; interface</h3><ol>
+<li>Class qualifier<br>internal class — only code in current project can access (default)<br>public class — other project code can access</li>
+</ol>
+<p>abstract class — abstract class<br>sealed class — cant not be inheritated</p>
+<p>Note:<br>Compiler is not allowed derived class’s access privileges higher than parent class</p>
+<p>e.g.<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">MyBase</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">MyBase</span>(<span class="params"></span>)</span><br><span class="line">   </span>&#123;</span><br><span class="line">       </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//Cant do like this due to Child class access previlage is higher than parent class</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyChild</span> <span class="comment">/*: MyBase*/</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">MyChild</span>(<span class="params"></span>)</span><br><span class="line">   </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>support extends multiple interface<br>Note:<br>base class must be write down first when we inherites from one class and extends several interface<br>abstract &amp; sealed can not be used by interface due to no implementation in interface (abstract &amp; sealed qualifier are meaningless)</p>
+<ol>
+<li>Static constructor &amp; Static class<br>静态构造函数只会被调用一次且属于整个类<br>静态类不能拥有实例构造函数且只能有static成员<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">CSharpStudy</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">class</span> <span class="title">StaticConstructor</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="function"><span class="keyword">static</span> <span class="title">StaticConstructor</span>(<span class="params"></span>)</span><br><span class="line">            </span>&#123;</span><br><span class="line">                Console.WriteLine(<span class="string">"Static StaticConstructor()"</span>);</span><br><span class="line">                m_ID = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">StaticConstructor</span>(<span class="params"></span>)</span><br><span class="line">            </span>&#123;</span><br><span class="line">                Console.WriteLine(<span class="string">"Normal StaticConstructor()"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> m_ID;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">StaticClass</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/*</span><br><span class="line">            //Cant have instance constructor (do not know why static constructor neither)</span><br><span class="line">            static StaticClass()</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine("StaticClass()");</span><br><span class="line">                m_ID = 2;</span><br><span class="line">                m_Type = "Static";</span><br><span class="line">            &#125;</span><br><span class="line">            */</span></span><br><span class="line">            <span class="comment">//Can not non static member</span></span><br><span class="line">            <span class="comment">//public int m_Test = 3; </span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> m_ID = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">string</span> m_Type = <span class="string">"Static"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">           StaticConstructor sc = <span class="keyword">new</span> StaticConstructor();</span><br><span class="line">           Console.WriteLine(<span class="string">"StaticConstructor::m_ID = "</span> + StaticConstructor.m_ID);</span><br><span class="line"></span><br><span class="line">           Console.WriteLine(<span class="string">"StaticClass::m_ID = "</span> + StaticClass.m_ID);</span><br><span class="line">           Console.WriteLine(<span class="string">"StaticClass::m_Type = "</span> + StaticClass.m_Type);</span><br><span class="line"></span><br><span class="line">           Console.ReadKey();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>Output:<br><img src="/img/CSharp/Static_Constructor_And_Static_Class.PNG" alt="Static_Constructor_And_Static_Class"></p>
+<h3 id="3-_Not_supported_multiple_inherit">3. Not supported multiple inherit</h3><p>C++支持多重继承，Java通过extend多个Interface来实现多重继承<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Base1</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">Base1</span>(<span class="params"></span>)</span><br><span class="line">   </span>&#123;</span><br><span class="line">       Console.WriteLine(<span class="string">"Base1()"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title">Base2</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">Base2</span>(<span class="params"></span>)</span><br><span class="line">   </span>&#123;</span><br><span class="line">       Console.WriteLine(<span class="string">"Base1()"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title">Child</span> : <span class="title">Base1</span><span class="comment">/*, Base2*/</span><span class="comment">//Not support multiple inherit</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">Child</span>(<span class="params"></span>)</span><br><span class="line">   </span>&#123;</span><br><span class="line">       Console.WriteLine(<span class="string">"Child()"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">   Child c = <span class="keyword">new</span> Child();</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-_Class_member">4. Class member</h3><p>access qualifier<br>public, private, internal, protected</p>
+<p>readonly — only can be initilized in constructor or declaration</p>
+<p>property &amp; field<br>property gives more control to field access</p>
+<p>accessor privilege — can not be higher than the access privilege that it is belonged to<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Accessor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Accessor</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        m_A = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> IntA</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> m_A;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//Can not be public due to IntA's access privilege is lower than public</span></span><br><span class="line">        <span class="comment">//public set</span></span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            m_A = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> m_A;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li><p>member function<br> override key word can hide base function(works with polymorphism)<br> Access base function that has been hiden uses base key word in child class</p>
+</li>
+<li><p>Interface member<br> all interface member must be public<br> can not use static, virtual, abstract, sealed</p>
+</li>
+<li><p>Interface implementation<br>explicit implementation — only can be accessed through interface (return type interface.functionanme(para))<br>implicit implementation — can be accessd through both interface and class</p>
+</li>
+<li><p>partial class definition &amp; partial property<br> can put class member, property, method, field into several files(partial key word)<br> Partial property is always static and withought return value</p>
+</li>
+</ol>
+<h3 id="3-_Struct_&amp;_Class">3. Struct &amp; Class</h3><p>Struct is value type<br>Class is reference type</p>
+<p>Shallow copy &amp; Deep copy<br>Shallow copy will only copy value type member, reference type member will use original one(System.Object.MemberwiseClone())</p>
+<p>Deep copy  will copy all member value instead of reference(implememnt ICloneable::Clone())</p>
+<h3 id="4-_Collection_class_(System-Collection)">4. Collection class (System.Collection)</h3><p>好比C++里的STL里的container<br>Our own collection (extends CollectionBase Class || DictionaryBase)</p>
+<h3 id="5-_Comparasion">5. Comparasion</h3><ol>
+<li><p>Type comparasion<br>System.Object.GetType()<br>&amp;&amp;<br>typeof()<br>&amp;&amp;<br>is operator — is specific type or type can be cast</p>
+<ol>
+<li>boxing — cast value type into System.Object type(shollow copy) or interface type that is implemented by value type</li>
+<li>unboxing — boxing reverse process</li>
+</ol>
+</li>
+<li><p>Value comparasion<br>operator overloading — must be static<br>IComparable — compare object’s data with the same type<br>&amp;&amp;<br>IComparer — compare two object with different type or the same type</p>
+</li>
+</ol>
+<h3 id="6-_Conversion">6. Conversion</h3><p>Conversion operator<br>implici<br>explicit<br>e.g.<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">A</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">implicit</span> <span class="keyword">operator</span> <span class="title">B</span>(<span class="params">A a</span>)</span><br><span class="line">	</span>&#123;</span><br><span class="line">		......</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">B</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">explicit</span> <span class="keyword">operator</span> <span class="title">A</span>(<span class="params">B b</span>)</span><br><span class="line">	</span>&#123;</span><br><span class="line">		......</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>as operator</p>
+<p><operand> as <type><br>Suit case</type></operand></p>
+<ol>
+<li>operand type is type</li>
+<li>operand type can be casted into type implicitly</li>
+<li>operand can be boxing into type</li>
+</ol>
+<h3 id="7-_Generics">7. Generics</h3><p>C++里是template实现<br>System.Collections.Generic<br>value type can not be initilized with null<br>Problem</p>
+<ol>
+<li>null (value type or reference type)<ol>
+<li>default key word — if it is reference type, initilized with null. otherwise use default value</li>
+</ol>
+</li>
+<li>type<ol>
+<li>constraining<br> where key words<br> e.g.<br> class A<t>: where T:B 9( T must inherite from B)<br>Code e.g.<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line">   using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Text;</span><br><span class="line">using System.Collections;</span><br><span class="line"></span><br><span class="line">namespace CSharpStudy</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        //Can not instantiation with int when where T1 : class </span><br><span class="line">        //public class GenericClass&lt;T1&gt; where T1 : class</span><br><span class="line">        public class GenericClass&lt;T1&gt; : IEnumerable&lt;T1&gt; where T1 : struct</span><br><span class="line">        &#123;</span><br><span class="line">            private List&lt;T1&gt; m_Member = new List&lt;T1&gt;();</span><br><span class="line"></span><br><span class="line">            public GenericClass()</span><br><span class="line">            &#123;</span><br><span class="line">                //use T1's default value</span><br><span class="line">                //m_Member.Add(default(T1));</span><br><span class="line">            &#125;</span><br><span class="line">            public List&lt;T1&gt; GetMember</span><br><span class="line">            &#123;</span><br><span class="line">                get</span><br><span class="line">                &#123;</span><br><span class="line">                    return m_Member;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            public IEnumerator&lt;T1&gt; GetEnumerator()</span><br><span class="line">            &#123;</span><br><span class="line">                return m_Member.GetEnumerator();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            IEnumerator IEnumerable.GetEnumerator()</span><br><span class="line">            &#123;</span><br><span class="line">                return m_Member.GetEnumerator();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            public static implicit operator List&lt;T1&gt;(GenericClass&lt;T1&gt; gc)</span><br><span class="line">            &#123;</span><br><span class="line">                List&lt;T1&gt; result = new List&lt;T1&gt;();</span><br><span class="line">                foreach (T1 i in gc)</span><br><span class="line">                &#123;</span><br><span class="line">                    result.Add(i);</span><br><span class="line">                &#125;</span><br><span class="line">                return result;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            public static GenericClass&lt;T1&gt; operator +(GenericClass&lt;T1&gt; gc, List&lt;T1&gt; l)</span><br><span class="line">            &#123;</span><br><span class="line">                GenericClass&lt;T1&gt; result = new GenericClass&lt;T1&gt;();</span><br><span class="line">                foreach (T1 m in gc)</span><br><span class="line">                &#123;</span><br><span class="line">                    result.GetMember.Add(m);</span><br><span class="line">                &#125;</span><br><span class="line">                foreach (T1 m in l)</span><br><span class="line">                &#123;</span><br><span class="line">                    if (!result.GetMember.Contains(m))</span><br><span class="line">                    &#123;</span><br><span class="line">                        result.GetMember.Add(m);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                return result;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">           //Nullable problem, </span><br><span class="line">           //value type can not be initiated with null</span><br><span class="line">           //int normalint = null;</span><br><span class="line">           System.Nullable&lt;int&gt; nullableint = null;</span><br><span class="line">           //nullable</span><br><span class="line">           int? nullalbleint = null;</span><br><span class="line">           int? result = nullalbleint ?? 5;</span><br><span class="line">           Console.WriteLine("result = " + result);</span><br><span class="line">           List&lt;int&gt; list = new List&lt;int&gt;(2);</span><br><span class="line">           list.Add(1);</span><br><span class="line">           list.Add(2);</span><br><span class="line">           foreach (int i in list)</span><br><span class="line">           &#123;</span><br><span class="line">               Console.WriteLine("list value = " + i);</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           GenericClass&lt;int&gt; gc = new GenericClass&lt;int&gt;();</span><br><span class="line">           Console.WriteLine("gc.m_Member = " + gc.GetMember);</span><br><span class="line"></span><br><span class="line">           GenericClass&lt;int&gt; gc2 = new GenericClass&lt;int&gt;();</span><br><span class="line">           gc2.GetMember.Add(11);</span><br><span class="line">           gc2.GetMember.Add(111);</span><br><span class="line">           GenericClass&lt;int&gt; gc3 = new GenericClass&lt;int&gt;();</span><br><span class="line">           gc3.GetMember.Add(11);</span><br><span class="line">           gc3.GetMember.Add(22);</span><br><span class="line">           gc3.GetMember.Add(222);</span><br><span class="line"></span><br><span class="line">           gc = gc2 + gc3;</span><br><span class="line">           foreach (int i in gc)</span><br><span class="line">           &#123;</span><br><span class="line">               Console.WriteLine("gc member = " + i);</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           Console.ReadKey();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</t></li>
+</ol>
+</li>
+</ol>
+<p>Output:<br><img src="/img/CSharp/Generic.PNG" alt="Generic"></p>
+<p>Variance (变体)</p>
+<ol>
+<li>Convariance — 协变 out key word<br>主要用于Interface和delegate的返回类型或者参数类型的隐士转换（子类到父类）</li>
+<li>Contravariance — 抗变 int key word<br>与协变相反（父类到子类）<br>Code e.g.<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Covariance</span></span><br><span class="line">   <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ListAnimals</span>(<span class="params">IEnumerable&lt;Animal&gt; animals</span>)</span><br><span class="line">   </span>&#123;</span><br><span class="line">       <span class="keyword">foreach</span> (Animal animal <span class="keyword">in</span> animals)</span><br><span class="line">       &#123;</span><br><span class="line">          Console.WriteLine(animal.ToString());</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">FeeAnimal</span>(<span class="params">Func&lt;Animal&gt; animalCreator</span>)</span><br><span class="line">   </span>&#123;</span><br><span class="line">       <span class="keyword">var</span> animal = animalCreator();</span><br><span class="line">       Console.WriteLine(<span class="string">"animal.name = "</span> + animal.Name);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">FeeAnimal</span>(<span class="params">Func&lt;Cow&gt; animalCreator</span>)</span><br><span class="line">   </span>&#123;</span><br><span class="line">       <span class="keyword">var</span> animal = animalCreator();</span><br><span class="line">       Console.WriteLine(<span class="string">"animal.name = "</span> + animal.Name);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">static</span> Cow <span class="title">CreateCow</span>(<span class="params"></span>)</span><br><span class="line">   </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> Cow(<span class="string">"DelegateCow"</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//Contravariance</span></span><br><span class="line">   <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">FeeAnimal</span>(<span class="params">Animal animal</span>)</span><br><span class="line">   </span>&#123;</span><br><span class="line">       Console.WriteLine(<span class="string">"FeeAnimal:"</span> + animal.Name);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Execute</span>(<span class="params">Action&lt;Cow&gt; cact</span>)</span><br><span class="line">   </span>&#123;</span><br><span class="line">       cact(<span class="keyword">new</span> Cow(<span class="string">"ExecuteCow"</span>));</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//Covariance</span></span><br><span class="line">   List&lt;Cow&gt; cows = <span class="keyword">new</span> List&lt;Cow&gt;();</span><br><span class="line">   cows.Add(<span class="keyword">new</span> Cow(<span class="string">"Cow1"</span>));</span><br><span class="line">   ListAnimals(cows);</span><br><span class="line"></span><br><span class="line">   FeeAnimal(CreateCow);</span><br><span class="line">   Func&lt;Cow&gt; cFunc = CreateCow;</span><br><span class="line">   Func&lt;Animal&gt; aFunc = cFunc;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//Contravariance</span></span><br><span class="line">   Action&lt;Animal&gt; aAct = FeeAnimal;</span><br><span class="line">   Action&lt;Cow&gt; cAct = aAct;</span><br><span class="line"></span><br><span class="line">   Execute(aAct);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>Output:<br><img src="/img/CSharp/Variance_Contravariance.PNG" alt="Variance_Contravariance"></p>
+<p>Note:<br>C++是通过编译器检测出模板使用的特定类型<br>C#是运行时进行</p>
+<ol>
+<li>Event<br>C#里的Event响应delegate好比C++里的回调 — 当事件发生时调用<br>event key word</li>
+</ol>
+<p>待续……</p>
+<p>参考书籍下载：<br><a href="http://download.csdn.net/download/baiyu9821179/4282298" target="_blank" rel="external">C#入门经典第五版</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/08/15/CSharp-Study/" data-id="cif9i0uk30000gco0oecmgk10" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Programming/">Programming</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/08/26/OpenGL-Study/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          OpenGL_Study
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/07/15/Unity-Study/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Unity Study</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Game-Engine/">Game_Engine</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming-Language/">Programming Language</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Rendering/">Rendering</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL/">OpenGL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Programming/">Programming</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/">Unity</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/OpenGL/" style="font-size: 20px;">OpenGL</a> <a href="/tags/Programming/" style="font-size: 10px;">Programming</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Unity/" style="font-size: 10px;">Unity</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/10/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/29/Computer-Graphic-Study/">Computer_Graphic_Study</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/26/OpenGL-Study/">OpenGL_Study</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/15/CSharp-Study/">C# Study</a>
+          </li>
+        
+          <li>
+            <a href="/2015/07/15/Unity-Study/">Unity Study</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
