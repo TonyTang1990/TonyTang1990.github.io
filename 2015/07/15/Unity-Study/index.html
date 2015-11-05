@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/EditorWindow_ScriptableObject.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Unity_Coroutine_LifeTime.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Unity_Coroutine_LifeTime_Monobehaviour.PNG">
-<meta property="og:updated_time" content="2015-11-05T16:59:58.863Z">
+<meta property="og:updated_time" content="2015-11-05T17:01:53.981Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity Study">
 <meta name="twitter:description" content="Unity IntroductionWhat is Unity?Unity is a cross-platform game engine developed by Unity Technologies and used to develop video games for PC, consoles, mobile devices and websites. First released on J">
@@ -347,11 +347,11 @@
 </code></pre>
 <p>ScreenShots<br><img src="/img/Unity/Unity_Coroutine_LifeTime.PNG" alt="The relationship between Coroutine Life Time and Monobehaviour &amp; GameObejct"></p>
 <p><img src="/img/Unity/Unity_Coroutine_LifeTime_Monobehaviour.PNG" alt="The relationship between Coroutine Life Time and Monobehaviour"></p>
-<p>Note:<br><em>Diable Monobehaviour(e.g. Monobehaviour.enabled = false) will not influence coroutine.</em></p>
-<p><em>Coroutine with yiled return null will get called after LateUpdate()(仅根据上面的测试结果)</em><br><em>通过返回WaitForSeconds() || WaitForEndOfFrame() || WaitForFixedUpdate() 等yield return 支持的返回类型可以实现coroutine在特定时刻继续调用</em></p>
-<p><em>StartCoroutine()支持嵌套调用用于实现特定等待特定运算后继续执行特定代码</em></p>
+<p>Note:<br><strong>Diable Monobehaviour(e.g. Monobehaviour.enabled = false) will not influence coroutine.</strong></p>
+<p><strong>Coroutine with yiled return null will get called after LateUpdate()(仅根据上面的测试结果)</strong><br><strong>通过返回WaitForSeconds() || WaitForEndOfFrame() || WaitForFixedUpdate() 等yield return 支持的返回类型可以实现coroutine在特定时刻继续调用</strong></p>
+<p><strong>StartCoroutine()支持嵌套调用用于实现特定等待特定运算后继续执行特定代码</strong></p>
 <h3 id="How_to_stop_coroutines?">How to stop coroutines?</h3><p>IEnumerator coroutine = WaitForSeconds(3.0f);<br>StartCoroutine(coroutine);<br>StopCoroutine(coroutine)</p>
-<p>Note:<br><em>注意如果gameobject处于InActive或则has been destroyed,Coroutine不会再被调用，可以通过Monobehaviour.enabled = false来实现使物体不可见但会出发coroutine的效果</em></p>
+<p>Note:<br><strong>注意如果gameobject处于InActive或则has been destroyed,Coroutine不会再被调用，可以通过Monobehaviour.enabled = false来实现使物体不可见但会出发coroutine的效果</strong></p>
 <h1 id="C#学习">C#学习</h1><p>Book down load link: <a href="http://download.csdn.net/detail/baiyu9821179/4282298" target="_blank" rel="external">c#入门经典第五版</a></p>
   
 	</div>
