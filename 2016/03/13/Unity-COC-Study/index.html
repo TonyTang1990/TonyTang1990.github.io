@@ -1,0 +1,529 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Unity_COC_Study | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="Preface(序言)What is COC?COC(Clash of Clans) is a freemium mobile MMO strategy video game developed and published by Supercell.The game was released for iOS platforms on 2 August, 2012,[1] and on Google">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity_COC_Study">
+<meta property="og:url" content="http://tonytang1990.github.io/2016/03/13/Unity-COC-Study/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="Preface(序言)What is COC?COC(Clash of Clans) is a freemium mobile MMO strategy video game developed and published by Supercell.The game was released for iOS platforms on 2 August, 2012,[1] and on Google">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MyCOC.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/COCModel.JPG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AgeOfEmpires.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Diablo2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/FSM.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AI_DecisionTree.PNG">
+<meta property="og:updated_time" content="2016-03-16T17:09:49.354Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity_COC_Study">
+<meta name="twitter:description" content="Preface(序言)What is COC?COC(Clash of Clans) is a freemium mobile MMO strategy video game developed and published by Supercell.The game was released for iOS platforms on 2 August, 2012,[1] and on Google">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">有时候不是习惯了一个人，而是在没有认可自己之前选择了一个人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/03/13/Unity-COC-Study/" title="Unity_COC_Study" itemprop="url">Unity_COC_Study</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2016-03-13T11:14:35.000Z" itemprop="datePublished"> 發表於 2016-03-13</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Preface(序言)"><span class="toc-number">1.</span> <span class="toc-text">Preface(序言)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What_is_COC?"><span class="toc-number">1.1.</span> <span class="toc-text">What is COC?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#My_COC_Experience"><span class="toc-number">1.2.</span> <span class="toc-text">My COC Experience</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#COC_Project(Unity)"><span class="toc-number">2.</span> <span class="toc-text">COC Project(Unity)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Preparation"><span class="toc-number">2.1.</span> <span class="toc-text">Preparation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity"><span class="toc-number">2.1.1.</span> <span class="toc-text">Unity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Programming_Language(C#)"><span class="toc-number">2.1.2.</span> <span class="toc-text">Programming Language(C#)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Knowledge"><span class="toc-number">2.1.3.</span> <span class="toc-text">Knowledge</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Is_COC_a_2D_game_or_3D_game?"><span class="toc-number">2.1.3.1.</span> <span class="toc-text">Is COC a 2D game or 3D game?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Isometric_Tileset_Engine"><span class="toc-number">2.1.3.2.</span> <span class="toc-text">Isometric Tileset Engine</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#What_is_Isometric_Tileset_Engine?"><span class="toc-number">2.1.3.2.1.</span> <span class="toc-text">What is Isometric Tileset Engine?</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#What_does_game_with_isometric_projection_look_like?"><span class="toc-number">2.1.3.2.2.</span> <span class="toc-text">What does game with isometric projection look like?</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#How_to_make_game_work_under_isometric_projection?"><span class="toc-number">2.1.3.2.3.</span> <span class="toc-text">How to make game work under isometric projection?</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Searching"><span class="toc-number">2.1.4.</span> <span class="toc-text">Searching</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#How_to_develope_COC_like_game?"><span class="toc-number">2.1.4.1.</span> <span class="toc-text">How to develope COC like game?</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Project"><span class="toc-number">2.2.</span> <span class="toc-text">Project</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Game_Engine"><span class="toc-number">2.2.1.</span> <span class="toc-text">Game Engine</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Programming_Language"><span class="toc-number">2.2.2.</span> <span class="toc-text">Programming Language</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Developer_Tool"><span class="toc-number">2.2.3.</span> <span class="toc-text">Developer Tool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Basic_Setting_with_Scene"><span class="toc-number">2.2.4.</span> <span class="toc-text">Basic Setting with Scene</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AI"><span class="toc-number">2.2.5.</span> <span class="toc-text">AI</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="Preface(序言)">Preface(序言)</h1><h2 id="What_is_COC?">What is COC?</h2><p>COC(Clash of Clans) is a freemium mobile MMO strategy video game developed and published by Supercell.The game was released for iOS platforms on 2 August, 2012,[1] and on Google Play for Android on 7 October, 2013<br>(<a href="https://en.wikipedia.org/wiki/Clash_of_Clans" target="_blank" rel="external">from wiki</a>)</p>
+<h2 id="My_COC_Experience">My COC Experience</h2><p>我第一次接触COC大概是在2014年2月份，当时被朋友拉着一起玩这个游戏，三个人建立了自己的小部落，后来陆陆续续拉了不少朋友加入，口口相传，部落成长到40人的部落，从此以后就一发不可收拾。<br>这款游戏最吸引我的地方有以下几点：</p>
+<ol>
+<li>游戏时间碎片化（采用真实时间计时），不需要玩家长时间在线。</li>
+<li>线上进攻布局，线下防守的玩法。</li>
+<li>不同兵种和法术的不同特性使得玩家的手法和路线规划显得尤为重要（后来出的部落战尤其体现了这一点）。</li>
+<li>部落的概念，增强了集体的概念和玩家间的互动（分享进攻防守记录，打部落战，聊天，捐兵等）</li>
+<li>资深COC玩家来说，游戏的种树文化也不得不说是一种游戏乐趣。</li>
+</ol>
+<p>贴一张我的COC图已做留念<br><img src="/img/Unity/MyCOC.PNG" alt="My COC"></p>
+<p>为了这个游戏还买过COC模型<br><img src="/img/Unity/COCModel.JPG" alt="COC Model"></p>
+<p>经历了两年多的COC洗礼，经历了部落解散，部落合并，到现在最后一起坚持到最后的7,8个小伙伴（基本都满防满王了），感慨万千（此处省略一万字）。</p>
+<p>出于自己是做游戏开发的缘故，刚开始学习Unity（同时学习C#），所以决定以COC为模板来制作学习Unity。就这样我的Unity COC计划就这样开始了，虽然最后只实现了很小一部分东西（而且很不完美，但学到很多东西），所以写下这个篇文章来总结自己学到的一些东西。</p>
+<h1 id="COC_Project(Unity)">COC Project(Unity)</h1><h2 id="Preparation">Preparation</h2><h3 id="Unity">Unity</h3><p>(<a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/">Unity Study</a>)</p>
+<h3 id="Programming_Language(C#)">Programming Language(C#)</h3><p>(<a href="http://tonytang1990.github.io/2015/08/15/CSharp-Study/">C# Study</a>)</p>
+<p>参考书籍：<br><a href="http://download.csdn.net/download/baiyu9821179/4282298" target="_blank" rel="external">C#入门经典第五版</a><br>CLR Via C# Fourth Edition - Jeffrey Richter</p>
+<h3 id="Knowledge">Knowledge</h3><h4 id="Is_COC_a_2D_game_or_3D_game?">Is COC a 2D game or 3D game?</h4><p>The answer is 2D game，actually we should call 2.5D.<br>第一眼看到COC里面的所有动画人物给人的感觉都是3D的，但后来知道了Isometric Tileset Engine的概念。</p>
+<h4 id="Isometric_Tileset_Engine">Isometric Tileset Engine</h4><h5 id="What_is_Isometric_Tileset_Engine?">What is Isometric Tileset Engine?</h5><p>(<a href="http://blog.codingnow.com/2014/01/isometric_tileset_engine.html" target="_blank" rel="external">斜视角游戏的地图渲染</a>)<br>(<a href="http://flarerpg.org/tutorials/isometric_intro/" target="_blank" rel="external">Isometric Tiles Introduction</a>)<br>结合上述文章，我们可以知道，Isometric Tileset Engine主要是通过美术制作出Isometric Projection（we angle our camera along two axes (swing the camera 45 degrees to one side, then 30 degrees down)）的2D图片来实现游戏的3D效果（2.5D）。</p>
+<h5 id="What_does_game_with_isometric_projection_look_like?">What does game with isometric projection look like?</h5><p>典型的Isometric Projection游戏有：<br>Age of Empires<br><img src="/img/Unity/AgeOfEmpires.PNG" alt="Age of Empires"><br>Diablo 2<br><img src="/img/Unity/Diablo2.PNG" alt="Diablo2"></p>
+<h5 id="How_to_make_game_work_under_isometric_projection?">How to make game work under isometric projection?</h5><p>(<a href="http://gamedevelopment.tutsplus.com/tutorials/creating-isometric-worlds-a-primer-for-game-developers--gamedev-6511" target="_blank" rel="external">参考:Creating Isometric Worlds: A Primer for Game Developers</a>)<br>从标准的2D游戏到isometric projection的2.5D注意事项</p>
+<ol>
+<li>Coordinates Transformation — From Cartesian to isometric coordiates</li>
+<li>Creating the Art — isometric projection art</li>
+<li>Collision Detection — based on rectangle that is caculated from isometric projection</li>
+</ol>
+<h3 id="Searching">Searching</h3><h4 id="How_to_develope_COC_like_game?">How to develope COC like game?</h4><p>云风参与开发的陌陌争霸<br>(<a href="http://blog.codingnow.com/2014/01/routemap.html" target="_blank" rel="external">参考:COC Like 游戏中的寻路算法</a>)<br>从上面我们可以看出通过对不同建筑队不同兵种的路径的预算，我们可以在在城墙未被破坏的前提下实现O(1)的速度查询建筑距离信息。（但这里我没明白云风大哥所说的”如果下一个行军路线是城墙就攻打城墙” — 这个前提下怎么实现远距离攻打城墙的效果，所以最终并未采取这种方式实现）。</p>
+<h2 id="Project">Project</h2><h3 id="Game_Engine">Game Engine</h3><p>Unity</p>
+<h3 id="Programming_Language">Programming Language</h3><p>C#</p>
+<h3 id="Developer_Tool">Developer Tool</h3><p>Unity<br>VS2013 / VS2010 (IDE)<br>ILDissembler — 反编译工具<br>Blender — 建模工具（本来打算学习并使用这个，但由于游戏最终并未做出来，都只是使用Unity官网的一些现有模型）<br>Git — 版本控制</p>
+<h3 id="Basic_Setting_with_Scene">Basic Setting with Scene</h3><p>Scene — 3D Scene(考虑2.5D素材的缘故，直接采用3D场景来学习制作2.5D游戏)<br>Camera — Orthographic Projection(通过采用正交投影并旋转摄像机X轴35度，Y轴45度来模拟Isometric Projection)</p>
+<h3 id="AI">AI</h3><ol>
+<li>FSM(Finite State Machine — 有限状态机)<br>通过把行为体的行为细分到几种状态来抽象行为体行为，不同状态的AI逻辑在对应的状态去编写。<br><img src="/img/Unity/FSM.PNG" alt="FSM"></li>
+<li>Decision Trees(决策树 — 用于简单的AI(Decision making))<br>Decision Trees主要用于AI体做决策，通过对已知数据的分析判断，根据Decision Tree抉择出最终的决定（即AI行为）。（项目里我主要使用FSM而非Decision Trees）<br><img src="/img/Unity/AI_DecisionTree.PNG" alt="Decision Tree"></li>
+<li>A<em>(A</em>是 <a href="https://en.wikipedia.org/wiki/Dijkstra&#39;s_algorithm" target="_blank" rel="external">Dijkstra</a>（著名的最短路径算法）基础上通过一个启发因子来预估给定节点到目标节点的距离来使得路径节点搜索是向目标节点方向逼近不至于出现搜索大量无效节点的情况)<br>(<a href="http://tonytang1990.github.io/2015/10/14/Artificial-Inteligence-Study/">AI相关学习</a>)</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Game-Engine/">Game_Engine</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Unity/">Unity</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2016/03/13/Unity-COC-Study/" data-title="Unity_COC_Study | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/10/14/Artificial-Inteligence-Study/"  title="Artificial-Inteligence-Study">
+ <strong>下一篇：</strong><br/> 
+ <span>Artificial-Inteligence-Study
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/03/13/Unity-COC-Study/" data-title="Unity_COC_Study" data-url="http://tonytang1990.github.io/2016/03/13/Unity-COC-Study/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Preface(序言)"><span class="toc-number">1.</span> <span class="toc-text">Preface(序言)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What_is_COC?"><span class="toc-number">1.1.</span> <span class="toc-text">What is COC?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#My_COC_Experience"><span class="toc-number">1.2.</span> <span class="toc-text">My COC Experience</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#COC_Project(Unity)"><span class="toc-number">2.</span> <span class="toc-text">COC Project(Unity)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Preparation"><span class="toc-number">2.1.</span> <span class="toc-text">Preparation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity"><span class="toc-number">2.1.1.</span> <span class="toc-text">Unity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Programming_Language(C#)"><span class="toc-number">2.1.2.</span> <span class="toc-text">Programming Language(C#)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Knowledge"><span class="toc-number">2.1.3.</span> <span class="toc-text">Knowledge</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Is_COC_a_2D_game_or_3D_game?"><span class="toc-number">2.1.3.1.</span> <span class="toc-text">Is COC a 2D game or 3D game?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Isometric_Tileset_Engine"><span class="toc-number">2.1.3.2.</span> <span class="toc-text">Isometric Tileset Engine</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#What_is_Isometric_Tileset_Engine?"><span class="toc-number">2.1.3.2.1.</span> <span class="toc-text">What is Isometric Tileset Engine?</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#What_does_game_with_isometric_projection_look_like?"><span class="toc-number">2.1.3.2.2.</span> <span class="toc-text">What does game with isometric projection look like?</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#How_to_make_game_work_under_isometric_projection?"><span class="toc-number">2.1.3.2.3.</span> <span class="toc-text">How to make game work under isometric projection?</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Searching"><span class="toc-number">2.1.4.</span> <span class="toc-text">Searching</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#How_to_develope_COC_like_game?"><span class="toc-number">2.1.4.1.</span> <span class="toc-text">How to develope COC like game?</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Project"><span class="toc-number">2.2.</span> <span class="toc-text">Project</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Game_Engine"><span class="toc-number">2.2.1.</span> <span class="toc-text">Game Engine</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Programming_Language"><span class="toc-number">2.2.2.</span> <span class="toc-text">Programming Language</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Developer_Tool"><span class="toc-number">2.2.3.</span> <span class="toc-text">Developer Tool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Basic_Setting_with_Scene"><span class="toc-number">2.2.4.</span> <span class="toc-text">Basic Setting with Scene</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AI"><span class="toc-number">2.2.5.</span> <span class="toc-text">AI</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
