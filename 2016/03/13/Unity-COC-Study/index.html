@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/mHCostPercentage1point5withMoreWall.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/WithWallWeightValue.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/WithoutWallWeightValue.PNG">
-<meta property="og:updated_time" content="2016-03-22T13:25:20.553Z">
+<meta property="og:updated_time" content="2016-03-22T13:27:51.501Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity_COC_Study">
 <meta name="twitter:description" content="Preface(序言)What is COC?COC(Clash of Clans) is a freemium mobile MMO strategy video game developed and published by Supercell.The game was released for iOS platforms on 2 August, 2012,[1] and on Google">
@@ -233,10 +233,9 @@
 </li>
 <li><p>Physics<br>最初是打开了所有Layer之间的碰撞检测，后来改为只打开需要碰撞检测的Layer之间的碰撞检测(Edit -&gt; Project Settings -&gt; Physics)</p>
 </li>
-<li><p>Memory<br>避免不必要的内存开销(比如box会在堆上申请额外的内存)<br>项目里用Dictionary而不要用Hashtable，因为Dictionary是基于模板的，在针对ValueType的时候不会触发box和unbox。</p>
+<li><p>Memory<br>避免不必要的内存开销(比如box会在堆上申请额外的内存)<br>项目里用Dictionary而不要用Hashtable，因为Dictionary是基于模板的，在针对ValueType的时候不会触发box和unbox。<br>Unity里foreach会触发box，所以在Unity里尽量避免使用foreach，用while or for代替。</p>
 </li>
 </ol>
-<p>Unity里foreach会触发box，所以在Unity里尽量避免使用foreach，用while or for代替。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
