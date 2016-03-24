@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/mHCostPercentage1point5withMoreWall.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/WithWallWeightValue.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/WithoutWallWeightValue.PNG">
-<meta property="og:updated_time" content="2016-03-24T14:12:02.906Z">
+<meta property="og:updated_time" content="2016-03-24T14:34:09.916Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity_COC_Study">
 <meta name="twitter:description" content="Preface(序言)What is COC?COC(Clash of Clans) is a freemium mobile MMO strategy video game developed and published by Supercell.The game was released for iOS platforms on 2 August, 2012,[1] and on Google">
@@ -246,14 +246,14 @@
 <h3 id="Optimization">Optimization</h3><ol>
 <li><p>Rendering<br>最初是绘制了40*40，1600个带Sprite图案的Tile，后来改为用一张整的Ground和只带Collider的1600个Tile。</p>
 </li>
-<li><p>GC<br>A Star最初写的时候是每一次运算都申请新的内存(每一次都New上百k的内存)，后来改为通用数据保留下来，每次只重新申请需要返回的A Star Path书数据(大概几K)</p>
+<li><p>GC<br>A Star最初写的时候是每一次运算都申请新的内存(每一次都New上百k的内存)，后来改为通用数据保留下来，每次只重新申请需要返回的A Star Path的数据(大概几K)</p>
 </li>
 <li><p>Physics<br>最初是打开了所有Layer之间的碰撞检测，后来改为只打开需要碰撞检测的Layer之间的碰撞检测(Edit -&gt; Project Settings -&gt; Physics)</p>
 </li>
 <li><p>Memory<br>避免不必要的内存开销(比如box会在堆上申请额外的内存)<br>项目里用Dictionary而不要用Hashtable，因为Dictionary是基于模板的，在针对ValueType的时候不会触发box和unbox。<br>Unity里foreach会触发box，所以在Unity里尽量避免使用foreach，用while or for代替。</p>
 </li>
 </ol>
-<h2 id="Sumary">Sumary</h2><p>在这次尝试制作和学习的过程中，学习了解了Unity和C#的一些基本概念。<br>巩固学习了AI寻路方面的知识。<br>对于炸弹人的AI，虽然云风大哥说大概是“寻找附近封闭空间中最近目标”，对于如何实现这一点没有头绪。<br>通过这一次的实践学习，我明白了，好的数据结构设计才是性能的关键所在。我的实现依赖于A Star的实时运算，即使每次运算时1ms级别，但数量一旦达到成百上千，A Star是无法保证帧率的。尽量做到预算和O(1)时间的查找或者运用更好的数据结构解决问题才是提升性能的关键。<br>最后再贴一个没有解决的真机bug（相对严重的，PC上没有），暂时未能解决的。<br><a href="http://answers.unity3d.com/questions/1158635/transformlookat-got-different-behaviour-on-pc-and.html" target="_blank" rel="external">Unity 的提问</a></p>
+<h2 id="Sumary">Sumary</h2><p>在这次尝试制作和学习的过程中，学习了解了Unity和C#的一些基本概念。<br>巩固学习了AI寻路方面的知识。<br>对于炸弹人的AI，虽然云风大哥说大概是“寻找附近封闭空间中最近目标”，对于如何实现这一点没有头绪。(未来AI学习书籍 — 《Artificial Intelligence for Game》 — Ian Millington)<br>通过这一次的实践学习，我明白了，好的数据结构设计才是性能的关键所在。我的实现依赖于A Star的实时运算，即使每次运算时1ms级别，但数量一旦达到成百上千，A Star是无法保证帧率的。尽量做到预算和O(1)时间的查找或者运用更好的数据结构解决问题才是提升性能的关键。<br>最后再贴一个没有解决的真机bug（相对严重的，PC上没有），暂时未能解决的。<br><a href="http://answers.unity3d.com/questions/1158635/transformlookat-got-different-behaviour-on-pc-and.html" target="_blank" rel="external">Unity 的提问</a></p>
 <h2 id="Final_Effect">Final Effect</h2><p><a href="http://blog.sina.com.cn/s/blog_8c7d49f20102xfck.html" target="_blank" rel="external">视频</a></p>
   
 	</div>
