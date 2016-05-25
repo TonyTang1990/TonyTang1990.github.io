@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Coroutine_Study.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ForEachCall.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ForCall.PNG">
-<meta property="og:updated_time" content="2016-04-17T16:28:09.067Z">
+<meta property="og:updated_time" content="2016-04-17T16:39:15.101Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity Study">
 <meta name="twitter:description" content="Unity IntroductionWhat is Unity?Unity is a cross-platform game engine developed by Unity Technologies and used to develop video games for PC, consoles, mobile devices and websites. First released on J">
@@ -223,8 +223,9 @@
 <li><p>IL2CPP is not tied to any one specific garbage collector, instead interacting with a pluggable API(GC导致游戏卡顿的现象也可以通过不同的GC方式来改善)</p>
 </li>
 </ol>
-<p>Note:<br>最重要的一点，IL2CPP支持了arm64机器架构(Mono不支持, Apple新出的设备大多基于arm64)</p>
+<p>Note:<br>IL2CPP支持了arm64机器架构(Mono不支持, Apple新出的设备大多基于arm64)</p>
 <h3 id="AOT_&amp;_JIT">AOT &amp; JIT</h3><p>待续……</p>
+<p>Note:<br>IOS只支持static code, Unlike traditional Mono/.NET, code on the iPhone is statically compiled ahead of time instead of being compiled on demand by a JIT compiler(IOS只支持full aot，不支持JIT).所以有些动态特性没法被Full AOT支持。</p>
 <h2 id="Unity_Using">Unity Using</h2><ol>
 <li><strong>Layout</strong> — 排版，可用于存储我们在Unity里面的面板排版设置，通过制定layout使用特定排版</li>
 <li><strong>Prefab</strong> — 原件，可在场景里重复利用，而且Prefab的改变可以通过点击Inspector界面的Apply影响到所有从该Prefab里创建出的对象</li>

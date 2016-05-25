@@ -20,7 +20,10 @@
 <meta property="og:description" content="时隔将近一年了，再次拾起了还未学完的OpenGL，这一年工作生活学习状态都不好，希望这一次能重新好好的把OpenGL学好，把图形渲染的基础知识掌握好  — 游戏梦
 参考书籍：《OpenGL Programming Guide 8th Edition》 — Addison Wesley《Fundamentals of Computer Graphics (3rd Edition)》 — Peter">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/OpenGL_Render_Pipeline.PNG">
-<meta property="og:updated_time" content="2015-09-20T18:36:11.634Z">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/GLViewer.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/OpenGLWindow.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/UsingOpenGL.PNG">
+<meta property="og:updated_time" content="2016-05-25T10:07:52.906Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenGL_Study">
 <meta name="twitter:description" content="时隔将近一年了，再次拾起了还未学完的OpenGL，这一年工作生活学习状态都不好，希望这一次能重新好好的把OpenGL学好，把图形渲染的基础知识掌握好  — 游戏梦
@@ -100,7 +103,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#OpenGL"><span class="toc-number">1.</span> <span class="toc-text">OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introdction_to_OpenGL"><span class="toc-number">1.1.</span> <span class="toc-text">Introdction to OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What_is_OpenGL?"><span class="toc-number">1.1.1.</span> <span class="toc-text">What is OpenGL?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#History"><span class="toc-number">1.1.2.</span> <span class="toc-text">History</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL_relative_knowledge"><span class="toc-number">1.2.</span> <span class="toc-text">OpenGL relative knowledge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL_learning_journal"><span class="toc-number">1.3.</span> <span class="toc-text">OpenGL learning journal</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#API"><span class="toc-number">1.3.1.</span> <span class="toc-text">API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL_Knowledge:"><span class="toc-number">1.3.2.</span> <span class="toc-text">OpenGL Knowledge:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference_Website:"><span class="toc-number">2.</span> <span class="toc-text">Reference Website:</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#OpenGL"><span class="toc-number">1.</span> <span class="toc-text">OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introdction_to_OpenGL"><span class="toc-number">1.1.</span> <span class="toc-text">Introdction to OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What_is_OpenGL?"><span class="toc-number">1.1.1.</span> <span class="toc-text">What is OpenGL?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#History"><span class="toc-number">1.1.2.</span> <span class="toc-text">History</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Next_Generation_OpenGL"><span class="toc-number">1.1.3.</span> <span class="toc-text">Next Generation OpenGL</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL_relative_knowledge"><span class="toc-number">1.2.</span> <span class="toc-text">OpenGL relative knowledge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL_learning_journal"><span class="toc-number">1.3.</span> <span class="toc-text">OpenGL learning journal</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#API"><span class="toc-number">1.3.1.</span> <span class="toc-text">API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL_Knowledge:"><span class="toc-number">1.3.2.</span> <span class="toc-text">OpenGL Knowledge:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL_Practice"><span class="toc-number">1.4.</span> <span class="toc-text">OpenGL Practice</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Check_supported_OpenGL_version"><span class="toc-number">1.4.1.</span> <span class="toc-text">Check supported OpenGL version</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Know_what_Glut_and_Glew_are,_and_how_to_use_them"><span class="toc-number">1.4.2.</span> <span class="toc-text">Know what Glut and Glew are, and how to use them</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Open_a_Window"><span class="toc-number">1.5.</span> <span class="toc-text">Open a Window</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include"><span class="toc-number">2.</span> <span class="toc-text">include </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#define_FREEGLUT_STATIC"><span class="toc-number">3.</span> <span class="toc-text">define FREEGLUT_STATIC</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include-1"><span class="toc-number">4.</span> <span class="toc-text">include </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include_“IncludeFiles-h”"><span class="toc-number">5.</span> <span class="toc-text">include “IncludeFiles.h”</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Using_OpenGL"><span class="toc-number">5.1.</span> <span class="toc-text">Using OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL_Context"><span class="toc-number">5.1.1.</span> <span class="toc-text">OpenGL Context</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using_Glew"><span class="toc-number">5.1.2.</span> <span class="toc-text">Using Glew</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include-2"><span class="toc-number">6.</span> <span class="toc-text">include </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include-3"><span class="toc-number">7.</span> <span class="toc-text">include </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#define_GLEW_STATIC"><span class="toc-number">8.</span> <span class="toc-text">define GLEW_STATIC</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include-4"><span class="toc-number">9.</span> <span class="toc-text">include </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#define_FREEGLUT_STATIC-1"><span class="toc-number">10.</span> <span class="toc-text">define FREEGLUT_STATIC</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include-5"><span class="toc-number">11.</span> <span class="toc-text">include </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include_“ogldev_math_3d-h”"><span class="toc-number">12.</span> <span class="toc-text">include “ogldev_math_3d.h”</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include_“IncludeFiles-h”-1"><span class="toc-number">13.</span> <span class="toc-text">include “IncludeFiles.h”</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference_Website:"><span class="toc-number">14.</span> <span class="toc-text">Reference Website:</span></a></li></ol>
 		
 		</div>
 		
@@ -113,32 +116,8 @@
 <li>OpenGL is a “C” language library(OpenGL是一个C语言库)</li>
 </ol>
 <h3 id="History">History</h3><p>It was first developed at Silicon Graphics Computer Systems with Version 1,0 released in July of 1994(<a href="https://zh.wikipedia.org/zh/OpenGL" target="_blank" rel="external">wiki</a>)</p>
+<h3 id="Next_Generation_OpenGL">Next Generation OpenGL</h3><p><a href="https://en.wikipedia.org/wiki/Vulkan_%28API%29" target="_blank" rel="external">Vulkan</a></p>
 <h2 id="OpenGL_relative_knowledge">OpenGL relative knowledge</h2><ol>
-<li>Install the appropriate graphic driver which enables usage of the functionality provided.<br> check the graphic drive update.(更新显卡驱动获得最新的OpenGL版本支持)</li>
-<li>Using OpenGL extensions viewer to check which OpenGL version is supported(查看当前硬件所支持的OpenGL版本)<br> <a href="http://www.realtech-vr.com/glview/download.php" target="_blank" rel="external">download website</a></li>
-<li><p>Extention tools  — help us to quick start to learn OpenGL</p>
-<ol>
-<li><p><a href="http://zh.wikipedia.org/wiki/GLUT" target="_blank" rel="external">Glut (OpenGL Utility Toolkit)</a><br> GLUT（英文全写：OpenGL Utility Toolkit）是一个处理OpenGL程式的工具库，负责处理和底层操作系统的呼叫以及I/O，并包括了以下常见的功能：</p>
-<ol>
-<li>定义以及控制视窗</li>
-<li>侦测并处理键盘及鼠标的事件</li>
-<li>以一个函数呼叫绘制某些常用的立体图形，例如长方体、球、以及犹他茶壶（实心或只有骨架，如glutWireTeapot()）</li>
-<li><p>提供了简单选单列的实现</p>
-<p>GLUT是由Mark J. Kilgard在Silicon Graphics工作时所写，此人同时也是OpenGL Programming for the X Window System以及The Cg Tutorial: The Definitive Guide to Programmable Real-Time Graphics两书的作者。</p>
-<p>GLUT的两个主要目的是建立一个跨平台的函式库（事实上GLUT就是跨平台的），以及简化学习OpenGL的条件。透过GLUT编写OpenGL通常只需要增加几行额外GLUT的程式码，而且不需要知道每个不同操作系统处理视窗的API。</p>
-<p>所有的GLUT函数都以glut作为开头，例如glutPostRedisplay()。</p>
-</li>
-</ol>
-</li>
-<li><a href="http://en.wikipedia.org/wiki/OpenGL_Extension_Wrangler_Library" target="_blank" rel="external">Glew ( OpenGL Extension Wrangler Library)</a><br> The OpenGL Extension Wrangler Library (GLEW) is a cross-platform C/C++ library that helps in querying and loading OpenGL extensions. GLEW provides efficient run-time mechanisms for determining which OpenGL extensions are supported on the target platform. All OpenGL extensions are exposed in a single header file, which is machine-generated from the official extension list.(Glew是一个支持跨平台的C/C++库，用于运行时鉴别OpenGL扩展所支持的版本)<br> <a href="http://www.opengl.org/sdk/tools/" target="_blank" rel="external">more info for extention tools</a></li>
-</ol>
-</li>
-<li><p>Using extention tools — Glu &amp; Glew</p>
-<ol>
-<li>add glu.lib &amp; glew.lib into additional dependencies</li>
-<li>add the directory that includes glu.h &amp; glew.h into include dirctory</li>
-</ol>
-</li>
 <li><p>Understand OpenGL render pipeline<br><img src="/img/OpenGL/OpenGL_Render_Pipeline.PNG" alt="OpenGL Render Pipeline"></p>
 <ol>
 <li><p>Vertex Data<br> Sending Data to OpenGL</p>
@@ -193,7 +172,154 @@
     OpenGL 是一种 client-<span class="keyword">server</span> 模式，当你的应用程序调用 OpenGL 函数时， 它将告诉OpenGL client， 然后 client 将渲染命令传送给 <span class="keyword">server</span>. 这里client 和 <span class="keyword">server</span>可能是不同的计算机，或是同一台计算机上的不同进程。一般来说 <span class="keyword">server</span> 是在 GPU上处理的， 而 client 是在 CPU 上处理的，这样分担了 CPU 的负担， 同时高效利用了GPU.<span class="string">"</span></span>
 </code></pre><p>但如果Client和Server没在同一个机器上，我们就需要一种一种网络传输协议框架来实现他们之间的交流：<br><a href="http://blog.chinaunix.net/uid-28959509-id-3762988.html" target="_blank" rel="external">X Window System</a></p>
 <p>但X Window System里的client和server与传统的C/S模式相反，client是负责运算的，server是负责显示的。<br>但OpenGL的client和server的交流原理是与X Window System相似的</p>
-<h1 id="Reference_Website:">Reference Website:</h1><p><a href="http://www.opengl.org/sdk/docs/man4/" target="_blank" rel="external">OpenGL 4 reference page</a><br><a href="http://blog.csdn.net/guolihui112/article/details/5702915" target="_blank" rel="external">client-server 模式</a><br><a href="http://www.glprogramming.com/blue/ch01.html" target="_blank" rel="external">OpenGL Execute Model</a><br><a href="http://blog.chinaunix.net/uid-28959509-id-3762988.html" target="_blank" rel="external">X Window System</a></p>
+<h2 id="OpenGL_Practice">OpenGL Practice</h2><h3 id="Check_supported_OpenGL_version">Check supported OpenGL version</h3><ol>
+<li>Install the appropriate graphic driver which enables usage of the functionality provided.<br> check the graphic drive update.(更新显卡驱动获得最新的OpenGL版本支持)</li>
+<li>Using OpenGL extensions viewer to check which OpenGL version is supported(查看当前硬件所支持的OpenGL版本)<br> <a href="http://www.realtech-vr.com/glview/download.php" target="_blank" rel="external">download website</a></li>
+</ol>
+<p><img src="/img/OpenGL/GLViewer.PNG" alt="OpenGL_Viewer_Info"><br>从上图可以看出我当前的电脑和显卡驱动支持最高4.4，所以在使用学习OpenGL之前一定要确认好自己电脑所能支持的版本，避免后续不必要的问题。</p>
+<p>检查完所支持的OpenGL版本后，下面我们需要介绍两个在学习OpenGL时为了帮助快速学习使用OpenGL的两个重要库（Glut &amp; Glew）</p>
+<h3 id="Know_what_Glut_and_Glew_are,_and_how_to_use_them">Know what Glut and Glew are, and how to use them</h3><ol>
+<li><p><a href="http://zh.wikipedia.org/wiki/GLUT" target="_blank" rel="external">Glut (OpenGL Utility Toolkit)</a><br> GLUT（英文全写：OpenGL Utility Toolkit）是一个处理OpenGL程式的工具库，负责处理和底层操作系统的呼叫以及I/O，并包括了以下常见的功能：</p>
+<ol>
+<li>定义以及控制视窗</li>
+<li>侦测并处理键盘及鼠标的事件</li>
+<li>以一个函数呼叫绘制某些常用的立体图形，例如长方体、球、以及犹他茶壶（实心或只有骨架，如glutWireTeapot()）</li>
+<li><p>提供了简单选单列的实现</p>
+<p>GLUT是由Mark J. Kilgard在Silicon Graphics工作时所写，此人同时也是OpenGL Programming for the X Window System以及The Cg Tutorial: The Definitive Guide to Programmable Real-Time Graphics两书的作者。</p>
+<p>GLUT的两个主要目的是建立一个跨平台的函式库（事实上GLUT就是跨平台的），以及简化学习OpenGL的条件。透过GLUT编写OpenGL通常只需要增加几行额外GLUT的程式码，而且不需要知道每个不同操作系统处理视窗的API。</p>
+<p>所有的GLUT函数都以glut作为开头，例如glutPostRedisplay()。</p>
+</li>
+</ol>
+</li>
+<li><a href="http://en.wikipedia.org/wiki/OpenGL_Extension_Wrangler_Library" target="_blank" rel="external">Glew ( OpenGL Extension Wrangler Library)</a><br> The OpenGL Extension Wrangler Library (GLEW) is a cross-platform C/C++ library that helps in querying and loading OpenGL extensions. GLEW provides efficient run-time mechanisms for determining which OpenGL extensions are supported on the target platform. All OpenGL extensions are exposed in a single header file, which is machine-generated from the official extension list.(Glew是一个支持跨平台的C/C++库，用于运行时鉴别OpenGL扩展所支持的版本)<br> <a href="http://www.opengl.org/sdk/tools/" target="_blank" rel="external">more info for extention tools</a></li>
+</ol>
+<p>How to use Glu &amp; Glew?</p>
+<ol>
+<li>add glu.lib &amp; glew.lib into additional dependencies</li>
+<li>add the directory that includes glu.h &amp; glew.h into include dirctory</li>
+<li>Include GL/freeglut.h &amp; GL/glew.h in source file<br>Note:<br>if you use static link, #define FREEGLUT_STATIC before you include GL/freeglut.h, otherwise it will look for freeglut.lib. #define GLEW_STATIC for Glew.</li>
+</ol>
+<p>include GL/glew.h before GL/freeglut.h, otherwise, it will through “fatal error C1189: #error :  gl.h included before glew.h”</p>
+<p>Note:<br>后续的学习都是基于<a href="http://ogldev.atspace.co.uk/index.html" target="_blank" rel="external">Modern OpenGL Tutorials</a>,后续提到的一些库的源码从该网站下载</p>
+<h2 id="Open_a_Window">Open a Window</h2><p>IncludeFiles.h<br>``CPP</p>
+<h1 id="include">include <iostream></iostream></h1><p>using namespace std;</p>
+<h1 id="define_FREEGLUT_STATIC">define FREEGLUT_STATIC</h1><p>//Glut part</p>
+<h1 id="include-1">include <gl freeglut.h=""></gl></h1><p>``</p>
+<p>OpenGLWindow.h<br>``CPP</p>
+<h1 id="include_“IncludeFiles-h”">include “IncludeFiles.h”</h1><p>static void RenderCallback()<br>{<br>    glClear(GL_COLOR_BUFFER_BIT);<br>    //Swap buffer<br>    glutSwapBuffers();<br>}</p>
+<p>static void InitializeGlutCallback()<br>{<br>    //sets the display callback for the current window<br>    glutDisplayFunc(&amp;RenderCallback);<br>}</p>
+<p>int main(int argc, char** argv)<br>{<br>    //Initializes GLUT<br>    glutInit(&amp;argc, argv);</p>
+<pre><code><span class="comment">//GLUT_DOUBLE -- double buffer rendering</span>
+glutInitDisplayMode<span class="params">(GLUT_DOUBLE | GLUT_RGBA)</span>;
+
+<span class="comment">//Initializa Windows info</span>
+glutInitWindowSize<span class="params">(<span class="number">1024</span>, <span class="number">768</span>)</span>;
+glutInitWindowPosition<span class="params">(<span class="number">100</span>,<span class="number">100</span>)</span>;
+glutCreateWindow<span class="params">(<span class="string">"OpenGLWindow"</span>)</span>;
+
+InitializeGlutCallback<span class="params">()</span>;
+
+<span class="comment">//Clear framebuffer before new draw call</span>
+glClearColor<span class="params">(<span class="number">0.0</span>f,<span class="number">0.0</span>f,<span class="number">0.0</span>f,<span class="number">0.0</span>f)</span>;
+
+<span class="comment">//enable program to enter the window event loop</span>
+glutMainLoop<span class="params">()</span>;
+
+return <span class="number">0</span>;
+</code></pre><p>}<br>``</p>
+<p>final result:<br><img src="/img/OpenGL/OpenGLWindow.PNG" alt="OpenGL_Window"></p>
+<p>从上面可以看出我们主要是通过调用glut来初始化创建windows窗口<br>通过glut里的API我们可以去设置回调，去实现我们在渲染时期需要设置的OpenGL状态<br>上述主要有四个重要的glut API：</p>
+<ol>
+<li>glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA) — GLUT_DOULBE开启了双buffer渲染，这样效率更高，一个buffer用于渲染，一个buffer用于填充下一帧数据</li>
+<li>glutDisplayFunc — 设置glut里的渲染回调</li>
+<li>glutMainLoop — 开启glut里的window event监听</li>
+<li>glutCreateWindow — 设定完相关参数后，通过此方法我们能够创建出我们想要的Windows窗口，同时OpenGL Context也在这时候被创建出来</li>
+</ol>
+<p>Glut还提供了更多的关于Window的功能，后续会学习使用到</p>
+<h2 id="Using_OpenGL">Using OpenGL</h2><p>上一章节只是用到了glut去初始化我们最基本的Window窗口，还没真正大量用到OpenGL里API，在使用OpenGL API之前我们需要通过Glew这个工具去检查当前所支持的OpenGL版本，然后才能正确的调用对应的API。</p>
+<p>使用Glew的准备工作在How to use Glu &amp; Glew?时已经提到，这里不重述了</p>
+<p>因为Glew需要通过context去查找对应所支持的OpenGL版本调用，所以初始化Glew必须在创建OpenGL COntext之后。</p>
+<p>Note:<br>Call glewInit after glutInit</p>
+<p>那这里就不得不先了解一下什么是OpenGL Context了？</p>
+<h3 id="OpenGL_Context">OpenGL Context</h3><p><a href="https://open.gl/context" target="_blank" rel="external">OpenGL context, which is essentially a state machine that stores all data related to the rendering of your application. When your application closes, the OpenGL context is destroyed and everything is cleaned up.</a></p>
+<p>结合wiki<a href="https://www.opengl.org/wiki/Creating_an_OpenGL_Context_%28WGL%29" target="_blank" rel="external">Creating an OpenGL Context (WGL)</a>的介绍，这里我理解的不是很清晰，大概是OpenGL的Context相当于Device Context(DC)相对于Windows的概念一样。Context会设定很多跟渲染相关的状态(比如是否使用双buffer，depthbuffer占多少字节，颜色模式，窗口大小等)</p>
+<p>这里我们只需要知道初始化Glut和调用glutCreateWindow创建窗口后，我们的OpenGL Context就生成了.</p>
+<p>这也就是为什么在初始化glew之前必须先初始化Glut和创建Windows窗口的原因。</p>
+<p>进一步了解参考：<br><a href="https://www.opengl.org/wiki/Creating_an_OpenGL_Context_%28WGL%29" target="_blank" rel="external">Creating an OpenGL Context (WGL)</a></p>
+<h3 id="Using_Glew">Using Glew</h3><p>接下来回到Glew的使用去绘制我们的第一个OpenGL圆点<br>IncludeFiles.h<br>``CPP</p>
+<h1 id="include-2">include <stdio.h></stdio.h></h1><h1 id="include-3">include <iostream></iostream></h1><p>using namespace std;</p>
+<p>//Glew part</p>
+<h1 id="define_GLEW_STATIC">define GLEW_STATIC</h1><h1 id="include-4">include <gl glew.h=""></gl></h1><p>//Glut part</p>
+<h1 id="define_FREEGLUT_STATIC-1">define FREEGLUT_STATIC</h1><h1 id="include-5">include <gl freeglut.h=""></gl></h1><h1 id="include_“ogldev_math_3d-h”">include “ogldev_math_3d.h”</h1><p>``</p>
+<p>UsingOpenGL.h<br>``CPP</p>
+<h1 id="include_“IncludeFiles-h”-1">include “IncludeFiles.h”</h1><p>GLuint VBO;</p>
+<p>static void RenderCallback()<br>{<br>    glClear(GL_COLOR_BUFFER_BIT);</p>
+<pre><code>glEnableVertexAttribArray<span class="params">(<span class="number">0</span>)</span>;
+
+glBindBuffer<span class="params">(GL_ARRAY_BUFFER, VBO)</span>;
+<span class="comment">//Tells the how to interpret the data inside the buffer</span>
+glVertexAttribPointer<span class="params">(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">0</span>, <span class="number">0</span>)</span>;
+
+<span class="comment">//Draw call</span>
+glDrawArrays<span class="params">(GL_POINTS, <span class="number">0</span>,<span class="number">1</span>)</span>;
+
+<span class="comment">//Disable the vertex that is not used anymore after draw call</span>
+glDisableVertexAttribArray<span class="params">(<span class="number">0</span>)</span>;
+
+<span class="comment">//Swap buffer</span>
+glutSwapBuffers<span class="params">()</span>;
+</code></pre><p>}</p>
+<p>static void InitializeGlutCallback()<br>{<br>    //sets the display callback for the current window<br>    glutDisplayFunc(&amp;RenderCallback);<br>}</p>
+<p>static void CreateVertexBuffer()<br>{<br>    Vector3f vertices[1];<br>    vertices[0] = Vector3f(0.0f,0.0f,0.0f);</p>
+<pre><code>/*
+ / Apply a buffer handles
+ / Bind buffer handle to specific buffer target
+ / Filling the data for buffer target
+*/
+glGenBuffers<span class="list">(<span class="number">1</span>, <span class="keyword">&amp;VBO</span>)</span><span class="comment">;</span>
+glBindBuffer<span class="list">(<span class="keyword">GL_ARRAY_BUFFER</span>, VBO)</span><span class="comment">;</span>
+glBufferData<span class="list">(<span class="keyword">GL_ARRAY_BUFFER</span>, sizeof<span class="list">(<span class="keyword">vertices</span>)</span>, vertices, GL_STATIC_DRAW)</span><span class="comment">;</span>
+</code></pre><p>}</p>
+<p>static void InitializeGlutAndWindow(int argc, char<em>* argv, const char</em> windowsname)<br>{<br>    //Initializes GLUT<br>    glutInit(&amp;argc, argv);</p>
+<pre><code><span class="comment">//GLUT_DOUBLE -- double buffer rendering</span>
+glutInitDisplayMode<span class="params">(GLUT_DOUBLE | GLUT_RGBA)</span>;
+
+<span class="comment">//Initializa Windows info</span>
+glutInitWindowSize<span class="params">(<span class="number">1024</span>, <span class="number">768</span>)</span>;
+glutInitWindowPosition<span class="params">(<span class="number">100</span>,<span class="number">100</span>)</span>;
+
+glutCreateWindow<span class="params">(windowsname)</span>;
+
+InitializeGlutCallback<span class="params">()</span>;
+
+<span class="comment">//Initialize glew</span>
+GLenum res = glewInit<span class="params">()</span>;
+<span class="keyword">if</span><span class="params">(res != GLEW_OK)</span>
+{
+    cout&lt;&lt;<span class="string">"Error: "</span>&lt;&lt;glewGetErrorString<span class="params">(res)</span>&lt;&lt;endl;
+}
+
+<span class="comment">//Clear framebuffer before new draw call</span>
+glClearColor<span class="params">(<span class="number">0.0</span>f,<span class="number">0.0</span>f,<span class="number">0.0</span>f,<span class="number">0.0</span>f)</span>;
+
+CreateVertexBuffer<span class="params">()</span>;
+
+<span class="comment">//enable program to enter the window event loop</span>
+glutMainLoop<span class="params">()</span>;
+</code></pre><p>}</p>
+<p>int main(int argc, char** argv)<br>{<br>    InitializeGlutAndWindow(argc, argv, “UsingOpenGL”);<br>    return 0;<br>}<br>``</p>
+<p>从上面可以看出，我们初始化glew只是调用了glewInit()方法，但主要一定要在OpenGL context创建完成后调用(即glutCreateWindow窗口创建之后)</p>
+<p>我们创建并使用vertext buffer主要由5个步骤：</p>
+<ol>
+<li>glGenBuffers() — 创建一个可用的buffer obejct</li>
+<li>glBindBuffer() — 绑定buffer object到指定的target类型，target类型代表我们的buffer object包含什么样的数据用于什么样的用途</li>
+<li>glBufferData() — 填充buffer数据</li>
+<li>glVertexAttribPointer() — 指明如何去解析buffer里的数据，同时这里也指明了如何在shader里面访问这些数据(至于如何编写，编译，链接和使用Shader，后续会讲到。)</li>
+<li>glDrawArrays() — 调用draw去绘制buffer里面的数据</li>
+</ol>
+<p>Note：<br>这里需要注意的一点，要想在Shader里访问buffer里面的attribute数据，我们需要在调用draw之前调用glEnableVertexAttribArray()来激活特定的attribute</p>
+<p>final result:<br><img src="/img/OpenGL/UsingOpenGL.PNG" alt="OpenGL_Window"></p>
+<h1 id="Reference_Website:">Reference Website:</h1><p><a href="http://www.opengl.org/sdk/docs/man4/" target="_blank" rel="external">OpenGL 4 reference page</a><br><a href="http://blog.csdn.net/guolihui112/article/details/5702915" target="_blank" rel="external">client-server 模式</a><br><a href="http://www.glprogramming.com/blue/ch01.html" target="_blank" rel="external">OpenGL Execute Model</a><br><a href="http://blog.chinaunix.net/uid-28959509-id-3762988.html" target="_blank" rel="external">X Window System</a><br><a href="http://ogldev.atspace.co.uk/index.html" target="_blank" rel="external">OpenGL Tutorial</a><br><a href="http://openglbook.com/chapter-1-getting-started.html" target="_blank" rel="external">OpenGL Windows &amp; Context</a><br><a href="https://www.opengl.org/wiki/Creating_an_OpenGL_Context_%28WGL%29" target="_blank" rel="external">Creating an OpenGL Context (WGL)</a><br><a href="https://www.opengl.org/wiki/OpenGL_Context" target="_blank" rel="external">OpenGL Context</a><br><a href="https://open.gl/context" target="_blank" rel="external">Window and OpenGL context</a><br><a href="http://openglbook.com/chapter-1-getting-started.html" target="_blank" rel="external">OpenGLBook.com Getting Started</a></p>
 <p>Note:<br><strong>OpenGL uses right-handed coordinate system (OpenGL使用右手坐标系)</strong></p>
   
 	</div>
@@ -261,7 +387,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#OpenGL"><span class="toc-number">1.</span> <span class="toc-text">OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introdction_to_OpenGL"><span class="toc-number">1.1.</span> <span class="toc-text">Introdction to OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What_is_OpenGL?"><span class="toc-number">1.1.1.</span> <span class="toc-text">What is OpenGL?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#History"><span class="toc-number">1.1.2.</span> <span class="toc-text">History</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL_relative_knowledge"><span class="toc-number">1.2.</span> <span class="toc-text">OpenGL relative knowledge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL_learning_journal"><span class="toc-number">1.3.</span> <span class="toc-text">OpenGL learning journal</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#API"><span class="toc-number">1.3.1.</span> <span class="toc-text">API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL_Knowledge:"><span class="toc-number">1.3.2.</span> <span class="toc-text">OpenGL Knowledge:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference_Website:"><span class="toc-number">2.</span> <span class="toc-text">Reference Website:</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#OpenGL"><span class="toc-number">1.</span> <span class="toc-text">OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introdction_to_OpenGL"><span class="toc-number">1.1.</span> <span class="toc-text">Introdction to OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What_is_OpenGL?"><span class="toc-number">1.1.1.</span> <span class="toc-text">What is OpenGL?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#History"><span class="toc-number">1.1.2.</span> <span class="toc-text">History</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Next_Generation_OpenGL"><span class="toc-number">1.1.3.</span> <span class="toc-text">Next Generation OpenGL</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL_relative_knowledge"><span class="toc-number">1.2.</span> <span class="toc-text">OpenGL relative knowledge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL_learning_journal"><span class="toc-number">1.3.</span> <span class="toc-text">OpenGL learning journal</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#API"><span class="toc-number">1.3.1.</span> <span class="toc-text">API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL_Knowledge:"><span class="toc-number">1.3.2.</span> <span class="toc-text">OpenGL Knowledge:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL_Practice"><span class="toc-number">1.4.</span> <span class="toc-text">OpenGL Practice</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Check_supported_OpenGL_version"><span class="toc-number">1.4.1.</span> <span class="toc-text">Check supported OpenGL version</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Know_what_Glut_and_Glew_are,_and_how_to_use_them"><span class="toc-number">1.4.2.</span> <span class="toc-text">Know what Glut and Glew are, and how to use them</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Open_a_Window"><span class="toc-number">1.5.</span> <span class="toc-text">Open a Window</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include"><span class="toc-number">2.</span> <span class="toc-text">include </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#define_FREEGLUT_STATIC"><span class="toc-number">3.</span> <span class="toc-text">define FREEGLUT_STATIC</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include-1"><span class="toc-number">4.</span> <span class="toc-text">include </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include_“IncludeFiles-h”"><span class="toc-number">5.</span> <span class="toc-text">include “IncludeFiles.h”</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Using_OpenGL"><span class="toc-number">5.1.</span> <span class="toc-text">Using OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL_Context"><span class="toc-number">5.1.1.</span> <span class="toc-text">OpenGL Context</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using_Glew"><span class="toc-number">5.1.2.</span> <span class="toc-text">Using Glew</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include-2"><span class="toc-number">6.</span> <span class="toc-text">include </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include-3"><span class="toc-number">7.</span> <span class="toc-text">include </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#define_GLEW_STATIC"><span class="toc-number">8.</span> <span class="toc-text">define GLEW_STATIC</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include-4"><span class="toc-number">9.</span> <span class="toc-text">include </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#define_FREEGLUT_STATIC-1"><span class="toc-number">10.</span> <span class="toc-text">define FREEGLUT_STATIC</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include-5"><span class="toc-number">11.</span> <span class="toc-text">include </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include_“ogldev_math_3d-h”"><span class="toc-number">12.</span> <span class="toc-text">include “ogldev_math_3d.h”</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include_“IncludeFiles-h”-1"><span class="toc-number">13.</span> <span class="toc-text">include “IncludeFiles.h”</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference_Website:"><span class="toc-number">14.</span> <span class="toc-text">Reference Website:</span></a></li></ol>
  
   </div>
 
