@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/GLViewer.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/OpenGLWindow.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/UsingOpenGL.PNG">
-<meta property="og:updated_time" content="2016-05-25T10:16:04.848Z">
+<meta property="og:updated_time" content="2016-05-25T10:18:25.114Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenGL_Study">
 <meta name="twitter:description" content="时隔将近一年了，再次拾起了还未学完的OpenGL，这一年工作生活学习状态都不好，希望这一次能重新好好的把OpenGL学好，把图形渲染的基础知识掌握好  — 游戏梦
@@ -201,11 +201,11 @@
 </ol>
 <p>include GL/glew.h before GL/freeglut.h, otherwise, it will through “fatal error C1189: #error :  gl.h included before glew.h”</p>
 <p>Note:<br>后续的学习都是基于<a href="http://ogldev.atspace.co.uk/index.html" target="_blank" rel="external">Modern OpenGL Tutorials</a>,后续提到的一些库的源码从该网站下载</p>
-<h3 id="Open_a_Window">Open a Window</h3><p>IncludeFiles.h<br>``CPP</p>
+<h3 id="Open_a_Window">Open a Window</h3><p>IncludeFiles.h<br>``C</p>
 <h1 id="include">include <iostream></iostream></h1><p>using namespace std;</p>
 <h1 id="define_FREEGLUT_STATIC">define FREEGLUT_STATIC</h1><p>//Glut part</p>
 <h1 id="include-1">include <gl freeglut.h=""></gl></h1><p>``</p>
-<p>OpenGLWindow.h<br>``CPP</p>
+<p>OpenGLWindow.h<br>``C</p>
 <h1 id="include_“IncludeFiles-h”">include “IncludeFiles.h”</h1><p>static void RenderCallback()<br>{<br>    glClear(GL_COLOR_BUFFER_BIT);<br>    //Swap buffer<br>    glutSwapBuffers();<br>}</p>
 <p>static void InitializeGlutCallback()<br>{<br>    //sets the display callback for the current window<br>    glutDisplayFunc(&amp;RenderCallback);<br>}</p>
 <p>int main(int argc, char** argv)<br>{<br>    //Initializes GLUT<br>    glutInit(&amp;argc, argv);</p>
