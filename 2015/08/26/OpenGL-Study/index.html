@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/GLViewer.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/OpenGLWindow.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/UsingOpenGL.PNG">
-<meta property="og:updated_time" content="2016-05-25T10:11:05.898Z">
+<meta property="og:updated_time" content="2016-05-25T10:16:04.848Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenGL_Study">
 <meta name="twitter:description" content="时隔将近一年了，再次拾起了还未学完的OpenGL，这一年工作生活学习状态都不好，希望这一次能重新好好的把OpenGL学好，把图形渲染的基础知识掌握好  — 游戏梦
@@ -246,12 +246,12 @@ return <span class="number">0</span>;
 <p>这里我们只需要知道初始化Glut和调用glutCreateWindow创建窗口后，我们的OpenGL Context就生成了.</p>
 <p>这也就是为什么在初始化glew之前必须先初始化Glut和创建Windows窗口的原因。</p>
 <p>进一步了解参考：<br><a href="https://www.opengl.org/wiki/Creating_an_OpenGL_Context_%28WGL%29" target="_blank" rel="external">Creating an OpenGL Context (WGL)</a></p>
-<h3 id="Using_Glew">Using Glew</h3><p>接下来回到Glew的使用去绘制我们的第一个OpenGL圆点<br>IncludeFiles.h<br>``CPP</p>
+<h3 id="Using_Glew">Using Glew</h3><p>接下来回到Glew的使用去绘制我们的第一个OpenGL圆点<br>IncludeFiles.h<br>``C</p>
 <h1 id="include-2">include <stdio.h></stdio.h></h1><h1 id="include-3">include <iostream></iostream></h1><p>using namespace std;</p>
 <p>//Glew part</p>
 <h1 id="define_GLEW_STATIC">define GLEW_STATIC</h1><h1 id="include-4">include <gl glew.h=""></gl></h1><p>//Glut part</p>
 <h1 id="define_FREEGLUT_STATIC-1">define FREEGLUT_STATIC</h1><h1 id="include-5">include <gl freeglut.h=""></gl></h1><h1 id="include_“ogldev_math_3d-h”">include “ogldev_math_3d.h”</h1><p>``</p>
-<p>UsingOpenGL.h<br>``CPP</p>
+<p>UsingOpenGL.h<br>``C</p>
 <h1 id="include_“IncludeFiles-h”-1">include “IncludeFiles.h”</h1><p>GLuint VBO;</p>
 <p>static void RenderCallback()<br>{<br>    glClear(GL_COLOR_BUFFER_BIT);</p>
 <pre><code>glEnableVertexAttribArray<span class="params">(<span class="number">0</span>)</span>;
