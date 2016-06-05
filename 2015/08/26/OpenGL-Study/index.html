@@ -33,13 +33,13 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/PerspectiveProject3.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/PerspectiveProject4.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/MouseAndKeyboardStudy.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TextureConcepts.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TextureConcepts.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TextureCoordinate.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/BasicTexture.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/Texture2.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/Texture.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/MultipleTexture.PNG">
-<meta property="og:updated_time" content="2016-06-05T11:22:32.873Z">
+<meta property="og:updated_time" content="2016-06-05T11:30:03.297Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenGL_Study">
 <meta name="twitter:description" content="时隔将近一年了，再次拾起了还未学完的OpenGL，这一年工作生活学习状态都不好，希望这一次能重新好好的把OpenGL学好，把图形渲染的基础知识掌握好  — 游戏梦
@@ -364,7 +364,7 @@
 <li><p>Sampler uniform – corresponding to handle of texture unit(用于在Shader里访问texture unit，texture unit和texture object绑定，也就间接的访问了texture的原始数据)</p>
 </li>
 </ol>
-<p>Relationship between texture object, texture unit, sampler object and sampler uniform<br><img src="/img/OpenGL/TextureConcepts.PNG" alt="RelationshipBetweenThem"></p>
+<p>Relationship between texture object, texture unit, sampler object and sampler uniform<br><img src="/img/OpenGL/TextureConcepts.png" alt="RelationshipBetweenThem"></p>
 <p>因为OpenGL没有提供从图片加载texture的API，所以这里我们需要使用第三方库来完成这项工作，这里教程上使用的是ImageMagick。<br>ImageMagick主要是为了从多种格式的资源文件中读取原始数据，在我们指定glTexImage2D()的原始数据的时候提供所在内存地址。</p>
 <p>Steps to use texture mapping:</p>
 <ol>
