@@ -58,7 +58,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/Open3mod.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/gDEBuggerCapture.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/gDEBuggerShaderInfo.PNG">
-<meta property="og:updated_time" content="2016-06-29T19:29:54.212Z">
+<meta property="og:updated_time" content="2016-06-29T19:34:09.434Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenGL_Study">
 <meta name="twitter:description" content="时隔将近一年了，再次拾起了还未学完的OpenGL，这一年工作生活学习状态都不好，希望这一次能重新好好的把OpenGL学好，把图形渲染的基础知识掌握好  — 游戏梦
@@ -508,12 +508,11 @@
 </ol>
 <p>因为原本x，y，z在NDC space下是[-1,1]，为了映射到[0,1]，我们只需要按上述方法即可。<br>这样一来就得到NDC space下的纹理坐标信息和深度z信息，然后通过查询depth texture获取光源角度的深度信息和现有顶点在光源角度的深度信息做比较得出是否处于阴影的结论。</p>
 <p>这里实现相当复杂就没有自己再去写一遍，具体参考Tutorial 24的源代码。<br>最终效果：<br><img src="/img/OpenGL/ShadowMapFinal.PNG" alt="ShadowMap"></p>
-<h3 id="Skybox">Skybox</h3><p><a href="https://en.wikipedia.org/wiki/Skybox_(video_games" target="_blank" rel="external">A skybox is a method of creating backgrounds to make a computer and video games level look bigger than it really is. When a skybox is used, the level is enclosed in a cuboid. </a>)</p>
-<p><img src="/img/OpenGL/SkyboxTexture.PNG" alt="SkyboxTexture"></p>
+<h3 id="Skybox">Skybox</h3><p>A skybox is a method of creating backgrounds to make a computer and video games level look bigger than it really is. When a skybox is used, the level is enclosed in a cuboid. (From wiki)<br><img src="/img/OpenGL/SkyboxTexture.PNG" alt="SkyboxTexture"></p>
 <p>在OpenGL中实现Skybox是通过Cubemap。</p>
 <p>In order to sample from the cubemap we will use a 3D texture coordinate instead of the 2D coordinate</p>
 <p>Skydome —  A skybox which uses a sphere is sometimes called a skydome.</p>
-<p>主要的几个点如下：</p>
+<p>实现skybox主要有下列几点需要注意：</p>
 <ol>
 <li><p>生成Cubemap texture,分别指定6个对应skybox的六个面类型的纹理数据</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> GLenum types[<span class="number">6</span>] = &#123;  GL_TEXTURE_CUBE_MAP_POSITIVE_X,</span><br><span class="line">                                  GL_TEXTURE_CUBE_MAP_NEGATIVE_X,</span><br><span class="line">                                  GL_TEXTURE_CUBE_MAP_POSITIVE_Y,</span><br><span class="line">                                  GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,</span><br><span class="line">                                  GL_TEXTURE_CUBE_MAP_POSITIVE_Z,</span><br><span class="line">                                  GL_TEXTURE_CUBE_MAP_NEGATIVE_Z &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> CubemapTexture::Load()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//生成cubemap texture</span></span><br><span class="line">    glGenTextures(<span class="number">1</span>, &amp;m_textureObj);</span><br><span class="line">    glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureObj);</span><br><span class="line"></span><br><span class="line">    ......</span><br><span class="line"></span><br><span class="line">    <span class="comment">//指定对应skybox六个面类型的纹理数据</span></span><br><span class="line">    glTexImage2D(types[i], <span class="number">0</span>, GL_RGB, pImage-&gt;columns(), pImage-&gt;rows(), <span class="number">0</span>, GL_RGBA, GL_UNSIGNED_BYTE, blob.data());</span><br><span class="line"></span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
