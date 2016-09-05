@@ -63,7 +63,7 @@ Apple Accou">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SnakeGame1024768.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake960640.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake800800.PNG">
-<meta property="og:updated_time" content="2016-08-31T17:29:29.445Z">
+<meta property="og:updated_time" content="2016-09-05T03:13:58.979Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Classical 2D Game(Unity & NGUI)">
 <meta name="twitter:description" content="Introduction这一章节主要是为了实战学习Unity和NGUI的使用而写的。
@@ -265,7 +265,7 @@ Apple Accou">
 <h3 id="贪吃蛇">贪吃蛇</h3><h4 id="游戏说明-1">游戏说明</h4><p>这个游戏我想没什么好说的了，直接移步<a href="https://zh.wikipedia.org/wiki/%E8%B4%AA%E9%A3%9F%E8%9B%87" target="_blank" rel="external">贪吃蛇维基百科</a></p>
 <h4 id="游戏要点思考">游戏要点思考</h4><ol>
 <li>2D or 3D？<br>标准的传统2D游戏，所以这里可以用纯2D来做(纯NGUI)，不打算做成3D。</li>
-<li>游戏素材大小<br>依然以1024<em>768(4:3)为标准，因为之前在<a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#NGUI_2-7%E5%B1%8F%E5%B9%95%E8%87%AA%E9%80%82%E5%BA%94">NGUI 2.7屏幕自适应</a>已经提到了，把UIRoot的Scaling Style设置为Fixed Size，然后通过动态修改ManuaHeight已经实现了基于高度的自适应，所以我们在创建地图的时候只需考虑把Grid创建在基于1024</em>768的分辨率对应位置即可(当然这样会出现在不同分辨率机器上自适应后铺不满屏幕，但这样做我们可以无需考虑机器分辨率)。准备设计宽40<em>30(4:3)个单元格，单元格以20</em>20像素为基准，这样一来游戏地图占据800*600像素，高度腾出来的像素768-600=168用于控制UI面板显示。<br>这个游戏实现没什么特别的，这里就只展示一下不同分辨率的显示情况。<br>1024-768：<br><img src="/img/Unity/SnakeGame1024768.PNG" alt="SnakeGame1024768"><br>960-640：<br><img src="/img/Unity/Snake960640.PNG" alt="Snake960640"><br>800-800：<br><img src="/img/Unity/Snake800800.PNG" alt="Snake800800"></li>
+<li>游戏素材大小<br>依然以1024<em>768(4:3)为标准，因为之前在<a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#NGUI_2-7%E5%B1%8F%E5%B9%95%E8%87%AA%E9%80%82%E5%BA%94">NGUI 2.7屏幕自适应</a>已经提到了，把UIRoot的Scaling Style设置为Fixed Size，然后通过动态修改ManuaHeight已经实现了基于高度的自适应，所以我们在创建地图的时候只需考虑把Grid创建在基于1024</em>768的分辨率对应位置即可(当然这样会出现在不同分辨率机器上自适应后铺不满屏幕，但这样做我们可以无需考虑机器分辨率)。准备设计宽40<em>30(4:3)个单元格，单元格以20乘以20像素为基准，这样一来游戏地图占据800</em>600像素，高度腾出来的像素768-600=168用于控制UI面板显示。<br>这个游戏实现没什么特别的，这里就只展示一下不同分辨率的显示情况。<br>1024-768：<br><img src="/img/Unity/SnakeGame1024768.PNG" alt="SnakeGame1024768"><br>960-640：<br><img src="/img/Unity/Snake960640.PNG" alt="Snake960640"><br>800-800：<br><img src="/img/Unity/Snake800800.PNG" alt="Snake800800"></li>
 </ol>
 <p>待续……</p>
 <h2 id="问题记录">问题记录</h2><ol>
