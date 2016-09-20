@@ -65,7 +65,7 @@ Apple">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SnakeGame1024768.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake960640.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake800800.PNG">
-<meta property="og:updated_time" content="2016-09-16T17:50:42.979Z">
+<meta property="og:updated_time" content="2016-09-20T07:50:27.768Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Classical 2D Game(Unity & NGUI)">
 <meta name="twitter:description" content="Introduction这一章节主要是为了实战学习Unity和NGUI的使用而写的。
@@ -277,23 +277,25 @@ Apple">
 </li>
 <li><p>UI选择<br>这里为了熟悉UGUI，进而和NGUI相比较，这里采用UGUI来学习。<br><a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#UGUI">UGUI相关知识学习</a></p>
 </li>
-<li><p>UI自适应<br>UI Render Space — Screen Space(Camera)(设置Main Camera作为渲染Camera)<br>UI Scale Mode — Scale With Screen Size(设置MatchWidthOrHeight = 0.5确保按宽度和高度变化同时变化去适应)</p>
+<li><p>UI自适应<br>UI Render Space — Screen Space(Camera)(设置Main Camera作为渲染Camera)<br>UI Scale Mode — Scale With Screen Size(设置MatchWidthOrHeight = 0.5确保按宽度和高度变化同时变化去适应)<br>Background UI Scale Mode — Scale with Screen Size(设置MatchWidthOrHeight = 1确保游戏背景是高度铺满，Anchor设置在中心保持1:1比例)</p>
 </li>
-<li><p>Pixel Perfect 2D?素材选择？地图大小？地图在不同分辨率上的显示？<br>为了实现Pixel Perfect 2D，我们需要确保1 Unit所代表的像素 = PPU。<br>我以1024 <em> 768为基准，Orthographic Size设置为12，PPU为32。(这样一来屏幕高度被分为24 Unit，每个Unit代表768 / 2 / 12 = 32 pixel)<br>2D素材采用32 </em> 32的Tile(每一个Tile占一个Unit)<br>背景采用1024 <em> 768大小(纯背景，用于自适应铺满屏幕)<br>UI Sprite采用32 </em> 32。<br>因为地图是基于Tile的，所以在不同分辨率上，地图的大小(Tile数量)应该是一致的，这里地图大小默认设定为24 <em> 24个Tile(基于1024 </em> 768，确保高度铺满)。<br>要想Tile在不同分辨率机器上都Pixel Perfect显示，动态修改Orthographic Size会导致Size Change(屏幕高度的Unit数量也会改变)，以PPU = 32且Tile像素为32 <em> 32去显示24个Tile是没法恰好铺满屏幕高度的。所以这里采用保持Orthographic Size不变12，制作多套PPU去适应屏幕分辨率的方案(通过Assetbundle动态替换)。(出于学习目的这里只针对1024 </em> 768(PPU = 32)和1920 * 1080(PPU = 1080 / 2 / 12 = 45)来做两套PPU实验)<br>Note:<br>这方案会导致做很多套不同PPU的资源去适应不同屏幕分辨率。</p>
+<li><p>Pixel Perfect 2D?素材选择？地图大小？地图在不同分辨率上的显示？<br>为了实现Pixel Perfect 2D，我们需要确保1 Unit所代表的像素 = PPU。<br>我以1024 <em> 768为基准，Orthographic Size设置为12，PPU为32。(这样一来屏幕高度被分为24 Unit，每个Unit代表768 / 2 / 12 = 32 pixel)<br>2D素材采用32 </em> 32的Tile(每一个Tile占一个Unit)<br>背景采用736 <em> 736大小(纯地图背景，用于自适应高度和宽度占23Unit，两侧多出来的用于UI显示)<br>UI Sprite采用64 </em> 64。<br>因为地图是基于Tile的，所以在不同分辨率上，地图的大小(Tile数量)应该是一致的，这里地图大小默认设定为23 <em> 23个Tile(736 </em> 736)(基于1024 <em> 768，高度顶部留一个Unit)。<br>要想Tile在不同分辨率机器上都Pixel Perfect显示，动态修改Orthographic Size会导致Size Change(屏幕高度的Unit数量也会改变)，以PPU = 32且Tile像素为32 </em> 32去显示24个Tile是没法恰好铺满屏幕高度的。所以这里采用保持Orthographic Size不变12，制作多套PPU去适应屏幕分辨率的方案(通过Assetbundle动态替换)。(出于学习目的这里只针对1024 <em> 768(PPU = 32)和1920 </em> 1080(PPU = 1080 / 2 / 12 = 45)来做两套PPU实验)<br>Note:<br>这方案会导致做很多套不同PPU的资源去适应不同屏幕分辨率。</p>
 </li>
-<li><p>物理？<br>不使用物理控制(Transform移动)，使用Trigger做触发。</p>
+<li><p>物理？<br>不使用物理控制(Transform移动)，使用Trigger做触发，纯2D游戏，采用Physical2D和Rigibody2D。</p>
 </li>
-<li><p>控制方式<br>因为之前的控制面板是基于NGUI制作的，所以这里不重新制作也不采用旧的而使用纯Touch的方式控制(点击发射子弹，一直按着往某个方向移动)。</p>
+<li><p>控制方式<br>因为之前的控制面板是基于NGUI制作的，所以这里就混合UGUI和NGUI来作为控制面板。</p>
 </li>
 <li><p>敌人AI<br>思考ing</p>
 </li>
-<li><p>地图编辑器制作<br>做一个地图编辑模式，提供多种Tile模型选择。</p>
+<li><p>地图编辑器制作<br>做一个地图编辑模式，提供多种Tile模型选择，通过序列化存储起来。</p>
 </li>
 <li><p>多人网络游戏(学习多人网络游戏开发)<br>支持多人联网进行(通过Unity High Level API去开发)</p>
 </li>
-<li><p>地图存储方式<br>地图信息很简单，主要存储地图里每一个Tile的类型信息，这里采用序列化的方式。(因为我们保持了Orthographic Size为12，通过动态切换不同PPU的Assets去保证Pixel Perfect显示，所以Screen高度一直都是24个Unit，同时设置了PPU = Screen.height / 2 / 12，Tile素材PPU <em> PPU，所以1个Tile对应1个Unit。地图存储的信息是24 </em> 24个Tile相关的信息。</p>
+<li><p>地图存储方式<br>地图信息很简单，主要存储地图里每一个Tile的类型信息，这里采用序列化的方式。(因为我们保持了Orthographic Size为12，通过动态切换不同PPU的Assets去保证Pixel Perfect显示，所以Screen高度一直都是24个Unit，同时设置了PPU = Screen.height / 2 / 12，Tile素材PPU <em> PPU，所以1个Tile对应1个Unit。地图存储的信息是23 </em> 23个Tile相关的信息(高度顶部留一个Unit用作UI显示)。</p>
 </li>
 <li><p>地图数据加密<br>待思考</p>
+</li>
+<li><p>游戏地图数据结构？如何实现Tile可以被多个方向打击切割成小块效果？<br>思考ing</p>
 </li>
 </ol>
 <p>待续……</p>
