@@ -65,7 +65,7 @@ Apple">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SnakeGame1024768.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake960640.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake800800.PNG">
-<meta property="og:updated_time" content="2016-09-27T08:12:49.262Z">
+<meta property="og:updated_time" content="2016-09-27T08:14:22.461Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Classical 2D Game(Unity & NGUI)">
 <meta name="twitter:description" content="Introduction这一章节主要是为了实战学习Unity和NGUI的使用而写的。
@@ -288,36 +288,36 @@ Apple">
 <li><p>控制方式<br>因为之前的控制面板是基于NGUI制作的，所以这里就混合UGUI和NGUI来作为控制面板。</p>
 </li>
 <li><p>游戏特性<br> 坦克特性：</p>
-<ol>
-<li>占据一个Tile，1 Unit(1 Tile被细分成16 * 16的网格)</li>
-<li>Tank以0.5个Unit的单位的移动，只要前方0.5 Unit单位内有不可通行物，就不能前进</li>
-<li>多个Tank不能占据同一位置</li>
-<li>Tank只能上下左右移动</li>
-<li>坦克只能发射出有限数量的子弹，在子弹数量达到上限时需要等待子弹消失。</li>
-<li>不同的坦克的移动速度和子弹数量上限和子弹速度不一样<br>子弹特性：</li>
-<li>子弹拥有不同等级的威力，根据威力不同可消灭的小块数量和小块类型不同</li>
-<li>子弹不能击中友方队员(友方队员子弹也不行)</li>
-<li>子弹只有上下左右四个固定的方向，一旦射出子弹，方向不会改变<br>Tile特性：</li>
-<li>Tile可以被攻击切割成多个小块(Normal Tile这里假设可切割成16)，<br>每个小块具备完整的特性(占据单元格阻碍前进，能被攻击)。</li>
-<li>小块Tile被子弹击中会根据子弹伤害和周围Tile小块情况来决定是消灭单独一个小块还是2个或多个。</li>
-<li>不同类型的Tile有不同的特性(能否通过，能否破坏等)</li>
-</ol>
-</li>
+<pre><code><span class="bullet">1. </span>占据一个Tile，1 Unit(1 Tile被细分成16 * 16的网格)
+<span class="bullet">2. </span>Tank以0.5个Unit的单位的移动，只要前方0.5 Unit单位内有不可通行物，就不能前进
+<span class="bullet">3. </span>多个Tank不能占据同一位置
+<span class="bullet">4. </span>Tank只能上下左右移动
+<span class="bullet">5. </span>坦克只能发射出有限数量的子弹，在子弹数量达到上限时需要等待子弹消失。
+<span class="bullet">6. </span>不同的坦克的移动速度和子弹数量上限和子弹速度不一样
+</code></pre><p> 子弹特性：</p>
+<pre><code><span class="bullet">1. </span>子弹拥有不同等级的威力，根据威力不同可消灭的小块数量和小块类型不同
+<span class="bullet">2. </span>子弹不能击中友方队员(友方队员子弹也不行)
+<span class="bullet">3. </span>子弹只有上下左右四个固定的方向，一旦射出子弹，方向不会改变
+</code></pre><p> Tile特性：</p>
+<pre><code><span class="bullet">1. </span>Tile可以被攻击切割成多个小块(Normal Tile这里假设可切割成16)，
+每个小块具备完整的特性(占据单元格阻碍前进，能被攻击)。
+<span class="bullet">2. </span>小块Tile被子弹击中会根据子弹伤害和周围Tile小块情况来决定是消灭单独一个小块还是2个或多个。
+<span class="bullet">3. </span>不同类型的Tile有不同的特性(能否通过，能否破坏等)
+</code></pre></li>
 <li><p>敌人AI<br> 敌军坦克特性：</p>
-<ol>
-<li>移动方向只有上下左右</li>
-<li>单次移动单位0.5 Unit</li>
-<li>撞到障碍物(不可通行的地方(不包括友军坦克))后重新选择方向</li>
-<li>方向选择(避开之前行进方向随机选取一个方向)</li>
-<li>多个坦克相遇的时候不立刻重新选择方向而是开始累计坦克无法移动的时间<br>(直到坦克达到坦克停止时间限制时重新选择，这里不同速度的坦克所忍耐的停止时间不一样，这样一来就可以实现，速度快的追着速度慢的跑)</li>
-<li>子弹随机隔一段时间发射，但不会发射超过子弹数量上限。</li>
-</ol>
-</li>
+<pre><code><span class="bullet">1. </span>移动方向只有上下左右
+<span class="bullet">2. </span>单次移动单位0.5 Unit
+<span class="bullet">3. </span>撞到障碍物(不可通行的地方(不包括友军坦克))后重新选择方向
+<span class="bullet">4. </span>方向选择(避开之前行进方向随机选取一个方向)
+<span class="bullet">5. </span>多个坦克相遇的时候不立刻重新选择方向而是开始累计坦克无法移动的时间
+(直到坦克达到坦克停止时间限制时重新选择，这里不同速度的坦克所忍耐的停止时间不一样，这样一来就可以实现，速度快的追着速度慢的跑)
+<span class="bullet">6. </span>子弹随机隔一段时间发射，但不会发射超过子弹数量上限。
+</code></pre></li>
 <li><p>地图编辑器制作<br>做一个地图编辑模式，提供多种Tile模型选择，通过序列化存储起来。(可用于制作关卡)</p>
 </li>
 <li><p>多人网络游戏(学习多人网络游戏开发)<br>支持多人联网进行(通过Unity High Level API去开发)</p>
 </li>
-<li><p>地图存储方式<br>地图信息很简单，主要存储地图里每一个Tile的类型信息(同时存储地图名称，坦克出生地点信息)，这里采用序列化的方式。(因为我们保持了Orthographic Size为6，通过动态切换不同PPU的Assets去保证Pixel Perfect显示，所以Screen高度一直都是12个Unit，同时设置了PPU = Screen.height / 2 / 6，Tile素材PPU <em> PPU，所以1个Tile对应1个Unit。地图存储的信息是11 </em> 1(704 * 704)个Tile相关的信息(高度顶部留3个Unit用作UI显示)。</p>
+<li><p>地图存储方式<br>地图信息很简单，主要存储地图里每一个Tile的类型信息(同时存储地图名称，坦克出生地点信息)，这里采用序列化的方式。(因为我们保持了Orthographic Size为6，通过动态切换不同PPU的Assets去保证Pixel Perfect显示，所以Screen高度一直都是12个Unit，同时设置了PPU = Screen.height / 2 / 6，Tile素材PPU <em> PPU，所以1个Tile对应1个Unit。地图存储的信息是11 </em> 11(704 * 704)个Tile相关的信息(高度顶部留3个Unit用作UI显示)。</p>
 </li>
 <li><p>地图数据加密<br>待思考</p>
 </li>
