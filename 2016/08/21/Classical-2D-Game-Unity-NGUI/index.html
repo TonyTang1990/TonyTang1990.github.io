@@ -65,7 +65,7 @@ Apple">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SnakeGame1024768.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake960640.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake800800.PNG">
-<meta property="og:updated_time" content="2016-09-27T08:01:50.009Z">
+<meta property="og:updated_time" content="2016-09-27T08:04:30.443Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Classical 2D Game(Unity & NGUI)">
 <meta name="twitter:description" content="Introduction这一章节主要是为了实战学习Unity和NGUI的使用而写的。
@@ -287,18 +287,17 @@ Apple">
 </li>
 <li><p>控制方式<br>因为之前的控制面板是基于NGUI制作的，所以这里就混合UGUI和NGUI来作为控制面板。</p>
 </li>
-<li><p>游戏特性<br>坦克特性：</p>
-<ol>
-<li>占据一个Tile，1 Unit(1 Tile被细分成16 * 16的网格)</li>
-<li>Tank以0.5个Unit的单位的移动，只要前方0.5 Unit单位内有不可通行物，就不能前进</li>
-<li>多个Tank不能占据同一位置</li>
-<li>Tank只能上下左右移动</li>
-<li>坦克只能发射出有限数量的子弹，在子弹数量达到上限时需要等待子弹消失。</li>
-<li>不同的坦克的移动速度和子弹数量上限和子弹速度不一样</li>
-</ol>
+<li><p>游戏特性</p>
 </li>
 </ol>
-<p>子弹特性：</p>
+<p>坦克特性：</p>
+<pre><code><span class="bullet">1. </span>占据一个Tile，1 Unit(1 Tile被细分成16 * 16的网格)
+<span class="bullet">2. </span>Tank以0.5个Unit的单位的移动，只要前方0.5 Unit单位内有不可通行物，就不能前进
+<span class="bullet">3. </span>多个Tank不能占据同一位置
+<span class="bullet">4. </span>Tank只能上下左右移动
+<span class="bullet">5. </span>坦克只能发射出有限数量的子弹，在子弹数量达到上限时需要等待子弹消失。
+<span class="bullet">6. </span>不同的坦克的移动速度和子弹数量上限和子弹速度不一样
+</code></pre><p>子弹特性：</p>
 <pre><code><span class="bullet">1. </span>子弹拥有不同等级的威力，根据威力不同可消灭的小块数量和小块类型不同
 <span class="bullet">2. </span>子弹不能击中友方队员(友方队员子弹也不行)
 <span class="bullet">3. </span>子弹只有上下左右四个固定的方向，一旦射出子弹，方向不会改变
@@ -307,16 +306,16 @@ Apple">
 <span class="bullet">2. </span>小块Tile被子弹击中会根据子弹伤害和周围Tile小块情况来决定是消灭单独一个小块还是2个或多个。
 <span class="bullet">3. </span>不同类型的Tile有不同的特性(能否通过，能否破坏等)
 </code></pre><ol>
-<li><p>敌人AI<br>敌军坦克特性：</p>
-<ol>
-<li>移动方向只有上下左右</li>
-<li>单次移动单位0.5 Unit</li>
-<li>撞到障碍物(不可通行的地方(不包括友军坦克))后重新选择方向</li>
-<li>方向选择(避开之前行进方向随机选取一个方向)</li>
-<li>多个坦克相遇的时候不立刻重新选择方向而是开始累计坦克无法移动的时间(直到坦克达到坦克停止时间限制时重新选择，这里不同速度的坦克所忍耐的停止时间不一样，这样一来就可以实现，速度快的追着速度慢的跑)</li>
-<li>子弹随机隔一段时间发射，但不会发射超过子弹数量上限。</li>
+<li>敌人AI</li>
 </ol>
-</li>
+<p>敌军坦克特性：</p>
+<pre><code><span class="bullet">1. </span>移动方向只有上下左右
+<span class="bullet">2. </span>单次移动单位0.5 Unit
+<span class="bullet">3. </span>撞到障碍物(不可通行的地方(不包括友军坦克))后重新选择方向
+<span class="bullet">4. </span>方向选择(避开之前行进方向随机选取一个方向)
+<span class="bullet">5. </span>多个坦克相遇的时候不立刻重新选择方向而是开始累计坦克无法移动的时间(直到坦克达到坦克停止时间限制时重新选择，这里不同速度的坦克所忍耐的停止时间不一样，这样一来就可以实现，速度快的追着速度慢的跑)
+<span class="bullet">6. </span>子弹随机隔一段时间发射，但不会发射超过子弹数量上限。
+</code></pre><ol>
 <li><p>地图编辑器制作<br>做一个地图编辑模式，提供多种Tile模型选择，通过序列化存储起来。(可用于制作关卡)</p>
 </li>
 <li><p>多人网络游戏(学习多人网络游戏开发)<br>支持多人联网进行(通过Unity High Level API去开发)</p>
@@ -325,16 +324,15 @@ Apple">
 </li>
 <li><p>地图数据加密<br>待思考</p>
 </li>
-<li><p>游戏地图数据结构？如何实现Tile可以被多个方向打击切割成小块效果？<br>参考前面游戏特性：<br>地图存储数据信息(MapInfo)：</p>
-<ol>
-<li>地图被细分成多个Tile(MapSize.Row * MapSize.Column大小)，存储所有Tile相关信息(用于构建地图)</li>
-<li>记录玩家Tank出生点和敌军坦克出生点信息。(用于获取Spawn玩家坦克和敌军坦克的位置信息)</li>
-<li>记录是否包含基地和基地位置信息。(用于确保只有一个基地)</li>
-<li>存储地图名字(用于地图存储)</li>
-</ol>
+<li><p>游戏地图数据结构？如何实现Tile可以被多个方向打击切割成小块效果？<br>参考前面游戏特性：</p>
 </li>
 </ol>
-<p>游戏地图数据(TankMap)：</p>
+<p>地图存储数据信息(MapInfo)：</p>
+<pre><code><span class="number">1</span>. 地图被细分成多个Tile<span class="params">(MapSize.Row * MapSize.Column大小)</span>，存储所有Tile相关信息<span class="params">(用于构建地图)</span>
+<span class="number">2</span>. 记录玩家Tank出生点和敌军坦克出生点信息。<span class="params">(用于获取Spawn玩家坦克和敌军坦克的位置信息)</span>
+<span class="number">3</span>. 记录是否包含基地和基地位置信息。<span class="params">(用于确保只有一个基地)</span>
+<span class="number">4</span>. 存储地图名字<span class="params">(用于地图存储)</span>
+</code></pre><p>游戏地图数据(TankMap)：</p>
 <pre><code><span class="bullet">1. </span>记录所有细分后是否被占用信息和对应占用的类型(用于Tank移动判断。占用类型好比Tile or Tank，通过占用类型知道该单元格是被Tile占用还是Tank占用)
 地图应该被细分成所有 Tile数量 <span class="bullet">* Tile最小切割数的网格(这里假设Tile最多被切割成16，那么地图应该被细分到MapSize.Row *</span> MapSize.Column * 16的BitArray)
 <span class="bullet">2. </span>每个细分的Tile记录自身包含细分后的索引信息(e.g. 最大细分16，Iron Tile细分为2 <span class="bullet">* 2 = 4，那么每个细分的Iro Tile所记录的细分后的索引信息数量为16 / 4 = 4个(不能被破坏的Tile细分为1 *</span> 1 = 1)) 
