@@ -65,7 +65,7 @@ Apple">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SnakeGame1024768.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake960640.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake800800.PNG">
-<meta property="og:updated_time" content="2016-09-27T08:14:22.461Z">
+<meta property="og:updated_time" content="2016-09-27T08:15:43.764Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Classical 2D Game(Unity & NGUI)">
 <meta name="twitter:description" content="Introduction这一章节主要是为了实战学习Unity和NGUI的使用而写的。
@@ -321,10 +321,7 @@ Apple">
 </li>
 <li><p>地图数据加密<br>待思考</p>
 </li>
-<li><p>游戏地图数据结构？如何实现Tile可以被多个方向打击切割成小块效果？<br>参考前面游戏特性：</p>
-</li>
-</ol>
-<p>地图存储数据信息(MapInfo)：</p>
+<li><p>游戏地图数据结构？如何实现Tile可以被多个方向打击切割成小块效果？<br>参考前面游戏特性：<br>地图存储数据信息(MapInfo)：</p>
 <pre><code><span class="number">1</span>. 地图被细分成多个Tile<span class="params">(MapSize.Row * MapSize.Column大小)</span>，存储所有Tile相关信息<span class="params">(用于构建地图)</span>
 <span class="number">2</span>. 记录玩家Tank出生点和敌军坦克出生点信息。<span class="params">(用于获取Spawn玩家坦克和敌军坦克的位置信息)</span>
 <span class="number">3</span>. 记录是否包含基地和基地位置信息。<span class="params">(用于确保只有一个基地)</span>
@@ -339,7 +336,9 @@ Apple">
 这样一来每个小的Tile被破坏后支持快速改写该小块占有地图网格的占用信息)。 
 <span class="bullet">3. </span>坦克存储自身所占用的所有indexs作为移动索引信息
 <span class="bullet">3. </span>包含前面地图存储的信息(用于构建游戏地图数据)
-</code></pre><p>Note：<br>不同类型的Tile的细分程度不同(16 <em> 16 or 4 </em> 4 or 2 <em> 2 or 1 </em> 1)，但游戏地图数据细分以细分程度最大的为准。(细分程度不同会影响Tile在子弹撞击时的效果判定)</p>
+</code></pre></li>
+</ol>
+<p>Note：<br>不同类型的Tile的细分程度不同(16 <em> 16 or 4 </em> 4 or 2 <em> 2 or 1 </em> 1)，但游戏地图数据细分以细分程度最大的为准。(细分程度不同会影响Tile在子弹撞击时的效果判定)</p>
 <p>待续……</p>
 <h2 id="问题记录">问题记录</h2><ol>
 <li>编译打包XCode项目出问题<br>Failed to Copy File / Directory from ‘**\Unity\Editor\Data\Tools/MapFileParser/MapFileParser’ to ‘Temp/StagingArea\Trampoline\MapFileParser’.<br>这是Unity 5.1版本的一个bug。<br><a href="http://answers.unity3d.com/questions/990499/error-building-player-ioexception-failed-to-copy.html" target="_blank" rel="external">解决方案</a><br>修改.\Unity\Editor\Data\Tools\MapFileParser\MapFileParser.exe到MapFileParser然后打包XCode项目，然后在XCode项目里把MapFileParser改回MapFileParser.exe<br>或者使用新版本Unity</li>
