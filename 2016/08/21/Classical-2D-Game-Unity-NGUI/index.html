@@ -65,7 +65,7 @@ Apple">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SnakeGame1024768.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake960640.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake800800.PNG">
-<meta property="og:updated_time" content="2016-09-27T07:59:57.667Z">
+<meta property="og:updated_time" content="2016-09-27T08:01:50.009Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Classical 2D Game(Unity & NGUI)">
 <meta name="twitter:description" content="Introduction这一章节主要是为了实战学习Unity和NGUI的使用而写的。
@@ -279,7 +279,7 @@ Apple">
 </li>
 <li><p>UI自适应<br>UI Render Space — Screen Space(Camera)(设置Main Camera作为渲染Camera)<br>UI Scale Mode — Scale With Screen Size(设置MatchWidthOrHeight = 0.5确保按宽度和高度变化同时变化去适应)<br>Background UI Scale Mode — Scale with Screen Size(设置MatchWidthOrHeight = 1确保游戏背景是高度铺满，Anchor设置在中心保持1:1比例)</p>
 </li>
-<li><p>Pixel Perfect 2D?素材选择？地图大小？地图在不同分辨率上的显示？<br>为了实现Pixel Perfect 2D，我们需要确保1 Unit所代表的像素 = PPU。<br>我以1024  <em>  768为基准，Orthographic Size设置为6，PPU为64。(这样一来屏幕高度被分为12 Unit，每个Unit代表768 / 2 / 6 = 64 pixel)<br>2D素材采用64  </em>  64的Tile(每一个Tile占一个Unit)<br>游戏区域为704  <em>  704大小(占 11 </em> 11 个Unit，四周多出来的用于UI显示)<br>UI Sprite采用64  <em>  64。<br>因为地图是基于Tile的，所以在不同分辨率上，地图的大小(Tile数量)应该是一致的，这里地图大小默认设定为11  </em>  11个Tile(704  <em>  704)(基于1024  </em>  768，高度顶部留1个Unit)。<br>要想Tile在不同分辨率机器上都Pixel Perfect显示，动态修改Orthographic Size会导致Size Change(屏幕高度的Unit数量也会改变)，以PPU = 64且Tile像素为64 <em> 64去显示12个Tile是没法恰好铺满屏幕高度的。所以这里采用保持Orthographic Size不变保持6，制作多套PPU去适应屏幕分辨率的方案(通过Assetbundle动态替换)。(出于学习目的这里只针对1024  </em>  768(PPU = 64)和1920  *  1080(PPU = 1080 / 2 / 6 = 90)来做两套PPU实验)<br>Note:<br>这方案会导致做很多套不同PPU的资源去适应不同屏幕分辨率。</p>
+<li><p>Pixel Perfect 2D?素材选择？地图大小？地图在不同分辨率上的显示？<br>为了实现Pixel Perfect 2D，我们需要确保1 Unit所代表的像素 = PPU。<br>我以1024 X 768为基准，Orthographic Size设置为6，PPU为64。(这样一来屏幕高度被分为12 Unit，每个Unit代表768 / 2 / 6 = 64 pixel)<br>2D素材采用64 X 64的Tile(每一个Tile占一个Unit)<br>游戏区域为704 X 704大小(占11 X 11个Unit，四周多出来的用于UI显示)<br>UI Sprite采用64 X 64。<br>因为地图是基于Tile的，所以在不同分辨率上，地图的大小(Tile数量)应该是一致的，这里地图大小默认设定为11 X 11个Tile(704 X 704)(基于1024 X 768，高度顶部留1个Unit)。<br>要想Tile在不同分辨率机器上都Pixel Perfect显示，动态修改Orthographic Size会导致Size Change(屏幕高度的Unit数量也会改变)，以PPU = 64且Tile像素为64 * 64去显示12个Tile是没法恰好铺满屏幕高度的。所以这里采用保持Orthographic Size不变保持6，制作多套PPU去适应屏幕分辨率的方案(通过Assetbundle动态替换)。(出于学习目的这里只针对1024 X 768(PPU = 64)和1920 X 1080(PPU = 1080 / 2 / 6 = 90)来做两套PPU实验)<br>Note:<br>这方案会导致做很多套不同PPU的资源去适应不同屏幕分辨率。</p>
 </li>
 <li><p>Sprite Setting?<br>Sprite Type — Sprite(2D and UI) 因为用于纯2D游戏<br>Sprite Mode — Single or Multiple 根据我们的图片是否需要切割成单独的Sprite而定<br>Packing Tag — 用于Unity Sprite Packer打包Spite图集<br>Pixels Per Unit — 64(Pixel Perfect显示，PPU = Screen.height / Orthographic Size(6) / 2)。<br>Generate Mip Maps — No(因为是纯2D游戏，摄像机与Sprite距离保持不变(当然其实Camera设置成Screen Space(Camera)而言是可以变的，但这里我们设置Orthographic投影，所以距离对于显示大小没有意义，并且我们还保证了Pixel Perfet显示，所以就游戏里的Sprite而言Mipmap是没有必要的。(前面的前提是使用多套Asset资源并保证Pixel Perfect显示))<br>后面三个参数学习参考<a href="http://blog.csdn.net/candycat1992/article/details/22794773" target="_blank" rel="external">调整画质（贴图）质量</a><br>Filter Mode — Bilinear(Filter Mode用于纹理图片这里的Sprite拉伸后如何插值计算(抗锯齿计算)，Bilinear会进行双线性插值，效果和运算开销在Point，Biinear，Trilinear里最能够接受。)<br>Max Size — 2048(导入纹理的最大尺寸，默认2048，设置过小会导致大图片被压缩，质量变得很差(当然也要考虑内存的使用降低了))<br>Format — Compressed(纹理压缩格式，大小和质量的权衡。采用默认的Compressed即可。)</p>
 </li>
