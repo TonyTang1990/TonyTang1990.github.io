@@ -65,7 +65,7 @@ Apple">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SnakeGame1024768.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake960640.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake800800.PNG">
-<meta property="og:updated_time" content="2016-09-27T08:04:30.443Z">
+<meta property="og:updated_time" content="2016-09-27T08:06:20.833Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Classical 2D Game(Unity & NGUI)">
 <meta name="twitter:description" content="Introduction这一章节主要是为了实战学习Unity和NGUI的使用而写的。
@@ -302,7 +302,8 @@ Apple">
 <span class="bullet">2. </span>子弹不能击中友方队员(友方队员子弹也不行)
 <span class="bullet">3. </span>子弹只有上下左右四个固定的方向，一旦射出子弹，方向不会改变
 </code></pre><p>Tile特性：</p>
-<pre><code><span class="bullet">1. </span>Tile可以被攻击切割成多个小块(Normal Tile这里假设可切割成16)，每个小块具备完整的特性(占据单元格阻碍前进，能被攻击)。
+<pre><code><span class="bullet">1. </span>Tile可以被攻击切割成多个小块(Normal Tile这里假设可切割成16)，
+每个小块具备完整的特性(占据单元格阻碍前进，能被攻击)。
 <span class="bullet">2. </span>小块Tile被子弹击中会根据子弹伤害和周围Tile小块情况来决定是消灭单独一个小块还是2个或多个。
 <span class="bullet">3. </span>不同类型的Tile有不同的特性(能否通过，能否破坏等)
 </code></pre><ol>
@@ -333,9 +334,12 @@ Apple">
 <span class="number">3</span>. 记录是否包含基地和基地位置信息。<span class="params">(用于确保只有一个基地)</span>
 <span class="number">4</span>. 存储地图名字<span class="params">(用于地图存储)</span>
 </code></pre><p>游戏地图数据(TankMap)：</p>
-<pre><code><span class="bullet">1. </span>记录所有细分后是否被占用信息和对应占用的类型(用于Tank移动判断。占用类型好比Tile or Tank，通过占用类型知道该单元格是被Tile占用还是Tank占用)
-地图应该被细分成所有 Tile数量 <span class="bullet">* Tile最小切割数的网格(这里假设Tile最多被切割成16，那么地图应该被细分到MapSize.Row *</span> MapSize.Column * 16的BitArray)
-<span class="bullet">2. </span>每个细分的Tile记录自身包含细分后的索引信息(e.g. 最大细分16，Iron Tile细分为2 <span class="bullet">* 2 = 4，那么每个细分的Iro Tile所记录的细分后的索引信息数量为16 / 4 = 4个(不能被破坏的Tile细分为1 *</span> 1 = 1)) 
+<pre><code><span class="bullet">1. </span>记录所有细分后是否被占用信息和对应占用的类型(用于Tank移动判断)
+占用类型好比Tile or Tank，通过占用类型知道该单元格是被Tile占用还是Tank占用。
+地图应该被细分成所有 Tile数量 * Tile最小切割数的网格
+(这里假设Tile最多被切割成16，那么地图应该被细分到MapSize.Row <span class="bullet">* MapSize.Column *</span> 16的BitArray)
+<span class="bullet">2. </span>每个细分的Tile记录自身包含细分后的索引信息
+(e.g. 最大细分16，Iron Tile细分为2 <span class="bullet">* 2 = 4，那么每个细分的Iro Tile所记录的细分后的索引信息数量为16 / 4 = 4个(不能被破坏的Tile细分为1 *</span> 1 = 1)) 
 这样一来每个小的Tile被破坏后支持快速改写该小块占有地图网格的占用信息)。 
 <span class="bullet">3. </span>坦克存储自身所占用的所有indexs作为移动索引信息
 <span class="bullet">3. </span>包含前面地图存储的信息(用于构建游戏地图数据)
