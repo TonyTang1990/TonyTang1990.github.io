@@ -1,0 +1,741 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Unity Resource Manager | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="参考文章和网站：Asset WorkflowBehind the ScenesA guide to AssetBundles and ResourcesAssets, Objects and serializationThe Resources folderAssetBundle fundamentals AssetBundle usage patternsUnity5 如何做资源管理和增量更新U">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Resource Manager">
+<meta property="og:url" content="http://tonytang1990.github.io/2016/10/13/Unity-Resource-Manager/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="参考文章和网站：Asset WorkflowBehind the ScenesA guide to AssetBundles and ResourcesAssets, Objects and serializationThe Resources folderAssetBundle fundamentals AssetBundle usage patternsUnity5 如何做资源管理和增量更新U">
+<meta property="og:image" content="http://www.xuanyusong.com/archives/2373">
+<meta property="og:image" content="http://www.xuanyusong.com/archives/2405">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetsDirectory.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ImportProjectilePNG.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ProjectilePNGImportSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UnityAssetInternalFormatInLibraryFolder.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetImportResult.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CreateCubePrefabs.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CreateCubeMaterials.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/BulletInspector.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UnityAssembly.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ResourceManagerStudyScene.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ResourceManagerStudyIOSResource.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/globalgamemanagerassets.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/sharedassets0assets.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/resourcesassets.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SeneHierarchy.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ExportPackageWithoutDepedency.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ExportPackage.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetPackageCompare.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleDependencies.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleUIBackgrnd1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/BackgroundImagePrefabAssetBundle.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIBackgroundPrefabAssetBundle.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleFolder.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/BackgroundImageAssetBundleLoad.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleUnload.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleAfterUnloadFalse.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleReload.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleLoadObjectAgain.PNG">
+<meta property="og:updated_time" content="2016-10-17T10:56:19.230Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity Resource Manager">
+<meta name="twitter:description" content="参考文章和网站：Asset WorkflowBehind the ScenesA guide to AssetBundles and ResourcesAssets, Objects and serializationThe Resources folderAssetBundle fundamentals AssetBundle usage patternsUnity5 如何做资源管理和增量更新U">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">有时候不是习惯了一个人，而是在没有认可自己之前选择了一个人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/10/13/Unity-Resource-Manager/" title="Unity Resource Manager" itemprop="url">Unity Resource Manager</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2016-10-13T08:21:47.000Z" itemprop="datePublished"> 發表於 2016-10-13</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#资源管理"><span class="toc-number">2.</span> <span class="toc-text">资源管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#资源形式"><span class="toc-number">2.1.</span> <span class="toc-text">资源形式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Asset"><span class="toc-number">2.1.1.</span> <span class="toc-text">Asset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object"><span class="toc-number">2.1.2.</span> <span class="toc-text">Object</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#资源来源"><span class="toc-number">2.2.</span> <span class="toc-text">资源来源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity自动打包"><span class="toc-number">2.2.1.</span> <span class="toc-text">Unity自动打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Resources"><span class="toc-number">2.2.2.</span> <span class="toc-text">Resources</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AssetBundle"><span class="toc-number">2.2.3.</span> <span class="toc-text">AssetBundle</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Resource_LifeCycle"><span class="toc-number">2.3.</span> <span class="toc-text">Resource LifeCycle</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>参考文章和网站：<br><a href="https://docs.unity3d.com/Manual/AssetWorkflow.html" target="_blank" rel="external">Asset Workflow</a><br><a href="https://docs.unity3d.com/Manual/BehindtheScenes.html" target="_blank" rel="external">Behind the Scenes</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/guide-assetbundles-and-resources?playlist=30089" target="_blank" rel="external">A guide to AssetBundles and Resources</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assets-objects-and-serialization" target="_blank" rel="external">Assets, Objects and serialization</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/resources-folder?playlist=30089" target="_blank" rel="external">The Resources folder</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-fundamentals?playlist=30089" target="_blank" rel="external">AssetBundle fundamentals </a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-usage-patterns?playlist=30089" target="_blank" rel="external">AssetBundle usage patterns</a><br><a href="http://blog.csdn.net/ring0hx/article/details/46376709" target="_blank" rel="external">Unity5 如何做资源管理和增量更新</a><br><a href="http://www.xuanyusong.com/archives/3618" target="_blank" rel="external">Unity3D研究院之提取游戏资源的三个工具支持Unity5</a><br><img src="http://www.xuanyusong.com/archives/2373" alt="Unity3D研究院之Assetbundle的原理（六十一）"><br><img src="http://www.xuanyusong.com/archives/2405" alt="Unity3D研究院之Assetbundle的实战（六十三）"></p>
+<h1 id="前言">前言</h1><p>在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。<br>本章节主要是对于Unity在资源管理方面的进一步学习了解。</p>
+<p>这里简单提及正确的利用Unity资源管理的好处：</p>
+<ol>
+<li>高效的管理资源</li>
+<li>合理的分配内存(避免不必要的内存开销 — 比如同一个Asset被打包到多个AssetBundle里，然后分别被游戏加载)</li>
+<li>做到增量更新(无需下载更新整个游戏程序，通过Patch的形式动态更新部分游戏内容)</li>
+<li>以最少及最合理的方式减少程序大小(避免所有资源一次性打到游戏程序里)</li>
+<li>帮助快速开发(动态和静态的资源方式合理利用，高效开发)</li>
+</ol>
+<h1 id="资源管理">资源管理</h1><h2 id="资源形式">资源形式</h2><h3 id="Asset">Asset</h3><p>在Unity里所有我们使用的资源都是以Asset的形式存在的。<br>我们要想在Unity里使用特定的资源文件(比如.ogg .png .fbx等(Unity支持的资源格式))，我们需要放到Assets目录下。<br>见下图：<br><img src="/img/Unity/AssetsDirectory.PNG" alt="AssetsDirectory"></p>
+<p>在进一步了解我们导入Assets的时候，会发生些什么之前，先让我们来学习了解一些相关的概念。<br>首先，什么是Asset？<br>Asset — “An Asset is a file on disk, stored in the Assets folder of a Unity Project. e.g. texture files, material files and FBX files……”(Asset代表的所有存储在Assets目录下的文件资源)</p>
+<p>Unity如何区分每一个Asset？<br>Unity通过赋予每一个Asset一个Unique ID来区分每一个Asset。<br>每一个放在Asset目录下的资源都会对应生成一个同样名字的.meta文件，前面提到的Unique ID就被存储在这里。<br>下面我已导入一张Projectile.png并设置导入设置为Sprite等相关信息为例。<br><img src="/img/Unity/ImportProjectilePNG.PNG" alt="ImportProjectilePNG"><br><img src="/img/Unity/ProjectilePNGImportSetting.PNG" alt="ProjectilePNGImportSetting"><br>Projectile.png.meta<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">fileFormatVersion: <span class="number">2</span></span><br><span class="line">guid: <span class="number">8764571</span>b0416f90488390d0114c49afd</span><br><span class="line">timeCreated: <span class="number">1476349445</span></span><br><span class="line">licenseType: Free</span><br><span class="line">TextureImporter:</span><br><span class="line">  fileIDToRecycleName: &#123;&#125;</span><br><span class="line">  ......</span><br></pre></td></tr></table></figure></p>
+<p>可以看到对应生成了一个叫Projectile.png.meta的文件，里面存储了guid(前面提到的那个Unique ID)和资源导入配置的数据。<br>这样一来无论我们如何移动Asset(在Assets目录下)，我们都不会影响其他资源对该Asset的引用(因为Unity通过Unique ID去标识该Asset)<br>Note：<br>所以我们一旦在Unity外部移动或改名Asset文件，一定要把对应的Asset.meta文件名也对应移动和改名。(在Unity窗口修改可以不必管这些，因为Unity会对应生成新的.meta文件)<br>如果script脚本的.meta文件丢失，那么所有挂载了该script的GameObject都会显示unassaigned script(因为找不到该Script Asset的ID标识)</p>
+<p>知道了Asset在Unity是如何区分的，那么接下来的问题是，Unity是直接使用这些Asset资源文件作为游戏资源吗？<br>答案是否定的，所有导入的Asset都会被Unity转化成特定的格式在游戏中使用，被存储在Library目录下，而原有资源保持不变，依然放在原始位置。(这样一来，我们可以通过修改原始文件，快速的在Unity中看到变化。比如.png作为UI，我们在Photoshop里修改源文件，直接就能在Unity看到变化)<br><img src="/img/Unity/UnityAssetInternalFormatInLibraryFolder.PNG" alt="UnityAssetInternalFormatInLibraryFolder"><br>Note:<br>因为Library目录是通过动态转换Asset资源成Unity识别的数据，所以我们不会去主动修改该目录文件，同时也不会对该目录做版本控制，我们放心的删除该目录(但会导致所有Asset重新导入声称一次Unity识别的数据)</p>
+<p>知道了Unity如何利用原始文件生成最终的可利用的资源数据，那么是不是所有的Asset都是通过直接放置在Assets目录下得到的了？<br>答案是否定的，Unity支持从一些资源文件里细分出多个Assets。(比如.png文件可以作为Multiple Sprite导入到Unity里，然后通过Sprite Editor细分出多个Sprite，然后每一个Sprite都作为Asset存在于Unity里)</p>
+<p>知道了Asset在Unity里的概念以及存储方式，那么Unity支持哪些常见的Asset格式了？</p>
+<ol>
+<li>Image File(e.g. .bmp, .tif, .tga, .jpg, .psd……)</li>
+<li>3D Model Files(.fbx)</li>
+<li>Meshes &amp; Animations</li>
+<li>Audio files</li>
+<li>Other Asset Types</li>
+</ol>
+<p>遇到Unity不支持的格式，Unity需要通过import process导入资源文件(e.g. PNG, JPG)<br>“The import process converts source Assets into formats suitable for the target platform selected in the Unity Editor.”(Import process主要是为了将不支持的资源格式转换到Unity对应平台设置的对应格式)</p>
+<p>Unity不可能每一次都去重新Import这些资源，那么Unity是如何将import结果存储在哪里了？<br>为了避免重复的import导入，” the results of Asset importing are cached in the Library folder.”(Asset导入的结果被缓存在了library folder — 我想这也就是为什么每次删掉Library文件会导致一些asset重新导入的原因)</p>
+<p>“the results of the import process are stored in a folder named for the first two digits of the Asset’s File GUID. This folder is stored inside the Library/metadata/ folder. The individual Objects are serialized into a single binary file that has a name identical to the Asset’s File GUID.”(可以看出import的结果存储在Library/metadata/文件夹下，并且把File GUID的前两位bit作为文件夹名，以File GUID作为文件名字)<br>以前面Projectile.png导入为例：<br>因为Projectile.png.meta的File ID为8764571b0416f90488390d0114c49afd<br>所以导入的结果就存储在Library\metadata\87\文件夹下，文件名为8764571b0416f90488390d0114c49afd(由于是二进制文件，无法查看具体内容)<br><img src="/img/Unity/AssetImportResult.PNG" alt="AssetImportResult"><br>Note:<br>Non-Native asset type需要通过asset importer去导入Unity。(自动调用，也可以通过AssetImporter API去调用)</p>
+<p>明白了Asset在Unity里的概念和存储方式，那么我们如何去访问，使用，创建Asset了？<br>在了解如何访问Asset之前，我们需要明确的是，我们访问的目的是什么。<br>如果只是在编辑器里单纯访问Asset去创建和删除一些Asset，那么通过AssetDatabase就可以实现。</p>
+<p>先来看看什么是AssetDatabase：<br>“AssetDatabase is an API which allows you to access the assets contained in your project. Among other things, it provides methods to find and load assets and also to create, delete and modify them. The Unity Editor uses the AssetDatabase internally to keep track of asset files and maintain the linkage between assets and objects that reference them.”(可以看出，AssetDatabase在Unity对于Asset管理上起了关键性作用，AssetDatabase里存储了Asset相关的很多信息(e.g. Asset Depedency, Asset Path…..))</p>
+<p>所以如果我们想通过代码去实现一些关于Assset的操作，我们应该使用AssetDatabase而非Filesystem(Filesystem只是单纯的删除或移动文件，但对于Asset在Unity里的导入设置，Asset访问等还是得通过AssetDatabase的接口来操作)</p>
+<p>这里我以之前导入的Projectile.png为纹理图片，通过程序创建3个颜色分别是Red，Blue，Green的Material和分别使用其作为材质的3个Cude Prefab为例：<br>先看一下效果图：<br><img src="/img/Unity/CreateCubePrefabs.PNG" alt="CreateCubePrefabs"><br><img src="/img/Unity/CreateCubeMaterials.PNG" alt="CreateCubeMaterials"><br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="preprocessor">#<span class="keyword">if</span> UNITY_EDITOR</span></span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CreateCubeAssetMenu</span> &#123;</span><br><span class="line">    <span class="comment">//Only works under editor</span></span><br><span class="line">    <span class="preprocessor">#<span class="keyword">if</span> UNITY_EDITOR</span></span><br><span class="line">    [MenuItem(<span class="string">"AssetDatabase/CreateCubeAsset"</span>)]</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CreateCudeAsset</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="comment">//load Projectile.png as texture</span></span><br><span class="line">        Texture2D texture = (Texture2D)AssetDatabase.LoadAssetAtPath(<span class="string">"Assets/Sprites/Projectile.png"</span>, <span class="keyword">typeof</span>(Texture2D));</span><br><span class="line"></span><br><span class="line">        <span class="comment">//create material and cube assets</span></span><br><span class="line">        <span class="keyword">string</span> matassetname;</span><br><span class="line">        <span class="keyword">string</span> cubename;</span><br><span class="line">        <span class="keyword">string</span> materialfoldername = <span class="string">"Materials"</span>;</span><br><span class="line">        <span class="keyword">string</span> cubefoldername = <span class="string">"Prefabs"</span>;</span><br><span class="line"></span><br><span class="line">        Color[] colors = &#123; Color.red, Color.blue, Color.green &#125;;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; colors.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//Create material first</span></span><br><span class="line">            Material mat = <span class="keyword">new</span> Material(Shader.Find(<span class="string">"Transparent/Diffuse"</span>));</span><br><span class="line">            mat.mainTexture = texture;</span><br><span class="line">            mat.color = colors[i];</span><br><span class="line"></span><br><span class="line">            <span class="comment">//create a new cube and set material for it</span></span><br><span class="line">            GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);</span><br><span class="line">            MeshRenderer meshrender = obj.GetComponent&lt;MeshRenderer&gt;();</span><br><span class="line">            <span class="keyword">if</span> (meshrender != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                meshrender.material = mat;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                Debug.Log(<span class="string">"meshrender == null!"</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            matassetname = mat.color.ToString() + <span class="string">"Material.mat"</span>;</span><br><span class="line">            cubename = mat.color.ToString() + <span class="string">"Cube.prefab"</span>;</span><br><span class="line">            <span class="comment">//create material folder</span></span><br><span class="line">            <span class="comment">//check whether material folder exist</span></span><br><span class="line">            <span class="keyword">if</span> (AssetDatabase.Contains(mat))</span><br><span class="line">            &#123;</span><br><span class="line">                Debug.Log(<span class="string">"Material asset has been created before!"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (!AssetDatabase.IsValidFolder(<span class="string">"Assets/"</span> + materialfoldername))</span><br><span class="line">                &#123;</span><br><span class="line">                    AssetDatabase.CreateFolder(<span class="string">"Assets"</span>, materialfoldername);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (!AssetDatabase.IsValidFolder(<span class="string">"Assets/"</span> + cubefoldername))</span><br><span class="line">                &#123;</span><br><span class="line">                    AssetDatabase.CreateFolder(<span class="string">"Assets"</span>, cubefoldername);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                AssetDatabase.CreateAsset(mat, <span class="string">"Assets/"</span> + materialfoldername + <span class="string">"/"</span> + matassetname);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//Create prefab</span></span><br><span class="line">                PrefabUtility.CreatePrefab(<span class="string">"Assets/"</span> + cubefoldername + <span class="string">"/"</span> + cubename, obj);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//inform  the change</span></span><br><span class="line">                AssetDatabase.Refresh();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="preprocessor">#<span class="keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Note:<br>AssetDatabase只适用于Editor，所以上述代码都用#if UNITY_EDITOR #endif判断了平台</p>
+<p>那么是不是只需存储Asset的.meta文件(Unique ID和导入配置信息)就足够了了？<br>答案是否定的，要知道在Unity里很多Asset不只是单纯的通过原始资源导入构成的(比如一个Bullet Prefab，上面会挂载Component，我们不仅要去标识Asset，我们还需要对Asset上的各个Component进行标识和相关信息存储，这样Unity才能正确的找到特定Asset上的特定Component的)。</p>
+<h3 id="Object">Object</h3><p>在进一步了解还应该存储哪些信息之前，这里需要理解一个概念UnityEngine.Object<br>那么Object在Unity里是什么概念了？<br>UnityEngine.Object — “Object with a capitalized ‘O’, is a set of serialized data collectively describing a specific instance of a resource. This can be any type of resource which the Unity Engine uses, such as a mesh, a sprite, and AudioClip …..”(Object是指描述了Asset上使用的所有resources的序列化数据。比如制作一个2D Bullet Prefab，上面会挂载Transform，Sprite Renderer，Box Collider 2D,Rigidbody 2D, Bullet Script，Animator等Object，这里我们需要分别标识和记录这些Object的信息)</p>
+<p>前面我们提到了Asset是通过Unique ID(File GUID)来标识，那么这里的Object用什么来标识了？并且又存储在哪里了？<br>答案是使用Local ID来标识并存储在Asset文件里(需要设置Asset Serialization到Force Text才能查看(默认是Mixed(Text和Binary)))<br>Local ID — identifies each Object within an Asset file because an Asset file may contain multiple Objects.</p>
+<p>那么Asset和Object之间是什么样的关系了？<br>“There is a one-to-many relationship between Assets and Objects: that is, any given Asset file contains one or more Objects.”(Asset file可以包含一个或多个Objects)</p>
+<p>那么如何查看Object的具体信息了？<br>通过设置Edit -&gt; Project Setting -&gt; Editor -&gt; Asset Serialization -&gt; Force Text<br>我们可以去查看所有Object索引的相关信息。<br>这里我们以一个创建一个Bullet Prefab的Asest file为例(Bullet Prefab包含很多Component)：<br>当创建一个Bullet Prefab的时候，我在上面挂载了Transform，Sprite Renderer，Box Collider 2D,Rigidbody 2D, Bullet Script，Animator等Object。<br><img src="/img/Unity/BulletInspector.PNG" alt="BulletInspector"><br>这里的Bullet.prefab文件就是我们说的Asset File。<br>而上述挂载的所有Components就是之前说的Object。(这就印证了Asset File和Object一对多的关系)<br>下面让我们看看在包含多个Obejct的Prefab里是如何通过File GUID和Local ID来定位各个Object的。<br>Bullet.prefab<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">%YAML <span class="number">1.1</span></span><br><span class="line">%TAG !u! tag:unity3d.com,<span class="number">2011</span>:</span><br><span class="line">--- !u!<span class="number">1001</span> &amp;<span class="number">100100000</span></span><br><span class="line">Prefab:</span><br><span class="line">  ......</span><br><span class="line">--- !u!<span class="number">1</span> &amp;<span class="number">1000012041017010</span></span><br><span class="line">GameObject:</span><br><span class="line">  ......</span><br><span class="line">--- !u!<span class="number">4</span> &amp;<span class="number">4000011268538122</span></span><br><span class="line">Transform:</span><br><span class="line">  ......</span><br><span class="line">--- !u!<span class="number">50</span> &amp;<span class="number">50000011296845006</span></span><br><span class="line">Rigidbody2D:</span><br><span class="line">  ......</span><br><span class="line">--- !u!<span class="number">61</span> &amp;<span class="number">61000010120606286</span></span><br><span class="line">BoxCollider2D:</span><br><span class="line">  ......</span><br><span class="line">--- !u!<span class="number">95</span> &amp;<span class="number">95000013277359834</span></span><br><span class="line">Animator:</span><br><span class="line">  ......</span><br><span class="line">--- !u!<span class="number">114</span> &amp;<span class="number">114000011185120874</span></span><br><span class="line">MonoBehaviour:</span><br><span class="line">  ......</span><br><span class="line">--- !u!<span class="number">212</span> &amp;<span class="number">212000011673545760</span></span><br><span class="line">SpriteRenderer:</span><br><span class="line">  ......</span><br></pre></td></tr></table></figure></p>
+<p>Bullet.prefab.meta<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">fileFormatVersion: <span class="number">2</span></span><br><span class="line">guid: <span class="number">9</span>c4834a7b611ce848b2d182d5057bcbb</span><br><span class="line">timeCreated: <span class="number">1476367984</span></span><br><span class="line">licenseType: Free</span><br><span class="line">NativeFormatImporter:</span><br><span class="line">  userData: </span><br><span class="line">  assetBundleName: </span><br><span class="line">  assetBundleVariant:</span><br></pre></td></tr></table></figure></p>
+<p>从Bullet.prefab里可以看出每一个Object都有定义对应的Local ID<br>而在Bullet.prefab.meta里定义了Bullet Prefab这个Asset File的File GUID<br>结合File GUID和Local ID我们就能定位到Bullet Prefab Asset File里的某某Object</p>
+<p>那么为什么要采用File GUID和Local ID了？<br>“The File GUID provides an abstraction of a file’s specific location. As long as a specific File GUID can be associated with a specific file, that file’s location on disk becomes irrelevant. The file can be freely moved without having to update all Objects referring to the file.”(通过指定唯一个File GUID和Local ID，使文件的位置变的无关紧要，我们可以随意的移动文件位置而无需更新所有的Object reference信息)</p>
+<p>所以一旦File GUID丢失，那么所有引用该文件里的Object的引用都会丢失，因为无法定位位于哪一个Asset File里。(所以不要随意乱改.meta文件)</p>
+<p>File GUID和Local ID虽然好，但是一味的比较File GUID和Local ID会导致slow performance，所以Unity为了快速访问标识的各个Asset，内部维护了一个Instance ID的映射缓存(通过File GUID和Local ID计算得出的唯一的integer)来标识各个Asset。<br>通过Instance ID Unity可以快速的访问到被加载了的对应的Object。(如果target object还没被加载，那么通过File GUID和Local ID，Unity会去把Object加载进来)</p>
+<p>那么Instance ID是如何运作的了？<br>“At startup, the Instance ID cache is initialized with data for all Objects that are built-in to the project (i.e. referenced in Scenes), as well as all Objects contained in the Resources folder. Additional entries are added to the cache when new assets are imported at runtime(3) and when Objects are loaded from AssetBundles. Instance ID entries are only removed from the cache when they become stale. This happens when an AssetBundle providing access to a specific File GUID and Local ID is unloaded.”(当游戏启动的时候，Instance ID的cache开始初始化所有在项目场景里引用到的Object。额外的Instance ID Cache只有在通过运行时导入或则AssetBundle动态加载Object的时候添加。Instance ID只有在Instance ID标识的Object被Unloaded的时候才会被removed from cache)</p>
+<p>那么什么时候Object才会被Unloaded了？Object的Instance ID与AssetBundle之间又是如何关联起来的了？<br>“When the unloading of an AssetBundle causes an Instance ID to become stale, the mapping between the Instance ID and its File GUID and Local ID is deleted to conserve memory. If the AssetBundle is re-loaded, a new Instance ID will be created for each Object loaded from the re-loaded AssetBundle.”(当AssetBundle(后面会详细讲到)被unload后，通过AssetBundle加载的Object的Instance ID会被删除以节约内存。当AssetBundle再次加载进来后，当AssetBundel里的Obejct被再次加载时，会为该Object生成新的Instance ID到cache里)</p>
+<p>上面算是提到了Resource(Asset里的Object)的lifecycle。关于Resource Lifecycle和Instance ID相关的学习在了解了Unity里与资源加载相关的Resource和AssetBundle后会再次讨论，见后面。</p>
+<p>Note:<br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assets-objects-and-serialization" target="_blank" rel="external">Implementation note: At runtime, the above control flow is not literally accurate. Comparing File GUIDs and Local IDs at runtime would not be sufficiently performant during heavy loading operations. When building a Unity project, the File GUIDs and Local IDs are deterministically mapped into a simpler format. However, the concept remains identical, and thinking in terms of File GUIDs and Local IDs remains a useful analogy during runtime.</a></p>
+<p>接下来看看两种特殊的Object类型:</p>
+<ol>
+<li>ScriptableObject<br>“Provides a convenient system for developers to define their own data types.”(用于定义自定义类型数据)</li>
+<li>MonoBehaviour<br>“Provides a wrapper that lins to a MonoScript. A MonoScript is an internal data type that Unity uses to hold a reference to a specific scripting class within a specific assembly and namespace. The MonoScript does not contain any actual executable code.”</li>
+</ol>
+<p>Monoscripts:<br>“a MonoBehaviour has a reference to a MonoScript, and MonoScripts simply contain the information needed to locate a specific script class. Neither type of Object contains the executable code of script class.”<br>“A MonoScript contains three strings: an assembly name, a class name, and a namespace.”(正如前面MonoBehavior提到的，MonoScript包含了定位script class需要的信息。 e.g. assembly name, class name, namspace……)</p>
+<p>我们编写的scripts最终会被Unity编译到Assembly-CSharp.dll里。<br>在Plugins目录下的插件会被编译到Assembly-CSharp-firstpass.dll里。<br><img src="/img/Unity/UnityAssembly.PNG" alt="UnityAssembly"></p>
+<p>那么我们的Asset资源被打包到哪里去了了？<br>接下来我们设置场景如下：</p>
+<ol>
+<li>放置一个Bullet.prefab实例(上面挂载了Bullet script和一系列Component，使用Assets/Sprites/Projectile.png作为sprite(设置了打包到图集1里))</li>
+<li>创建一个Cude的3D GameObject(Unity Primitive Cube)</li>
+<li>创建UI Image使用Background.png作为Sprie(/Assets/Resources/Textures/UI/Background.png)</li>
+<li>放置一张未使用的AddImage.png在Assets/Sprites下，并设置打包到图集2里。</li>
+<li>放置一张未使用的Coin.png在Assets/Resources/Textures/UI下，并设置打包到图集3里。</li>
+</ol>
+<p>然后通过Unity提取查看IOS打包后的各个资源分别存储在哪里。<br>首先看看我们在场景里创建的GameObject情况：<br><img src="/img/Unity/ResourceManagerStudyScene.PNG" alt="ResourceManagerStudyScene"><br>接下来查看下打包的IOS的资源文件夹下的.asset文件：<br><img src="/img/Unity/ResourceManagerStudyIOSResource.PNG" alt="ResourceManagerStudyIOSResource"><br>可以看到Data下有三个.assets文件(globalgamemanager.assets和sharedassets0.assets和resources.assets)<br>然后通过UnityStudio我们分别打开这三个文件进行查看：<br>globalgamemanager.assets<br><img src="/img/Unity/globalgamemanagerassets.PNG" alt="globalgamemanagerassets"><br><img src="/img/Unity/sharedassets0assets.PNG" alt="sharedassets0assets"><br><img src="/img/Unity/resourcesassets.PNG" alt="resourcesassets"><br>通过查看里面的资源可以发现，我们放在Assets/Sprites下的Projectile.png被打包到了SpriteAtlasTexture-1-32x32-fmt33(Texture2D)图集里，而作为UI背景放置在Assets/Resoures/Textures/UI下的backgroudn.png被单独打包在了名为backgroudn(Texture2D)里<br>而没有在游戏里使用且放置在Assets/Resources/Textures/UI下的Coin.png被单独打包到了名为resources.assets的资源文件里。</p>
+<p>从上面可以看出Resources下的资源文件并没有被打包到图集里，而是作为单独的Texture2D资源存在。同时没有放置在Resources目录下的资源，如果没有被游戏使用，最终是不会被打包到游戏里(反之放在Resources目录下即使未被使用也会被打包到游戏里)。</p>
+<p>如果我们使用UnityStudio加载整个Data文件夹，我们还能查看到场景Level里的树状结构：<br><img src="/img/Unity/SeneHierarchy.PNG" alt="SeneHierarchy"></p>
+<p>说了这么多Asset和Object相关的知识和概念，下面提一个与之相关却又常常遇到的问题。<br>Unity Store可以下载很多Asset Package资源，那么这里的问题就是，Asset Package是个什么概念？为什么通过导入Asset Package我们就能导入别人做好的Asset资源？如何制作自己的Asset Package？<br>Asset Package概念：<br>“Packages are collections of files and data from Unity projects, or elements of projects, which are compressed and stored in one file, similar to Zip files.”(可以看出Asset Package只是相当于Unity对于一系列Assets的打包，单记录了Assets原始的目录结构和Asset信息，好比压缩包)</p>
+<p>正如我们前面学习理解的，要想使Asset能够使用，我们需要把Asset源文件和Asset.meta文件一起保存下来(为了确保原始的Asset和Object引用正确)。那么Asset Package是否保存了Asset源文件和Asset.meta文件了？接下来通过自制Asset Package我们来验证这个问题。</p>
+<p>如何制作自己的Asset Package：<br>这里以导出前面制作的Bullet.prefab(Bullet.prefab以Projectile.png作为Sprite，同时挂载了Rigidbox 2D，Boxcollider 2D，Bullet script……)为例：<br>Asset -&gt; Export Package -&gt; 只勾选Bullet.prefab -&gt; Export<br>不勾选Include Dependencies：<br><img src="/img/Unity/ExportPackageWithoutDepedency.PNG" alt="ExportPackageWithoutDependency"><br>勾选Include Dependencies：<br><img src="/img/Unity/ExportPackage.PNG" alt="ExportPackageWithDependency"><br>这里不知道为什么CreateCubeAssetMenu.cs会作为Bullet.prefab的dependencies！<br>接下来在新的项目里导入该Asset Package：<br>Assets -&gt; Import Package -&gt; custom package<br>这样一来就得到了我们所导出的Assets Package<br><img src="/img/Unity/AssetPackageCompare.PNG" alt="AssetPackageCompare"><br>可以看出Bullet.prefab和Bullet.meta原封不动的以原始的形式保留了下来。<br>Note:<br>当导出Asset Package的时候，勾选Include dependencies，那么所有Asset依赖的Asset都会被导出到最终的Package</p>
+<h2 id="资源来源">资源来源</h2><h3 id="Unity自动打包">Unity自动打包</h3><p><a href="http://blog.csdn.net/ring0hx/article/details/46376709" target="_blank" rel="external">Unity自动打包资源是指在Unity场景中直接使用到的资源会随着场景被自动打包到游戏中，这些资源会在场景加载的时候由unity自动加载。这些资源只要放置在Unity工程目录的Assets文件夹下即可，程序不需要关心他们的打包和加载，这也意味着这些资源都是静态加载的。但在实际的游戏开发中我们一般都是会动态创建GameObject，资源是动态加载的，因此这种资源其实不多</a></p>
+<h3 id="Resources">Resources</h3><p>所有放在Assets/Resources目录下的资源都当做Resources。无论游戏是否使用，都会被打包到最终的程序里。(这也就说明为什么前面的例子在Resources下没有被使用的Coin.png最终被打包到了resources.assets里)<br>那么如何判断Resources下的资源是被打包到resources.assets里还是其他的assets里了？<br>答案取决于我们是否在Unity对Resources目录下的资源进行了索引引用。<br>正如前面我们测试的结果一样，同样是放在Resources目录下的backgroudn.png和Coin.png，前者因为在游戏里有引用，所以被打包到了sharedassets0.assets里，后者因为无人使用，而打包到了resources.assets里。(Resources下被引用的资源是存储在.sharedAsseets file里，而没被引用的是存储在resources.assets里)</p>
+<p>那么为什么我们需要把资源放置在Resources下了？放在Assets下单独去引用使用不就可以了吗？<br>Resources主要是为了帮助我们去动态加载一些资源去创建Asset。(通过Resource API可以动态加载Resource里的资源)</p>
+<p>但Unity官网讲解提到的我们应该尽量去避免使用Resources。<br>原因如下：</p>
+<ol>
+<li>Use of the Resources folder makes fine-grained memory management more difficult.(使用Resources folder会使内存管理更困难)</li>
+<li>Improper use of Resources folders will increase application startup time and the length of builds.(不合理的使用Resources folders会使程序启动和编译时间变长)<br> As the number of Resources folders increases, management of the Assets within those folders becomes very difficult.(随着Resources folders数量的增加，Assets管理越来越困难)</li>
+<li>The Resources system degrades a project’s ability to deliver custom content to specific platforms and eliminates the possibility of incremental content upgrades.(Resources System降低了项目对于各平台和资源的动态更新能力，因为Resources目录下的资源无论如何都会被打包到游戏程序里)<br> AssetBundle Variants are Unity’s primary tool for adjusting content on a per-device basis.(AssetBundle是Unity针对设备动态更新的主要工具)</li>
+</ol>
+<p>正确的使用Resources system就显得尤为重要：<br>以下两种情况比较适合使用Resource System：</p>
+<ol>
+<li>Resources is an excellent system for during rapid prototyping and experimentation because it is simple and easy to use. However, when a project moves into full production, it is strongly recommended to eliminate uses of the Resources folder.(快速开发，但到了真正发布还是应该减少Resources Folder的使用)</li>
+<li>The Resources folder is also useful in trivial cases, when all of the following conditions are met(当下列情况都满足的时候，Resource folder比较有用):<ol>
+<li>The content stored in the Resources folder is not memory-intense</li>
+<li>The content is generally required throughout a project’s lifetime(该资源在项目生命周期里都需要)</li>
+<li>The content rarely requires patching(很少需要改动patch)</li>
+<li>The content does not vary across platforms or devices.(在各个平台设备都一致)<br>比如一些第三方配置文件等asset。</li>
+</ol>
+</li>
+</ol>
+<p>那么接下来让我们了解下Resources是如何被保存到Unity里的：<br>Serialization of resources:<br>“The Assets and Objects in all folders named “Resources” are combined into a single serialized file when a project is built.”(当项目编译的时候，所有放到Resources目录下的Assets和Object最终会被序列化到一个单独的文件，根据前面的测试应该是resources.assets)</p>
+<p>“This file also contains metadata and indexing information, similar to an AssetBundle. This indexing information includes a serialized lookup tree that is used to resolve a given Object’s name into its appropriate File GUID and Local ID. It is also used to locate the Object at a specific byte offset in the serialized file’s body.”(Resource会去维护一个映射表，用于查询特定Object</p>
+<p>“As the lookup data structure is (on most platforms) a balanced search tree(1), its construction time grows at an O(N log(N)) rate.”(Lookup是通过平衡二叉树来查找，所以时间复杂度为N x Log(N))</p>
+<p>“This operation is unskippable and occurs at application startup time while the initial non-interactive splash screen is displayed.”(在程序启动的时候会去初始化index info(Lookup data)的时候，Resources里assets数量过多的话会导致花费大量时间)</p>
+<h3 id="AssetBundle">AssetBundle</h3><p>接下来让我们前面一直提到的一个很重要的点AssetBundle。<br>什么是AssetBundle？<br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-fundamentals?playlist=30089" target="_blank" rel="external">The AssetBundle system provides a method for storing one or more files in an archival format that Unity can index. The purpose of the system is to provide a data delivery method compatible with Unity’s serialization system. AssetBundles are Unity’s primary tool for the delivery and updating of non-code content after installation.</a>(AssetBundle system提供了一个被Unity支持索引的格式文件(被Unity serialization system支持)。主要用于非代码资源的动态更新。)</p>
+<p>为什么需要AssetBundle？<br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-fundamentals?playlist=30089" target="_blank" rel="external">This permits developers to reduce shipped asset size, minimize runtime memory pressure, and selectively load content that is optimized for the end-user’s device.</a>(AssetBundle的好处是减少了发布的Asset大小，降低了运行时内存压力，动态更新非代码资源)</p>
+<p>AssetBundle包含些什么信息？<br>主要包含两部分信息：</p>
+<ol>
+<li>A header<br>The header is generated by Unity when the AssetBundle is built.(header是在Unity编译AssetBundle的时候生成)主要包含下列内容：<ol>
+<li>The AssetBundle’s identifier</li>
+<li>Whether the AssetBundle is compressed or uncompressed</li>
+<li>A manifest(“The manifest is a lookup table keyed by an Object’s name. Each entry provides a byte index that indicates where a given Object can be found within the AssetBundle’s data segment.”(manifest把Object的名字作为key，用于查询特定object是否存在于AssetBundle的数据字段里))<br>(manifest里通过std::multimap实现，不同平台multimap的实现有些许差别，Windows和OSX采用red-black tree，所以在构造manifest的时候，时间复杂度是N x Log(N))</li>
+</ol>
+</li>
+<li>A data segment.<br>“Contains the raw data generated by serializing the Assets in the AssetBundle.”(data segment包含了序列化Assets的原始数据)<br>data segment最后还会通过LZMA algorithm压缩。<br>“Prior to Unity 5.3, Objects could not be compressed individually inside an AssetBundle. “(Unity 5.3之前Object不支持被单独压缩到AssetBundle里，所以在去访问一个被包含在压缩了的AssetBundle里的Object时，Unity需要去解压整个AssetBundle)<br>“Unity 5.3 added a LZ4 compression option. AssetBundles built with the LZ4 compression option will compress individual Objects within the AssetBundle, allowing Unity to store compressed AssetBundles on disk.”(Unity 5.3加入了LZ4压缩选项，支持单独的Object压缩到AssetBundle里，这样一来就可以通过单独解压特定的Object来实现访问该Object)</li>
+</ol>
+<p>The AssetBundle Manager:<br>开源的<a href="https://bitbucket.org/Unity-Technologies/assetbundledemo" target="_blank" rel="external">AssetBundle Manager on Bitbucket</a></p>
+<p>如何去加载AssetBundles？<br>下列四种方式主要是根据AssetBundle的压缩算法和平台支持来划分。<br>API加载AssetBundles:</p>
+<ol>
+<li>AssetBundle.LoadFromMemoryAsync(Unity’s recommendation is not use this API)<br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-fundamentals?playlist=30089" target="_blank" rel="external">AssetBundle.LoadFromMemoryAsync详情</a></li>
+<li>AssetBundle.LoadFromFile<br>“A highly-efficient API intended for loading uncompressed AssetBundle from local storage, such as a hard disk or an SD card.”(可以高效的加载本地未压缩的AssetBundle，也支持加载LZ4压缩的AssetBundle，但不支持LZMA压缩的AssetBundle)<br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-fundamentals?playlist=30089" target="_blank" rel="external">Mobile和Editor表现不一样，详情参见</a></li>
+<li>WWW.LoadFromCacheOrDownload<br>“A useful API for loading Objects both from remote servers and from local storage.”(主要用于加载远程服务器端和本地的Object)<br>使用建议：<br>“Due to the memory overhead of caching an AssetBundle’s bytes in the WWW object, it is recommended that all developers using WWW.LoadFromCacheOrDownload ensure that their AssetBundles remain small”(尽量保证AssetBundle很小，避免内存消耗过大)<br>“Each call to this API will spawn a new worker thread. Be careful of creating an excessive number of threads when calling this API multiple times.”(避免同时调用多次，导致大量的Thread执行，确保同一时间很少的thread执行)</li>
+<li>UnityWebRequest’s DonwloadHandleAssetBundle(on Unity 5.3 or newer)<br>“UnityWebRequest allows developers to specify exactly how Unity should handle downloaded data and allows developers to eliminate unnecessary memory usage.”(UnityWebRequest支持更细致的AssetBundle加载的内存使用，可以通过配置UnityWebRequest达到使用最少内存的目的得到我们想要加载的Obejct)<br>“Note: Unlike WWW, the UnityWebRequest system has an internal pool of worker threads and an internal job system to ensure that developers cannot start an excessive number of simultaneous downloads. The size of the thread pool is not currently configurable.”(UnituWebRequest system内部有自身的线程管理，避免同一时间大量的线程同时加载)</li>
+</ol>
+<p>使用建议：<br>尽可能的使用AssetBundle.LoadFromFile(使用异步版本LoadFromFileAsync)<br>当项目需要下载和patch AssetBundle时，尽量使用UnityWebRequest(Unity 5.3),老版本的话使用WWW.LoadFromCacheOrDownload.<br>可能的话最好在项目安装的时候，预先缓存AssetBundle</p>
+<p>Loading Assets from AssetBundles:<br>Synchronous API:</p>
+<ol>
+<li>LoadAsset</li>
+<li>LoadAllAssets</li>
+<li>LoadAssetWithSubAsset</li>
+</ol>
+<p>Asynchronous API:</p>
+<ol>
+<li>LoadAssetAsync</li>
+<li>LoadAllAssetsAsync</li>
+<li>LoadAssetWithSubAssetAsync</li>
+</ol>
+<p>使用建议：<br>“LoadAllAssets should be used when loading multiple independent UnityEngine.Objects.”(当需要加载大量独立的Objects的时候，使用LoadAllAssets。当需要加载的Object数量很多，又少于AssetBundle里的2/3的时候，我们可以采用制作多个小的AssetBundle，然后再通过LoadAllAssets加载)<br>“LoadAssetWithSubAssets should be used when loading a composite Asset which contains multiple embedded Objects. If the Objects that need to be loaded all come from the same Asset, but are stored in an AssetBundle with many other unrelated Objects.”(当加载由多个obejct构成的Object的时候，建议使用LoadAssetWithSubAssets。当加载的Objects都来之同一个Asset，但存储的AssetBundle里包含很多其他无关的Obejcts时，采用LoadAssetWithSubAssets)<br>“For any other case, use LoadAsset or LoadAssetAsync.”(其他情况都是用LoadAsset和LoadAssetAsync)</p>
+<p>Low-Level Loading details:<br>“UnityEngine.Object loading is performed off the main thread: an Object’s data is read from storage on a worker thread. Anything which does not touch thread-sensitive parts of the Unity system (scripting, graphics) will be converted on the worker thread.”(Object的加载是在main thread上，而object data的数据读取是在worker thread。所有线程不敏感的数据都是在worker thread进行。)</p>
+<p>加载AssetBundle里的Object需要注意些什么？<br>“An Object is assigned a valid Instance ID when its AssetBundle is loaded, the order in which AssetBundles are loaded is not important. Instead, it is important to load all AssetBundles that contain dependencies of an Object before loading the Object itself. Unity will not attempt to automatically load any child AssetBundles when a parent AssetBundle is loaded.”(当AssetBundle被加载的时候，Object会被assigned一个valide instance ID，因为这个instance ID是唯一的，所以AssetBundle的加载顺序并不重要，重要的是我们要确保所有Object依赖的Objects都被加载(Unity不会自动加载所有Child AssetBundles当Parent AssetBundle被加载的时候))<br>下面以Material A引用Texture B为例。Material A被Packaged到了AssetBundle1，而Texture B被packaged到了AssetBundle2。<br><img src="/img/Unity/AssetBundleDependencies.PNG" alt="AssetBundleDependencies"><br>所以我们要使用Material A，我们不仅要加载AssetBundle1，还得确保在此之前我们加载了AssetBundle2里的Texture B</p>
+<p>AssetBundle的dependencies信息存储在哪里？<br>AssetBundleManifest存储了AssetBundle’s dependency information(AssetBundle里的依赖关系信息)</p>
+<p>AssetBundleManifest存放在哪里？<br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-fundamentals?playlist=30089" target="_blank" rel="external">This Asset will be stored in an AssetBundle with the same name as the parent directory where the AssetBundles are being built.</a>(AssetBundleManifest存放在AssetBundle同级目录，并且包含一样的名字)</p>
+<p>Note:<br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-fundamentals?playlist=30089" target="_blank" rel="external">The AssetBundle containing the manifest can be loaded, cached and unloaded just like any other AssetBundle.</a>(AssetBundleManifest可以像AssetBundle一样被加载，缓存，释放)</p>
+<p>如何查询AssetBundle里的Dependecy信息？<br>Depending on the runtime environmen:</p>
+<ol>
+<li>Editor<br>AssetDatabase API(Query AssetBundle dependencies)<br>AssetImporter API(Access and change AssetBundle assignments and dependencies)</li>
+<li>Runtime<br>AssetBundleManifest API(load the dependency information of AssetBundle)<br> AssetBundleManifest.GetAllDependencies<br> AssetBundleManifest.GetDirectDependencies<br>Note:<br>“Both of these APIs allocate arrays of strings. Use them sparingly, and preferably not during performance-sensitive portions of an application’s lifetime.”(因为上述API会分配大量的string字符串，所以要尽量少用并且避开性能敏感的时期)</li>
+</ol>
+<p>接下来通过制作2个UI prefab：<br>一个包含全屏显示的Background image(打到uitextures AssetBundle里)<br>一个包含Backgroundimage但大小只有背景的一半(打到backgroundimage AssetBundle里)<br>同时设置background图片都打包到uitextures AssetBundle里<br>然后通过更新uitextures AssetBundle来动态更新背景图片<br>通过AssetBundleManifest API查询两个AssetBundle里的Dependencies信息。<br>首先如何制作AssetBundle？</p>
+<ol>
+<li>选择需要制作成AssetBundle的资源(Texture,Prefab)，设置相应的AssetBundle名字<br><img src="/img/Unity/AssetBundleUIBackgrnd1.PNG" alt="AssetBundleUIBackground1"><br><img src="/img/Unity/BackgroundImagePrefabAssetBundle.PNG" alt="BackgroundImagePrefabAssetBundle"><br><img src="/img/Unity/UIBackgroundPrefabAssetBundle.PNG" alt="UIBackgroundPrefabAssetBundle"></li>
+<li>调用BuildPipeline.BuildAssetBundles()打包AssetBundle<br>Unity5.4官网给出了两个方法：<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> AssetBundleManifest <span class="title">BuildAssetBundles</span>(<span class="params"><span class="keyword">string</span> outputPath, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform</span>)</span>; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> AssetBundleManifest <span class="title">BuildAssetBundles</span>(<span class="params"><span class="keyword">string</span> outputPath, AssetBundleBuild[] builds, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform</span>)</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>前者是以UnityEditor设置的AssetBundle name为准进行所有AssetBundle打包，后者是根据自定义的打包规则打包特定AssetBundle。<br>这里我尝试使用前者针对PC进行测试。<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AssetBundleMenu</span> &#123;</span><br><span class="line">    [MenuItem(<span class="string">"Assets/Build AssetsBundle"</span>)]</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">BuildAllAssetBundles</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!AssetDatabase.IsValidFolder(<span class="string">"Assets/StreamingAssets"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            AssetDatabase.CreateFolder(<span class="string">"Assets"</span>, <span class="string">"StreamingAssets"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Caching.CleanCache();</span><br><span class="line">        BuildPipeline.BuildAssetBundles(<span class="string">"Assets/StreamingAssets"</span>, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第一个参数是输出目录<br>第二参数控制AssetBundle打包设定，比如是否压缩等<br>第三个参数可设置打包平台<br>打包AssetBundle之后的目录结构：<br><img src="/img/Unity/AssetBundleFolder.PNG" alt="AssetBundleFolder"><br>.manifest文件里存储了dependencies信息和AssetBundle里所打包的Assets相关信息<br>StreamingAssets.manifest<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ManifestFileVersion: <span class="number">0</span></span><br><span class="line">CRC: <span class="number">931964529</span></span><br><span class="line">AssetBundleManifest:</span><br><span class="line">  AssetBundleInfos:</span><br><span class="line">    Info_0:</span><br><span class="line">      Name: uitextures</span><br><span class="line">      Dependencies: &#123;&#125;</span><br><span class="line">    Info_1:</span><br><span class="line">      Name: backgroundimage</span><br><span class="line">      Dependencies:</span><br><span class="line">        Dependency_0: uitextures</span><br></pre></td></tr></table></figure></p>
+<p>uibackground.manifest<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ManifestFileVersion: <span class="number">0</span></span><br><span class="line">CRC: <span class="number">1667709317</span></span><br><span class="line">Hashes:</span><br><span class="line">  AssetFileHash:</span><br><span class="line">    serializedVersion: <span class="number">2</span></span><br><span class="line">    Hash: <span class="number">452</span>c307ebc11a6155a4bdc61d8a0e39f</span><br><span class="line">  TypeTreeHash:</span><br><span class="line">    serializedVersion: <span class="number">2</span></span><br><span class="line">    Hash: a13e216067ae14bd74f1f5dcc7c211d7</span><br><span class="line">HashAppended: <span class="number">0</span></span><br><span class="line">ClassTypes:</span><br><span class="line">- Class: <span class="number">1</span></span><br><span class="line">  Script: &#123;instanceID: <span class="number">0</span>&#125;</span><br><span class="line">......</span><br><span class="line">Assets:</span><br><span class="line">- Assets/Resources/Textures/UI/backgroudn.png</span><br><span class="line">- Assets/Prefabs/UIBackground.prefab</span><br><span class="line">Dependencies: []</span><br></pre></td></tr></table></figure></p>
+<p>backgroundimage.manifest<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ManifestFileVersion: <span class="number">0</span></span><br><span class="line">CRC: <span class="number">4279971007</span></span><br><span class="line">Hashes:</span><br><span class="line">  AssetFileHash:</span><br><span class="line">    serializedVersion: <span class="number">2</span></span><br><span class="line">    Hash: c15d1d4fd0fc89ad672fd6a94e16d981</span><br><span class="line">  TypeTreeHash:</span><br><span class="line">    serializedVersion: <span class="number">2</span></span><br><span class="line">    Hash: <span class="number">4583000</span>a582d4aadcaf8400b20641bd6</span><br><span class="line">HashAppended: <span class="number">0</span></span><br><span class="line">ClassTypes:</span><br><span class="line">- Class: <span class="number">1</span></span><br><span class="line">  Script: &#123;instanceID: <span class="number">0</span>&#125;</span><br><span class="line">......</span><br><span class="line">Assets:</span><br><span class="line">- Assets/Prefabs/BackgroundImage.prefab</span><br><span class="line">Dependencies:</span><br><span class="line">- Assets/ABs/uitextures</span><br></pre></td></tr></table></figure></p>
+<p>从StreamingAssets.manifest可以看出，我们总共制作了两个AssetBundle，名字分别为uitextures和backgroundimage，并且backgroundimage AssetBundle依赖于uitextures。<br>从uibackground.manifest和backgroundimage.manifest中可以看出，uibackground AssetBundle里包含了UIBackground.prefab和backgroudn.png，而backgroundimage AsssetBundle只包含BackgroundImage.prefab。<br>由于BackgroundImage.prefab使用background.png作为背景，但backgroundimage被打包到了uitextures AssetBundle里，所以backgroundimage AssetBundle是依赖于uitextures AssetBundle的。</p>
+<ol>
+<li>通过AssetBundle API下载并加载主AssetBundle，然后通过AssetBundleManifest API查看所有AssetBundle的依赖信息并加载依赖的AssetBundle，最后通过AssetBundle API加载AssetBundle里的特定资源并实例化<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="preprocessor">#<span class="keyword">if</span> UNITY_EDITOR</span></span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AssetBundleLoad</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Use this for initialization</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	    StartCoroutine(LoadAssetBundles());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">IEnumerator <span class="title">LoadAssetBundles</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="preprocessor">#<span class="keyword">if</span> UNITY_EDITOR</span></span><br><span class="line">        <span class="keyword">var</span> names = AssetDatabase.GetAllAssetBundleNames();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">string</span> name <span class="keyword">in</span> names)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(<span class="string">"Current Alive Asset Bundle name: "</span> + name);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="preprocessor">#<span class="keyword">endif</span></span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">string</span> bundlename = <span class="string">"StreamingAssets"</span>;</span><br><span class="line">        <span class="keyword">var</span> assetbundlerequest = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, bundlename));</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> assetbundlerequest;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> assetbundle = assetbundlerequest.assetBundle;</span><br><span class="line">        <span class="keyword">if</span> (assetbundle == <span class="keyword">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(<span class="string">"Failed to load "</span> + bundlename);</span><br><span class="line">            <span class="keyword">yield</span> <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        AssetBundleManifest manifest = assetbundle.LoadAsset&lt;AssetBundleManifest&gt;(<span class="string">"AssetBundleManifest"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (manifest == <span class="keyword">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(<span class="keyword">string</span>.Format(<span class="string">"Failed to load &#123;0&#125;.manifest!"</span>, bundlename));</span><br><span class="line">            <span class="keyword">yield</span> <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//try to instantiate backgroundimage assetbundle</span></span><br><span class="line">        <span class="comment">//but need to load dependencies assetbundle first</span></span><br><span class="line">        Debug.Log(<span class="string">"Instantiate BackgroundImage.prefab"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> backgroundbundlename = <span class="string">"backgroundimage"</span>;</span><br><span class="line">        <span class="keyword">var</span> backgroundimagerequest = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, backgroundbundlename));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> backgroundimagerequest;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (backgroundimagerequest == <span class="keyword">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(<span class="keyword">string</span>.Format(<span class="string">"Load &#123;0&#125; falied!"</span>, <span class="string">"backgroundimagerequest"</span>));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> backgroundimageassetbundle = backgroundimagerequest.assetBundle;</span><br><span class="line">        <span class="keyword">if</span>(backgroundimageassetbundle == <span class="keyword">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(<span class="keyword">string</span>.Format(<span class="string">"Load &#123;0&#125; falied!"</span>, backgroundimageassetbundle));</span><br><span class="line">            <span class="keyword">yield</span> <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> backgrounddependencies = manifest.GetAllDependencies(backgroundbundlename);</span><br><span class="line">        <span class="keyword">if</span> (backgrounddependencies.Length == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(<span class="string">"dependencies.length == 0"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Load dependencies assetbundle first</span></span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">string</span> dependency <span class="keyword">in</span> backgrounddependencies)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(<span class="string">"Dependency : "</span> + dependency);</span><br><span class="line">            <span class="keyword">var</span> dependencyabrequest = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, dependency));</span><br><span class="line">            <span class="keyword">yield</span> <span class="keyword">return</span> dependencyabrequest;</span><br><span class="line">            AssetBundle dependencyab = dependencyabrequest.assetBundle;</span><br><span class="line">            <span class="keyword">if</span> (dependencyab == <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Debug.Log(<span class="keyword">string</span>.Format(<span class="string">"Load &#123;0&#125; failed!"</span>, dependency));</span><br><span class="line">                <span class="keyword">yield</span> <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Once load all dependencies assetbundle, we can instantiate the gameobject in assetbundle</span></span><br><span class="line">        <span class="keyword">var</span> backgroundprefabrequest = backgroundimageassetbundle.LoadAssetAsync(<span class="string">"BackgroundImage.prefab"</span>);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> backgroundprefabrequest;</span><br><span class="line">        <span class="keyword">if</span>(backgroundprefabrequest == <span class="keyword">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(<span class="keyword">string</span>.Format(<span class="string">"Load &#123;0&#125; faled!"</span>, <span class="string">"BackgroundImage.prefab"</span>));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        GameObject backgroundimage = backgroundprefabrequest.asset <span class="keyword">as</span> GameObject;</span><br><span class="line">        <span class="keyword">if</span>(backgroundimage == <span class="keyword">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(<span class="string">"backgroundimage == null"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            GameObject bggo = Instantiate(backgroundimage);</span><br><span class="line">            bggo.transform.SetParent(gameObject.transform, <span class="keyword">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//After complete using AssetBundle, always remember unload it, </span></span><br><span class="line">        <span class="comment">//otherwise you can not load it again due to it has exists in memory</span></span><br><span class="line">        assetbundle.Unload(<span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>从上面可以看出，通过主的StreamingAssets，我们获取到了里面所包含的所有AssetBundle信息。然后通过加载指定AssetBundle以及dependencies AssetBundle后，我们就能成功初始化出AsestBundle里的资源。<br>上述代码实例化了Background.prefab(使用的backgroudn.png存储在uitextures AssetBundle里)<br>效果图：<br><img src="/img/Unity/BackgroundImageAssetBundleLoad.PNG" alt="BackgroundImageAssetBundleLoad"></p>
+<p>上面使用的CreateFromFile后续Unity更新成了LoadFromFile，这个方法只支持uncompressed asset bundles，这里主要是因为利用了streaming assets，所以直接用这个方法可以加载本地的AssetBundle。<br>官方的建议在正式的时候是使用UnityWebRequest。<br>Note:<br><a href="https://docs.unity3d.com/ScriptReference/BuildPipeline.BuildAssetBundles.html" target="_blank" rel="external">Note that bundles built for standalone platforms are not compatible with those built for mobiles and so you may need to produce different versions of a given bundle. </a>(针对不同平台打包的AssetBundle不通用，需要各自打包对应平台的版本)</p>
+<p>上面仅仅是以本地读取作为实例，了解了如何去访问AssetBundle以及manifest里的信息以及如何实例化AssetBundle里的资源。<br>那么如何判断AssetBundle是否需要更新了？<br>这里我们可以利用Built-in caching去实现版本更新判断。<br>“AssetBundle caching system that can be used to cache AssetBundles downloaded via the WWW.LoadFromCacheOrDownload or UnityWebRequest APIs.”(AssetBundle caching system可以帮助我们缓存加载了的AssetBundle而无需每次都重新加载)<br>而AssetBundle caching system是根据AssetBundle的version number来决定时是否下载新的AssetBundle。(AssetBundleManifest API支持通过MD5算法去计算出AssetBundle的version<br>number，这样一来每次AssetBundle有变化都会得到一个新的Hash version number)</p>
+<p>“AssetBundles in the caching system are identified only by their file names, and not by the full URL from which they are downloaded.”(AssetBundles在Caching system里是通过文件名来标识的跟URL无关，所以无论AssetBundle放在服务器哪里都没有关系)</p>
+<p>Cach相关的API控制:</p>
+<ol>
+<li>Caching.expirationDelay<br>“The minimum number of seconds that must elapse before an AssetBundle is automatically deleted. If an AssetBundle is not accessed during this time, it will be deleted automatically.”(AssetBundle可允许被删除的未使用时间，只有未被使用的时间达到了才能才被删除)</li>
+<li>Caching.maximumAvailableDiskSpace<br>“The amount of space on local storage that the cache may use before it begins deleting AssetBundles that have been used less recently than the expirationDelay. It is counted in bytes.”(Caching内存使用上限)</li>
+</ol>
+<p>Note:<br>“As of Unity 5.3, control over the built-in Unity cache is very rough. It is not possible to remove specific AssetBundles from the cache. They will only be removed due to expiration, excess disk space usage, or a call to Caching.CleanCache. (Caching.CleanCache will delete all AssetBundles currently in the cache.) “(Caching System还不完善，所以还不允许删除特定AssetBundle，而只能通过Caching.CleanCache去删除所有的AssetBundle)</p>
+<p>Cache Priming:<br>Steps:</p>
+<ol>
+<li>Store the initial or base version of each AssetBundle in /Assets/StreamingAssets/</li>
+<li>Loading AssetBundles from Application.streamingAssetsPath the first time the application is run</li>
+<li>Call WWW.LoadFromCacheOrDownload or UnityWebRequest normally.</li>
+</ol>
+<p>Custom downloaders:<br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-usage-patterns?playlist=30089" target="_blank" rel="external">Custom downloaders More</a><br>……</p>
+<p>一般AssetBundle都是通过WWW.LoadFromCacheOrDownload(老版本)或者UnityWebRequest指定url和版本号信息去决定是否下载更新到本地。<br>然后我们利用AssetBundle.CreateFromFile()去读取AssetBundle，从而实现动态更新AssetBundle。</p>
+<p>具体现有的完美AssetBundle使用方案，利用前面提到的<a href="https://bitbucket.org/Unity-Technologies/assetbundledemo" target="_blank" rel="external">AssetBundle Manager on Bitbucket</a></p>
+<p>那么在使用AssetBundle的过程中，我们应该遵循后续讲到的内容(大部分翻译至官网，翻译不太对的地方欢迎指出)：<br>Managing Loaded Assets：<br>“If an AssetBundle is unloaded improperly, it can cause Object duplication in memory. Improperly unloading AssetBundles can also result in undesirable behavior in certain circumstances.”(不合理的释放Object会导致在内存中重复创建Object。同时也可能导致非预期的问题(比如texture丢失))</p>
+<p>对于AssetBundle里Assets管理，这里需要强调的一个API是AssetBundle.Unload(bool);<br>Unloads all assets in the bundle.<br>Unload frees all the memory associated with the objects inside the bundle.<br>当传递true的时候所有从AssetBundle里实例化的Object都会被unload。传递false则只释放AssetBundle资源。</p>
+<p>那么这里释放的AssetBundle资源是哪些了？<br>还记得之前提到的AssetBundle的组成吗(header &amp; data segment)</p>
+<p>下面通过AssetBundleAB里的Material Object M实例化的M为例：<br><img src="/img/Unity/AssetBundleUnload.PNG" alt="AssetBundleUnload"><br><img src="/img/Unity/AssetBundleAfterUnloadFalse.PNG" alt="AssetBundleAfterUnloadFalse"><br><img src="/img/Unity/AssetBundleReload.PNG" alt="AssetBundleReload"><br><img src="/img/Unity/AssetBundleLoadObjectAgain.PNG" alt="AssetBundleLoadObjectAgain"><br>如果AB.Unload(true)，那么实例化的M会被destroyed。<br>如果AB.Unload(false)，那么AB里的信息会被unloaded，但M还存在于Scene里，但M和AB之间关联就断开了。<br>当我们重新加载AB后，我们只是再次加载了AB里的信息，但M和AB还是没有关联。<br>当我们通过重新加载的AB再去实例化Material Object M的时候，我们是创建了一个关联到当前AB的新的M而非把就的关联到AB(Scene里当前存在两个M)</p>
+<p>当我们想unloaded旧的M的时候，只能通过下列方式：</p>
+<ol>
+<li>Eliminate all references to an unwanted Object, both in the scene and in code. After this is done, call Resources.UnloadUnusedAssets.(取消所有引用，并调用Resources.UnloadUnusedAssets)</li>
+<li>Load a scene non-additively. This will destroy all Objects in the current scene and invoke Resources.UnloadUnusedAssets automatically.(切换Scene，触发Resources.UnloadUnusedAssets)</li>
+</ol>
+<p>“Another problem can arise if Unity must reload an Object from its AssetBundle after the AssetBundle has been unloaded. In this case, the reload will fail and the Object will appear in the Unity Editor’s hierarchy as a (Missing) Object.”(当AssetBundle被释放后，如果再从该AssetBundle里加载Object会加载失败，出现missing object)</p>
+<p>Distribution:<br>Two basic ways to distribute a project’s AssetBundles to clients:</p>
+<ol>
+<li>Installing them simultaneously with the project </li>
+<li>Downloading them after installation.<br>使用哪一种方式，主要取决于平台需求。<br>“Mobile projects usually opt for post-install downloads to reduce initial install size and remain below over-the-air download size limits. Console and PC projects generally ship AssetBundles with their initial install.”(手机上为了减少安装程序大小，通常选择post-installation。而PC不担心硬盘不够，所以通常选择initial install)</li>
+</ol>
+<p>Shipped with Project：<br>“To reduce project build times and permit simpler iterative development. If these AssetBundles do not need to be updated separately from the application itself, then the AssetBundles can be included with the application by storing the AssetBundles in Streaming Assets.”(和程序一起更新的AssetBundle可以放在streaming assets伴随程序一起打包发布)</p>
+<p>Streaming Assets:<br>“The easiest way to include any type of content within a Unity application at install time is to build the content into the /Assets/StreamingAssets/ folder, prior to building the project. Anything contained in the StreamingAssets folder at build time will be copied into the final application. This folder can be used to store any type of content within the final application, not just AssetBundles.”(可以看出Streaming Assets被存放在/Assets/StreamingAssets/目录下，最终会被打包到应用程序里)</p>
+<p>Note:<br>“Android Developers: On Android, Application.streamingAssetsPath will point to a compressed .jar file, even if the AssetBundles are compressed. In this case, WWW.LoadFromCacheOrDownload must be used to load each AssetBundle.”(在Android上，streamingAssetsPath指向的是压缩后的.jar文件，所以我们需要采用LoadFromCacheOrDonwload去解压读取(5.3及以后可以采用UnityWebRequest’s DonwloadHandleAssetBundle))</p>
+<p>“Streaming Assets is not a writable location on some platforms. If a project’s AssetBundles need to be updated after installation, either use WWW.LoadFromCacheOrDownload or write a custom downloader. “(因为Streaming Assets在一些平台上是一个不可写的位置，所以我们如果还需要更新该AssetBundle，我们而已通过WWW.LoadFromCacheOrDonwload或则自己编写custom downloader)</p>
+<p>Donwloaded post-install:<br>手机上出于程序安装大小考虑多采用这个方案。<br>同时AssetBundle通过WWW.LoadFromCacheOrDownload or UnityWebRequest的更新可以快速方便的更新一些经常变化的资源。<br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-usage-patterns?playlist=30089" target="_blank" rel="external">更多内容参见</a></p>
+<p>Asset Assignment Strategies:<br>The key decision is how to group Objects into AssetBundles. The primary strategies are:</p>
+<ol>
+<li>Logical entities</li>
+<li>Object Types</li>
+<li>Concurrent content<br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-usage-patterns?playlist=30089" target="_blank" rel="external">详情参见</a></li>
+</ol>
+<p>Guidelines to follow:</p>
+<ol>
+<li>Split frequently-updated Objects into different AssetBundles than Objects that usually remain unchanged</li>
+<li>Group together Objects that are likely to be loaded simultaneously</li>
+</ol>
+<p>Patching with AssetBundles:<br>“Patching AssetBundles is as simple as downloading a new AssetBundle and replacing the existing one.”(Patching AssetBundles用于实现动态替换一些资源很方便)<br>更多学习<a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-usage-patterns?playlist=30089" target="_blank" rel="external">参考</a><br><a href="https://docs.unity3d.com/Manual/BuildingAssetBundles.html" target="_blank" rel="external">AssetBundles</a></p>
+<h2 id="Resource_LifeCycle">Resource LifeCycle</h2><p>在得出如何利用Resources和AsetBundle高效管理资源方案之前，我们需要了解Resource的Lifecycle。<br>还记得前面提到的Asset和Obejct是如何被Unity记录下来的吗？<br>通过File GUID进行Asset标识(存储在.meta文件里，还存储了导入配置信息)，通过Local ID对Object标识(存储在Asset文件自身，还存储了Object具体的配置信息)。<br>然后Unity通过Instance ID cache system管理着Instance ID到File GUID和Local ID(用于标识Asset的Obejct)的映射去查询访问每一个Object。</p>
+<p>那么Resources Lifecycle(UnityEngine.Object)具体是怎样的了？<br>程序启动时会去加载所有场景里引用的Object的Instance ID，后续程序动态加载或则通过AssetBundle加载资源的时候会去更新新的Instance ID。</p>
+<p>Two ways to load UnityEngine.Objects(加载Object): </p>
+<ol>
+<li>Automatically — An Object is loaded automatically whenever the instance ID mapped to that Object is dereferenced(间接引用)</li>
+<li>Explicitly — Resource-loading API(e.g. AssetBundle.LoadAsset)</li>
+</ol>
+<p>那么Object什么情况下才会被加载到游戏里了？<br>An Object will be loaded on-demand the first time its Instance ID is dereferenced if two criteria are true:(当Instance ID被间接引用同时满足以下两个条件的时候，Object会被加载)</p>
+<ol>
+<li>The Instance ID references an Object that is not currently loaded(Instance ID引用的Object还没加载)</li>
+<li>The Instance ID has a valid File GUID and Local ID registered in the cache(Instance ID拥有的File GUID和Local ID已经存在于cache里)</li>
+</ol>
+<p>什么情况下，Object会被unloaded了？<br>Objects are unloaded in three specific scenarios(Object被Unloaded的三种情况):</p>
+<ol>
+<li>Objects are automatically unloaded when unused Asset cleanup occurs.(比如Application.LoadLevel() Rersources.UnloadUnusedAssets()调用的时候，Object会被自动unloaded)</li>
+<li>Objects sourced from the Resources folder can be explicitly unloaded by invoking the Resource.UnloadAsset API.(主动调用Resource API去unload resoures下的object)</li>
+<li>Objects source from Asset Bundles are automatically and immediately unloaded when invoking the AssetBundle.Unload(true) API.(这样会导致AssetBundle里的Objects InstanceID的引用无效)<br>具体Resource API如何影响Object的的生命周期，还需进一步学习，参考文档<a href="https://docs.unity3d.com/ScriptReference/AssetBundle.html" target="_blank" rel="external">AssetBundle</a></li>
+</ol>
+<p>知道了Resources的生命周期和如何被映射缓存的，那么如何才能以高效的方式存储resources了？<br>Loading Large Hierarchies(当我们制作一个复杂的Resources时):<br>“When serializing hierarchies of Unity GameObjects (such as when serializing prefabs), it is important to remember that the entire hierarchy will be fully serialized.”(当序列化Unity GameObject的时候，所有存在于hierarchy下的GameObject都会被一一序列化。)</p>
+<p>When creating any GameObject hierarchy, CPU time is spent in several different ways:</p>
+<ol>
+<li>Time to read the source data (from storage, from another GameObject, etc.)</li>
+<li>Time to set up the parent-child relationships between the new Transforms</li>
+<li>Time to instantiate the new GameObjects and Components</li>
+<li>Time to awaken the new GameObjects and Components<br>我们的关注点放到第一点上，数据的读写方式对后面三点影响不大，第一点跟数据的读写方式和数据的大小紧密相关。<br>“On all current platforms, it is considerably faster to read data from elsewhere in memory rather than loading it from a storage device. “(所有平台上，从内存中读取都比从存储设备去读取快，当然不同的平台的读取速度会有一些差别)</li>
+</ol>
+<p>我们前面提到当由复杂结构的GameObject的时候，所有对象都会被单独序列化(无论是否重复)，这样一来会导致数据量很大，在加载的时候很慢。为了提高速度，我们可以通过把复杂的GameObject划分为多个单独的小的Prefab，然后通过实例化多个Prefab来构建我们的GameObject而非完全依赖于Unity的Serialization和prefab system。(减少了数据量。同时一旦Prefab被加载后，从内存中读取就比从硬件设备读取快多了)</p>
+<p>未完，待续…..</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2016/10/13/Unity-Resource-Manager/" data-title="Unity Resource Manager | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/08/21/Classical-2D-Game-Unity-NGUI/"  title="Classical 2D Game(Unity &amp; NGUI)">
+ <strong>下一篇：</strong><br/> 
+ <span>Classical 2D Game(Unity &amp; NGUI)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/10/13/Unity-Resource-Manager/" data-title="Unity Resource Manager" data-url="http://tonytang1990.github.io/2016/10/13/Unity-Resource-Manager/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#资源管理"><span class="toc-number">2.</span> <span class="toc-text">资源管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#资源形式"><span class="toc-number">2.1.</span> <span class="toc-text">资源形式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Asset"><span class="toc-number">2.1.1.</span> <span class="toc-text">Asset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object"><span class="toc-number">2.1.2.</span> <span class="toc-text">Object</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#资源来源"><span class="toc-number">2.2.</span> <span class="toc-text">资源来源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity自动打包"><span class="toc-number">2.2.1.</span> <span class="toc-text">Unity自动打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Resources"><span class="toc-number">2.2.2.</span> <span class="toc-text">Resources</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AssetBundle"><span class="toc-number">2.2.3.</span> <span class="toc-text">AssetBundle</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Resource_LifeCycle"><span class="toc-number">2.3.</span> <span class="toc-text">Resource LifeCycle</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

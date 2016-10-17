@@ -65,7 +65,7 @@ Apple">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SnakeGame1024768.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake960640.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake800800.PNG">
-<meta property="og:updated_time" content="2016-09-27T08:18:26.364Z">
+<meta property="og:updated_time" content="2016-10-13T06:50:04.741Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Classical 2D Game(Unity & NGUI)">
 <meta name="twitter:description" content="Introduction这一章节主要是为了实战学习Unity和NGUI的使用而写的。
@@ -308,7 +308,7 @@ Apple">
 <pre><code><span class="bullet">1. </span>移动方向只有上下左右
 <span class="bullet">2. </span>单次移动单位0.5 Unit
 <span class="bullet">3. </span>撞到障碍物(不可通行的地方(不包括友军坦克))后重新选择方向
-<span class="bullet">4. </span>方向选择(避开之前行进方向随机选取一个方向)
+<span class="bullet">4. </span>方向选择(避开之前行进方向随机选取一个方向，为了保证坦克不至于一直一左一右，这里需要采用[<span class="link_label">Shuffle Bag</span>](<span class="link_url">https://web.archive.org/web/20150324141028/http://kaioa.com/node/53</span>)而非完全随机的方式选取新移动方向，Shuffle Bag可以保证特定事件发生的概率从而保证各个方向的选择都能平摊，比如4次里面肯定会有上下左右而非左右左右)
 <span class="bullet">5. </span>多个坦克相遇的时候不立刻重新选择方向而是开始累计坦克无法移动的时间
 (直到坦克达到坦克停止时间限制时重新选择，这里不同速度的坦克所忍耐的停止时间不一样，这样一来就可以实现，速度快的追着速度慢的跑)
 <span class="bullet">6. </span>子弹随机隔一段时间发射，但不会发射超过子弹数量上限。
@@ -327,15 +327,16 @@ Apple">
 <span class="number">3</span>. 记录是否包含基地和基地位置信息。<span class="params">(用于确保只有一个基地)</span>
 <span class="number">4</span>. 存储地图名字<span class="params">(用于地图存储)</span>
 </code></pre><p>游戏地图数据(TankMap)：</p>
-<pre><code><span class="bullet">1. </span>记录所有细分后是否被占用信息和对应占用的类型(用于Tank移动判断)
-占用类型好比Tile or Tank，通过占用类型知道该单元格是被Tile占用还是Tank占用。
-地图应该被细分成所有 Tile数量 * Tile最小切割数的网格
-(这里假设Tile最多被切割成16，那么地图应该被细分到MapSize.Row <span class="bullet">* MapSize.Column *</span> 16的BitArray)
-<span class="bullet">2. </span>每个细分的Tile记录自身包含细分后的索引信息
-(e.g. 最大细分16，Iron Tile细分为2 * 2 = 4，那么每个细分的Iro Tile所记录的细分后的索引信息数量为16 / 4 = 4个) 
+<pre><code><span class="number">1</span>. 记录所有细分后是否被占用信息<span class="params">(用于Tank移动判断)</span>
+同时记录是否被Tank占用<span class="params">(用于Tank移动的时候判断前方是Tank还是Tile)</span>
+同时记录细分后占用的类型信息<span class="params">(Tile Type,用于子弹撞击后检测周边Tile类型信息)</span>
+地图应该被细分成所有 Tile数量 <span class="built_in">*</span> Tile最小切割数的网格
+<span class="params">(这里假设Tile最多被切割成<span class="number">16</span>，那么地图应该被细分到MapSize.Row * MapSize.Column * <span class="number">16</span>的BitArray)</span>
+<span class="number">2</span>. 每个细分的Tile记录自身包含细分后的索引信息
+<span class="params">(e.g. 最大细分<span class="number">16</span>，Iron Tile细分为<span class="number">2</span> * <span class="number">2</span> = <span class="number">4</span>，那么每个细分的Iro Tile所记录的细分后的索引信息数量为<span class="number">16</span> / <span class="number">4</span> = <span class="number">4</span>个)</span> 
 这样一来每个小的Tile被破坏后支持快速改写该小块占有地图网格的占用信息)。 
-<span class="bullet">3. </span>坦克存储自身所占用的所有indexs作为移动索引信息
-<span class="bullet">3. </span>包含前面地图存储的信息(用于构建游戏地图数据)
+<span class="number">3</span>. 坦克存储自身所占用的所有indexs作为移动索引信息
+<span class="number">3</span>. 包含前面地图存储的信息<span class="params">(用于构建游戏地图数据)</span>
 </code></pre></li>
 </ol>
 <p>Note：<br>不同类型的Tile的细分程度不同(16 <em> 16 or 4 </em> 4 or 2 <em> 2 or 1 </em> 1)，但游戏地图数据细分以细分程度最大的为准。(细分程度不同会影响Tile在子弹撞击时的效果判定)</p>
@@ -375,6 +376,14 @@ Apple">
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2016/10/13/Unity-Resource-Manager/" title="Unity Resource Manager">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Unity Resource Manager</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2016/07/25/Shader-Toy/"  title="Shader Toy">
