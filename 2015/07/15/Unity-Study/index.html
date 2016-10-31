@@ -127,7 +127,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Coroutine_Study.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ForEachCall.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ForCall.PNG">
-<meta property="og:updated_time" content="2016-10-17T11:04:53.664Z">
+<meta property="og:updated_time" content="2016-10-27T08:13:49.691Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity Study">
 <meta name="twitter:description" content="Unity Introduction因为后期发现目录越来越长导致前面的一些代码模块不具可读性，所以在这里加很多…过度符……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………">
@@ -842,7 +842,7 @@
 <p>貌似是会对Tween做特殊的限制，比如DOTween.Shake延axis轴变化vector3。</p>
 <p>接下来让我们看看如何使用Sequence：<br>The sequenced tweens don’t have to be one after each other. You can overlap tweens with the Insert method.(sequence可包含其他sequence，可以通过Insert把tween插入到特定时间执行)<br>A tween (Sequence or Tweener) can be nested only inside a single other Sequence, meaning you can’t reuse the same tween in multiple Sequences. (同一个tween不能被多个sequence使用)<br>创建一个Sequence:<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DOTween.Sequence();</span><br></pre></td></tr></table></figure></p>
 <p>我们可以通过添加tweens，callback到sequence里去做一些特别的动画。<br>Note:<br>“ all these methods need to be applied before the Sequence starts (usually the next frame after you create it, unless it’s paused), or they won’t have any effect.”(添加tweens，callback这些都必须在Sequence开始之前，可以理解为同一帧里)</p>
-<p>接下来我们看看Tween的一些设置：<br>这些设置分为针对全局，tweens，sequence，tweener设置。<br>举个简单的例子，比如我们在初始化DOTween的时候设置了tween在同一时刻激活的最大数量。我超过这个数量后想要修改，我们而已通过:<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DOTween.SetTweensCapacity(***);</span><br></pre></td></tr></table></figure></p>
+<p>接下来我们看看Tween的一些设置：<br>这些设置分为针对全局，tweens，sequence，tweener设置。<br>举个简单的例子，比如我们在初始化DOTween的时候设置了tween在同一时刻激活的最大数量。我超过这个数量后想要修改，我们可以通过:<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DOTween.SetTweensCapacity(***);</span><br></pre></td></tr></table></figure></p>
 <p>上述这个方法就是针对全局设置的</p>
 <p>接下来我们看看如何动态的控制tween动画的：<br>有三种方式：</p>
 <ol>
