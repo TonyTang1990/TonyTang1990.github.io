@@ -40,7 +40,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/CPP/STLPredicates.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/CPP/STLFunctors.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/CPP/STLFunctionAdaptorsStructor.PNG">
-<meta property="og:updated_time" content="2016-11-02T15:48:57.101Z">
+<meta property="og:updated_time" content="2016-11-03T05:56:09.804Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Data Stucture And Algorithm Stdudy">
 <meta name="twitter:description" content="前言写这一篇文章的目的是出于自己一直以来基础都比较弱，特别是数据结构和算法，但数据结构和算法确实程序里很核心的部分，只有了解各种数据结构和算法的基本思想，才能针对实际问题做出最好的选择，写出最优的程序。工作两年多了，但感觉自己再这方面还是依然原地踏步，了解的一知半解。为了避免多年以后还来学习这些本应该在学校学好的知识，从而有了这一次学习计划。
@@ -211,7 +211,7 @@
 <p>解题思想：<br>若是奇数次移动，则将最小的圆盘移到顺时针方向的下一座塔上。若是偶数次移动，则保持最小的圆盘不动，而在其他两个塔座之间，将较小的圆盘移动到另一个塔座上。</p>
 <p>那么如何用递归来实现这个解题思想了。<br>当n = 1时，将编号1的圆盘从塔座a移动到塔座b即可。<br>当n &gt; 1时，需要利用塔座c作为辅助塔座。此时要设法将n - 1个较小的圆盘依照移动规则从塔座a移至塔座c上，然后，将剩下的最大圆盘从塔座a移至塔座b上，最后，再设法将n - 1个较小的圆盘你依照移动规则从塔座c移至塔座b上。(由此可见，n个圆盘的移动问题分解成为了两次n - 1个圆盘的移动问题，这就可以通过递归的方式解决)<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Hanoi</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(n &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">        Hanoi(n - <span class="number">1</span>, a, c, b); <span class="comment">// 将n - 1个圆盘按移动规则从a移动到c</span></span><br><span class="line">        move(a,b);             <span class="comment">// 将圆盘n从a移动到b</span></span><br><span class="line">        Hanoi(n -<span class="number">1</span>, c,  b, a); <span class="comment">// 将n - 1个圆盘按移动规则从c移动到b</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>递归算法好处：<br>结构清晰，可读性强，且容易用数学归纳法证明算法的正确性，方便调试。</p>
-<p>递归算法坏处：<br>运行效率地，时间复杂度和空间复杂度都很大。</p>
+<p>递归算法坏处：<br>运行效率低，时间复杂度和空间复杂度都很大。</p>
 <p>针对Fabonacci方法，我们可以写一个非递归的方法，<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">FibonacciNoRecursion</span><span class="params">(<span class="keyword">int</span> n)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> temp[<span class="number">2</span>];</span><br><span class="line">	temp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	temp[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(n &lt;= <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; n; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> tp = temp[<span class="number">0</span>] + temp[<span class="number">1</span>];</span><br><span class="line">			temp[<span class="number">1</span>]= temp[<span class="number">0</span>];</span><br><span class="line">			temp[<span class="number">0</span>] = tp;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> temp[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>这样一来，递归调用导致的调用栈深度问题就没有了，而是通过临时变量把数据存储了起来。</p>
 <h3 id="分治">分治</h3><p>基本思想：<br>将一个规模为n的问题分解为k个(一般划分成n/2 — 二分细分)规模较小的子问题，这些子问题互相独立且与原问题相同。递归的解这些子问题，然后将各子问题的解合并得到原问题的解。</p>
@@ -226,8 +226,8 @@
 </ol>
 <p>动态规划的基本要素：</p>
 <ol>
-<li>最优子结构<br>当问题的最优解包含其字问题的最优解时，称该问题具有最优子结构性质</li>
-<li>重叠字问题<br>在递归算法自顶向下解此问题时，每次产生的子问题并不总是新问题，有些子问题被反复运算。</li>
+<li>最优子结构<br>当问题的最优解包含其子问题的最优解时，称该问题具有最优子结构性质</li>
+<li>重叠子问题<br>在递归算法自顶向下解此问题时，每次产生的子问题并不总是新问题，有些子问题被反复运算。</li>
 <li>备忘录方法<br>备忘录方法是动态规划的变形，唯一不同的是递归方式是至顶向下。</li>
 </ol>
 <p>接下来以求解最长公共子序列来分析动态规划算法。<br>问题描述：<br>X = {x1, x2, x3,…..xn}<br>Z = {z1, z2, z3,…..zn}<br>存在一个递增序列，即Z是X的子序列。</p>
@@ -537,6 +537,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2016/12/11/Unity-Plugins/" title="Unity-Plugins">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Unity-Plugins</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2016/10/13/Unity-Resource-Manager/"  title="Unity Resource Manager">
