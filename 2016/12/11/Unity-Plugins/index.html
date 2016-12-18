@@ -31,6 +31,8 @@ Plugin(代码插件)
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ELFFileCommand.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ELFFileStructureDetail.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ELFHeaderReadelfCommand.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SectionHeadersInfo.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/StripSectionsAfter.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AndroidSupportedArchitectures.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/IOSMonoSupportedArchitectures.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/IOSIL2CPPSupportedArchitectures.PNG">
@@ -63,7 +65,7 @@ Plugin(代码插件)
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/960Multiple640SelfAdaption.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/960Multiple640BaseOnWidth.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/DOTweenSetting.PNG">
-<meta property="og:updated_time" content="2016-12-18T16:50:40.261Z">
+<meta property="og:updated_time" content="2016-12-18T18:21:03.484Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-Plugins">
 <meta name="twitter:description" content="Unity Plugins本章节主要讲解学习Unity Plugins这一部分。这一部分主要分为两个部分来学习:
@@ -202,7 +204,12 @@ Plugin(代码插件)
 <p>ELF header除了包含前面file命令打印出的一些信息外，还包括更多描述ELF各文件部分的相关信息。<br>我们可以通过readelf命令来查看(Windows上除了通过Cygwin，这里我们还可以使用NDK里的arm-linux-androideabi-readelf.exe来查看ELF Header信息)<br><img src="/img/Unity/ELFHeaderReadelfCommand.PNG" alt="ELFHeaderReadelfCommand"><br>具体每一个字段的含义可以查看<a href="http://man7.org/linux/man-pages/man5/elf.5.html" target="_blank" rel="external">ELF</a><br>这里我比较关注的是：<br>Machine  — 表示当前的ELF文件支持的架构。从上面可以看出libBugly.so支持ARM架构<br>Entry point address — 描述程序入口的虚拟地址，如果没有入口则为0x0(这里因为libBugly.so是提供再链接，所以不存在入口点)<br>Start of <strong><em> — 描述了特定headers内容的内存偏移<br>Size of </em></strong> — 描述了特定header所占字节大小<br>……</p>
 <p>从上面的readelf输出结果可以看出libBugly.so包含了9个program headers，25个section headers。</p>
 <p>这里暂时不深入去了解ELF文件了，如需了解，可以查看下面给出的链接。<br><a href="http://www.cnblogs.com/xmphoenix/archive/2011/10/23/2221879.html" target="_blank" rel="external">可执行文件（ELF）格式的理解</a>:</p>
-<p>这里主要知道如何去查看.so文件的架构等信息即可。</p>
+<p>这里因为我在Android 7.0(API 24)遇到了一个问题：<br>Missing Section Headers<br>后来了解到在Android 7.0开始，Google做了很多改动和要求，包括下面这一项：<br>Missing Section Headers (Enforced since API 24)<br>而因为Section Headers在.so中被移除了所以报出了这个问题。(好像是为了增加破解难度)</p>
+<p>这里让我们来了解一个命令工具strip — 用于移除ELF文件中一些不必要的信息。(比如 debug symbol, section headers……)</p>
+<p>首先让我们通过readelf —section-headers查看section headers的信息：<br><img src="/img/Unity/SectionHeadersInfo.PNG" alt="SectionHeadersInfo"><br>可以看到libSubly.so有24个section headers</p>
+<p>然后通过strip —remove-sections=.* libBugly.so尝试移除所有sections(这里注意Cygwin strip无法识别.so，但NDK strip却可以，不知道是不是需要)<br><img src="/img/Unity/StripSectionsAfter.PNG" alt="StripSectionsAfter"><br>可以看到我们成功的移除了.* section header。</p>
+<p>我想这应该就是前面遇到Missing Section Headers的原因，Android 7.0上强制要求不能Missing Section Header。</p>
+<p>这里主要知道如何去查看.so文件的架构等信息以及ELF文件的大概组成以及如何通过strip命令去移除一些ELF文件里不必要的信息即可。</p>
 <h3 id="编译和使用-so">编译和使用.so</h3><p>结合以前学习的一些知识：<br><a href="http://blog.sina.com.cn/s/blog_8c7d49f20102v7t7.html" target="_blank" rel="external">JNI和NDK交叉编译进阶学习</a><br><a href="http://blog.sina.com.cn/s/blog_8c7d49f20102vazu.html" target="_blank" rel="external">NDK&amp;JNI&amp;Java&amp;Android初步学习总结归纳</a></p>
 <p>要想在Windows上编译出在Android处理器使用的.so文件，我需要通过<a href="https://developer.android.com/ndk/downloads/index.html" target="_blank" rel="external">NDK</a>(一系列工具的集合，帮助开发者快速开发C(或C++)的动态库。集成了交叉编译器)或者Android Studio配合CMake进行编译。</p>
 <p>待续…..</p>
