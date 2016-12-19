@@ -86,7 +86,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Coroutine_Study.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ForEachCall.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ForCall.PNG">
-<meta property="og:updated_time" content="2016-12-19T16:37:17.942Z">
+<meta property="og:updated_time" content="2016-12-19T17:19:38.309Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity Study">
 <meta name="twitter:description" content="Unity Introduction因为后期发现目录越来越长导致前面的一些代码模块不具可读性，所以在这里加很多…过度符……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………">
@@ -605,7 +605,7 @@
 <li>UDP for generic communications</li>
 <li>WebSockets for WebGL<br>更多内容待学习</li>
 </ol>
-<h2 id="Unity_Shader">Unity Shader</h2><p>详情参见<a href="">Unity_Shader</a></p>
+<h2 id="Unity_Shader">Unity Shader</h2><p>详情参见<a href="http://tonytang1990.github.io/2016/12/20/Unity-Shader/">Unity_Shader</a></p>
 <h2 id="Excel数据读取">Excel数据读取</h2><p>Unity官网给出TextAsset类用于读取下列格式的文件：<br>.txt, .html, .htm, .xml, .bytes, .json, .csv(<a href="http://baike.baidu.com/link?url=k66qCiCo7dQ2gA3bS09xk_ZhFBldafez_7Ux64tJvvwAx2HcsLW3cFIaKoGua_HnlHV3nnDgHL5NdqwSKHEV_KHhRVEm-B0mYguaAcxSFDm" target="_blank" rel="external">逗号分隔值（Comma-Separated Values，CSV，有时也称为字符分隔值，因为分隔字符也可以不是逗号），其文件以纯文本形式存储表格数据（数字和文本）</a>), .yaml, .fnt<br>从上面可以看出并不支持直接对excel(.xlsx，.xls等格式)的解析。<br>通过官网可以看出TextAsset是针对文本和二进制类型文件的读取，具体的解析还得自己去写。<br>所以并不是我想找的Excel解析的解决方案。<br>让我们来看看这篇文章<a href="http://www.mamicode.com/info-detail-494944.html" target="_blank" rel="external">Unity3D游戏开发之当游戏开发遇上Excel</a>。<br>作者对Excel解析下了不少功夫。<br>从上面可以看出，针对Excel解析作者找到了三中解决方案：</p>
 <ol>
 <li>Microsoft.Office.Interop.Excel<br><a href="http://www.mamicode.com/info-detail-494944.html" target="_blank" rel="external">基于微软提供的Office API,这组API以COM组件的形式给出，我们可以通过调用该API实现对Excel文件的解析。微软的Office API特点是使用起来方便，可以使用C#、Visual Basic等语言进行相关开发。可是这种解决方案的的缺点同样很明显，因为COM组件主要依赖于系统，因此使用COM组件需要在系统中注册，这将对代码的可移植性产生影响，而且受制于COM技术，这种解决方案只能运行在Windows平台上，无法实现跨平台，加之解析速度较慢，因此这种方案通常只适合在解析速度要求不高，运行环境为Windows平台的应用场景。</a><br>关键词：<br>不跨平台</li>
@@ -620,7 +620,7 @@
 </li>
 </ol>
 <p>通过上述方法我成功的打印出了AccountPasswordAndGameSetting.xlsx里2个sheet的数据，见下图：<br><img src="/img/Unity/AccountPasswordAndGameSettingSheet1.PNG" alt="AccountPasswordAndGameSettingSheet1"><br><img src="/img/Unity/AccountPasswordAndGameSettingSheet2.PNG" alt="AccountPasswordAndGameSettingSheet2"><br><img src="/img/Unity/ExcelReaderOutput.PNG" alt="ExcelReaderOutput"><br>Note:<br>上面有用到DataSet，DataSet类是属于System.Data.dll里的，所以我们还必须Copy存放在**\Unity\Editor\Data\Mono\lib\mono\2.0下的System.Data.dll到我们的Dlls目录。</p>
-<h2 id="资源管理">资源管理</h2><p><a href="http://tonytang1990.github.io/2016/10/13/Unity-Resource-Manager/">具体学习章节</a></p>
+<h2 id="资源管理">资源管理</h2><p>详情参见<a href="http://tonytang1990.github.io/2016/10/13/Unity-Resource-Manager/">Unity-Resource-Manager</a></p>
 <h1 id="Plugins">Plugins</h1><p>详情参见<a href="http://tonytang1990.github.io/2016/12/11/Unity-Plugins/">Unity-Plugins</a></p>
 <h1 id="C#脚本">C#脚本</h1><p>public成员 — 编辑器可见可编辑<br>[System.Serializable] — 标志该类可以被序列化到Inspector<br>[HideInInspector] — 标志该成员在编辑器不可见<br>StartCoroutine（Function()） &amp;&amp;  yield &amp;&amp; WaitForSeconds — 联合使用可以实现对游戏逻辑的等待判断（多线程访问控制）<br>GameObject.FindGameObjectWithTag(Name) — 用于寻找特定tag的对象<br>Virtual Method — Virtual Method使该方法可以被重写<br>abstract — 定义该类是抽象类 &amp;&amp; 该方法是抽象方法（需要被子类实现）</p>
 <h2 id="Persistence_-_Saving_and_Loading_Data">Persistence - Saving and Loading Data</h2><h3 id="PlayerPrefs">PlayerPrefs</h3><p>Stores and accesses player preferences between game sessions. (用于存储一些不重要的用户设定的数据，比如游戏分辨率，游戏难度等)</p>
