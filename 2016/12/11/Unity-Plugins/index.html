@@ -65,7 +65,7 @@ Plugin(代码插件)
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/960Multiple640SelfAdaption.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/960Multiple640BaseOnWidth.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/DOTweenSetting.PNG">
-<meta property="og:updated_time" content="2016-12-18T18:50:27.146Z">
+<meta property="og:updated_time" content="2016-12-18T18:53:44.985Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-Plugins">
 <meta name="twitter:description" content="Unity Plugins本章节主要讲解学习Unity Plugins这一部分。这一部分主要分为两个部分来学习:
@@ -208,7 +208,7 @@ Plugin(代码插件)
 <p>这里让我们来了解一个命令工具strip — 用于移除ELF文件中一些不必要的信息。(比如 debug symbol, section headers……)</p>
 <p>首先让我们通过readelf —section-headers查看section headers的信息：<br><img src="/img/Unity/SectionHeadersInfo.PNG" alt="SectionHeadersInfo"><br>可以看到libSubly.so有24个section headers</p>
 <p>然后通过strip —remove-sections=.* libBugly.so尝试移除所有sections(这里注意Cygwin strip无法识别.so，但NDK strip却可以，不知道是不是需要)<br><img src="/img/Unity/StripSectionsAfter.PNG" alt="StripSectionsAfter"><br>可以看到我们成功的移除了所有section header(除了.shstrtab)。</p>
-<p>我想这应该就是前面遇到Missing Section Headers的原因，Android 7.0上强制要求不能Missing Section Header。</p>
+<p>我想这应该就是前面遇到Missing Section Headers的原因，Android 7.0上强制要求不能Missing Section Header。(待确认)</p>
 <p>这里主要知道如何去查看.so文件的架构等信息以及ELF文件的大概组成以及如何通过strip命令去移除一些ELF文件里不必要的信息即可。</p>
 <h3 id="编译和使用-so">编译和使用.so</h3><p>结合以前学习的一些知识：<br><a href="http://blog.sina.com.cn/s/blog_8c7d49f20102v7t7.html" target="_blank" rel="external">JNI和NDK交叉编译进阶学习</a><br><a href="http://blog.sina.com.cn/s/blog_8c7d49f20102vazu.html" target="_blank" rel="external">NDK&amp;JNI&amp;Java&amp;Android初步学习总结归纳</a></p>
 <p>要想在Windows上编译出在Android处理器使用的.so文件，我需要通过<a href="https://developer.android.com/ndk/downloads/index.html" target="_blank" rel="external">NDK</a>(一系列工具的集合，帮助开发者快速开发C(或C++)的动态库。集成了交叉编译器)或者Android Studio配合CMake进行编译。</p>
@@ -399,6 +399,14 @@ Plugin(代码插件)
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2016/12/20/Unity-Shader/" title="Unity_Shader">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Unity_Shader</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2016/10/21/Data-Structure-And-Algorithm-Stdudy/"  title="Data Stucture And Algorithm Stdudy">
