@@ -39,8 +39,12 @@ Editor ChosenHow to choose editor?在选">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/MarkDownPreviewOnBrowser.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/WhereFlake8.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/SublimeLinterFlake8.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/GitPlugin.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/GitGutter.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/KeyBinding.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/SublimeText3Setting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/SublimeText3SnippetsTrigger.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/SublimeText3SnippetsUsing.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/PackageControl.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/ShowCommands.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/ShowCommands.PNG">
@@ -48,7 +52,7 @@ Editor ChosenHow to choose editor?在选">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/MutilpleSelection.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/ShowCommands.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Editors/SublimeText3/SplitEdit.PNG">
-<meta property="og:updated_time" content="2017-02-19T17:36:54.354Z">
+<meta property="og:updated_time" content="2017-06-05T16:18:54.011Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Editor-Sublime-Text-3">
 <meta name="twitter:description" content="EditorEditor Comparison先如今有很多优秀的编辑器(有些近乎IDE的水准):
@@ -180,16 +184,23 @@ Editor ChosenHow to choose editor?在选">
 <p> 其中是Python和Python3分别代表Python2.x和Python3.x的安装路径<br> 如果需要配置其他语言，也写在”codeintel_language_settings”里即可。<br> 这个由于还没正式开始学习使用Python，但测试无论配没配置上面，系统提示和自定义方法都会有自动提示和补全功能和函数跳转(Alt+click)(不确定是Sublime Text 3自带的还是SublimeCodeIntel的功能，暂时先按上面的方式设置)</p>
 </li>
 <li><a href="http://www.sublimelinter.com/en/latest/installation.html" target="_blank" rel="external">SublimeLinter</a><br>SublimeLinter是一个 framework for linters(静态代码检查的框架)。要支持不同的语言需要额外装对应的扩展包。<br>主要是为了装Python的静态代码和代码规范检查。<br>现在SublimeLinter上Python的Linter有很多，比如pep8,pylint,flake8,bandit等<br>作为Python初学者这里暂时不纠结哪一个更好，暂时使用flake作为尝试。<br>因为SublimeLinterFlake8会用到flake，所以需要安装flake先：<br>打开terminal，输入pip install flake<br>python3自带pip<br>低于python2.7.9的好像要自己装pip<br>pip可以理解成类似于Package Control帮助快速安装Python工具包的工具。<br>确认flake8.exe在环境变量中：<br><img src="/img/Editors/SublimeText3/WhereFlake8.PNG" alt="WhereFlake8"><br>然后通过PackageControl安装SublimeLinterFlake8即可。<br>这样一来就有静态代码和代码规范检查了:<br><img src="/img/Editors/SublimeText3/SublimeLinterFlake8.PNG" alt="SublimeLinterFlake8"></li>
+<li><a href="https://packagecontrol.io/packages/Git" target="_blank" rel="external">Git</a><br>Git是程序员经常打交道的东西。为了在Sublime Text 3里快速的使用Git提高效率。安装Git插件可以支持我们在Ctrl+Shift+P里直接调用Git命令。<br>安装步骤还是通过Package Control这里就不再重述。<br>直接看看安装好后的效果：<br><img src="/img/Editors/SublimeText3/GitPlugin.PNG" alt="GitPlugin"></li>
+<li><a href="https://packagecontrol.io/packages/GitGutter" target="_blank" rel="external">GitGutter</a><br>GitGutter主要是提供了Git提交时在Sublime Text 3里支持高亮显示增删改查等变化。<br>老规矩安装(Packgage Control)<br>直接看看使用GitGutter提交时的高亮显示变化效果:<br><img src="/img/Editors/SublimeText3/GitGutter.PNG" alt="GitGutter"></li>
 </ol>
 <h2 id="Custom_Sublime_Text_3">Custom Sublime Text 3</h2><ol>
 <li><p>Key Binding<br>自定义快捷键。打开Preference -&gt; Key Binding进行快捷键修改(这里以打开修改方法跳转，文件搜索等快捷键跟VS番茄插件一致为例)<br><img src="/img/Editors/SublimeText3/KeyBinding.PNG" alt="KeyBinding"><br>Note:<br>改快捷键绑定只是让新的快捷键覆盖相同快捷键但并不关闭原始快捷键设置，要想默认快捷键不起作用还得设置相同的快捷键覆盖。</p>
 </li>
 <li><p>Sublime Text 3 Setting<br>字体大小，行号显示，拼写检查等设置。<br>修改默认设置跟自定义快捷键差不多。<br>比如我们想默认字体大小改大一点：<br>Preference -&gt; Settings<br><img src="/img/Editors/SublimeText3/SublimeText3Setting.PNG" alt="SublimeText3Setting"><br>我们希望修改只针对MarkDown文件的语法高亮规则：<br>打开*.md文件<br>Preference -&gt; Settings - Syntax Specific</p>
 </li>
+<li><p>Theme</p>
+</li>
+<li><p>Custom Snippets<br>自定义快速填充片段。帮助我们在快速编写重复的代码或者注释。<br>Tools -&gt; Developer -&gt; New Snippets<br>放在:C:\Users\mshz\AppData\Roaming\Sublime Text 3\Packages\User下<br>貌似每一个Snippets文件只能编写一个对应的Snippet。<br>所以要想管理不同编程语言之间的Snippets，我们可以通过建立不同的文件夹进行管理分类。<br>接下来看看Snippet事例和使用效果：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;snippet&gt;</span><br><span class="line">  &lt;content&gt;&lt;![CDATA[</span><br><span class="line"><span class="preprocessor"># File Name:    $TM_FILENAME</span></span><br><span class="line"><span class="preprocessor"># Description:    This file is used to $&#123;1:Staff&#125;</span></span><br><span class="line"><span class="preprocessor"># Author:       $&#123;2:TangHuan&#125;</span></span><br><span class="line"><span class="preprocessor"># Create Date:    $&#123;3:Year&#125;/$&#123;4:Month&#125;/$&#123;5:Day&#125;</span></span><br><span class="line">]]&gt;&lt;/content&gt;</span><br><span class="line">  &lt;!-- Optional: Set a tabTrigger to define how to trigger the snippet --&gt;</span><br><span class="line">  &lt;tabTrigger&gt;PyFileHeader&lt;/tabTrigger&gt;</span><br><span class="line">  &lt;!-- Optional: Set a scope to limit <span class="keyword">where</span> the snippet will trigger --&gt;</span><br><span class="line">  &lt;scope&gt;source.python&lt;/scope&gt;</span><br><span class="line">&lt;/snippet&gt;</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<ol>
-<li>Theme</li>
-</ol>
+<p><content>&lt;![CDATA[这里的内容是我们自定义快速生成的模板]]&gt;</content></p>
+<p><tabtrigger>这里的内容是触发当前Snippet的输入内容</tabtrigger></p>
+<p><scop>这里的内容是当前Snippet支持的文件类型</scop><br>看看使用效果:<br><img src="/img/Editors/SublimeText3/SublimeText3SnippetsTrigger.PNG" alt="SublimeText3SnippetsTrigger"><br><img src="/img/Editors/SublimeText3/SublimeText3SnippetsUsing.PNG" alt="SublimeText3SnippetsUsing"></p>
 <h2 id="Useful_Shortcut">Useful Shortcut</h2><h3 id="Package">Package</h3><ol>
 <li>Open Package Control - Ctrl + Shift + P<br><img src="/img/Editors/SublimeText3/PackageControl.PNG" alt="PackageControl"></li>
 <li>Open Console - Ctrl + `<br><img src="/img/Editors/SublimeText3/ShowCommands.PNG" alt="Console"></li>
@@ -231,6 +242,14 @@ Editor ChosenHow to choose editor?在选">
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2017/04/29/Unity自动化打包/" title="Unity自动化打包">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Unity自动化打包</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2016/12/20/Unity-Shader/"  title="Unity_Shader">

@@ -1,0 +1,682 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Unity自动化打包 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="Unity自动化打包本章节主要是为了学习Unity自动化打包相关知识以及运用。本文大部分属于本人学习理解的东西，如有不对欢迎指出，学习交流，共同进步。
+本章节的流程如下：
+
+了解什么是打包以及打包过程中的一些相关概念
+了解什么是自动化以及帮助我们快速完成一键打包的工具
+自动化打包工具或编程语言的选取
+Unity自动化打包过程中的相关工具
+实战集成运用到Unity构建一键打包
+更多学习程序发布以及相">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity自动化打包">
+<meta property="og:url" content="http://tonytang1990.github.io/2017/04/29/Unity自动化打包/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="Unity自动化打包本章节主要是为了学习Unity自动化打包相关知识以及运用。本文大部分属于本人学习理解的东西，如有不对欢迎指出，学习交流，共同进步。
+本章节的流程如下：
+
+了解什么是打包以及打包过程中的一些相关概念
+了解什么是自动化以及帮助我们快速完成一键打包的工具
+自动化打包工具或编程语言的选取
+Unity自动化打包过程中的相关工具
+实战集成运用到Unity构建一键打包
+更多学习程序发布以及相">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/VisalSVNCreateRepository.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/VisualSVNUserManager.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/VisualSVNGroupManager.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/OpenAutomation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/OpenAutomationWithCommands.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/JenkinsFreeStyleProject.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/FreeStyleWithParametersSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/FreeStyleWithSourceSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/FreeStyleWithCommandsSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/FreeStyleWithPostProcessing.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/FreeStyleWithOwnWorkspace.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/DownloadPipelinePlugin.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CreatePipelineStep1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CreatePipelineStep2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SetPipelineSourceFromWeb.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SetPipelineSourceFromSVN.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PipelineSnippetGenerator.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/EmailNotificationSetting.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ExtendedEmailNotificationPart1.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/WorkspaceExtendedEmailSetting.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/JenkinsUnityPathConfiguration.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/JenkinsUnityMethodCall.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/JenkinsUnityMethodCallOutput.PNG">
+<meta property="og:updated_time" content="2017-06-11T18:14:48.559Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity自动化打包">
+<meta name="twitter:description" content="Unity自动化打包本章节主要是为了学习Unity自动化打包相关知识以及运用。本文大部分属于本人学习理解的东西，如有不对欢迎指出，学习交流，共同进步。
+本章节的流程如下：
+
+了解什么是打包以及打包过程中的一些相关概念
+了解什么是自动化以及帮助我们快速完成一键打包的工具
+自动化打包工具或编程语言的选取
+Unity自动化打包过程中的相关工具
+实战集成运用到Unity构建一键打包
+更多学习程序发布以及相">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">有时候不是习惯了一个人，而是在没有认可自己之前选择了一个人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/04/29/Unity自动化打包/" title="Unity自动化打包" itemprop="url">Unity自动化打包</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2017-04-29T07:17:56.000Z" itemprop="datePublished"> 發表於 2017-04-29</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity自动化打包"><span class="toc-number">1.</span> <span class="toc-text">Unity自动化打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#版本控制"><span class="toc-number">1.1.</span> <span class="toc-text">版本控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#集中式_vs_分布式"><span class="toc-number">1.1.1.</span> <span class="toc-text">集中式 vs 分布式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Visual_SVN_Server与Tortoise_SVN"><span class="toc-number">1.1.2.</span> <span class="toc-text">Visual SVN Server与Tortoise SVN</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Visual_SVN_Server"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">Visual SVN Server</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Tortoise_SVN"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">Tortoise SVN</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SVN实战实用"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">SVN实战实用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#搭建SVN_Server"><span class="toc-number">1.1.2.3.1.</span> <span class="toc-text">搭建SVN Server</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SVN典型目录结构"><span class="toc-number">1.1.2.3.2.</span> <span class="toc-text">SVN典型目录结构</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打包"><span class="toc-number">1.2.</span> <span class="toc-text">打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多平台"><span class="toc-number">1.2.1.</span> <span class="toc-text">多平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自动化"><span class="toc-number">1.2.2.</span> <span class="toc-text">自动化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Jenkins"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">Jenkins</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Jenkins实战"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">Jenkins实战</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#自由风格构建系统"><span class="toc-number">1.2.2.2.1.</span> <span class="toc-text">自由风格构建系统</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Pipeline"><span class="toc-number">1.2.2.2.2.</span> <span class="toc-text">Pipeline</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#What"><span class="toc-number">1.2.2.2.2.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Why"><span class="toc-number">1.2.2.2.2.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#How"><span class="toc-number">1.2.2.2.2.3.</span> <span class="toc-text">How</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Jenkinsfile"><span class="toc-number">1.2.2.2.2.4.</span> <span class="toc-text">Jenkinsfile</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Problems"><span class="toc-number">1.2.2.2.2.5.</span> <span class="toc-text">Problems</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Tools"><span class="toc-number">1.2.2.2.3.</span> <span class="toc-text">　Tools</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Pipeline_Tools"><span class="toc-number">1.2.2.2.3.1.</span> <span class="toc-text">Pipeline Tools</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Email_Plugin"><span class="toc-number">1.2.2.2.3.2.</span> <span class="toc-text">Email Plugin</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Unity3D_Plugin"><span class="toc-number">1.2.2.2.3.3.</span> <span class="toc-text">Unity3D Plugin</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#脚本语言"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">脚本语言</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Shell"><span class="toc-number">1.2.2.3.1.</span> <span class="toc-text">Shell</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Python(严格意义上不算脚本语言)"><span class="toc-number">1.2.2.3.2.</span> <span class="toc-text">Python(严格意义上不算脚本语言)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IOS自动化打包"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">IOS自动化打包</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#XUPorter_or_Unity_API(PBXFroject)"><span class="toc-number">1.2.2.4.1.</span> <span class="toc-text">XUPorter or Unity API(PBXFroject)</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#References"><span class="toc-number">2.</span> <span class="toc-text">References</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="Unity自动化打包">Unity自动化打包</h1><p>本章节主要是为了学习Unity自动化打包相关知识以及运用。<br>本文大部分属于本人学习理解的东西，如有不对欢迎指出，学习交流，共同进步。</p>
+<p>本章节的流程如下：</p>
+<ol>
+<li>了解什么是打包以及打包过程中的一些相关概念</li>
+<li>了解什么是自动化以及帮助我们快速完成一键打包的工具</li>
+<li>自动化打包工具或编程语言的选取</li>
+<li>Unity自动化打包过程中的相关工具</li>
+<li>实战集成运用到Unity构建一键打包</li>
+<li>更多学习程序发布以及相关概念</li>
+</ol>
+<p>在了解相关自动化工具之前，我们需要先简单了解下什么是版本控制。在我们的日常开发工作中必不可少。</p>
+<h2 id="版本控制">版本控制</h2><p>在项目开发过程中，对项目代码进行维护保存，对于多个人协同工作记录下每一次的变更记录，方便日后查看以及恢复。<br>主流的版本管理工具比如Tortoise SVN,P4,Git等。</p>
+<h3 id="集中式_vs_分布式">集中式 vs 分布式</h3><p>这里不对版本管理工具做太深入的学习讲解。<br>参见：<br><a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001374027586935cf69c53637d8458c9aec27dd546a6cd6000" target="_blank" rel="external">集中式VS分布式</a></p>
+<p>Note：<br>Tortoise SVN是集中式。</p>
+<h3 id="Visual_SVN_Server与Tortoise_SVN">Visual SVN Server与Tortoise SVN</h3><h4 id="Visual_SVN_Server">Visual SVN Server</h4><p><a href="https://www.visualsvn.com/server/" target="_blank" rel="external">VisualSVN Server allows you to easily install and manage a fully-functional Subversion server on the Windows platform.</a>(VisualSVN Server是一个在WIndows上帮助我们快速搭建Subversion server的工具。)</p>
+<h4 id="Tortoise_SVN">Tortoise SVN</h4><p><a href="https://zh.wikipedia.org/wiki/TortoiseSVN" target="_blank" rel="external">TortoiseSVN是一个Windows平台下的Subversion用户端软件.</a></p>
+<p>前者是针对Server端，后者是针对Client端。<br>两者结合使用就能实现版本管理控制。</p>
+<h4 id="SVN实战实用">SVN实战实用</h4><h5 id="搭建SVN_Server">搭建SVN Server</h5><p>详细设置步骤参考:<br><a href="https://www.visualsvn.com/server/getting-started/" target="_blank" rel="external">VISUALSVN SERVER // Getting started</a></p>
+<p><a href="https://superuser.com/questions/644278/how-to-use-visualsvn-server-and-tortoisesvn-client" target="_blank" rel="external">How to use VisualSVN Server and TortoiseSVN client</a></p>
+<p>个人工作的话，可以只搭建本地服务器。(未测试Jenkins是否能使用本地服务器)<br>为了多人共享工作(打包IOS需要Mac)，我们需要搭建一个SVN服务器用于存放我们的原始文件。<br>以下以多人共享工作，搭建SVN服务器为例:</p>
+<ol>
+<li>下载安装Visual SVN</li>
+<li>创建SVN Repository<br><img src="/img/Unity/VisalSVNCreateRepository.PNG" alt="VisalSVNCreateRepository"></li>
+<li>设置用户成员访问读写权限<br><img src="/img/Unity/VisualSVNUserManager.PNG" alt="VisualSVNUserManager"><br><img src="/img/Unity/VisualSVNGroupManager.PNG" alt="VisualSVNGroupManager"></li>
+<li>Check Out刚才创建的Repository</li>
+</ol>
+<p>Note:</p>
+<p>Mac上可以试试<a href="http://www.smartsvn.com/download" target="_blank" rel="external">SmartSVN</a></p>
+<h5 id="SVN典型目录结构">SVN典型目录结构</h5><p>SVN</p>
+<ul>
+<li>/trunk(主干，用于所有人开发)</li>
+<li>/branches(分支，用于存放多个分支副本(比如开发过程中为了保存特定节点分出来的))</li>
+<li>/tags(存放标记副本)</li>
+</ul>
+<h2 id="打包">打包</h2><p>平时做游戏开发，在完成整个游戏功能开发后，需要通过打包上真机测试。<br>把所有游戏资源代码打包成安装包的过程称为打包。</p>
+<h3 id="多平台">多平台</h3><p>在多平台的处理上，Unity已经帮我们做了很大一部分工作了。让我们大部分时间只需关心游戏核心开发(Unity部分API在不同平台有差异)，在打包这一块只需打选择对应平台即可。</p>
+<p>但Unity自带的打包，终究只包含最基本的打包流程，当我们有特殊需求时，我们需要通过Unity以及相关工具完成支持我们自定义的打包流程。</p>
+<h3 id="自动化">自动化</h3><p>在了解什么是自动化之前，让我们看看打包的基本流程。<br>在打包过程中，打包往往包含4个步骤。</p>
+<ol>
+<li>Preprocess(打包准备步骤)<br>这一步主要是为正式打包编译做准备，比如做一些平台相关设置，资源打包处理，文件复制等</li>
+<li>Build(打包编译步骤)<br>这一步是程序代码和资源正式打包成安装包的步骤，主要是通过指定打包参数执行打包。<br>Unity在打包到Android和IOS平台时有差异。Android是直接就打包出APK，而IOS要先打包成XCode工程，然后在通过编译XCode工程打包出Ipa安装包。</li>
+<li>Postprocess(打包结束后期处理步骤)<br>这一步是打包完成后负责后续的自动化操作以及善后工作，比如在打包IOS时打包出XCode工程后，可以在这一步进行XCode工程的自动化处理部分(比如动态添加info.plist文件信息，动态插入代码等)</li>
+<li>Deploy(安装步骤)<br>这一步主要是打包好的安装包安装到真机的步骤</li>
+</ol>
+<p>如果没有自动化，我们需要一步一步人工手动去完成上面的步骤。<br>而自动化就是只需人工设置打包最基本的参数信息，然后通过一步就自动化完成上述步骤的过程。</p>
+<h4 id="Jenkins">Jenkins</h4><p><strong>Introduction</strong><br><a href="https://zh.wikipedia.org/wiki/Jenkins_(%E8%BD%AF%E4%BB%B6" target="_blank" rel="external">Jenkins是一个用Java编写的开源的持续集成工具。Jenkins提供了软件开发的持续集成服务。它运行在Servlet容器中（例如Apache Tomcat）。它支持软件配置管理（SCM）工具（包括AccuRev SCM、CVS、Subversion、Git、Perforce、Clearcase和RTC），可以执行基于Apache Ant和Apache Maven的项目，以及任意的Shell脚本和Windows批处理命令。Jenkins的主要开发者是川口耕介。</a>)</p>
+<p>本人使用目的：<br>做Unity游戏打包机，持续集成自动化打包流程，做到一键打包。</p>
+<p><a href="https://jenkins.io/doc/" target="_blank" rel="external"><strong>Deployment</strong></a></p>
+<ol>
+<li>Download Jeakins</li>
+<li>Open up a terminal in the download directory and run java -jar jenkins.war</li>
+<li>Browse to <a href="http://localhost:8080" target="_blank" rel="external">http://localhost:8080</a> and follow the instructions to complete the installation.(安装插件)</li>
+</ol>
+<h4 id="Jenkins实战">Jenkins实战</h4><h5 id="自由风格构建系统">自由风格构建系统</h5><p>主要是采用特定的构建系统去构建自动化。(比如java通过ant||Maven，windows通过bat||python等)<br><img src="/img/Unity/OpenAutomation.PNG" alt="OpenAutomation"></p>
+<p>如果不想采用Pipeline编写自动化流程，也可以通过直接编写调用Windows Bat或者Python等命令触发自动化流程。<br><img src="/img/Unity/OpenAutomationWithCommands.PNG" alt="OpenAutomationWithCommands"></p>
+<p>Unity3d Plugin不支持Pipeline，所以为了使用Unity3d Plugins,这里采用自由风格构建系统来搭建Unity3D的自动化打包。</p>
+<ol>
+<li>Create Free Style(创建自由风格项目)<br>新建 -&gt; 构建一个自由风格的软件项目<br><img src="/img/Unity/JenkinsFreeStyleProject.PNG" alt="JenkinsFreeStyleProject"></li>
+<li>设置参数构造(用于自定义参数添加)<br><img src="/img/Unity/FreeStyleWithParametersSetting.PNG" alt="FreeStyleWithParametersSetting"></li>
+<li>设置代码来源<br><img src="/img/Unity/FreeStyleWithSourceSetting.PNG" alt="FreeStyleWithSourceSetting"></li>
+<li>设置构建命令(bat || python || unity3d……)<br><img src="/img/Unity/FreeStyleWithCommandsSetting.PNG" alt="FreeStyleWithCommandsSetting"></li>
+<li>设置构建完毕后的一些行为(比如邮件通知)<br><img src="/img/Unity/FreeStyleWithPostProcessing.PNG" alt="FreeStyleWithPostProcessing"></li>
+</ol>
+<p>Note:<br>想要改变默认的workspace路径的话。<br>设置-&gt;使用自定义的工作空间(只针对当前设置的自由风格项目有效)<br><img src="/img/Unity/FreeStyleWithOwnWorkspace.PNG" alt="FreeStyleWithOwnWorkspace"></p>
+<h5 id="Pipeline">Pipeline</h5><h6 id="What">What</h6><p><a href="https://jenkins.io/doc/" target="_blank" rel="external">Jenkins Pipeline is a suite of plugins which supports implementing and integrating continuous delivery pipelines into Jenkins. Pipeline provides an extensible set of tools for modeling simple-to-complex delivery pipelines “as code”.</a>(这里的Pipeline是一套插件，用于支持持续自动化集成编写。好比脚本文件定义一系列的自动化流程，但并不等价于脚本。)</p>
+<p>那么Pipeline是用什么语言编写了？<br>Jenkins是基于Java的，Pipeline的编写是基于Groovy。<br><a href="https://zh.wikipedia.org/wiki/Groovy" target="_blank" rel="external">Groovy是Java平台上设计的面向对象编程语言。这门动态语言拥有类似Python、Ruby和Smalltalk中的一些特性，可以作为Java平台的脚本语言使用。</a></p>
+<h6 id="Why">Why</h6><p>为什么需要Pipeline？</p>
+<ol>
+<li>Code — 可管理可编辑可视化的自动化流程脚本</li>
+<li>Durable — 可持续化开发</li>
+<li>Pausable — 可以自动也可以停止等待输入</li>
+<li>Versatile — 支持复杂的持续交付需求</li>
+<li>Extensible — “The Pipeline plugin supports custom extensions to its DSL [5: Domain-Specific<br>Language] and multiple options for integration with other plugins.”</li>
+</ol>
+<h6 id="How">How</h6><p>接下来让我们看看如何创建一个Pipeline。</p>
+<ol>
+<li>下载Pipeline插件<br><img src="/img/Unity/DownloadPipelinePlugin.PNG" alt="DownloadPipelinePlugin"></li>
+<li>New Item — 新建Pipeline(选择Pipeline类型)<br><img src="/img/Unity/CreatePipelineStep1.PNG" alt="CreatePipeline"></li>
+<li>Configure Pipeline<ul>
+<li>配置Pipeline的名字<br><img src="/img/Unity/CreatePipelineStep2.PNG" alt="ConfigurePipeline"></li>
+<li>设置Jenkins Pipeline Code的来源<ul>
+<li>网页版编写<br><img src="/img/Unity/SetPipelineSourceFromWeb.PNG" alt="CreatePipelineSetPipelineSource"></li>
+<li>SVN下含Jenksfile文件<br><img src="/img/Unity/SetPipelineSourceFromSVN.PNG" alt="CreatePipelineSetPipelineSourceSVN"><br>这里不深入讨论Jenkins的各种设置，详情查看官方文档<a href="https://jenkins.io/user-handbook.pdf" target="_blank" rel="external">Jenkins User Handbook</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>Note:<br>Pipeline supports two syntaxes, Declarative and Scripted Pipeline</p>
+<h6 id="Jenkinsfile">Jenkinsfile</h6><p>除了直接在网页上编写Pipeline自动化流程。我们也可以指定Jenkinsfile文件作为编写Pipeline的地方。</p>
+<p>为什么需要Jenkinsfile？<br>主要还是为了放入版本管理，方便所有人可视化看到自动化流程代码。</p>
+<p>e.g.<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#!groovy</span></span><br><span class="line">pipeline &#123;</span><br><span class="line">    <span class="comment">//agent指定jenkins从哪里以及如何执行pipeline</span></span><br><span class="line">    <span class="comment">//any表示从any available agent处执行</span></span><br><span class="line">    agent any</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//看定义在那一层，就只针对那一层起作用(pipeline一层针对pipeline。stage一层针对特定stage)</span></span><br><span class="line">    <span class="comment">//也可以修改已定义的环境变量值</span></span><br><span class="line">    environment &#123;</span><br><span class="line">        UNITY_PROJECT_PATH = <span class="string">'E:\\TonyTang\\Work\\Projects\\TGame_code'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//自定义参数</span></span><br><span class="line">    <span class="comment">//可以通过pipeline代码编写，也可以直接在web UI界面上添加</span></span><br><span class="line">    parameters&#123;</span><br><span class="line">        <span class="keyword">string</span>(name: <span class="string">'Platform'</span>, defaultValue: <span class="string">'Android'</span>, description: <span class="string">'Which plaftform is using?'</span>)</span><br><span class="line">        booleanParam(name: <span class="string">'DEBUG_BUILD'</span>, defaultValue: <span class="keyword">true</span>, description: <span class="string">'Is debug version?'</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(<span class="string">'postprocess'</span>)&#123;</span><br><span class="line">            <span class="comment">//when表示执行条件判断</span></span><br><span class="line">            <span class="comment">//决定stage是否应该执行</span></span><br><span class="line">            <span class="keyword">when</span>&#123;</span><br><span class="line">                expression</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">params</span>.DEBUG_BUILD</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            steps&#123;</span><br><span class="line">                <span class="comment">//params是访问pipeline里定义的所有parameters入口</span></span><br><span class="line">                echo <span class="string">"Current platform is $&#123;params.Platform&#125;"</span></span><br><span class="line">                echo <span class="string">'postprocess'</span></span><br><span class="line">                echo UNITY_PROJECT_PATH</span><br><span class="line">                <span class="comment">//env是jenkins定义的全局的环境变量</span></span><br><span class="line">                <span class="comment">//http://localhost:8080/job/TonyTangPipeline/pipeline-syntax/globals</span></span><br><span class="line">                echo env.WORKSPACE</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(<span class="string">'build'</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                <span class="comment">//Windows调用bat</span></span><br><span class="line">                <span class="comment">//Mac Linux采用sh</span></span><br><span class="line">                bat <span class="string">'TonyTangPipeline'</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(<span class="string">'deploy'</span>)&#123;</span><br><span class="line">            steps&#123;</span><br><span class="line">                echo <span class="string">'deploy'</span></span><br><span class="line">                <span class="comment">//支持调用python</span></span><br><span class="line">                bat <span class="string">'python FirstPython.py'</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//post表示Pipeline执行完之后执行，做一些clean up操作</span></span><br><span class="line">    post &#123;</span><br><span class="line">        <span class="comment">//根据pipeline的结果做特定操作</span></span><br><span class="line">        always&#123;</span><br><span class="line">            echo <span class="string">'Always!'</span></span><br><span class="line">        &#125;</span><br><span class="line">        success &#123;</span><br><span class="line">            echo <span class="string">'Success!'</span></span><br><span class="line">        &#125;</span><br><span class="line">        failure&#123;</span><br><span class="line">            echo <span class="string">'Failed!'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Script Pipeline(Optional)</span></span><br><span class="line"><span class="comment">//在pipeline执行完成之后执行</span></span><br><span class="line"><span class="comment">//支持大部分Groovy</span></span><br><span class="line"><span class="comment">//Script Pipeline的参数定义需要在properties里</span></span><br><span class="line">properties([parameters([<span class="keyword">string</span>(defaultValue: <span class="string">'Android'</span>, description: <span class="string">'Which platform is using?'</span>, name: <span class="string">'Platform'</span>)])])</span><br><span class="line"></span><br><span class="line">node &#123;</span><br><span class="line">    <span class="comment">//定义字符串</span></span><br><span class="line">    def Date = <span class="string">'2017//4//26'</span></span><br><span class="line">    stage(<span class="string">'postprocess'</span>) &#123;</span><br><span class="line">        <span class="comment">//要使用$&#123;&#125;访问string，需要用""</span></span><br><span class="line">        echo <span class="string">"Date = $&#123;Date&#125;"</span></span><br><span class="line">        echo <span class="string">"Current platform is $&#123;params.Platform&#125;"</span></span><br><span class="line">        echo <span class="string">'postprocess....'</span></span><br><span class="line">    &#125;</span><br><span class="line">    stage(<span class="string">'build'</span>) &#123;</span><br><span class="line">        echo <span class="string">'build....'</span></span><br><span class="line">    &#125;</span><br><span class="line">    stage(<span class="string">'deploy'</span>) &#123;</span><br><span class="line">        echo <span class="string">'deploy....'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Note:</p>
+<ol>
+<li>指定使用版本管理后，Jenkinsfile必须放到版本管理里才能找到。</li>
+<li>Jenkinsfile必需放到前面设置的本机相对路径下才能找到。</li>
+</ol>
+<h6 id="Problems">Problems</h6><ol>
+<li>构建参数一旦通过代码指定添加后，代码删除了依然存在</li>
+<li>No valid crumb was included in the request</li>
+</ol>
+<p>Solutions:</p>
+<ol>
+<li>通过Pipeline -&gt; Setting的UI界面手动删除参数</li>
+<li>在系统管理 –&gt; Configure Global Security<br>取消“防止跨站点请求伪造（Prevent Cross Site Request Forgery exploits）”的勾选。</li>
+</ol>
+<h5 id="Tools">　Tools</h5><h6 id="Pipeline_Tools">Pipeline Tools</h6><p><a href="http://localhost:8080/pipeline-syntax/" target="_blank" rel="external">Snippet Generator</a><br><img src="/img/Unity/PipelineSnippetGenerator.PNG" alt="PipelineSnippetGenerator"><br>这是一个很有用帮助快速编写Pipeline的工具,他可以帮助我们把我们熟悉的自动化脚本转换成Pipeline格式的语句，也可以快速生成一些特定功能的脚本(比如邮件功能等)。(Jenkins提供)</p>
+<p><a href="http://localhost:8080/pipeline-syntax/globals" target="_blank" rel="external">Pipiline全局环境变量</a></p>
+<h6 id="Email_Plugin">Email Plugin</h6><p>利用现有的SMTP(腾讯，网易等)服务进行搭建邮件提醒，详情参见如下：<br><a href="http://blog.csdn.net/houyefeng/article/details/50914582" target="_blank" rel="external">Jenkins——应用篇——插件使用——Mailer Plugin</a><br>Jenkins自带Email配置如下:<br>Manage Jenkins -&gt; Configure System -&gt; E-mail Notification<br><img src="/img/Unity/EmailNotificationSetting.png" alt="EmailNotificationSetting"><br>Jenkins自带的Mailer提供的功能很有限，为了提供更多更广的功能，这里我们需要用到<a href="wiki.jenkins-ci.org/display/JENKINS/Email-ext+plugin">Jenkins Email Extension Plugin</a><br><a href="http://m.v4.cc/News-966281.html" target="_blank" rel="external">Jenkins进阶系列之——01使用email-ext替换Jenkins的默认邮件通知</a><br>Email Extension Plugin配置详情参见如下：<br>Manage Jenkins -&gt; Configure System -&gt; Extended E-mail Notification<br><img src="/img/Unity/ExtendedEmailNotificationPart1.png" alt="ExtendedEmailNotificationPart1"><br>针对workspace自定义邮件内容配置如下：<br><img src="/img/Unity/WorkspaceExtendedEmailSetting.png" alt="WorkspaceExtendedEmailSetting"></p>
+<h6 id="Unity3D_Plugin">Unity3D Plugin</h6><p>管理插件-&gt;<a href="https://plugins.jenkins.io/unity3d-plugin" target="_blank" rel="external">Unity3d Plugin</a><br>Unity本身是支持从命令行启动U3D，执行Editor特定方法的。<br>但Unity3D Plugin是一个针对Jenkins集成Unity命令行的插件，可以帮助我们直接在Jenkins上编写U3D命令，对于Jenkins更加友好。<br>好处如下:</p>
+<ol>
+<li>Log file redirection(Log重定位到Jenkins界面)</li>
+<li>Distributed builds(分布式编译)</li>
+</ol>
+<p><strong>Unity3D Plugin实战配置</strong></p>
+<ol>
+<li>Configure Unity Installation Path<br>System Setting -&gt; Global Tool Configuration<br><img src="/img/Unity/JenkinsUnityPathConfiguration.PNG" alt="JenkinsUnityPathConfiguration"></li>
+<li><p>编写Unity下可通过命令行调用的代码</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UnityBuild</span> &#123;</span><br><span class="line"></span><br><span class="line">    [MenuItem(<span class="string">"Custom/UnityBuild/OneKeyBuild"</span>)]</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">OneKeyBuild</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Debug.Log(<span class="string">"OneKeyBuild() Called!"</span>);   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置Unity命令行运行启动以及参数<br><img src="/img/Unity/JenkinsUnityMethodCall.PNG" alt="JenkinsUnityMethodCall"><br><img src="/img/Unity/JenkinsUnityMethodCallOutput.PNG" alt="JenkinsUnityMethodCallOutput"><br>从上面可以看出我们成功的配置了Jenkins以及对于Unity打包方法的调用(在这一步我们可以做很多我们自己对于Unity打包的流程设置，资源打包或者其他的预处理等)</p>
+</li>
+<li>编写完整的打包设置以及相关预处理代码<br>待续…….<br>接下来是为了在IOS进行Jenkins自动化打包而设置的步骤</li>
+<li>在IOS搭配SmartSVN拉VisualSVN上的文件(Windows上用TortoiseSVN作为SVN客户端即可)</li>
+<li>在IOS上配置Jenkins(和Windows上类似，需要下载Java支持Jenkins运行)<br>这里讲几个配置搭建Mac OSX的Jenkins时遇到的坑：<ol>
+<li>配置Unity插件Unity安装路径问题<br> Windows上是到Editor上一层即可。IOS是到Unity.app这一层(Unity.app(e.g. /Applications/Unity/Unity.app/)在命令行里可以往里访问)</li>
+<li>指定IOS Subversion URL(e.g. <a href="https://192.168.1.3/svn/***)时显示无法访问或者不正确的credential(这里是因为默认的Mac" target="_blank" rel="external">https://192.168.1.3/svn/***)时显示无法访问或者不正确的credential(这里是因为默认的Mac</a> SVN版本过低需要更新Mac OSX自带的SVN)</li>
+<li>更新Mac OSX自带SVN时在添加新装的SVN到环境变量里后依然显示是老版的SVN<br> 在~/目录下touch .bash_profile(创建.bash_profile)<br> 然后添加环境变量路径export PATH=”/opt/subversion/bin;$PATH”<br> 使其环境变量路径设置生效source .bash_profile<br> 查看当前SVN版本svn —version<br> 如果上一步依然显示是旧版SVN且当前系统是10.11<br> 那么我们就需要删除Mac OSX上原本的SVN以实现更新SVN的目的<br> 查看旧版SVN路径which svn<br> 删除旧版SVN(sudo -s rm -rf /svnpath/svn<em>)(此时如果出现No Permission to remove，那么恭喜，你是用的10.11系统。10.11推出了SIP(System Integrity Protection)机制去防止root用户对于部分文件的操作权限限制用于防止病毒破坏或修改重要文件)<br> 为了能够删除旧版SVN，这里我们需要进到Recover Mode去临时关闭SIP(重启电脑一直按住cmd+R，然后在terminal里执行csrutil disable，关闭成功后就可以重启电脑去删除旧版svn了)<br> 然后将新版SVN链接到旧版SVN执行路径(sudo -s ln -s /opt/subversion/bin/svn</em> /svnpath)<br> 最后到Recover Mode里恢复SIP(csrutil enable)</li>
+<li>打包IOS时报错：_RegisterApplication(), FAILED TO establish the default connection to the WindowServer, _CGSDefaultConnection() is NULL.<br> 这是因为Jenkins默认安装时是以Jenkins作为用户和组。开机自启动时也是以Jenkins用户和组来运行的。而Unity我是默认安装在我自己的用户apple和admin组下。所以在Jenkins需要启动Unity时应该是没有权限调用 Unity Editor 的命令行。所以我们要做的就是确保Unity和Jenkins运行在同一个User和Group下。<br> 以下采用把Jenkins改到apple和wheel下运行以支持Unity的命令行运行。<br> 详情参见<a href="http://7dot9.com/2016/11/18/macos-jenkins-ci-unity-setup-config-guide/" target="_blank" rel="external">macOS 安装配置 Jenkins 持续集成 Unity 项目指南</a></li>
+<li>指定Custom Workspace(自定义到桌面特定目录后每次都报Failed to mkdir，这个跟第四个问题是同一个问题，默认Jenkins用户权限问题)</li>
+</ol>
+</li>
+</ol>
+<p>Note:<br>很多文件是Unity自动生成的(比如Library目录)，我们无需加入版本管理(SVN只要不加入版本管理即可)</p>
+<p>Note:<br>Unity3d Plugin不支持在Pipeline里添加。<br>同时Unity3d Plugin只在3.4.2 to 5.0.1的版本下测试过。(经本人测试在Unity5.4.0f3的版本也能正常使用)</p>
+<h4 id="脚本语言">脚本语言</h4><p>为了快速编写一些自动化任务，我们往往需要用到脚本语言。</p>
+<h5 id="Shell">Shell</h5><p>Windows上的bat，power shell<br>Linux上的shell<br>好处：<br>简单快速的编写一些系统相关的任务(比如文件复制等)<br>缺点：<br>有平台差异<br>待续……</p>
+<h5 id="Python(严格意义上不算脚本语言)">Python(严格意义上不算脚本语言)</h5><p>好处：</p>
+<ol>
+<li>跨平台</li>
+<li>解释性语言，开发方便快速</li>
+<li>库丰富<br>待续……</li>
+</ol>
+<h4 id="IOS自动化打包">IOS自动化打包</h4><h5 id="XUPorter_or_Unity_API(PBXFroject)">XUPorter or Unity API(PBXFroject)</h5><p>待续……</p>
+<h1 id="References">References</h1><p><a href="https://www.visualsvn.com/server/" target="_blank" rel="external">Visual SVN</a><br><a href="https://zh.wikipedia.org/wiki/Groovy" target="_blank" rel="external">Groovy</a><br><a href="https://wiki.jenkins-ci.org/display/JENKINS/Unity3dBuilder+Plugin#Unity3dBuilderPlugin-Usageguide" target="_blank" rel="external">Uniy3d Plugin</a><br><a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001374027586935cf69c53637d8458c9aec27dd546a6cd6000" target="_blank" rel="external">集中式VS分布式</a><br><a href="http://blog.csdn.net/houyefeng/article/details/50914582" target="_blank" rel="external">Jenkins——应用篇——插件使用——Mailer Plugin</a><br><a href="http://www.cnblogs.com/zz0412/p/jenkins_jj_01.html" target="_blank" rel="external">Jenkins进阶系列之——01使用email-ext替换Jenkins的默认邮件通知</a><br><a href="http://7dot9.com/2016/11/18/macos-jenkins-ci-unity-setup-config-guide/" target="_blank" rel="external">macOS 安装配置 Jenkins 持续集成 Unity 项目指南</a><br><a href="http://www.it610.com/article/3905365.htm" target="_blank" rel="external">MAC EI Capitan上更新系统自带SVN版本(关闭SIP方能sudo rm)</a><br><a href="https://support.apple.com/en-us/HT204899" target="_blank" rel="external">About System Integrity Protection on your Mac</a><br><a href="https://wiki.jenkins-ci.org/display/JENKINS/Email-ext+plugin#Email-extplugin-TemplateExamples" target="_blank" rel="external">Email-ext plugin</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2017/04/29/Unity自动化打包/" data-title="Unity自动化打包 | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/05/07/Unity自动化打包/" title="">
+  <strong>上一篇：</strong><br/>
+  <span>
+  (no title)</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/02/17/Editor-Sublime-Text-3/"  title="Editor-Sublime-Text-3">
+ <strong>下一篇：</strong><br/> 
+ <span>Editor-Sublime-Text-3
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2017/04/29/Unity自动化打包/" data-title="Unity自动化打包" data-url="http://tonytang1990.github.io/2017/04/29/Unity自动化打包/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity自动化打包"><span class="toc-number">1.</span> <span class="toc-text">Unity自动化打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#版本控制"><span class="toc-number">1.1.</span> <span class="toc-text">版本控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#集中式_vs_分布式"><span class="toc-number">1.1.1.</span> <span class="toc-text">集中式 vs 分布式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Visual_SVN_Server与Tortoise_SVN"><span class="toc-number">1.1.2.</span> <span class="toc-text">Visual SVN Server与Tortoise SVN</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Visual_SVN_Server"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">Visual SVN Server</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Tortoise_SVN"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">Tortoise SVN</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SVN实战实用"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">SVN实战实用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#搭建SVN_Server"><span class="toc-number">1.1.2.3.1.</span> <span class="toc-text">搭建SVN Server</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SVN典型目录结构"><span class="toc-number">1.1.2.3.2.</span> <span class="toc-text">SVN典型目录结构</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打包"><span class="toc-number">1.2.</span> <span class="toc-text">打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多平台"><span class="toc-number">1.2.1.</span> <span class="toc-text">多平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自动化"><span class="toc-number">1.2.2.</span> <span class="toc-text">自动化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Jenkins"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">Jenkins</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Jenkins实战"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">Jenkins实战</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#自由风格构建系统"><span class="toc-number">1.2.2.2.1.</span> <span class="toc-text">自由风格构建系统</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Pipeline"><span class="toc-number">1.2.2.2.2.</span> <span class="toc-text">Pipeline</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#What"><span class="toc-number">1.2.2.2.2.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Why"><span class="toc-number">1.2.2.2.2.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#How"><span class="toc-number">1.2.2.2.2.3.</span> <span class="toc-text">How</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Jenkinsfile"><span class="toc-number">1.2.2.2.2.4.</span> <span class="toc-text">Jenkinsfile</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Problems"><span class="toc-number">1.2.2.2.2.5.</span> <span class="toc-text">Problems</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Tools"><span class="toc-number">1.2.2.2.3.</span> <span class="toc-text">　Tools</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Pipeline_Tools"><span class="toc-number">1.2.2.2.3.1.</span> <span class="toc-text">Pipeline Tools</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Email_Plugin"><span class="toc-number">1.2.2.2.3.2.</span> <span class="toc-text">Email Plugin</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Unity3D_Plugin"><span class="toc-number">1.2.2.2.3.3.</span> <span class="toc-text">Unity3D Plugin</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#脚本语言"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">脚本语言</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Shell"><span class="toc-number">1.2.2.3.1.</span> <span class="toc-text">Shell</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Python(严格意义上不算脚本语言)"><span class="toc-number">1.2.2.3.2.</span> <span class="toc-text">Python(严格意义上不算脚本语言)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IOS自动化打包"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">IOS自动化打包</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#XUPorter_or_Unity_API(PBXFroject)"><span class="toc-number">1.2.2.4.1.</span> <span class="toc-text">XUPorter or Unity API(PBXFroject)</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#References"><span class="toc-number">2.</span> <span class="toc-text">References</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
