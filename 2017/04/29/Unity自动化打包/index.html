@@ -53,10 +53,11 @@ Unity自动化打包过程中的相关工具
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/EmailNotificationSetting.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ExtendedEmailNotificationPart1.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/WorkspaceExtendedEmailSetting.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/EmailResult.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/JenkinsUnityPathConfiguration.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/JenkinsUnityMethodCall.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/JenkinsUnityMethodCallOutput.PNG">
-<meta property="og:updated_time" content="2017-06-11T18:14:48.559Z">
+<meta property="og:updated_time" content="2017-06-11T18:29:51.860Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity自动化打包">
 <meta name="twitter:description" content="Unity自动化打包本章节主要是为了学习Unity自动化打包相关知识以及运用。本文大部分属于本人学习理解的东西，如有不对欢迎指出，学习交流，共同进步。
@@ -255,7 +256,7 @@ Unity自动化打包过程中的相关工具
 </ol>
 <h5 id="Tools">　Tools</h5><h6 id="Pipeline_Tools">Pipeline Tools</h6><p><a href="http://localhost:8080/pipeline-syntax/" target="_blank" rel="external">Snippet Generator</a><br><img src="/img/Unity/PipelineSnippetGenerator.PNG" alt="PipelineSnippetGenerator"><br>这是一个很有用帮助快速编写Pipeline的工具,他可以帮助我们把我们熟悉的自动化脚本转换成Pipeline格式的语句，也可以快速生成一些特定功能的脚本(比如邮件功能等)。(Jenkins提供)</p>
 <p><a href="http://localhost:8080/pipeline-syntax/globals" target="_blank" rel="external">Pipiline全局环境变量</a></p>
-<h6 id="Email_Plugin">Email Plugin</h6><p>利用现有的SMTP(腾讯，网易等)服务进行搭建邮件提醒，详情参见如下：<br><a href="http://blog.csdn.net/houyefeng/article/details/50914582" target="_blank" rel="external">Jenkins——应用篇——插件使用——Mailer Plugin</a><br>Jenkins自带Email配置如下:<br>Manage Jenkins -&gt; Configure System -&gt; E-mail Notification<br><img src="/img/Unity/EmailNotificationSetting.png" alt="EmailNotificationSetting"><br>Jenkins自带的Mailer提供的功能很有限，为了提供更多更广的功能，这里我们需要用到<a href="wiki.jenkins-ci.org/display/JENKINS/Email-ext+plugin">Jenkins Email Extension Plugin</a><br><a href="http://m.v4.cc/News-966281.html" target="_blank" rel="external">Jenkins进阶系列之——01使用email-ext替换Jenkins的默认邮件通知</a><br>Email Extension Plugin配置详情参见如下：<br>Manage Jenkins -&gt; Configure System -&gt; Extended E-mail Notification<br><img src="/img/Unity/ExtendedEmailNotificationPart1.png" alt="ExtendedEmailNotificationPart1"><br>针对workspace自定义邮件内容配置如下：<br><img src="/img/Unity/WorkspaceExtendedEmailSetting.png" alt="WorkspaceExtendedEmailSetting"></p>
+<h6 id="Email_Plugin">Email Plugin</h6><p>利用现有的SMTP(腾讯，网易等)服务进行搭建邮件提醒，详情参见如下：<br><a href="http://blog.csdn.net/houyefeng/article/details/50914582" target="_blank" rel="external">Jenkins——应用篇——插件使用——Mailer Plugin</a><br>Jenkins自带Email配置如下:<br>Manage Jenkins -&gt; Configure System -&gt; E-mail Notification<br><img src="/img/Unity/EmailNotificationSetting.png" alt="EmailNotificationSetting"><br>Jenkins自带的Mailer提供的功能很有限，为了提供更多更广的功能，这里我们需要用到<a href="wiki.jenkins-ci.org/display/JENKINS/Email-ext+plugin">Jenkins Email Extension Plugin</a><br><a href="http://m.v4.cc/News-966281.html" target="_blank" rel="external">Jenkins进阶系列之——01使用email-ext替换Jenkins的默认邮件通知</a><br>Email Extension Plugin配置详情参见如下：<br>Manage Jenkins -&gt; Configure System -&gt; Extended E-mail Notification<br><img src="/img/Unity/ExtendedEmailNotificationPart1.png" alt="ExtendedEmailNotificationPart1"><br>针对workspace自定义邮件内容配置如下：<br><img src="/img/Unity/WorkspaceExtendedEmailSetting.png" alt="WorkspaceExtendedEmailSetting"><br>最终收到Email提醒:<br><img src="/img/Unity/EmailResult.PNG" alt="EmailResult"></p>
 <h6 id="Unity3D_Plugin">Unity3D Plugin</h6><p>管理插件-&gt;<a href="https://plugins.jenkins.io/unity3d-plugin" target="_blank" rel="external">Unity3d Plugin</a><br>Unity本身是支持从命令行启动U3D，执行Editor特定方法的。<br>但Unity3D Plugin是一个针对Jenkins集成Unity命令行的插件，可以帮助我们直接在Jenkins上编写U3D命令，对于Jenkins更加友好。<br>好处如下:</p>
 <ol>
 <li>Log file redirection(Log重定位到Jenkins界面)</li>
