@@ -1,0 +1,592 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Android-Sign-Study | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="Android Sign Study这一章主要是学习Android签包相关的概念和方法。通过采用原始签包工具(zipalign &amp;amp; apksigner &amp;amp; keytool)，使用命令行的形式对于已经经过Unity打包签名的包进行重签来学习理解相关概念。
+IntroductionWhenAndroid requires that all APKs be digitally signe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android-Sign-Study">
+<meta property="og:url" content="http://tonytang1990.github.io/2017/06/14/Android-Sign-Study/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="Android Sign Study这一章主要是学习Android签包相关的概念和方法。通过采用原始签包工具(zipalign &amp;amp; apksigner &amp;amp; keytool)，使用命令行的形式对于已经经过Unity打包签名的包进行重签来学习理解相关概念。
+IntroductionWhenAndroid requires that all APKs be digitally signe">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Android/CertificationVerificationFlowChat.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Android/apktoolprepare.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Android/apktooldecode.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Android/apktoolbuild.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Android/zipalignalignment.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Android/keytoolgenerakeystore.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Android/keystore.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Android/KeyStoreInfo.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Android/apksignersigne.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Android/apksignerverify.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Android/AndroidManifestHashValue.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Android/SHA1AfterBase64.PNG">
+<meta property="og:updated_time" content="2017-06-20T17:02:18.767Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android-Sign-Study">
+<meta name="twitter:description" content="Android Sign Study这一章主要是学习Android签包相关的概念和方法。通过采用原始签包工具(zipalign &amp;amp; apksigner &amp;amp; keytool)，使用命令行的形式对于已经经过Unity打包签名的包进行重签来学习理解相关概念。
+IntroductionWhenAndroid requires that all APKs be digitally signe">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">有时候不是习惯了一个人，而是在没有认可自己之前选择了一个人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/06/14/Android-Sign-Study/" title="Android-Sign-Study" itemprop="url">Android-Sign-Study</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2017-06-14T02:12:01.000Z" itemprop="datePublished"> 發表於 2017-06-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Android_Sign_Study"><span class="toc-number">1.</span> <span class="toc-text">Android Sign Study</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">2.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#When"><span class="toc-number">2.1.</span> <span class="toc-text">When</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#What"><span class="toc-number">2.2.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-number">2.3.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conceptions"><span class="toc-number">2.4.</span> <span class="toc-text">Conceptions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据摘要(Message_Digest)"><span class="toc-number">2.4.1.</span> <span class="toc-text">数据摘要(Message Digest)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数字签名(Signature)"><span class="toc-number">2.4.2.</span> <span class="toc-text">数字签名(Signature)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CA机构(Certification_Authority)"><span class="toc-number">2.4.3.</span> <span class="toc-text">CA机构(Certification Authority)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#根证书"><span class="toc-number">2.4.4.</span> <span class="toc-text">根证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数字证书(Certification)"><span class="toc-number">2.4.5.</span> <span class="toc-text">数字证书(Certification)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#keystores"><span class="toc-number">2.4.6.</span> <span class="toc-text">keystores</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How"><span class="toc-number">2.5.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#apktool"><span class="toc-number">2.5.1.</span> <span class="toc-text">apktool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zipalign"><span class="toc-number">2.5.2.</span> <span class="toc-text">zipalign</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#keytool"><span class="toc-number">2.5.3.</span> <span class="toc-text">keytool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#apksigner"><span class="toc-number">2.5.4.</span> <span class="toc-text">apksigner</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deep"><span class="toc-number">2.6.</span> <span class="toc-text">Deep</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity实战"><span class="toc-number">3.</span> <span class="toc-text">Unity实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="Android_Sign_Study">Android Sign Study</h1><p>这一章主要是学习Android签包相关的概念和方法。<br>通过采用原始签包工具(zipalign &amp; apksigner &amp; keytool)，使用命令行的形式对于已经经过Unity打包签名的包进行重签来学习理解相关概念。</p>
+<h1 id="Introduction">Introduction</h1><h2 id="When">When</h2><p><a href="https://developer.android.com/studio/publish/app-signing.html" target="_blank" rel="external">Android requires that all APKs be digitally signed with a certificate before they can be installed.</a><br>Android要求所有的APK都必须通过证书签名否则不能被安装到设备上。</p>
+<h2 id="What">What</h2><p><a href="https://developer.android.com/studio/publish/app-signing.html" target="_blank" rel="external">When you sign an APK, the signing tool attaches the public-key certificate to the APK. The public-key certificate serves as as a “fingerprint” that uniquely associates the APK to you and your corresponding private key.</a><br>签名可以唯一标示我们自己的APK。每个签名的APK都会有对应的公钥证书,而这个公钥证书会与我们的private key唯一对应，我们只需保证private key不泄露，就能保证我们签名的程序的唯一性。(公钥证书和私钥是由有公信力的机构分发的确保了公钥的正确性，那么与之唯一对应的私钥就保证了APK的唯一性。详情见后面)</p>
+<h2 id="Why">Why</h2><p>那么我们为什么需要签名了？<br>以下引用至<a href="https://kknews.cc/tech/yxlvj.html" target="_blank" rel="external">Android APK签名原理及方法</a>:</p>
+<ol>
+<li><p>应用程序升级<br>如果想无缝升级一个应用，Android系统要求应用程序的新版本与老版本具有相同的签名与包名。若包名相同而签名不同，系统会拒绝安装新版应用。</p>
+</li>
+<li><p>应用程序模块化<br>Android系统可以允许同一个证书签名的多个应用程序在一个进程里运行，系统实际把他们作为一个单个的应用程序。此时就可以把我们的应用程序以模块的方式进行部署，而用户可以独立的升级其中的一个模块。</p>
+</li>
+<li><p>代码或数据共享<br>Android提供了基于签名的权限机制，一个应用程序可以为另一个以相同证书签名的应用程序公开自己的功能与数据，同时其它具有不同签名的应用程序不可访问相应的功能与数据。</p>
+</li>
+<li><p>应用程序的可认定性<br>签名信息中包含有开发者信息，在一定程度上可以防止应用被伪造。例如网易云加密对Android APK加壳保护中使用的“校验签名（防二次打包）”功能就是利用了这一点。</p>
+</li>
+</ol>
+<h2 id="Conceptions">Conceptions</h2><h3 id="数据摘要(Message_Digest)">数据摘要(Message Digest)</h3><p>以下内容引用至<a href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000" target="_blank" rel="external">Android签名机制之—-签名过程详解</a><br>这个知识点很好理解，百度百科即可，其实他也是一种算法，就是对一个数据源进行一个算法之后得到一个摘要，也叫作数据指纹，不同的数据源，数据指纹肯定不一样，就和人一样。</p>
+<p>消息摘要算法（Message Digest Algorithm）是一种能产生特殊输出格式的算法，其原理是根据一定的运算规则对原始数据进行某种形式的信息提取，被提取出的信息就被称作原始数据的消息摘要。<br>著名的摘要算法有RSA公司的MD5算法和SHA-1算法及其大量的变体。<br>消息摘要的主要特点有：<br>1）无论输入的消息有多长，计算出来的消息摘要的长度总是固定的。例如应用MD5算法摘要的消息有128个比特位，用SHA-1算法摘要的消息最终有160比特位的输出。<br>2）一般来说（不考虑碰撞的情况下），只要输入的原始数据不同，对其进行摘要以后产生的消息摘要也必不相同，即使原始数据稍有改变，输出的消息摘要便完全不同。但是，相同的输入必会产生相同的输出。<br>3）具有不可逆性，即只能进行正向的信息摘要，而无法从摘要中恢复出任何的原始消息。</p>
+<p><strong>可以看出数据摘要确保了数据的完整性。</strong></p>
+<h3 id="数字签名(Signature)">数字签名(Signature)</h3><p>以下内容引用至<a href="http://andrewlcgu.github.io/2016/04/17/apk-sign-theroy/" target="_blank" rel="external">APK签名原理解析</a>:<br>数字签名是非对称密钥加密技术与数字摘要技术的应用。将信息摘要用发送者的私钥加密，与原文一起传送给接收者。接收者只有用发送者的公钥才能解密被加密的信息摘要，然后接收者用相同的Hash函数对收到的原文产生一个信息摘要，与解密的信息摘要做比对。如果相同，则说明收到的信息是完整的，在传输过程中没有被修改；不同则说明信息被修改过，因此数字签名能保证信息的完整性。并且由于只有发送者才有加密摘要的私钥，所以我们可以确定信息一定是发送者发送的(发送者的身份认证)。</p>
+<p><strong>可以看出数字签名确保了数据的正确性(数据来源可靠性)，但需要确保公钥的安全传输问题。</strong></p>
+<h3 id="CA机构(Certification_Authority)">CA机构(Certification Authority)</h3><p>以下内容引用至<a href="http://andrewlcgu.github.io/2016/04/17/apk-sign-theroy/" target="_blank" rel="external">APK签名原理解析</a>:<br>受信任的第三方，承担公钥体系中公钥的合法性检验的责任</p>
+<h3 id="根证书">根证书</h3><p>以下内容引用至<a href="http://andrewlcgu.github.io/2016/04/17/apk-sign-theroy/" target="_blank" rel="external">APK签名原理解析</a>:<br>是未被签名的公钥证书或自签名的证书;是CA认证中心给自己颁发的证书，是信任链的起始点。安装根证书意味着对这个CA认证中心的信任。用户在使用自己的数字证书之前必须先下载根证书。</p>
+<h3 id="数字证书(Certification)">数字证书(Certification)</h3><p>以下内容引用至<a href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000" target="_blank" rel="external">Android签名机制之—-签名过程详解</a>:<br>所谓数字证书，一般包含以下一些内容：</p>
+<ol>
+<li>证书的发布机构（Issuer）</li>
+<li>证书的有效期（Validity）</li>
+<li>消息发送方的公钥</li>
+<li>证书所有者（Subject）</li>
+<li>数字签名所使用的算法</li>
+<li>数字签名<br>可以看出，数字证书其实也用到了数字签名技术。只不过要签名的内容是消息发送方的公钥，以及一些其它信息。但与普通数字签名不同的是，数字证书中签名者不是随随便便一个普通的机构，而是要有一定公信力的机构。这就好像你的大学毕业证书上签名的一般都是德高望重的校长一样。一般来说，这些有公信力机构的根证书已经在设备出厂前预先安装到了你的设备上了。所以，数字证书可以保证数字证书里的公钥确实是这个证书的所有者的，或者证书可以用来确认对方的身份。数字证书主要是用来解决公钥的安全发放问题。<br><img src="/img/Android/CertificationVerificationFlowChat.PNG" alt="CertificationVerificationFlowChat"></li>
+</ol>
+<p><strong>可以看出通过获得权威的机构获取到唯一的数字证书，这样一来解决了前面数字签名提到的公钥安全传输问题(数字证书能够确保公钥的正确性)</strong></p>
+<h3 id="keystores">keystores</h3><p>因为没有正确签名的应用，Android系统不会安装或者运行。所以我们通过有公信力机构得到公钥证书以及与之唯一对应的私钥，我们就能验证特定应用是否是特定私钥签名的应用()<br>接下来我们了解下Android签名过程中一个重要概念：<br>keystore存储着公信力机构分发的私钥和公钥证书。<br>通过使用keystore签名APK，我们能够确保APK的唯一性。</p>
+<h2 id="How">How</h2><p>接下来通过使用相关签名工具来重签一个已经签过名的APK来实战学习理解签名过程。</p>
+<h3 id="apktool">apktool</h3><p>apktool是一个帮助我们编码和反编码APK的一个工具。<br>这里我有一个已经签过名的APK_Signed_Aligned.apk为例进行重签：<br>第一步：<br>准备好APK和apktool:<br><img src="/img/Android/apktoolprepare.PNG" alt="apktoolprepare"><br>第二步：<br>我们需要反编码APK：<br><img src="/img/Android/apktooldecode.PNG" alt="apktooldecode"><br>第三步:<br>替换APK_Signed_Aligned里的部分内容(比如替换Log之类的)然后进入刚才反编码的文件夹进行APK重编码(这时我们会得到一个重编码后APK_Unsigned_Unaligned.apk)：<br><img src="/img/Android/apktoolbuild.PNG" alt="apktoolbuild"><br>Note:<br><a href="https://ibotpeaches.github.io/Apktool/documentation/#decoding" target="_blank" rel="external">In order to run a rebuilt application. You must resign the application. Android documentation can help with this.</a><br>此时的APK_Unsigned_Unaligned.apk是处于未签名也未进行压缩数据对齐处理(后续会讲到)。</p>
+<h3 id="zipalign">zipalign</h3><p><a href="https://developer.android.com/studio/command-line/zipalign.html" target="_blank" rel="external">zipalign is an archive alignment tool that provides important optimization to Android application (APK) files. The purpose is to ensure that all uncompressed data starts with a particular alignment relative to the start of the file.</a><br>zipalign是一个对于APK压缩数据进行对齐处理的工具。<br>第四步：<br>对APK_Unsigned_Unaligned.apk进行压缩数据对齐处理得到压缩数据对齐的APK_Unsigned_Aligned.apk:<br><img src="/img/Android/zipalignalignment.PNG" alt="zipalignalignment"></p>
+<p>Note:<br>zipalign位于Android SDK的build tools目录下。</p>
+<h3 id="keytool">keytool</h3><p><a href="https://docs.oracle.com/javase/6/docs/technotes/tools/windows/keytool.html" target="_blank" rel="external">Manages a keystore (database) of cryptographic keys, X.509 certificate chains, and trusted certificates.</a><br>keytool这里可以理解成有公信力的机构(工具)帮助我们生成唯一的公共证书和与之对应的私钥。</p>
+<p>第五步：<br>在对我们进行压缩数据对齐后的APK_Unsigned_Aligned.apk进行重签之前，我们需要生成自己的keystore用于签名认证我们的APK。<br>使用keytool生成我们需要的公共证书和与之对应的私钥：<br><img src="/img/Android/keytoolgenerakeystore.PNG" alt="keytoolgenerakeystore"><br>上面要填的信息就是之前在数字证书里提到的生成公共秘钥和私钥需要的信息。<br>最后得到我们的TonyTangKeyStore.jks(签名需要的keystore，公共秘钥和私钥都在里面)<br><img src="/img/Android/keystore.PNG" alt="keystore"><br>接下来我们通过keytool查看我们刚生成的keystore信息(因为不是在同一台电脑上测试学习KeyStore，所以路径并不一致)：<br><img src="/img/Android/KeyStoreInfo.PNG" alt="KeyStoreInfo"><br>可以看到我们的Keystore是由Sun公司提供的，采用SHA1(前面提到的数字摘要算法之一e.g. MD5 or SHA1)算法计算私钥的数字摘要。</p>
+<p>Note:<br>keytool位于JDK的bin目录下。<br>上面输入的Keystore密码后续签包时会用到。<br>上面生成keystore默认只有90天有效期，在开发过程中我们要保证keystore有效期远大于软件生命周期，不然期限到了就无法在继续使用同一个keystore，也就不能保证APK的唯一性了。<br>keytool貌似有个参数-validity是决定有效期的，这里就没有尝试了，详情参考keytool官网。</p>
+<h3 id="apksigner">apksigner</h3><p>第六步：<br>得到了keystore，那么我们就可以进行签名工作了。<br>使用apksigner进行签包：<br><img src="/img/Android/apksignersigne.PNG" alt="apksignersigne"><br>通过apksigner验证特定APK是否签名：<br><img src="/img/Android/apksignerverify.PNG" alt="apksignerverify"><br>最终我们得到了我们重新重签后的APK_Signed_Aligned.apk(与我们使用的keystore里的私钥唯一对应)</p>
+<p>Note:<br><a href="https://developer.android.com/studio/command-line/apksigner.html#usage" target="_blank" rel="external">The apksigner tool, available in revision 24.0.3 and higher of the Android SDK Build Tools</a><br>apksigner工具在AndroidSDK 24.0.3的Build Tool才可用。<br>其他签名工具还有jarsigner和signapk。</p>
+<h2 id="Deep">Deep</h2><p>深入学习理解签包里的相关文件：<br>这里主要参考别人的学习理解<a href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000" target="_blank" rel="external">Android签名机制之—-签名过程详解</a><br>通过上文我们可以看出签名后验证APK的相关文件主要有以下三个文件：</p>
+<ol>
+<li>MANIFEST.MF</li>
+<li>CERT.SF</li>
+<li>CERT.RSA</li>
+</ol>
+<p>打开MANIFEST.MF(以下只复制了很少一部分做验证使用):<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Manifest-Version: <span class="number">1.0</span></span><br><span class="line">Created-By: <span class="number">1.0</span> (Android)</span><br><span class="line"></span><br><span class="line">Name: assets/bin/Data/Managed/System.Core.dll</span><br><span class="line">SHA1-Digest: cBOiG0b7uqe/+kFj8qkmBvP2/zw=</span><br><span class="line"></span><br><span class="line">Name: AndroidManifest.xml</span><br><span class="line">SHA1-Digest: JYiwTP2AVjbfgZVkMuuhe/bPrf0=</span><br></pre></td></tr></table></figure></p>
+<p>可以看出MANIFEST.MF文件记录了APK里文件内容的SHA1-Digest(数字摘要)，这个数字摘要通过上面博主找到的源码来看是通过对文件内容做一次SHA1算法后然后通过Base64 Encode得到的。</p>
+<p>下面我们直接通过HashTable和Base64网站验证一下(这里以AndroidManifest.xml为例)：<br><img src="/img/Android/AndroidManifestHashValue.PNG" alt="AndroidManifestHashValue"><br>因为我们使用的是SHA1数字摘要算法，所以这里用AndroidManifest.xml的SHA1值ECFB805F9645FB3CDB7B29DB4529B6FD7545261D进行反推。<br>通过Base64 Encode后：<br><img src="/img/Android/SHA1AfterBase64.PNG" alt="SHA1AfterBase64"><br>把Base64 Encode后的值和我们在MANIFEST.MF里AndroidManifest.xml的SHA1-Digest进行对比，就会发现是一致的。</p>
+<p>这里不再对三个文件做深入研究，上面那位博主已经做了很清晰的解释，详情参见<a href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000" target="_blank" rel="external">Android签名机制之—-签名过程详解</a>。<br>这里只记录下三个文件之间的关系以及在APK简明里起的作用做个总结：</p>
+<ol>
+<li>MANIFEST.MF(对APK里的部分文件通过SHA1和Base64 Encode后记录下对应的数字摘要，<strong>用于验证APK文件的完整性</strong>)</li>
+<li>CERT.SF(对MANIFEST.MF文件进行一次SHA1和Basee64 Encode进行记录，并针对MANIFEST.MF里每一块进行SHA1和Base64 Encode并记录，<strong>用于验证MANIFEST.MF的完整性</strong>)</li>
+<li>CERT.RSA(这里会包含我们通过keystore生成的私钥计算出的签名以及公钥信息等数字证书信息，<strong>用于验证APK的唯一性也就是我们一直强调的签名来源</strong>)</li>
+</ol>
+<p>那么上面三个文件就能确保APK的唯一性和安全性了吗？<br>一下来自<a href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000" target="_blank" rel="external">Android签名机制之—-签名过程详解</a>的总结：<br>首先，如果你改变了apk包中的任何文件，那么在apk安装校验时，改变后的文件摘要信息与MANIFEST.MF的检验信息不同，于是验证失败，程序就不能成功安装。<br>其次，如果你对更改的过的文件相应的算出新的摘要值，然后更改MANIFEST.MF文件里面对应的属性值，那么必定与CERT.SF文件中算出的摘要值不一样，照样验证失败。<br>最后，如果你还不死心，继续计算MANIFEST.MF的摘要值，相应的更改CERT.SF里面的值，那么数字签名值必定与CERT.RSA文件中记录的不一样，还是失败。<br>那么能不能继续伪造数字签名呢？不可能，因为没有数字证书对应的私钥。<br>所以，如果要重新打包后的应用程序能再Android设备上安装，必须对其进行重签名。</p>
+<p>从上面的分析可以得出，只要修改了Apk中的任何内容，就必须重新签名，不然会提示安装失败，当然这里不会分析，后面一篇文章会注重分析为何会提示安装失败。</p>
+<p>从上面的总结可以看出，Keystore的Private Key是作为我们APK签名安全的最后一道防线，确保数字签名不会被伪造。</p>
+<h1 id="Unity实战">Unity实战</h1><p>待续……</p>
+<h1 id="Reference">Reference</h1><p><a href="https://developer.android.com/studio/publish/app-signing.html" target="_blank" rel="external">Sign Your App</a><br><a href="https://docs.oracle.com/javase/6/docs/technotes/tools/windows/keytool.html" target="_blank" rel="external">keytool</a><br><a href="https://developer.android.com/studio/command-line/zipalign.html" target="_blank" rel="external">zipalign</a><br><a href="https://developer.android.com/studio/command-line/apksigner.html#usage" target="_blank" rel="external">apksigner</a><br><a href="https://ibotpeaches.github.io/Apktool/documentation/#decoding" target="_blank" rel="external">Apktool</a><br><a href="https://kknews.cc/tech/yxlvj.html" target="_blank" rel="external">Android APK签名原理及方法</a><br><a href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000" target="_blank" rel="external">Android签名机制之—-签名过程详解</a><br><a href="http://andrewlcgu.github.io/2016/04/17/apk-sign-theroy/" target="_blank" rel="external">APK签名原理解析</a><br><a href="http://implbits.com/products/hashtab/" target="_blank" rel="external">HashTable</a><br><a href="http://tomeko.net/online_tools/hex_to_base64.php?lang=en" target="_blank" rel="external">Base64Website</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Android/">Android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Android/">Android</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2017/06/14/Android-Sign-Study/" data-title="Android-Sign-Study | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2017/06/12/Python-Study/"  title="Python-Study">
+ <strong>下一篇：</strong><br/> 
+ <span>Python-Study
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2017/06/14/Android-Sign-Study/" data-title="Android-Sign-Study" data-url="http://tonytang1990.github.io/2017/06/14/Android-Sign-Study/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Android_Sign_Study"><span class="toc-number">1.</span> <span class="toc-text">Android Sign Study</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">2.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#When"><span class="toc-number">2.1.</span> <span class="toc-text">When</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#What"><span class="toc-number">2.2.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-number">2.3.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conceptions"><span class="toc-number">2.4.</span> <span class="toc-text">Conceptions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据摘要(Message_Digest)"><span class="toc-number">2.4.1.</span> <span class="toc-text">数据摘要(Message Digest)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数字签名(Signature)"><span class="toc-number">2.4.2.</span> <span class="toc-text">数字签名(Signature)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CA机构(Certification_Authority)"><span class="toc-number">2.4.3.</span> <span class="toc-text">CA机构(Certification Authority)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#根证书"><span class="toc-number">2.4.4.</span> <span class="toc-text">根证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数字证书(Certification)"><span class="toc-number">2.4.5.</span> <span class="toc-text">数字证书(Certification)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#keystores"><span class="toc-number">2.4.6.</span> <span class="toc-text">keystores</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How"><span class="toc-number">2.5.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#apktool"><span class="toc-number">2.5.1.</span> <span class="toc-text">apktool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zipalign"><span class="toc-number">2.5.2.</span> <span class="toc-text">zipalign</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#keytool"><span class="toc-number">2.5.3.</span> <span class="toc-text">keytool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#apksigner"><span class="toc-number">2.5.4.</span> <span class="toc-text">apksigner</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deep"><span class="toc-number">2.6.</span> <span class="toc-text">Deep</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity实战"><span class="toc-number">3.</span> <span class="toc-text">Unity实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,592 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Python-Study | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="Python StudyIntroductionWhenPython is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.)Python第一版发布于1991年，由Guido va">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python-Study">
+<meta property="og:url" content="http://tonytang1990.github.io/2017/06/12/Python-Study/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="Python StudyIntroductionWhenPython is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.)Python第一版发布于1991年，由Guido va">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PipPackageInstallation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PipListInstalledPackages.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonPackageLocation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonKeywords.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/MultipleLineStatement.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonIndentation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/DocString.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/VariableAssignment.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonDataTypes.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonList.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonStrings.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonSet.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonDictionary.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonDataConversion.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonInputAndOutput.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/ImportSearchPat.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonLogicalOperator.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonIdentityOperator.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonMemberOperator.PNG">
+<meta property="og:updated_time" content="2017-06-18T16:01:26.008Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python-Study">
+<meta name="twitter:description" content="Python StudyIntroductionWhenPython is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.)Python第一版发布于1991年，由Guido va">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">有时候不是习惯了一个人，而是在没有认可自己之前选择了一个人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/06/12/Python-Study/" title="Python-Study" itemprop="url">Python-Study</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2017-06-12T14:45:55.000Z" itemprop="datePublished"> 發表於 2017-06-12</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Python_Study"><span class="toc-number">1.</span> <span class="toc-text">Python Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#When"><span class="toc-number">1.1.1.</span> <span class="toc-text">When</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What"><span class="toc-number">1.1.2.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">1.1.3.</span> <span class="toc-text">Why</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IDE_&_Editor"><span class="toc-number">1.2.</span> <span class="toc-text">IDE & Editor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python_Version_Choosen"><span class="toc-number">1.3.</span> <span class="toc-text">Python Version Choosen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Useful_Package"><span class="toc-number">1.4.</span> <span class="toc-text">Useful Package</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pip"><span class="toc-number">1.4.1.</span> <span class="toc-text">Pip</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tutorial(基础篇)"><span class="toc-number">1.5.</span> <span class="toc-text">Tutorial(基础篇)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Introduction-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Keywords_and_Identifier"><span class="toc-number">1.5.1.1.</span> <span class="toc-text">Keywords and Identifier</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Statements_&_Comments"><span class="toc-number">1.5.1.2.</span> <span class="toc-text">Statements & Comments</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python_Datatypes"><span class="toc-number">1.5.1.3.</span> <span class="toc-text">Python Datatypes</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Data_types"><span class="toc-number">1.5.1.3.1.</span> <span class="toc-text">Data types</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#List"><span class="toc-number">1.5.1.3.1.1.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Tuple"><span class="toc-number">1.5.1.3.1.2.</span> <span class="toc-text">Tuple</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Strings"><span class="toc-number">1.5.1.3.1.3.</span> <span class="toc-text">Strings</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Set"><span class="toc-number">1.5.1.3.1.4.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Dictionary"><span class="toc-number">1.5.1.3.1.5.</span> <span class="toc-text">Dictionary</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Conversion_between_data_types"><span class="toc-number">1.5.1.3.2.</span> <span class="toc-text">Conversion between data types</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python_I/O_and_Import"><span class="toc-number">1.5.1.4.</span> <span class="toc-text">Python I/O and Import</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python_Operators"><span class="toc-number">1.5.1.5.</span> <span class="toc-text">Python Operators</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flow_Control"><span class="toc-number">1.5.2.</span> <span class="toc-text">Flow Control</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="Python_Study">Python Study</h1><h2 id="Introduction">Introduction</h2><h3 id="When">When</h3><p><a href="https://en.wikipedia.org/wiki/Python_(programming_language" target="_blank" rel="external">Python is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.</a>)<br>Python第一版发布于1991年，由<a href="https://en.wikipedia.org/wiki/Guido_van_Rossum" target="_blank" rel="external">Guido van Rossum</a>编写。</p>
+<h3 id="What">What</h3><p><a href="https://en.wikipedia.org/wiki/Python_(programming_language" target="_blank" rel="external">An interpreted language, Python has a design philosophy which emphasizes code readability (notably using whitespace indentation to delimit code blocks rather than curly brackets or keywords), and a syntax which allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java.[22][23] The language provides constructs intended to enable writing clear programs on both a small and large scale.</a>)<br>首先我们要知道Python跟Lua一样，是解释型语言(不需要编译，通过解析执行，有自己的解析器)。Python设计理念强调可读性(通过缩进而非{}来表示代码块)。</p>
+<p><a href="https://en.wikipedia.org/wiki/Python_(programming_language" target="_blank" rel="external">Python features a dynamic type system and automatic memory management and supports multiple programming paradigms, including object-oriented, imperative, functional programming, and procedural styles.</a>)<br>Python是动态类型语言，同时有自己的内存管理机制，支持多种编程范式(待深入学习了解)。</p>
+<h3 id="Why">Why</h3><p>了解了Python When &amp; What。那么我们Why什么要选择学习使用Python了？<br><a href="https://www.python.org/about/" target="_blank" rel="external">Python is powerful… and fast; plays well with others; runs everywhere; is friendly &amp; easy to learn; is Open. </a><br><a href="https://en.wikipedia.org/wiki/Python_(programming_language" target="_blank" rel="external">supports multiple programming paradigms. It has a large and comprehensive standard library.[25]</a>)<br>把上面可以归纳如下:</p>
+<ol>
+<li>Run everywhere(跨平台)</li>
+<li>Friendly &amp; easy to learn(学习更友好更容易(对于无编程经验的人更加友好，语法更nature))</li>
+<li>Supports multiple programming paradigms(支持多种编程范式)</li>
+<li>Large and comprehensive standard library(丰富的标准库和Package)</li>
+</ol>
+<p>Note:<br>这里提一句Python里很有名的一句话:<br>“Life is short, you need python.”</p>
+<h2 id="IDE_&amp;_Editor">IDE &amp; Editor</h2><p>学习任何一门编程语言，好的IDE或者Editor都能帮助我们更加快速的学习。<br>因为初学Python且Python是解析执行，这里暂时不考虑过于强大的IDE。<br>IDE详情选择可以参考<a href="https://wiki.python.org/moin/IntegratedDevelopmentEnvironments" target="_blank" rel="external">Python IDE</a><br>这里通过使用Sublime Text 3以及其Python相关的扩展插件作为学习Python的Editor。<br><a href="http://tonytang1990.github.io/2017/02/17/Editor-Sublime-Text-3/#Usefule_Commands">Sublime Text 3 Python相关插件设置详情</a></p>
+<h2 id="Python_Version_Choosen">Python Version Choosen</h2><p>Python有一个比较重要版本分割线2.x &amp; 3.x。<br>详情参见<a href="https://wiki.python.org/moin/Python2orPython3" target="_blank" rel="external">Python2orPython3</a><br>这里就不深入去了解2.x和3.x之间的区别了。<br>简单的理解就是3.x提供了更多更全的功能支持，同时有更多的丰富的库支持。如果作为初学者，并不需要维护老版本(2.x)的工具代码时，完全可以从3.x学起。</p>
+<h2 id="Useful_Package">Useful Package</h2><h3 id="Pip">Pip</h3><p>Python有丰富的标准库。而其中最重要也是新手第一时间就应该安装的就是Pip。<br>Pip对于Python就好比Package Control好比Sublime Text 3。<br>Pip(Python Package Index)是一个Python Package集中管理安装的扩展包。<br><a href="https://pip.pypa.io/en/stable/installing/" target="_blank" rel="external">Pip安装详情参考官方文档</a><br>Pip安装成功后我们就可以通过Pip去查看或安装丰富的Python Package了。<br>Package Install:<br><img src="/img/Python/PipPackageInstallation.PNG" alt="PipPackageInstallation"><br>Show Intalled Packages:<br><img src="/img/Python/PipListInstalledPackages.PNG" alt="PipListInstalledPackages"><br>安装之后的Package可以在安装目录查看到:<br><img src="/img/Python/PythonPackageLocation.PNG" alt="PythonPackageLocation"><br><a href="https://pip.pypa.io/en/stable/user_guide/#installing-packages" target="_blank" rel="external">更多关于Pip使用查看官方文档</a></p>
+<h2 id="Tutorial(基础篇)">Tutorial(基础篇)</h2><h3 id="Introduction-1">Introduction</h3><h4 id="Keywords_and_Identifier">Keywords and Identifier</h4><p>Identifier(标识.e.g funcname, variable ……)定义规则:</p>
+<ol>
+<li>Keywords不能用做变量声明(这应该是任何语言都通用的规范了吧)</li>
+<li>变量名不能以数字开头</li>
+<li>变量名不能用特殊符号(e.g. !, @, #, $, %)<br>简单了解下Python的关键词：<br><img src="/img/Python/PythonKeywords.PNG" alt="PythonKeywords"></li>
+</ol>
+<p>Note:<br><a href="https://www.programiz.com/python-programming/keywords-identifier" target="_blank" rel="external">Python is a case-sensitive language. This means, Variable and variable are not the same. Always name identifiers that make sense.</a><br>Python是大小写敏感的，大小写不同的变量名是不同变量。</p>
+<h4 id="Statements_&amp;_Comments">Statements &amp; Comments</h4><p><a href="https://www.programiz.com/python-programming/statement-indentation-comments" target="_blank" rel="external">Instructions that a Python interpreter can execute are called statements.</a><br>Python可解析执行的语句叫做Statements。<br>多行Statements可以通过\或者[]或者{}或者()链接或封装：<br><img src="/img/Python/MultipleLineStatement.PNG" alt="MultipleLineStatement"></p>
+<p>Python设计理念强调可读性(通过缩进而非{}来表示代码块)：<br>同时Python注释是通过# or ‘’’ or “””:<br><img src="/img/Python/PythonIndentation.PNG" alt="PythonIndentation"></p>
+<p>Docstring(Docstring is short for documentation string):<br>可以看出Docstring是一段文档描述(好比在C#里通过///编写描述信息一样)。Python在书写格式上要求比较严，虽然不会导致报错，但会算作不是规范的写法，这也就是我们为什么会去安装Sublime Text 3 flake8这样的linter插件了。<br><img src="/img/Python/DocString.PNG" alt="DocString"><br>可以看到我们定义了一个加法函数，并编写了docstring。<br>通过func<em>name.<em>_doc</em></em>我们可以得到那段描述</p>
+<h4 id="Python_Datatypes">Python Datatypes</h4><p>Variable变量赋值在Python里简单明了:<br><img src="/img/Python/VariableAssignment.PNG" alt="VariableAssignment"></p>
+<h5 id="Data_types">Data types</h5><p><img src="/img/Python/PythonDataTypes.PNG" alt="PythonDataTypes"><br>可以看出在Python是弱语言类型，声明变量是无需显示指定变量类型。<br>同时通过type和isinstance可以判断实例对象类型。</p>
+<p>Note:<br>这里的Data Type是指实例对象的类型，Python是弱类型语言。</p>
+<h6 id="List">List</h6><p><a href="https://www.programiz.com/python-programming/variables-datatypes" target="_blank" rel="external">List is an ordered sequence of items. It is one of the most used datatype in Python and is very flexible. All the items in a list do not need to be of the same type.</a><br>Python的List好比数组，但是更灵活，可存储不同类型的对象。<br><img src="/img/Python/PythonList.PNG" alt="PythonList"></p>
+<p>Note：<br>List是通过[]定义。</p>
+<h6 id="Tuple">Tuple</h6><p><a href="https://www.programiz.com/python-programming/variables-datatypes" target="_blank" rel="external">Tuple is an ordered sequence of items same as list.The only difference is that tuples are immutable. Tuples once created cannot be modified.</a><br>Tuple和List的唯一区别就是创建后不可再被改变，是通过()定义内容。</p>
+<p>Note：<br>Tuple是通过()定义。</p>
+<h6 id="Strings">Strings</h6><p><img src="/img/Python/PythonStrings.PNG" alt="PythonStrings"></p>
+<p>Note:<br><a href="https://www.programiz.com/python-programming/variables-datatypes" target="_blank" rel="external">String is sequence of Unicode characters. Strings are immutable</a><br>Python里是采用Unicode编码存储字符串。Strings可以通过[]访问，但是不可被改变的。</p>
+<h6 id="Set">Set</h6><p><a href="https://www.programiz.com/python-programming/variables-datatypes" target="_blank" rel="external">Set is an unordered collection of unique items. Set is defined by values separated by comma inside braces { }. Items in a set are not ordered.</a><br>Set也是一系列数据的集合类型，但是是无序的。<br><img src="/img/Python/PythonSet.PNG" alt="PythonSet"><br>可以看出因为Set是无序的，连循环遍历出来的结果也是不确定的。所以针对Set，[]访问就是无意义也是不被允许的。</p>
+<p>Note：<br>Set是通过{}定义。</p>
+<h6 id="Dictionary">Dictionary</h6><p><a href="https://www.programiz.com/python-programming/variables-datatypes" target="_blank" rel="external">Dictionary is an unordered collection of key-value pairs.</a><br>Python里的Dictionary跟C#里的Dictionary差不多，代表无序的Key-Value主键值对。<br><img src="/img/Python/PythonDictionary.PNG" alt="PythonDictionary"><br>可以看出Python里Dictionary的键值对定义时通过:分割，然后通过[]去方案对应Key得到Value值。</p>
+<p>Note：<br>Dictionary是通过{}定义。</p>
+<h5 id="Conversion_between_data_types">Conversion between data types</h5><p>数据类型转换int,float,string,List,Set,Dictionary通过显示转换即可：<br><img src="/img/Python/PythonDataConversion.PNG" alt="PythonDataConversion"></p>
+<h4 id="Python_I/O_and_Import">Python I/O and Import</h4><p>Python里的输入输出交互(好比C++里的cin,cout)是通过input和print。<br>因为需要交互所以需要在可执行Python代码的terminal里执行python脚本:<br><img src="/img/Python/PythonInputAndOutput.PNG" alt="PythonInputAndOutput"></p>
+<p>因为Python的import是指import Module，我们需要知道Python里Module的定义，<br><a href="https://www.programiz.com/python-programming/modules" target="_blank" rel="external">Modules refer to a file containing Python statements and definitions.</a><br>Modules在Python里是指一个文件所包含的所有定义和声明(以文件为单位划分，文件名即为import的名字)。</p>
+<p>在import Module还有一个重要的点就是，我们需要知道Python查找所有*.py的搜索路径(跟环境变量有点像):<br><img src="/img/Python/ImportSearchPat.PNG" alt="ImoprtSearchPath"></p>
+<p>我们可以指定只导入特定定义(e.g. from math import pi)</p>
+<p>Note:<br>Python的Module和C#的namespace概念不一样，前者是以文件为单位，后者是以命名空间划分(支持在多个文件里定义在同一命名空间下)</p>
+<h4 id="Python_Operators">Python Operators</h4><p>运算符跟大多数编程差不多，这里只讲几个比较特殊的:<br>Logical Operators:<br><img src="/img/Python/PythonLogicalOperator.PNG" alt="PythonLogicalOperator"><br>或许跟Python提倡简洁明了有关，可以直接采用and or not之类的逻辑运算符</p>
+<p>Identity operators：<br><img src="/img/Python/PythonIdentityOperator.PNG" alt="PythonIdentityOperator"></p>
+<p>Note:<br><a href="https://www.programiz.com/python-programming/operators" target="_blank" rel="external">is and is not are used to check if two values (or variables) are located on the same part of the memory.</a><br><strong>List可以理解成分配了不同的内存去存储实际成员值所以是不同identity，但这里Python没太弄懂为什么x1 = 1和y1 = 1是located on the same part of the memory。<br>需要后续了解Python的内存分配机制。</strong></p>
+<p>Membership operators:<br><img src="/img/Python/PythonMemberOperator.PNG" alt="PythonMemberOperator"></p>
+<p>Note:<br><a href="https://www.programiz.com/python-programming/operators" target="_blank" rel="external">in &amp; not in are used to test whether a value or variable is found in a sequence (string, list, tuple, set and dictionary).</a><br>in &amp; not in 主要是用于判断特定变量或者值是否存在于特定sequence里。</p>
+<h3 id="Flow_Control">Flow Control</h3><h1 id="Reference">Reference</h1><p><a href="https://www.python.org" target="_blank" rel="external">Python</a><br><a href="https://en.wikipedia.org/wiki/Guido_van_Rossum" target="_blank" rel="external">Guido van Rossum</a><br><a href="https://pip.pypa.io/en/stable/user_guide/#installing-packages" target="_blank" rel="external">Python Package Index</a><br><a href="https://wiki.python.org/moin/Python2orPython3" target="_blank" rel="external">Python2orPython3</a><br><a href="https://www.programiz.com/python-programming/keywords-identifier" target="_blank" rel="external">Python Tutorial</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Programming-Language/">Programming Language</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Python/">Python</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2017/06/12/Python-Study/" data-title="Python-Study | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/06/14/Android-Sign-Study/" title="Android-Sign-Study">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Android-Sign-Study</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/04/29/Unity自动化打包/"  title="Unity自动化打包">
+ <strong>下一篇：</strong><br/> 
+ <span>Unity自动化打包
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2017/06/12/Python-Study/" data-title="Python-Study" data-url="http://tonytang1990.github.io/2017/06/12/Python-Study/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Python_Study"><span class="toc-number">1.</span> <span class="toc-text">Python Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#When"><span class="toc-number">1.1.1.</span> <span class="toc-text">When</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What"><span class="toc-number">1.1.2.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">1.1.3.</span> <span class="toc-text">Why</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IDE_&_Editor"><span class="toc-number">1.2.</span> <span class="toc-text">IDE & Editor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python_Version_Choosen"><span class="toc-number">1.3.</span> <span class="toc-text">Python Version Choosen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Useful_Package"><span class="toc-number">1.4.</span> <span class="toc-text">Useful Package</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pip"><span class="toc-number">1.4.1.</span> <span class="toc-text">Pip</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tutorial(基础篇)"><span class="toc-number">1.5.</span> <span class="toc-text">Tutorial(基础篇)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Introduction-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Keywords_and_Identifier"><span class="toc-number">1.5.1.1.</span> <span class="toc-text">Keywords and Identifier</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Statements_&_Comments"><span class="toc-number">1.5.1.2.</span> <span class="toc-text">Statements & Comments</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python_Datatypes"><span class="toc-number">1.5.1.3.</span> <span class="toc-text">Python Datatypes</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Data_types"><span class="toc-number">1.5.1.3.1.</span> <span class="toc-text">Data types</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#List"><span class="toc-number">1.5.1.3.1.1.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Tuple"><span class="toc-number">1.5.1.3.1.2.</span> <span class="toc-text">Tuple</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Strings"><span class="toc-number">1.5.1.3.1.3.</span> <span class="toc-text">Strings</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Set"><span class="toc-number">1.5.1.3.1.4.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Dictionary"><span class="toc-number">1.5.1.3.1.5.</span> <span class="toc-text">Dictionary</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Conversion_between_data_types"><span class="toc-number">1.5.1.3.2.</span> <span class="toc-text">Conversion between data types</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python_I/O_and_Import"><span class="toc-number">1.5.1.4.</span> <span class="toc-text">Python I/O and Import</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python_Operators"><span class="toc-number">1.5.1.5.</span> <span class="toc-text">Python Operators</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flow_Control"><span class="toc-number">1.5.2.</span> <span class="toc-text">Flow Control</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
