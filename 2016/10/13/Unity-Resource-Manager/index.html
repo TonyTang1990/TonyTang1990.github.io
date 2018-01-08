@@ -11,12 +11,22 @@
     
 
     
-    <meta name="description" content="参考文章和网站：Asset WorkflowBehind the ScenesA guide to AssetBundles and ResourcesAssets, Objects and serializationThe Resources folderAssetBundle fundamentals AssetBundle usage patternsUnity5 如何做资源管理和增量更新U">
+    <meta name="description" content="前言在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。本章节主要是对于Unity在资源管理方面的进一步学习了解。
+这里简单提及正确的利用Unity资源管理的好处：
+
+高效的管理资源
+合理的分配内存(避免不必要的内存开销 — 比如同一个Asset被打包到多个AssetBundle里，然后分别被游戏加载)
+做到增量更新(无需下载更新整个游戏程序，通过Patch的形式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity Resource Manager">
 <meta property="og:url" content="http://tonytang1990.github.io/2016/10/13/Unity-Resource-Manager/index.html">
 <meta property="og:site_name" content="走停人生路">
-<meta property="og:description" content="参考文章和网站：Asset WorkflowBehind the ScenesA guide to AssetBundles and ResourcesAssets, Objects and serializationThe Resources folderAssetBundle fundamentals AssetBundle usage patternsUnity5 如何做资源管理和增量更新U">
+<meta property="og:description" content="前言在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。本章节主要是对于Unity在资源管理方面的进一步学习了解。
+这里简单提及正确的利用Unity资源管理的好处：
+
+高效的管理资源
+合理的分配内存(避免不必要的内存开销 — 比如同一个Asset被打包到多个AssetBundle里，然后分别被游戏加载)
+做到增量更新(无需下载更新整个游戏程序，通过Patch的形式">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetsDirectory.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ImportProjectilePNG.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ProjectilePNGImportSetting.PNG">
@@ -64,10 +74,15 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleTextureStatus.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleGameObjectStatus.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleTransformStatus.PNG">
-<meta property="og:updated_time" content="2018-01-01T08:01:35.198Z">
+<meta property="og:updated_time" content="2018-01-08T15:47:40.918Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity Resource Manager">
-<meta name="twitter:description" content="参考文章和网站：Asset WorkflowBehind the ScenesA guide to AssetBundles and ResourcesAssets, Objects and serializationThe Resources folderAssetBundle fundamentals AssetBundle usage patternsUnity5 如何做资源管理和增量更新U">
+<meta name="twitter:description" content="前言在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。本章节主要是对于Unity在资源管理方面的进一步学习了解。
+这里简单提及正确的利用Unity资源管理的好处：
+
+高效的管理资源
+合理的分配内存(避免不必要的内存开销 — 比如同一个Asset被打包到多个AssetBundle里，然后分别被游戏加载)
+做到增量更新(无需下载更新整个游戏程序，通过Patch的形式">
 
     
     <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
@@ -147,8 +162,7 @@
 		
 		</div>
 		
-		<p>参考文章和网站：<br><a href="https://docs.unity3d.com/Manual/AssetWorkflow.html" target="_blank" rel="external">Asset Workflow</a><br><a href="https://docs.unity3d.com/Manual/BehindtheScenes.html" target="_blank" rel="external">Behind the Scenes</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/guide-assetbundles-and-resources?playlist=30089" target="_blank" rel="external">A guide to AssetBundles and Resources</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assets-objects-and-serialization" target="_blank" rel="external">Assets, Objects and serialization</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/resources-folder?playlist=30089" target="_blank" rel="external">The Resources folder</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-fundamentals?playlist=30089" target="_blank" rel="external">AssetBundle fundamentals </a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-usage-patterns?playlist=30089" target="_blank" rel="external">AssetBundle usage patterns</a><br><a href="http://blog.csdn.net/ring0hx/article/details/46376709" target="_blank" rel="external">Unity5 如何做资源管理和增量更新</a><br><a href="http://www.xuanyusong.com/archives/3618" target="_blank" rel="external">Unity3D研究院之提取游戏资源的三个工具支持Unity5</a><br><a href="http://www.xuanyusong.com/archives/2373" target="_blank" rel="external">Unity3D研究院之Assetbundle的原理（六十一）</a><br><a href="http://www.xuanyusong.com/archives/2405" target="_blank" rel="external">Unity3D研究院之Assetbundle的实战（六十三）</a></p>
-<h1 id="前言">前言</h1><p>在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。<br>本章节主要是对于Unity在资源管理方面的进一步学习了解。</p>
+		<h1 id="前言">前言</h1><p>在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。<br>本章节主要是对于Unity在资源管理方面的进一步学习了解。</p>
 <p>这里简单提及正确的利用Unity资源管理的好处：</p>
 <ol>
 <li>高效的管理资源</li>
@@ -515,7 +529,7 @@
 <li>AB压缩格式选择取决于内存和加载性能以及包体大小等方面的抉择。</li>
 </ol>
 <p>未完，待续…..</p>
-<h1 id="引用">引用</h1><p><a href="https://unity3d.com/cn/learn/tutorials/temas/best-practices/assets-objects-and-serialization#InterObject_References" target="_blank" rel="external">Assets, Objects and serialization</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/guide-assetbundles-and-resources?playlist=30089" target="_blank" rel="external">A guide to AssetBundles and Resources</a><br><a href="https://unity3d.com/cn/learn/tutorials/temas/best-practices/resources-folder" target="_blank" rel="external">The Resources folder</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-fundamentals?playlist=30089" target="_blank" rel="external">AssetBundle fundamentals</a><br><a href="https://unity3d.com/cn/learn/tutorials/temas/best-practices/assetbundle-usage-patterns#Managing_Loaded_Assets" target="_blank" rel="external">AssetBundle usage patterns</a><br><a href="http://liweizhaolili.blog.163.com/blog/static/162307442015282017852/" target="_blank" rel="external">Unity5的AssetBundle的一点使用心得</a><br><a href="http://gad.qq.com/article/detail/16006" target="_blank" rel="external">Unity3D中Assetbundle技术使用心得</a><br><a href="https://blog.uwa4d.com/archives/QA_ResourceManagement.html" target="_blank" rel="external">关于Unity中的资源管理，你可能遇到这些问题</a></p>
+<h1 id="引用">引用</h1><p><a href="https://unity3d.com/cn/learn/tutorials/temas/best-practices/assets-objects-and-serialization#InterObject_References" target="_blank" rel="external">Assets, Objects and serialization</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/guide-assetbundles-and-resources?playlist=30089" target="_blank" rel="external">A guide to AssetBundles and Resources</a><br><a href="https://unity3d.com/cn/learn/tutorials/temas/best-practices/resources-folder" target="_blank" rel="external">The Resources folder</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-fundamentals?playlist=30089" target="_blank" rel="external">AssetBundle fundamentals</a><br><a href="https://unity3d.com/cn/learn/tutorials/temas/best-practices/assetbundle-usage-patterns#Managing_Loaded_Assets" target="_blank" rel="external">AssetBundle usage patterns</a><br><a href="http://liweizhaolili.blog.163.com/blog/static/162307442015282017852/" target="_blank" rel="external">Unity5的AssetBundle的一点使用心得</a><br><a href="http://gad.qq.com/article/detail/16006" target="_blank" rel="external">Unity3D中Assetbundle技术使用心得</a><br><a href="https://blog.uwa4d.com/archives/QA_ResourceManagement.html" target="_blank" rel="external">关于Unity中的资源管理，你可能遇到这些问题</a><br><a href="https://docs.unity3d.com/Manual/AssetWorkflow.html" target="_blank" rel="external">Asset Workflow</a><br><a href="https://docs.unity3d.com/Manual/BehindtheScenes.html" target="_blank" rel="external">Behind the Scenes</a><br><a href="http://blog.csdn.net/ring0hx/article/details/46376709" target="_blank" rel="external">Unity5 如何做资源管理和增量更新</a><br><a href="http://www.xuanyusong.com/archives/3618" target="_blank" rel="external">Unity3D研究院之提取游戏资源的三个工具支持Unity5</a><br><a href="http://www.xuanyusong.com/archives/2373" target="_blank" rel="external">Unity3D研究院之Assetbundle的原理（六十一）</a><br><a href="http://www.xuanyusong.com/archives/2405" target="_blank" rel="external">Unity3D研究院之Assetbundle的实战（六十三）</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
