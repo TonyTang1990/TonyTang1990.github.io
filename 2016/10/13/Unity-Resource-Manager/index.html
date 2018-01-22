@@ -74,7 +74,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleTextureStatus.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleGameObjectStatus.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleTransformStatus.PNG">
-<meta property="og:updated_time" content="2018-01-08T15:47:40.918Z">
+<meta property="og:updated_time" content="2018-01-21T12:48:33.641Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity Resource Manager">
 <meta name="twitter:description" content="前言在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。本章节主要是对于Unity在资源管理方面的进一步学习了解。
@@ -447,7 +447,7 @@
 <p>Note:<br>每一个AB下面都对应一个.manifest文件，这个文件记录了该AB的asset包含情况以及依赖的AB情况，但这些manifest文件最终不会不打包到游戏里的，只有最外层生成的*.manifest文件(记录了所有AB的打包信息)才会被打包到游戏里，所以才有像前面提到的<a href="http://tonytang1990.github.io/2016/10/13/Unity-Resource-Manager/#AssetBundle">通过读取.manifest文件获取对应AB所依赖的所有AB信息进行加载依赖并最终加载出所需Asset的例子</a></p>
 <h4 id="依赖Asset信息打包">依赖Asset信息打包</h4><p>存储依赖的Asset信息可以有多种方式：</p>
 <ol>
-<li>存储挂载相关信息到Prefab上<br>在设置好AB名字，打包AB之前，将打包对象上用到的信息通过编写[System.Serializable]可序列化标签抽象数据挂载到该Asset对象上，然后移除所有引用并保存，然后打包AB，打包完AB后在进行还原即可。<br><img src="/img/Unity/DPInfoMono.PNG" alt="DPInfoMono"></li>
+<li>存储挂载相关信息到Prefab上<br>在设置好AB名字，打包AB之前，将打包对象上用到的信息通过编写[System.Serializable]可序列化标签抽象数据挂载到该Asset对象上，然后打包AB，打包完AB后在运行时利用打包的依赖信息进行依赖Asset加载还原，从而做到对Asset的生命周期掌控。<br><img src="/img/Unity/DPInfoMono.PNG" alt="DPInfoMono"></li>
 <li>创建打包Asset到同名AB里，加载的时候读取<br>通过AssetDatabase.CreateAsset()和AssetImporter.GetAtPath()将依赖的信息写入新的Asset并打包到相同AB里，加载时加载出来使用。<br><img src="/img/Unity/MaterialAssetInfo.PNG" alt="MaterialAssetInfo"></li>
 </ol>
 <h3 id="打包策略">打包策略</h3><p>除了资源冗余，打包策略也很重要。打包策略是指决定各个Asset如何分配打包到指定AB里的策略。打包策略会决定AB的数量，资源冗余等问题。AB数量过多会增加IO负担。资源冗余会导致包体过大，内存中存在多份同样的Asset，热更新资源大小等。</p>
@@ -522,7 +522,7 @@
 </li>
 </ol>
 <h2 id="AB实战总结">AB实战总结</h2><ol>
-<li>AB打包和加载是一个相互相存的过程(逆过程)。</li>
+<li>AB打包和加载是一个相互相存的过程。</li>
 <li>Unity 5提供的增量打包只是提供了更新部分AB的打包机制，*.manifest文件里也只提供依赖的AB信息并非Asset，所以对于依赖的Asset打包和还原还是需要我们自己处理。</li>
 <li>Unity并非所有的Asset都是采用复制而是部分采用复制，部分采用引用的形式，只有正确掌握了这一点，我们才能确保Asset真确的重用和回收。</li>
 <li>打包策略是根据游戏类型，根据实际情况而定。</li>
