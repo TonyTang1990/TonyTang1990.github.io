@@ -74,7 +74,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleTextureStatus.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleGameObjectStatus.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleTransformStatus.PNG">
-<meta property="og:updated_time" content="2018-01-21T12:48:33.641Z">
+<meta property="og:updated_time" content="2018-04-01T04:25:51.298Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity Resource Manager">
 <meta name="twitter:description" content="前言在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。本章节主要是对于Unity在资源管理方面的进一步学习了解。
@@ -506,6 +506,7 @@
 <p>接下让我们看看加载了CapsuleNormalMappingTexture.prefab后的Asset加载情况:<br><img src="/img/Unity/NonUIPrefabLoadedAfterProfiler.PNG" alt="NonUIPrefabLoadedAfterProfiler"><br>可以看出引用的材质和纹理Asest都被加载到内存里了(Shader因为我预先把所有Shader都加载进来了所以就直接重用了没有被重复加载)<br>第四步：<br>对缓存的Asset进行判定是否回收(这里以材质为例，判定方式可能多种多样，我这里是通过判定是否有有效引用)<br>启动一个携程判定特定Material是否不再有有效组件(所有引用组件为空或者都不再使用任何材质)时回收Material Asset<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Resources.UnloadAsset(materialasset);</span><br></pre></td></tr></table></figure></p>
 <p>接下来让我们看看卸载实例对象后，材质被回收的情况：<br><img src="/img/Unity/MaterialRecycleAssetNumer.PNG" alt="MaterialRecycleAssetNumer"><br><img src="/img/Unity/MaterialRecycle.PNG" alt="MaterialRecycle"><br>可以看到没有被引用的材质Asset被回收了，但内存里的Asset数量却明显增加了。<br>这里多出来的是我们还没有回收的Texture以及Prefab的GameObject以及Components Asset依然还在内存里。<br><img src="/img/Unity/AfterMaterialRecyleTextureStatus.PNG" alt="AfterMaterialRecyleTextureStatus"><br><img src="/img/Unity/AfterMaterialRecyleGameObjectStatus.PNG" alt="AfterMaterialRecyleGameObjectStatus"><br><img src="/img/Unity/AfterMaterialRecyleTrasformStatus.PNG" alt="AfterMaterialRecyleTrasformStatus"><br>第五步：<br>通过切换场景触发置空所有引用将还未回收的Asset变成UnsedAsset或者直接触发Texture Asset回收，然后通过Resources.UnloadUnusedAssets()回收所有未使用的Asset<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mNonUIPrefabAssetMap = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>(<span class="keyword">var</span> texture <span class="keyword">in</span> mTexturesUsingMap)</span><br><span class="line">&#123;</span><br><span class="line">    unloadAsset(texture.Value);</span><br><span class="line">&#125;</span><br><span class="line">mTexturesUsingMap = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">Resources.UnloadUnusedAssets();</span><br></pre></td></tr></table></figure></p>
 <p><img src="/img/Unity/AfterAssetsRecyleAssetNumber.PNG" alt="AfterAssetsRecyleAssetNumber"><br><img src="/img/Unity/AfterAssetsRecyleTextureStatus.PNG" alt="AfterAssetsRecyleTextureStatus"><br><img src="/img/Unity/AfterAssetsRecyleGameObjectStatus.PNG" alt="AfterAssetsRecyleGameObjectStatus"><br><img src="/img/Unity/AfterAssetsRecyleTransformStatus.PNG" alt="AfterAssetsRecyleTransformStatus"><br>可以看到所有的Texture, GameObject, Transform都被回收了，并且Asset的数量回到了最初的数值。</p>
+<p>Note:<br>以上是采用Asset层面的重用，通过遍历判定的方式去判定Asset是否回收。<br>另一种方案我们也可以采取索引技术，基于AB层面的管理，只有AB的引用计数为0时我们直接通过AssetBundle.Unload(true)来卸载AB和Asset资源，这样不会出现内存中资源重复的问题。</p>
 <h3 id="AB加载相关API">AB加载相关API</h3><ol>
 <li>AssetBundle(AB接口)<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 加载本地压缩过的AB</span></span><br><span class="line">AssetBundle.LoadFromFile(abfullpath)</span><br><span class="line"><span class="comment">// 加载AB里的指定Asset</span></span><br><span class="line">AssetBundle.LoadAsset(assetname);</span><br><span class="line"><span class="comment">// 加载AB里的所有Asset</span></span><br><span class="line">AssetBundle.LoadAllAssets();</span><br></pre></td></tr></table></figure>
 </li>
@@ -527,6 +528,7 @@
 <li>Unity并非所有的Asset都是采用复制而是部分采用复制，部分采用引用的形式，只有正确掌握了这一点，我们才能确保Asset真确的重用和回收。</li>
 <li>打包策略是根据游戏类型，根据实际情况而定。</li>
 <li>AB压缩格式选择取决于内存和加载性能以及包体大小等方面的抉择。</li>
+<li>资源管理策略而言，主要分为基于Asset管理(AssetBundle.Unload(false))还是基于AB管理(AssetBundle.Unload(true))，前者容易出现内存中多份重复资源，后者需要确保严格的管理机制(比如索引计数))</li>
 </ol>
 <p>未完，待续…..</p>
 <h1 id="引用">引用</h1><p><a href="https://unity3d.com/cn/learn/tutorials/temas/best-practices/assets-objects-and-serialization#InterObject_References" target="_blank" rel="external">Assets, Objects and serialization</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/guide-assetbundles-and-resources?playlist=30089" target="_blank" rel="external">A guide to AssetBundles and Resources</a><br><a href="https://unity3d.com/cn/learn/tutorials/temas/best-practices/resources-folder" target="_blank" rel="external">The Resources folder</a><br><a href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/assetbundle-fundamentals?playlist=30089" target="_blank" rel="external">AssetBundle fundamentals</a><br><a href="https://unity3d.com/cn/learn/tutorials/temas/best-practices/assetbundle-usage-patterns#Managing_Loaded_Assets" target="_blank" rel="external">AssetBundle usage patterns</a><br><a href="http://liweizhaolili.blog.163.com/blog/static/162307442015282017852/" target="_blank" rel="external">Unity5的AssetBundle的一点使用心得</a><br><a href="http://gad.qq.com/article/detail/16006" target="_blank" rel="external">Unity3D中Assetbundle技术使用心得</a><br><a href="https://blog.uwa4d.com/archives/QA_ResourceManagement.html" target="_blank" rel="external">关于Unity中的资源管理，你可能遇到这些问题</a><br><a href="https://docs.unity3d.com/Manual/AssetWorkflow.html" target="_blank" rel="external">Asset Workflow</a><br><a href="https://docs.unity3d.com/Manual/BehindtheScenes.html" target="_blank" rel="external">Behind the Scenes</a><br><a href="http://blog.csdn.net/ring0hx/article/details/46376709" target="_blank" rel="external">Unity5 如何做资源管理和增量更新</a><br><a href="http://www.xuanyusong.com/archives/3618" target="_blank" rel="external">Unity3D研究院之提取游戏资源的三个工具支持Unity5</a><br><a href="http://www.xuanyusong.com/archives/2373" target="_blank" rel="external">Unity3D研究院之Assetbundle的原理（六十一）</a><br><a href="http://www.xuanyusong.com/archives/2405" target="_blank" rel="external">Unity3D研究院之Assetbundle的实战（六十三）</a></p>
@@ -535,6 +537,11 @@
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Resource/">Resource</a>
+  </div>
 
 </div>
 
@@ -637,7 +644,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Unity/" title="Unity">Unity<sup>3</sup></a></li>
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>4</sup></a></li>
 			
 		
 			
@@ -645,7 +652,11 @@
 			
 		
 			
-				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>1</sup></a></li>
 			
 		
 			
@@ -653,11 +664,15 @@
 			
 		
 			
-				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
 			
 		
 			

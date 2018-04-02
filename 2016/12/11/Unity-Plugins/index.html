@@ -65,7 +65,7 @@ Plugin(代码插件)
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/960Multiple640SelfAdaption.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/960Multiple640BaseOnWidth.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/DOTweenSetting.PNG">
-<meta property="og:updated_time" content="2017-09-24T11:36:28.312Z">
+<meta property="og:updated_time" content="2018-03-18T03:35:12.806Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-Plugins">
 <meta name="twitter:description" content="Unity Plugins本章节主要讲解学习Unity Plugins这一部分。这一部分主要分为两个部分来学习:
@@ -329,7 +329,24 @@ Plugin(代码插件)
 <p>看得出NGUI并没有为我们强制设置为1，只是警告我们不能把UIRoot和UIOrthoCamera一起使用，如果使用了会自动剔除UIOrthoCamera，并设置orthographicSize为1。我们可以去设置orthographicSize实现不同的效果。<br>了解了UIRoot的实现，那么回到我们原始的话题，如何通过UIRoot实现屏幕自适应了？<br>当屏幕分辨率变化的时候UIRoot下的UI会出现显示不全或者两边有黑边的问题，因为FixedSize结合Manual Height而已控制UIRoot的按比例缩放，所以我们只需把两边未能显示全的UI以宽为基准按比例缩放即可(通过动态计算Manual Height的值)。<br><a href="http://www.ceeger.com/forum/read.php?tid=9230&amp;ds=1" target="_blank" rel="external">UIRoot分辨率自适应代码</a><br>ManualWidth和ManualHeight是我们最初美术设计所针对的分辨率，修改到对应的即可。<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UIRootExtend</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">      </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> ManualWidth = <span class="number">640</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> ManualHeight = <span class="number">960</span>;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">private</span> UIRoot _UIRoot;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        _UIRoot = <span class="keyword">this</span>.GetComponent&lt;UIRoot&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">FixedUpdate</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (System.Convert.ToSingle(Screen.height) / Screen.width &gt; System.Convert.ToSingle(ManualHeight) / ManualWidth)</span><br><span class="line">            _UIRoot.manualHeight = Mathf.RoundToInt(System.Convert.ToSingle(ManualWidth) / Screen.width * Screen.height);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            _UIRoot.manualHeight = ManualHeight;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>自适应后在屏幕分辨率为1024<em>768(1.333比例)的时候完美显示如下：<br><img src="/img/Unity/1024Multiple768SelfAdaption.PNG" alt="1024Multiple768SelfAdaption"><br>自适应后在屏幕分辨率为800</em>800(1.0比例)的时候显示如下：<br><img src="/img/Unity/800Multiple800SelfAdaption.PNG" alt="800Multiple800SelfAdaption"><br>自适应后在屏幕分辨率设置为960*640(1.5比例)的时候显示如下：<br><img src="/img/Unity/960Multiple640SelfAdaption.PNG" alt="960Multiple640SelfAdaption"><br>这样一来就实现了保持比例自适应。因为UIRoot是基于高度来缩放的，所以在低分辨率变到高分辨率的时候会出现左右黑边，这在横版游戏里是肯定不行的，所以我们需要做到以宽为基准的自适应。<br>那么基于宽度缩放的代码如下：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> activeHeight</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> height = Mathf.Max(<span class="number">2</span>, Screen.height);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Base on width instead of height</span></span><br><span class="line">        manualHeight = Screen.height * UIRootExtend.ManualWidth / Screen.width;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (scalingStyle == Scaling.FixedSize) <span class="keyword">return</span> manualHeight;</span><br><span class="line"></span><br><span class="line">        <span class="preprocessor">#<span class="keyword">if</span> UNITY_IPHONE || UNITY_ANDROID</span></span><br><span class="line">        <span class="keyword">if</span> (scalingStyle == Scaling.FixedSizeOnMobiles)</span><br><span class="line">            <span class="keyword">return</span> manualHeight;</span><br><span class="line">        <span class="preprocessor">#<span class="keyword">endif</span></span></span><br><span class="line">        <span class="keyword">if</span> (height &lt; minimumHeight) <span class="keyword">return</span> minimumHeight;</span><br><span class="line">        <span class="keyword">if</span> (height &gt; maximumHeight) <span class="keyword">return</span> maximumHeight;</span><br><span class="line">        <span class="keyword">return</span> height;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>但上述在低分辨率变到高分辨率的时候会因为以宽为基准导致高度的自适应超出范围，见下图：<br><img src="/img/Unity/960Multiple640BaseOnWidth.PNG" alt="960Multiple640BaseOnWidth"><br>这种情况只能通过拉伸背景来铺满屏幕，但会失去原始比例(UIStretch可以实现基于屏幕或容器的自适应，不建议使用，后续NGUI都放弃了)。<br>我们肯定不希望我们的主要的UI都被拉伸变形，所以这里需要提到的是UIAnchor，<br>让我们在回忆下UIAnchor的作用：<br>“apply a half-pixel offset on Windows machines, for pixel-perfect results.”(把UI限定在窗口特定位置，当窗口变化的时候会依然处于相对窗口的位置)<br>待续……</p>
-<p>关于UI制作尺寸的选择：<br>待续……</p>
+<p>关于UI制作尺寸的选择以及UI自适应相关设置：<br>前面的学习结合<a href="">Unity Unit Pixel Per Unit</a>的学习，可以看出，UI自适应和Pixel显示我們需要考虑的点有以下几个:<br>UI需要考虑的点：</p>
+<ol>
+<li>Canvas Render Mode(Canvas) — Screen Space Camera(一般来说不是作为3D UI摄像机的话，都会选择Screen Space Camera去自己指定一個UI Camera)</li>
+<li>UI Scale Mode(Canvas Scaler) — Scale With Screen Size(一般来说为了根据不同设备分辨率进行自适应，我們都会选择这种模式(跟物理size无关))</li>
+<li>Project(Camera) — 不是用于3D UI的话，一般来说UI Camera都是设置成Orthographic(正交投影)</li>
+<li>Screen Match Mode(Canvas Scaler) — 一般都选择Match Width Or Height指定是以宽为主还是以高为主(影响最终黑边情况 — 是上下黑边还是左右黑边)</li>
+<li>Reference Size(Canvas Scaler) — 影响不同机器上的自适应情况(分辨率降低或者升高会影响自适应结果 — 比如居中满屏显示的UI，以高分辨Reference Size在低分辨率Screen Size上以高度自适应会导致左右两侧的UI超出显示范围)(主流手机分辨率比例都在1.333 - 1.778，大部分是1.778)</li>
+<li>UI Anchors — 主要影響UI的自適應佈局方式(是自适应缩放还是相对位置)</li>
+</ol>
+<p>Note:<br>横版2D和竖版2D游戏选择时，主要要考虑Screen Match Mode和Reference Size的选择，因为前者是不允许左右黑边，后者是不允许上下黑边的，两者同时也不允许超出的情况，所以个人认为横版2D应该选择Match Width Or Height值为0(以宽为主不让左右有黑边)，同时Reference Size选择高分辨率，在低分辨率机器上显示时不至于超出高度(只是上下有黑边，这个问题可以通过用背景结合UI Anchors自适应的方式避免)。普通的2D UI，我们最主要要考虑的是Refrence Size的选择(选择高分辨率Reference Size和以宽度为基准自适应，然后结合UI Anchor<br>s布局和拉升背景即可)，这样居中的物体不会被切割显示不全，在低分辨率Screen Size上只是显示高度缩小而已，UI Anchor靠边布局的UI依然正常显示。</p>
+<p>Pixel Perfect显示考虑的点：</p>
+<ol>
+<li>Reference Size(Canvas Scaler) — 我们作为基准计算PPU的分辨率</li>
+<li>Orthographic Size(Camera) — 参与Pixel Perfect显示计算，同时把屏幕划分成Orthographci Size * 2个高Unit</li>
+<li>Reference Pixels Per Unit(Canvas Scaler) — 参与SpriteRectSize显示计算的参数(SpriteRectSize = SpriteSize * SpritePPU / CanvaReferencePPU)，一般设置跟Sprite PPU一样保证Sprite按原始大小显示即可</li>
+<li>Pixels Per Unit(Asset) — Asset相对一个屏幕Unit显示的Pixels，用于确保Asset Pixel Perfect显示</li>
+</ol>
+<p>Pixel Perfect显示公式：<br>Orthographic Size = Screen.height / 2 / PPU;<br>从前面的学习我们知道了，要想Pixel Perfect显示，除了动态修正Orthographic Size以外就是针对不同分辨率机器做多套PPU的资源去使用。<br>如果想Pixel Perfect显示，那么UI尺寸的选择就要参考计算出的PPU来设计。</p>
 <h3 id="DOTween">DOTween</h3><h4 id="DOTween_Instroduction">DOTween Instroduction</h4><p><a href="http://dotween.demigiant.com/" target="_blank" rel="external">DOTween is a fast, efficient, fully type-safe object-oriented animation engine for Unity, optimized for C# users, free and open-source, with tons of advanced features</a></p>
 <p>简单看一下官网提到的Features(这里只Copy一部分)：<br>Speed and efficiency:<br>    Not only very fast, but also very efficient: everything is cached and reused to avoid useless GC allocations.<br>Shortcuts:<br>    Shortcut extensions that directly extend common objects<br>Extremely accurate:<br>    Time is calculated in a very precise way. This means that 1000 loops of 1 second each will play exactly as long as a single loop of 1000 seconds.<br>Animate everything (almost)<br>    DOTween can animate every numeric value and also some non-numeric ones. It can even animate strings, with support for rich-text.<br>Full control<br>    Play, Pause, Rewind, Restart, Complete, Goto and tons of other useful methods to control your tweens.<br>Grouping<br>    Combine tweens into Sequences to create complex animations (which don’t need to be in a, uh, sequence: they can also overlap each other).<br>Blendable tweens<br>    Some tweens can blend between each other in realtime, thanks to powerful DOBlendable shortcuts.<br>Paths<br>    Animate stuff along both linear and curved paths, with additional options for the orientation of your traveling agents.<br>Change values and duration while playing<br>    Change a tween’s start/end values or duration at any moment, even while playing.<br>Yield for coroutines<br>    Various “WaitFor…” methods to use inside coroutines, that allow you to wait for a tween to be completed, killed, started, or for it to reach a given position or loops.<br>Plugins<br>    DOTween is built with an extensible architecture in mind, which allows you to create your own tween plugins as separate files.<br>Extras<br>    Extra virtual methods to do stuff like calling a function after a given delay.<br>…….<br>总的来说DOTween可以满足我们做动画的任何要求且高效快速方便使用。</p>
 <h4 id="DOTween_Install">DOTween Install</h4><p>看得出DOTween的定位是一个动画引擎。<br>首先是<a href="http://dotween.demigiant.com/download.php#download" target="_blank" rel="external">DOTween下载</a><br>其次是DOTween加入到我们的工程项目里(Assets下)，然后DOTween被自动加载。<br>DOTween加载进来后会弹出设置界面：<br><img src="/img/Unity/DOTweenSetting.PNG" alt="DOTweenSetting"><br>点击Setup DOTween进行设置，设置DOTween好使DOTween根据我们的Unity版本去导入一些特定库。<br>接下来我们就可以使用DOTween里的库函数做动画了。</p>
@@ -482,7 +499,7 @@ Plugin(代码插件)
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Unity/" title="Unity">Unity<sup>3</sup></a></li>
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>4</sup></a></li>
 			
 		
 			
@@ -490,7 +507,11 @@ Plugin(代码插件)
 			
 		
 			
-				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>1</sup></a></li>
 			
 		
 			
@@ -498,11 +519,15 @@ Plugin(代码插件)
 			
 		
 			
-				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
 			
 		
 			
