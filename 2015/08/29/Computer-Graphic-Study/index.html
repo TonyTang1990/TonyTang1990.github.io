@@ -29,14 +29,14 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/Shader_Core_Virtual_Machine_Architecture.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/Shader_Model_Comparision.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/GPUZ.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Graphics/MainBoard.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Graphics/MainboardDiagram.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Graphics/PCIExpressPerformance.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Graphics/PCIExpressInfo.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Graphics/mSATALocation.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Graphics/CPUProcessorFrequency.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Graphics/MyCPUInfo.PNG">
-<meta property="og:updated_time" content="2017-10-05T08:29:27.687Z">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/MainBoard.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/MainboardDiagram.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/PCIExpressPerformance.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/PCIExpressInfo.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/mSATALocation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/CPUProcessorFrequency.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/MyCPUInfo.PNG">
+<meta property="og:updated_time" content="2018-04-29T03:00:23.419Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Computer_Graphic_Study">
 <meta name="twitter:description" content="参考书籍：《OpenGL Programming Guide 8th Edition》 — Addison Wesley《Fundamentals of Computer Graphics (3rd Edition)》 — Peter Shirley, Steve Marschnner《Real-Time Rendering, Third Edition》 — Tomas Akenine-Moll">
@@ -225,15 +225,15 @@
 <li>扩展</li>
 </ol>
 <p>以下主要是针对主板上的各个接口进行学习了解，了解他们每一个模块是负责做什么，所有模块是怎么整合运行起来的。后面会针对主要组件进行深入学习了解用于判断怎样的组件才是高性能更优的，帮助我们组装时购买各个组件提供理论知识。</p>
-<p>首先让我们先看看主板的构成和架构图:<br><img src="/img/Graphics/MainBoard.PNG" alt="MainBoard"><br><img src="/img/Graphics/MainboardDiagram.PNG" alt="MainboardDiagram"></p>
+<p>首先让我们先看看主板的构成和架构图:<br><img src="/img/Graphic/MainBoard.PNG" alt="MainBoard"><br><img src="/img/Graphic/MainboardDiagram.PNG" alt="MainboardDiagram"></p>
 <p>以下只列出了几个重要的模块进行了解：</p>
 <ol>
 <li>CPU插槽 — CPU插槽接口(CPU主要分为Intel和AMD，注意接口标准兼容问题)</li>
 <li>芯片组 — CPU与其他组件沟通的桥梁，分为北桥(Normal Bridge)和南桥(South Bridge)<br>图二可以看出，北桥(NB)主要是负责CPU与RAM(内存)，AGP,PCI Express还有南桥的通信。<br>南桥主要是负责和外设，多媒体，通信接口等通信。<br>Note:<br>北桥随着发展被整合到CPU里了。 </li>
-<li>AGP插槽(根据Wiki的说法被PCI Express取代了) — 显卡插槽专用接口<br><img src="/img/Graphics/PCIExpressPerformance.PNG" alt="PCI Express性能参考表"><br>当然最好的是PCI Express 3.0 x16。区分是x1,x4,x8,x16看针脚数量。<br>PCI Express总线对显卡传输的瓶颈暂时不考虑，情况比较复杂。尽量买支持PCI Express 3.0 x16插槽的主板就好。<br><img src="/img/Graphics/PCIExpressInfo.PNG" alt="PCI Express信息查看"><br>GPU-Z里的Bus Interface显示的就是PCI Express的版本和带宽数。</li>
+<li>AGP插槽(根据Wiki的说法被PCI Express取代了) — 显卡插槽专用接口<br><img src="/img/Graphic/PCIExpressPerformance.PNG" alt="PCI Express性能参考表"><br>当然最好的是PCI Express 3.0 x16。区分是x1,x4,x8,x16看针脚数量。<br>PCI Express总线对显卡传输的瓶颈暂时不考虑，情况比较复杂。尽量买支持PCI Express 3.0 x16插槽的主板就好。<br><img src="/img/Graphic/PCIExpressInfo.PNG" alt="PCI Express信息查看"><br>GPU-Z里的Bus Interface显示的就是PCI Express的版本和带宽数。</li>
 <li>内存插槽 — 内存条插槽接口(多个内存插槽方便以后内存扩展)</li>
 <li>PCI扩展插槽 — 外设(e.g. 网卡，声卡，调制解调器……)扩展插槽接口(被PCI Express慢慢取代)</li>
-<li>mSATA(结合下面的图查看) — 安装我们平时说的SSD(固态硬盘)的插槽接口(推荐使用固态硬盘)<br><img src="/img/Graphics/mSATALocation.PNG" alt="mSATA插槽位置"></li>
+<li>mSATA(结合下面的图查看) — 安装我们平时说的SSD(固态硬盘)的插槽接口(推荐使用固态硬盘)<br><img src="/img/Graphic/mSATALocation.PNG" alt="mSATA插槽位置"></li>
 <li>BIOS — <a href="http://www.it892.com/content/hardware/onboard/2014/1001/5581.html" target="_blank" rel="external">基本输入、输出系统)是一块装入了启动和自检程序的EPROM 或EEPROM 集成电路。</a></li>
 </ol>
 <p>主板决定了我们其他组件的选择范围(比如CPU必须和主板CPU插槽一致)，不然出现不兼容或者不允许安装就尴尬了。<br>Intel和AMD的CPU插槽详解参见下面链接：<br><a href="http://www.it892.com/content/hardware/onboard/2013/0905/4863.html" target="_blank" rel="external">电脑主板有哪些插槽详细介绍</a></p>
@@ -251,7 +251,7 @@
 <p>公式：<br>CPU主频=CPU外频(系统总线)×CPU倍频系数</p>
 <p>不同的CPU(Intel or AMD)，CPU外频(系统总线)和前端总线频率关系不一样：<br>Intel CPU来说，前端总线=系统总线*4</p>
 <p>超频会带来影响CPU的稳定性，更发热，需要更大供电等问题。</p>
-<p>了解了上述概念，不难看出，CPU的性能好坏主要是由主频和超频能力决定的。<br>通过CPU-Z工具，我们可以看到CPU相关的详细信息:<br><img src="/img/Graphics/CPUProcessorFrequency.PNG" alt="CPU-Z信息查看"><br>结合我在Intel官网查到的CPU信息:<br><img src="/img/Graphics/MyCPUInfo.PNG" alt="我的CPU信息"><br>从上面可以看出，我的电脑CPU基本频率2.3GHz，超频最高达到3.3GHz，倍频是在12-33之间变化。</p>
+<p>了解了上述概念，不难看出，CPU的性能好坏主要是由主频和超频能力决定的。<br>通过CPU-Z工具，我们可以看到CPU相关的详细信息:<br><img src="/img/Graphic/CPUProcessorFrequency.PNG" alt="CPU-Z信息查看"><br>结合我在Intel官网查到的CPU信息:<br><img src="/img/Graphic/MyCPUInfo.PNG" alt="我的CPU信息"><br>从上面可以看出，我的电脑CPU基本频率2.3GHz，超频最高达到3.3GHz，倍频是在12-33之间变化。</p>
 <p>组装购买CPU时，不仅要考虑CPU的性能好坏，还要考虑前端总线的传输能力，如果前端总线远远小于CPU的频率那么性能就受限于前端总线，反之亦然。</p>
 <p>CPU性能比较参考CPU天梯图：<br><a href="http://www.xiazaiba.com/jiaocheng/10299.html" target="_blank" rel="external">CPU 2017年9月天梯图</a></p>
 <p>Note:<br><a href="https://baike.baidu.com/item/%E8%B6%85%E9%A2%91%E6%8A%80%E6%9C%AF" target="_blank" rel="external">超频是一个广义的概念，它是指任何提高计算机某一部件工作频率而使之工作在非标准频率下的行为及相关行动都应该称之为超频，其中包括CPU超频、主板超频、内存超频、显示卡超频和硬盘超频等等很多部分</a><br>外频 == 系统总线频率     外频 != 前端总线频率</p>
