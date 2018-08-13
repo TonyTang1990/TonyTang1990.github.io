@@ -88,7 +88,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NPOT_ETC1.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NPOT_ETC2.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ETC2SizeRequirement.png">
-<meta property="og:updated_time" content="2018-08-13T11:52:55.804Z">
+<meta property="og:updated_time" content="2018-08-13T11:57:55.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity Resource Manager">
 <meta name="twitter:description" content="前言在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。本章节主要是对于Unity在资源管理方面的进一步学习了解。
@@ -655,7 +655,7 @@
 <li>上面主要是针对移动设备来分析，所以没有考虑PC Windows平台比如DXT等压缩格式。</li>
 </ol>
 <p>疑问：<br>ETC2不要求宽高Power Of Two吗？(希望知道的朋友告知一下)<br>首先我确认ETC1是要求宽高必须POT的，不然会被强制转成其他格式：<br><img src="/img/Unity/NPOT_ETC1.png" alt="NPOT_ETC1"><br>但上述测试过程中我发现ETC2即使是NPOT也没有被转成其他格式：<br><img src="/img/Unity/NPOT_ETC2.png" alt="NPOT_ETC2"><br>后来测试加上查询资料(但是是从一篇博客上看到的)得知，ETC2要求宽高是4的倍数即可，所以200*200也没有转换成其他格式：<br><img src="/img/Unity/ETC2SizeRequirement.png" alt="ETC2SizeRequirement"><br>参考:<br><a href="https://www.cnblogs.com/zsb517/p/6297739.html" target="_blank" rel="external">移动端纹理压缩格式</a></p>
-<h3 id="纹理总结">纹理总结</h3><p>简单理一下Unity处理纹理，在游戏里使用的流程:<br>原图(PNG,JPG…..) —————————————-&gt; Texture2D(压缩后的纹理图片，无需CPU解压，能被GPU识别的像素格式) -&gt; 游戏内Texture2D(看硬件是否支持，不支持会被硬件转换成其他格式,比如RGBA32)</p>
+<h3 id="纹理总结">纹理总结</h3><p>简单理一下Unity处理纹理，在游戏里使用的流程:<br>原图(PNG,JPG…..) —-&gt; Texture2D(压缩后的纹理图片，无需CPU解压，能被GPU识别的像素格式) —-&gt; 游戏内Texture2D(看硬件是否支持，不支持会被硬件转换成其他格式,比如RGBA32)</p>
 <p>纹理压缩格式的选择：<br>Android:<br>ETC1(需要POT,不支持Alpha) &gt; ETC1 + Alpha Split(需要配合大于Unity 5.3的Sprite Packer使用) &gt; ETC2(需要Android 4.3且OpenGL ES3.0) &gt; RGB16 &gt; RGBA16 &gt; RGB24 &gt; RGBA32</p>
 <p>IOS:<br>PVRTC(需要POT且宽高一样) &gt; RGB16 &gt; RGBA16 &gt; RGB24 &gt; RGBA32</p>
 <p>未来ETC2普及了，可能普遍是设置ETC2格式。至于ASTC也是未来的一个趋势，ASTC从IOS9(A8架构)开始支持(Android也还不普及)，但压缩效果相比PVRTC更好且不需要设置正方形。。(2018/08/05)</p>
