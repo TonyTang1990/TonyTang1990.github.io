@@ -64,7 +64,7 @@ Why那么为什么需要数据">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Data-Config-Automation/GC_GetToalMemory_MemoryUsing.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Data-Config-Automation/Profiler_GetMonoUsedSizeLong_MemoryUsing.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Data-Config-Automation/AndroidDevice_Profiler_GetMonoUsedSizeLong_MemoryUsing.png">
-<meta property="og:updated_time" content="2018-09-08T13:17:19.395Z">
+<meta property="og:updated_time" content="2018-09-08T13:19:12.249Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Data-Config-Automation">
 <meta name="twitter:description" content="Introduction游戏开发过程中，避免不了和数据打交道，数据是游戏最基础也是很重要的一部分。本篇文章正式为了学习了解游戏开发过程中关于数据配置自动化导表生成代码等一系列自动化相关的知识而写。
@@ -770,6 +770,7 @@ Mono 2.x
 <li>数据向后兼容问题(这里需要向Flatbuffer和Protobuf对于数据的存储做更多的处理才能做到)</li>
 <li>完整的工具链要考虑的不仅仅是数据的存储和加载，还要关注自动化相关代码的生成(比如通过模板定义做到对多语言工具链的支持)。</li>
 <li>二进制数据的处理需要关注大小端问题(不同CPU数据存储方式不一样)，内存对齐问题(不同架构比如ARM和Intel对于浮点数的dereference就有内存4字节对齐的要求)。</li>
+<li>强大的正则表达式在做模板问题处理时，相当优秀。</li>
 </ol>
 <p>待续…..</p>
 <h2 id="总结">总结</h2><h1 id="Reference">Reference</h1><h2 id="Conception_Part">Conception Part</h2><p><a href="https://github.com/google/protobuf" target="_blank" rel="external">protobuf</a><br><a href="https://github.com/google/flatbuffers" target="_blank" rel="external">FlatBuff</a><br><a href="https://github.com/CodeZeg/xbuffer" target="_blank" rel="external">Xbuffer</a></p>
