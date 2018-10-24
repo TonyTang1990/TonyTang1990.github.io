@@ -70,7 +70,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NPOT_ETC1.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NPOT_ETC2.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ETC2SizeRequirement.png">
-<meta property="og:updated_time" content="2018-10-24T15:39:53.344Z">
+<meta property="og:updated_time" content="2018-10-24T17:18:11.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity Resource Manager">
 <meta name="twitter:description" content="前言在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。本章节主要是对于Unity在资源管理方面的进一步学习了解。
@@ -410,7 +410,7 @@
 <li>Time to awaken the new GameObjects and Components<br>我们的关注点放到第一点上，数据的读写方式对后面三点影响不大，第一点跟数据的读写方式和数据的大小紧密相关。<br>“On all current platforms, it is considerably faster to read data from elsewhere in memory rather than loading it from a storage device. “(所有平台上，从内存中读取都比从存储设备去读取快，当然不同的平台的读取速度会有一些差别)</li>
 </ol>
 <p>我们前面提到当由复杂结构的GameObject的时候，所有对象都会被单独序列化(无论是否重复)，这样一来会导致数据量很大，在加载的时候很慢。为了提高速度，我们可以通过把复杂的GameObject划分为多个单独的小的Prefab，然后通过实例化多个Prefab来构建我们的GameObject而非完全依赖于Unity的Serialization和prefab system。(减少了数据量。同时一旦Prefab被加载后，从内存中读取就比从硬件设备读取快多了)</p>
-<h1 id="Unity_AB实战">Unity AB实战</h1><p>以Unity5.0以后的版本作为学习对象。<br>打包以及加载管理这一套实战，单独提了一篇文章来写，详情查看:<br><a href="">AssetBundle-Framework</a></p>
+<h1 id="Unity_AB实战">Unity AB实战</h1><p>以Unity5.0以后的版本作为学习对象。<br>打包以及加载管理这一套实战，单独提了一篇文章来写，详情查看:<br><a href="http://tonytang1990.github.io/2018/10/24/AssetBundle-Framework">AssetBundle-Framework</a></p>
 <p>未完，待续…..</p>
 <h1 id="特定资源打包">特定资源打包</h1><p>这里针对不同的资源类型进行深度学习了解，理解项目中为什么不同的资源格式不同的平台为什么要设置特定的格式或者导入设定等信息，从而优化资源的内存占用以及相关不必要的开销。</p>
 <h2 id="纹理贴图">纹理贴图</h2><p>纹理贴图是游戏内存占用中的一个很大板块(含纹理，图集等)。</p>
