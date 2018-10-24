@@ -39,7 +39,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleTextureStatus.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleGameObjectStatus.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleTransformStatus.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/image/Unity/Unity-Resource-Manager/ModuleDesign.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Unity-Resource-Manager/ModuleDesign.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleDepInfoUI.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleTestUI.png">
@@ -47,7 +47,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadSprites.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png">
-<meta property="og:updated_time" content="2018-10-24T17:19:07.576Z">
+<meta property="og:updated_time" content="2018-10-24T17:23:39.859Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AssetBundle-Framework">
 <meta name="twitter:description" content="前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。
@@ -322,7 +322,7 @@
 </ol>
 <p>考虑到希望上层灵活度高一些，个人现在倾向于第二种方案。</p>
 <p>接下来基于第二种方案来实战编写资源AB加载的框架。<br>AB打包这一块打算先使用之前自己写的一套没有增量更新但支持一定打包规则指定的打包方案。</p>
-<h4 id="AB加载管理框架">AB加载管理框架</h4><p>以下实现主要参考了下面两个开源项目：<br><a href="https://github.com/tangzx/ABSystem" target="_blank" rel="external"><br>Unity3D AssetBundle 打包与管理系统</a><br><a href="https://github.com/mr-kelly/KEngine" target="_blank" rel="external">KEngine</a></p>
+<h4 id="AB加载管理框架">AB加载管理框架</h4><p>以下实现主要参考了下面两个开源项目：<br><a href="https://github.com/tangzx/ABSystem" target="_blank" rel="external">Unity3D AssetBundle 打包与管理系统</a><br><a href="https://github.com/mr-kelly/KEngine" target="_blank" rel="external">KEngine</a></p>
 <h5 id="框架设计">框架设计</h5><p>支持功能：</p>
 <ol>
 <li>支持AB和Resources目录资源格式加载(方便快速迭代开发，开发时用Resources(待开发)，测试时用AB)</li>
@@ -336,7 +336,7 @@
 <li>Manager of Manager架构设计，面向接口设计Manager，通过中介者统一注册获取(ModuleManager.GetManager<t>的形式)</t></li>
 <li>底层模块之间的解耦暂时还没想好如何设计(TODO)</li>
 </ol>
-<p>简单绘制一下类图:<br><img src="/image/Unity/Unity-Resource-Manager/ModuleDesign.png" alt="ModuleDesign"></p>
+<p>简单绘制一下类图:<br><img src="/img/Unity/Unity-Resource-Manager/ModuleDesign.png" alt="ModuleDesign"></p>
 <p>更多学习参考:<br><a href="https://www.indienova.com/indie-game-development/hierarchical-design-in-unity/" target="_blank" rel="external">浅谈 Unity 开发中的分层设计</a></p>
 <p>类设计：<br>    中介者解耦Manager的类：<br>    ModuleManager(单例类)<br>    ModuleInterface(模块接口类，面向接口编程)<br>    ModuleType(模块枚举类型)</p>
 <p>资源加载类：<br>    ResourceLoadingMode(资源加载方式枚举类型 — AB同步 or AB异步)<br>    ResourceLoadingState(资源加载状态 — 错误，加载中，完成之类的)<br>    ResourceModuleManager(资源加载模块统一管理类)<br>    AssetBundleLoader(AB资源加载父类抽象)<br>    AssetBundleInfo(AB信息以及加载状态抽象类 — AB访问，索引计数以及AB依赖关系抽象都在这一层)<br>    AssetBundlePath(AB资源路径相关 — 处理多平台路径问题)<br>    ABDebugWindow.cs(Editor运行模式下可视化查看AB加载详细信息的辅助工具窗口)</p>
