@@ -11,14 +11,14 @@
     
 
     
-    <meta name="description" content="title: AssetBundle-Frameworkdate: 2018-10-24 23:07:12
-tags: Resource前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写">
+    <meta name="description" content="title: AssetBundleFrameworkdate: 2018-10-24 23:07:12
+tags: Resource前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="走停人生路">
 <meta property="og:url" content="http://tonytang1990.github.io/2018/10/28/AssetBundleFramework/index.html">
 <meta property="og:site_name" content="走停人生路">
-<meta property="og:description" content="title: AssetBundle-Frameworkdate: 2018-10-24 23:07:12
-tags: Resource前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写">
+<meta property="og:description" content="title: AssetBundleFrameworkdate: 2018-10-24 23:07:12
+tags: Resource前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/sd_shaderlist.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/DPInfoMono.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/MaterialAssetInfo.PNG">
@@ -45,11 +45,11 @@ tags: Resource前言本篇文章是为了记录学习了Unity资源加载(Resour
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadSprites.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png">
-<meta property="og:updated_time" content="2018-10-27T16:27:34.780Z">
+<meta property="og:updated_time" content="2018-10-27T16:30:15.615Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="走停人生路">
-<meta name="twitter:description" content="title: AssetBundle-Frameworkdate: 2018-10-24 23:07:12
-tags: Resource前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写">
+<meta name="twitter:description" content="title: AssetBundleFrameworkdate: 2018-10-24 23:07:12
+tags: Resource前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一">
 
     
     <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
@@ -116,7 +116,7 @@ tags: Resource前言本篇文章是为了记录学习了Unity资源加载(Resour
 		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
 		
   <p class="article-time">
-    <time datetime="2018-10-27T16:27:34.780Z" itemprop="datePublished"> 發表於 2018-10-28</time>
+    <time datetime="2018-10-27T16:30:15.615Z" itemprop="datePublished"> 發表於 2018-10-28</time>
     
   </p>
 </header>
@@ -129,7 +129,7 @@ tags: Resource前言本篇文章是为了记录学习了Unity资源加载(Resour
 		
 		</div>
 		
-		<p>title: AssetBundle-Framework<br>date: 2018-10-24 23:07:12</p>
+		<p>title: AssetBundleFramework<br>date: 2018-10-24 23:07:12</p>
 <h2 id="tags:_Resource">tags: Resource</h2><h1 id="前言">前言</h1><p>本篇文章是为了记录学习了Unity资源加载(Resource &amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。</p>
 <p>基础知识学习回顾，参考:<br><a href="http://tonytang1990.github.io/2016/10/13/Unity-Resource-Manager">Unity Resource Manager</a></p>
 <h1 id="鸣谢">鸣谢</h1><p>这里AssetBundle加载管理的框架思路借鉴了Git上的开源库:<br><a href="https://github.com/tangzx/ABSystem" target="_blank" rel="external">tangzx/ABSystem</a></p>
