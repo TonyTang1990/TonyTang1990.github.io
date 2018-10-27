@@ -4,23 +4,21 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>AssetBundle-Framework | 走停人生路</title>
+    <title>走停人生路</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Tony Tang">
     
 
     
-    <meta name="description" content="前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。
-基础知识学习回顾，参考:Unity Resource Manager
-鸣谢这里AssetBundle加载管理的框架思路借鉴了Gi">
+    <meta name="description" content="title: AssetBundle-Frameworkdate: 2018-10-24 23:07:12
+tags: Resource前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写">
 <meta property="og:type" content="article">
-<meta property="og:title" content="AssetBundle-Framework">
-<meta property="og:url" content="http://tonytang1990.github.io/2018/10/24/AssetBundle-Framework/index.html">
+<meta property="og:title" content="走停人生路">
+<meta property="og:url" content="http://tonytang1990.github.io/2018/10/27/AssetBundle-Framework/index.html">
 <meta property="og:site_name" content="走停人生路">
-<meta property="og:description" content="前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。
-基础知识学习回顾，参考:Unity Resource Manager
-鸣谢这里AssetBundle加载管理的框架思路借鉴了Gi">
+<meta property="og:description" content="title: AssetBundle-Frameworkdate: 2018-10-24 23:07:12
+tags: Resource前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/sd_shaderlist.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/DPInfoMono.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/MaterialAssetInfo.PNG">
@@ -47,12 +45,11 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadSprites.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png">
-<meta property="og:updated_time" content="2018-10-27T03:25:21.287Z">
+<meta property="og:updated_time" content="2018-10-27T15:39:43.277Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="AssetBundle-Framework">
-<meta name="twitter:description" content="前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。
-基础知识学习回顾，参考:Unity Resource Manager
-鸣谢这里AssetBundle加载管理的框架思路借鉴了Gi">
+<meta name="twitter:title" content="走停人生路">
+<meta name="twitter:description" content="title: AssetBundle-Frameworkdate: 2018-10-24 23:07:12
+tags: Resource前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写">
 
     
     <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
@@ -112,14 +109,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/10/24/AssetBundle-Framework/" title="AssetBundle-Framework" itemprop="url">AssetBundle-Framework</a>
+      <a href="/2018/10/27/AssetBundle-Framework/" title="" itemprop="url"></a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
 		
   <p class="article-time">
-    <time datetime="2018-10-24T15:07:12.000Z" itemprop="datePublished"> 發表於 2018-10-24</time>
+    <time datetime="2018-10-27T15:39:43.277Z" itemprop="datePublished"> 發表於 2018-10-27</time>
     
   </p>
 </header>
@@ -128,11 +125,12 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#鸣谢"><span class="toc-number">2.</span> <span class="toc-text">鸣谢</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AssetBundle打包"><span class="toc-number">3.</span> <span class="toc-text">AssetBundle打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#相关工具"><span class="toc-number">3.1.</span> <span class="toc-text">相关工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB打包"><span class="toc-number">3.2.</span> <span class="toc-text">AB打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#资源冗余"><span class="toc-number">3.2.1.</span> <span class="toc-text">资源冗余</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖打包"><span class="toc-number">3.2.1.1.</span> <span class="toc-text">依赖打包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#增量打包(Unity_5以后)"><span class="toc-number">3.2.1.2.</span> <span class="toc-text">增量打包(Unity 5以后)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖Asset信息打包"><span class="toc-number">3.2.1.3.</span> <span class="toc-text">依赖Asset信息打包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打包策略"><span class="toc-number">3.2.2.</span> <span class="toc-text">打包策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB压缩格式"><span class="toc-number">3.2.3.</span> <span class="toc-text">AB压缩格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包相关API"><span class="toc-number">3.2.4.</span> <span class="toc-text">AB打包相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包框架实战"><span class="toc-number">3.2.5.</span> <span class="toc-text">AB打包框架实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AssetBundle加载管理"><span class="toc-number">3.3.</span> <span class="toc-text">AssetBundle加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖加载还原"><span class="toc-number">3.3.1.</span> <span class="toc-text">依赖加载还原</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB加载相关API"><span class="toc-number">3.3.2.</span> <span class="toc-text">AB加载相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB回收相关API"><span class="toc-number">3.3.3.</span> <span class="toc-text">AB回收相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于Asset重用的AB加载"><span class="toc-number">3.3.4.</span> <span class="toc-text">基于Asset重用的AB加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于AB引用计数的AB加载管理"><span class="toc-number">3.3.5.</span> <span class="toc-text">基于AB引用计数的AB加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#AB加载管理框架"><span class="toc-number">3.3.5.1.</span> <span class="toc-text">AB加载管理框架</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#框架设计"><span class="toc-number">3.3.5.1.1.</span> <span class="toc-text">框架设计</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Demo"><span class="toc-number">3.3.5.1.2.</span> <span class="toc-text">Demo</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB实战总结"><span class="toc-number">3.4.</span> <span class="toc-text">AB实战总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#tags:_Resource"><span class="toc-number">1.</span> <span class="toc-text">tags: Resource</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number"></span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#鸣谢"><span class="toc-number"></span> <span class="toc-text">鸣谢</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AssetBundle打包"><span class="toc-number"></span> <span class="toc-text">AssetBundle打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#相关工具"><span class="toc-number">1.</span> <span class="toc-text">相关工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB打包"><span class="toc-number">2.</span> <span class="toc-text">AB打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#资源冗余"><span class="toc-number">2.1.</span> <span class="toc-text">资源冗余</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖打包"><span class="toc-number">2.1.1.</span> <span class="toc-text">依赖打包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#增量打包(Unity_5以后)"><span class="toc-number">2.1.2.</span> <span class="toc-text">增量打包(Unity 5以后)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖Asset信息打包"><span class="toc-number">2.1.3.</span> <span class="toc-text">依赖Asset信息打包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打包策略"><span class="toc-number">2.2.</span> <span class="toc-text">打包策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB压缩格式"><span class="toc-number">2.3.</span> <span class="toc-text">AB压缩格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包相关API"><span class="toc-number">2.4.</span> <span class="toc-text">AB打包相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包框架实战"><span class="toc-number">2.5.</span> <span class="toc-text">AB打包框架实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AssetBundle加载管理"><span class="toc-number">3.</span> <span class="toc-text">AssetBundle加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖加载还原"><span class="toc-number">3.1.</span> <span class="toc-text">依赖加载还原</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB加载相关API"><span class="toc-number">3.2.</span> <span class="toc-text">AB加载相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB回收相关API"><span class="toc-number">3.3.</span> <span class="toc-text">AB回收相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于Asset重用的AB加载"><span class="toc-number">3.4.</span> <span class="toc-text">基于Asset重用的AB加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于AB引用计数的AB加载管理"><span class="toc-number">3.5.</span> <span class="toc-text">基于AB引用计数的AB加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#AB加载管理框架"><span class="toc-number">3.5.1.</span> <span class="toc-text">AB加载管理框架</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#框架设计"><span class="toc-number">3.5.1.1.</span> <span class="toc-text">框架设计</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Demo"><span class="toc-number">3.5.1.2.</span> <span class="toc-text">Demo</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB实战总结"><span class="toc-number">4.</span> <span class="toc-text">AB实战总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number"></span> <span class="toc-text">Reference</span></a>
 		
 		</div>
 		
-		<h1 id="前言">前言</h1><p>本篇文章是为了记录学习了Unity资源加载(Resource &amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。</p>
+		<p>title: AssetBundle-Framework<br>date: 2018-10-24 23:07:12</p>
+<h2 id="tags:_Resource">tags: Resource</h2><h1 id="前言">前言</h1><p>本篇文章是为了记录学习了Unity资源加载(Resource &amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。</p>
 <p>基础知识学习回顾，参考:<br><a href="http://tonytang1990.github.io/2016/10/13/Unity-Resource-Manager">Unity Resource Manager</a></p>
 <h1 id="鸣谢">鸣谢</h1><p>这里AssetBundle加载管理的框架思路借鉴了Git上的开源库:<br><a href="https://github.com/tangzx/ABSystem" target="_blank" rel="external">tangzx/ABSystem</a></p>
 <p>同时也学习了KEngine相关部分的代码：<br><a href="https://github.com/mr-kelly/KEngine" target="_blank" rel="external">mr-kelly/KEngine</a></p>
@@ -339,8 +337,8 @@
 </ol>
 <p>简单绘制一下类图:<br><img src="/img/Unity/Unity-Resource-Manager/ModuleDesign.png" alt="ModuleDesign"></p>
 <p>更多学习参考:<br><a href="https://www.indienova.com/indie-game-development/hierarchical-design-in-unity/" target="_blank" rel="external">浅谈 Unity 开发中的分层设计</a></p>
-<p>类设计：<br>    中介者解耦Manager的类：<br>    ModuleManager(单例类)<br>    ModuleInterface(模块接口类，面向接口编程)<br>    ModuleType(模块枚举类型)</p>
-<p>资源加载类：<br>    ABLoadMethod(资源加载方式枚举类型 — AB同步 or AB异步)<br>    ABLoadState(资源加载状态 — 错误，加载中，完成之类的)<br>    ABLoadType(资源加载类型 — 正常加载，预加载，永久加载)<br>    ResourceModuleManager(资源加载模块统一管理类)<br>    AssetBundleLoader(AB资源加载任务类)<br>    AssetBundleInfo(AB信息以及加载状态类，AB访问，索引计数以及AB依赖关系抽象都在这一层)<br>    AssetBundlePath(AB资源路径相关 — 处理多平台路径问题)<br>    ABDebugWindow.cs(Editor运行模式下可视化查看AB加载详细信息的辅助工具窗口)</p>
+<p>类设计：<br>    中介者解耦Manager的类：<br>    ModuleManager(单例类)<br>    ModuleInterface(模块接口类)<br>    ModuleType(模块枚举类型)</p>
+<p>资源加载类：<br>    ABLoadMethod(资源加载方式枚举类型 — 同步 or 异步)<br>    ABLoadState(资源加载状态 — 错误，加载中，完成之类的)<br>    ABLoadType(资源加载类型 — 正常加载，预加载，永久加载)<br>    ResourceModuleManager(资源加载模块统一管理类)<br>    AssetBundleLoader(AB资源加载任务类)<br>    AssetBundleInfo(AB信息以及加载状态类，AB访问，索引计数以及AB依赖关系抽象都在这一层)<br>    AssetBundlePath(AB资源路径相关 — 处理多平台路径问题)<br>    ABDebugWindow.cs(Editor运行模式下可视化查看AB加载详细信息的辅助工具窗口)</p>
 <p>AssetBundle管理方式是索引计数+检查有效使用对象，然后AssetBundle.Unload(true)的方式。<br>这里的引用计数+检查有效使用对象是指：</p>
 <ol>
 <li>AB被依赖加载的引用计数</li>
@@ -410,18 +408,13 @@
 <div class="article-catetags">
 
 
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Resource/">Resource</a>
-  </div>
-
 </div>
 
 
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://tonytang1990.github.io/2018/10/24/AssetBundle-Framework/" data-title="AssetBundle-Framework | 走停人生路" data-tsina="null" class="share clearfix">
+	  <div data-url="http://tonytang1990.github.io/2018/10/27/AssetBundle-Framework/" data-title="走停人生路" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -434,19 +427,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2018/10/24/Unity-Event-System/" title="Unity-Event-System">
-  <strong>上一篇：</strong><br/>
-  <span>
-  Unity-Event-System</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2018/09/10/Game-Design-Pattern/"  title="Game-Design-Pattern">
+<a href="/2018/10/24/Unity-Event-System/"  title="Unity-Event-System">
  <strong>下一篇：</strong><br/> 
- <span>Game-Design-Pattern
+ <span>Unity-Event-System
 </span>
 </a>
 </div>
@@ -455,7 +440,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2018/10/24/AssetBundle-Framework/" data-title="AssetBundle-Framework" data-url="http://tonytang1990.github.io/2018/10/24/AssetBundle-Framework/"></div>
+	<div class="ds-thread" data-thread-key="2018/10/27/AssetBundle-Framework/" data-title="" data-url="http://tonytang1990.github.io/2018/10/27/AssetBundle-Framework/"></div>
 </section>
 
 
@@ -465,7 +450,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#鸣谢"><span class="toc-number">2.</span> <span class="toc-text">鸣谢</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AssetBundle打包"><span class="toc-number">3.</span> <span class="toc-text">AssetBundle打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#相关工具"><span class="toc-number">3.1.</span> <span class="toc-text">相关工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB打包"><span class="toc-number">3.2.</span> <span class="toc-text">AB打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#资源冗余"><span class="toc-number">3.2.1.</span> <span class="toc-text">资源冗余</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖打包"><span class="toc-number">3.2.1.1.</span> <span class="toc-text">依赖打包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#增量打包(Unity_5以后)"><span class="toc-number">3.2.1.2.</span> <span class="toc-text">增量打包(Unity 5以后)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖Asset信息打包"><span class="toc-number">3.2.1.3.</span> <span class="toc-text">依赖Asset信息打包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打包策略"><span class="toc-number">3.2.2.</span> <span class="toc-text">打包策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB压缩格式"><span class="toc-number">3.2.3.</span> <span class="toc-text">AB压缩格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包相关API"><span class="toc-number">3.2.4.</span> <span class="toc-text">AB打包相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包框架实战"><span class="toc-number">3.2.5.</span> <span class="toc-text">AB打包框架实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AssetBundle加载管理"><span class="toc-number">3.3.</span> <span class="toc-text">AssetBundle加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖加载还原"><span class="toc-number">3.3.1.</span> <span class="toc-text">依赖加载还原</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB加载相关API"><span class="toc-number">3.3.2.</span> <span class="toc-text">AB加载相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB回收相关API"><span class="toc-number">3.3.3.</span> <span class="toc-text">AB回收相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于Asset重用的AB加载"><span class="toc-number">3.3.4.</span> <span class="toc-text">基于Asset重用的AB加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于AB引用计数的AB加载管理"><span class="toc-number">3.3.5.</span> <span class="toc-text">基于AB引用计数的AB加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#AB加载管理框架"><span class="toc-number">3.3.5.1.</span> <span class="toc-text">AB加载管理框架</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#框架设计"><span class="toc-number">3.3.5.1.1.</span> <span class="toc-text">框架设计</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Demo"><span class="toc-number">3.3.5.1.2.</span> <span class="toc-text">Demo</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB实战总结"><span class="toc-number">3.4.</span> <span class="toc-text">AB实战总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#tags:_Resource"><span class="toc-number">1.</span> <span class="toc-text">tags: Resource</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number"></span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#鸣谢"><span class="toc-number"></span> <span class="toc-text">鸣谢</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AssetBundle打包"><span class="toc-number"></span> <span class="toc-text">AssetBundle打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#相关工具"><span class="toc-number">1.</span> <span class="toc-text">相关工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB打包"><span class="toc-number">2.</span> <span class="toc-text">AB打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#资源冗余"><span class="toc-number">2.1.</span> <span class="toc-text">资源冗余</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖打包"><span class="toc-number">2.1.1.</span> <span class="toc-text">依赖打包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#增量打包(Unity_5以后)"><span class="toc-number">2.1.2.</span> <span class="toc-text">增量打包(Unity 5以后)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖Asset信息打包"><span class="toc-number">2.1.3.</span> <span class="toc-text">依赖Asset信息打包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打包策略"><span class="toc-number">2.2.</span> <span class="toc-text">打包策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB压缩格式"><span class="toc-number">2.3.</span> <span class="toc-text">AB压缩格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包相关API"><span class="toc-number">2.4.</span> <span class="toc-text">AB打包相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包框架实战"><span class="toc-number">2.5.</span> <span class="toc-text">AB打包框架实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AssetBundle加载管理"><span class="toc-number">3.</span> <span class="toc-text">AssetBundle加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖加载还原"><span class="toc-number">3.1.</span> <span class="toc-text">依赖加载还原</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB加载相关API"><span class="toc-number">3.2.</span> <span class="toc-text">AB加载相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB回收相关API"><span class="toc-number">3.3.</span> <span class="toc-text">AB回收相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于Asset重用的AB加载"><span class="toc-number">3.4.</span> <span class="toc-text">基于Asset重用的AB加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于AB引用计数的AB加载管理"><span class="toc-number">3.5.</span> <span class="toc-text">基于AB引用计数的AB加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#AB加载管理框架"><span class="toc-number">3.5.1.</span> <span class="toc-text">AB加载管理框架</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#框架设计"><span class="toc-number">3.5.1.1.</span> <span class="toc-text">框架设计</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Demo"><span class="toc-number">3.5.1.2.</span> <span class="toc-text">Demo</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB实战总结"><span class="toc-number">4.</span> <span class="toc-text">AB实战总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number"></span> <span class="toc-text">Reference</span></a>
  
   </div>
 
@@ -520,15 +505,15 @@
 			
 		
 			
-				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>1</sup></a></li>
 			
 		
 			
@@ -540,11 +525,11 @@
 			
 		
 			
-				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
 			
 		
 			
