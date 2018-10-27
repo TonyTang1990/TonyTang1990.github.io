@@ -47,7 +47,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadSprites.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png">
-<meta property="og:updated_time" content="2018-10-27T03:23:34.735Z">
+<meta property="og:updated_time" content="2018-10-27T03:25:21.287Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AssetBundle-Framework">
 <meta name="twitter:description" content="前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。
@@ -137,6 +137,7 @@
 <h1 id="鸣谢">鸣谢</h1><p>这里AssetBundle加载管理的框架思路借鉴了Git上的开源库:<br><a href="https://github.com/tangzx/ABSystem" target="_blank" rel="external">tangzx/ABSystem</a></p>
 <p>同时也学习了KEngine相关部分的代码：<br><a href="https://github.com/mr-kelly/KEngine" target="_blank" rel="external">mr-kelly/KEngine</a></p>
 <p>AssetBundle打包这一套主要是自己基于对新版(5.X以上)的AssetBundle打包机制自行编写的一套，这一套相对来说很不完善有很多缺点，个人建议读者参考Git上的其他一些开源库或者直接使用Unity官方推出的高度可视化和高度自由度打包方案:<br><a href="https://github.com/Unity-Technologies/AssetBundles-Browser" target="_blank" rel="external">AssetBundles-Browser</a></p>
+<p>本文重点分享，参考ABSystem编写的一套AB加载管理方案实现:<br><a href="http://tonytang1990.github.io/2018/10/24/AssetBundle-Framework/#%E5%9F%BA%E4%BA%8EAB%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E7%9A%84AB%E5%8A%A0%E8%BD%BD%E7%AE%A1%E7%90%86">基于AB引用计数的AB加载管理</a></p>
 <h1 id="AssetBundle打包">AssetBundle打包</h1><p>Note:<br>这里的AssetBundle打包主要是针对Unity 5.X以及以后的版本来实现学习的。</p>
 <h2 id="相关工具">相关工具</h2><ol>
 <li>Unity Profiler(Unity自带的新能分析工具，这里主要用于查看内存Asset加载情况)</li>
