@@ -47,7 +47,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadSprites.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png">
-<meta property="og:updated_time" content="2018-10-27T16:32:59.716Z">
+<meta property="og:updated_time" content="2018-10-27T16:34:53.453Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AssetBundle-Framework">
 <meta name="twitter:description" content="前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。
@@ -387,11 +387,12 @@
 <p> <img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png" alt="AssetBundleLoadManagerUIAfterDestroyWindow"><br> 窗口销毁后可以看到之前加载的资源所有绑定对象都为空了，因为被销毁了(MainWindow和imgBG都被销毁了)</p>
 </li>
 <li><p>等待回收检测回收后:<br> <img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png" alt="AssetBundleLoadManagerUIAfterUnloadAB"><br> 上述资源在窗口销毁后，满足了可回收的三大条件(1. 索引计数为0 2. 绑定对象为空 3. NormalLoad加载方式)，最终被成功回收。</p>
+<p>Note:</p>
+<p>读者可能注意到shaderlist索引计数为0，也没绑定对象，但没有被卸载，这是因为shaderlist是被我预加载以常驻资源的形式加载进来的(PermanentLoad)，所以永远不会被卸载。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ModuleManager.Singleton.getModule&lt;ResourceModuleManager&gt;().requstResource(<span class="string">"shaderlist"</span>,</span><br><span class="line">(abi) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    abi.loadAllAsset&lt;UnityEngine.Object&gt;();</span><br><span class="line">&#125;,</span><br><span class="line">ABLoadType.PermanentLoad);          <span class="comment">// Shader常驻</span></span><br></pre></td></tr></table></figure>
+<p>可以看到上面我们正确的实现了资源加载的管理。详细的内容这里就不再多说，感兴趣的直接去下载源码吧，这里给出Git链接：<br><a href="https://github.com/TonyTang1990/AssetBundleLoadManager" target="_blank" rel="external">TonyTang1990/AssetBundleLoadManager</a></p>
 </li>
 </ol>
-<p>Note:</p>
-<p>读者可能注意到shaderlist索引计数为0，也没绑定对象，但没有被卸载，这是因为shaderlist是被我预加载以常驻资源的形式加载进来的(PermanentLoad)，所以永远不会被卸载。<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ModuleManager.Singleton.getModule&lt;ResourceModuleManager&gt;().requstResource(<span class="string">"shaderlist"</span>,</span><br><span class="line">(abi) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    abi.loadAllAsset&lt;UnityEngine.Object&gt;();</span><br><span class="line">&#125;,</span><br><span class="line">ABLoadType.PermanentLoad);          <span class="comment">// Shader常驻</span></span><br></pre></td></tr></table></figure></p>
-<p>可以看到上面我们正确的实现了资源加载的管理。详细的内容这里就不再多说，感兴趣的直接去下载源码吧，这里给出Git链接：<br><a href="https://github.com/TonyTang1990/AssetBundleLoadManager" target="_blank" rel="external">TonyTang1990/AssetBundleLoadManager</a></p>
 <h2 id="AB实战总结">AB实战总结</h2><ol>
 <li>AB打包和加载是一个相互相存的过程。</li>
 <li>Unity 5提供的增量打包只是提供了更新部分AB的打包机制，*.manifest文件里也只提供依赖的AB信息并非Asset，所以想基于Asset的重用还需要我们自己处理。</li>
