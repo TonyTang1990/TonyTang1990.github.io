@@ -70,7 +70,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NPOT_ETC1.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NPOT_ETC2.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ETC2SizeRequirement.png">
-<meta property="og:updated_time" content="2018-10-24T17:18:11.879Z">
+<meta property="og:updated_time" content="2018-10-27T16:11:29.242Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity Resource Manager">
 <meta name="twitter:description" content="前言在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。本章节主要是对于Unity在资源管理方面的进一步学习了解。
@@ -104,7 +104,7 @@
 			
 			<div id="textlogo">
 				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
-				<h2 class="blog-motto">有时候不是习惯了一个人，而是在没有认可自己之前选择了一个人</h2>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
 			</div>
 			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
 			</a></div>
@@ -411,7 +411,6 @@
 </ol>
 <p>我们前面提到当由复杂结构的GameObject的时候，所有对象都会被单独序列化(无论是否重复)，这样一来会导致数据量很大，在加载的时候很慢。为了提高速度，我们可以通过把复杂的GameObject划分为多个单独的小的Prefab，然后通过实例化多个Prefab来构建我们的GameObject而非完全依赖于Unity的Serialization和prefab system。(减少了数据量。同时一旦Prefab被加载后，从内存中读取就比从硬件设备读取快多了)</p>
 <h1 id="Unity_AB实战">Unity AB实战</h1><p>以Unity5.0以后的版本作为学习对象。<br>打包以及加载管理这一套实战，单独提了一篇文章来写，详情查看:<br><a href="http://tonytang1990.github.io/2018/10/24/AssetBundle-Framework">AssetBundle-Framework</a></p>
-<p>未完，待续…..</p>
 <h1 id="特定资源打包">特定资源打包</h1><p>这里针对不同的资源类型进行深度学习了解，理解项目中为什么不同的资源格式不同的平台为什么要设置特定的格式或者导入设定等信息，从而优化资源的内存占用以及相关不必要的开销。</p>
 <h2 id="纹理贴图">纹理贴图</h2><p>纹理贴图是游戏内存占用中的一个很大板块(含纹理，图集等)。</p>
 <p>首先让我们理解一下，纹理贴图里一些重要的概念:</p>
@@ -642,7 +641,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Unity/" title="Unity">Unity<sup>4</sup></a></li>
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>5</sup></a></li>
 			
 		
 			
@@ -658,6 +657,10 @@
 			
 		
 			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
 			
 		
@@ -666,11 +669,11 @@
 			
 		
 			
-				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+				<li><a href="/tags/Game/" title="Game">Game<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
 			
 		
 			

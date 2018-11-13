@@ -74,8 +74,14 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/GameArt/BasicColorWithHalfBrightness.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/GameArt/BasicColorWithHalfBAndHalfS.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/GameArt/HSBCircle.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/GameArt/HSBCircle2.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/GameArt/WarmAndColdeColor.png">
-<meta property="og:updated_time" content="2018-09-22T01:55:00.551Z">
+<meta property="og:image" content="http://tonytang1990.github.io/img/GameArt/CustomPalette.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/GameArt/MingAnPalette.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/GameArt/BasicOutline.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/GameArt/MingAnWhithLight.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/GameArt/MingAnFinal.png">
+<meta property="og:updated_time" content="2018-10-23T16:40:32.916Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2D Pixel Art">
 <meta name="twitter:description" content="前言本篇文章是为了记录学习2D像素画方面的技巧以及知识而写，希望有一天能做自己的2D像素独立游戏。
@@ -107,7 +113,7 @@
 			
 			<div id="textlogo">
 				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
-				<h2 class="blog-motto">有时候不是习惯了一个人，而是在没有认可自己之前选择了一个人</h2>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
 			</div>
 			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
 			</a></div>
@@ -326,7 +332,9 @@
 </ol>
 <p>Note：</p>
 <ol>
-<li>色相的值范围0-360可以理解成颜色圆盘信息从纯红开始绕360度<br><img src="/img/GameArt/HSBCircle.png" alt="HSBCircle"></li>
+<li>色相的值范围0-360可以理解成颜色圆盘信息从纯红开始绕360度</li>
+<li>饱和度是从外往内递减<br><img src="/img/GameArt/HSBCircle.png" alt="HSBCircle"></li>
+<li>亮度第二章图下面的横条<br><img src="/img/GameArt/HSBCircle2.png" alt="HSBCircle2"></li>
 </ol>
 <h5 id="颜色选择">颜色选择</h5><p>颜色有区分冷色和暖色之分：</p>
 <ol>
@@ -342,9 +350,26 @@
 <li>新手同一个物品绘制颜色选择不要太多(初期建议控制在10个及以内，最多最好控制在32个以内，颜色越多在颜色选择和管理上花费的时间也就越多)。</li>
 <li>选好两个基础色(亮度色和暗部色，然后通过添加两个颜色之间的过渡色完成调色板基础色准备)</li>
 <li>过渡色除了亮度和饱和度上的变化，最好还有色相上的变化，相邻颜色过度会比较自然。</li>
+<li>颜色饱和度不要过高，高了眼睛看久了会累。</li>
 </ol>
 <h5 id="自制调色板">自制调色板</h5><p>有了前面的颜色概念和选色意见，接下来我们去制作一个用于真正绘制像素画的调色板，实战演练。</p>
-<h4 id="明暗知识">明暗知识</h4><p>参考文章:<br><a href="https://32comic.com/2017/08/18/%E7%94%BB%E6%98%8E%E6%9A%97%E5%92%8C%E9%85%8D%E8%89%B2tips/" target="_blank" rel="external">画明暗和配色Tips</a></p>
+<ol>
+<li>定两个基准颜色(红色和蓝色)</li>
+<li>亮度偏黄色(暖色),暗部偏青色(冷色)</li>
+<li>分析光照(假设光照是白色光)</li>
+</ol>
+<p>开始制作我们的调色板：<br><img src="/img/GameArt/CustomPalette.png" alt="CustomPalette"><br>可以看到主色红色和蓝色有饱和度和明暗度以及色相上的颜色变化。</p>
+<h4 id="明暗知识">明暗知识</h4><p>参考文章:<br><a href="https://32comic.com/2017/08/18/%E7%94%BB%E6%98%8E%E6%9A%97%E5%92%8C%E9%85%8D%E8%89%B2tips/" target="_blank" rel="external">画明暗和配色Tips</a><br><a href="http://chuansong.me/n/2589343151417" target="_blank" rel="external">笨办法学像素画：像素画明暗画法指南</a></p>
+<p><a href="https://32comic.com/2017/08/18/%E7%94%BB%E6%98%8E%E6%9A%97%E5%92%8C%E9%85%8D%E8%89%B2tips/" target="_blank" rel="external">上明暗的时候要兼顾色调变化。最简单的规则就是，亮部的颜色偏暖，暗部的颜色偏冷。</a></p>
+<p>文章里明暗画法提到下面3点基础：<br>1、有光源（发出光的东西叫光源）才有明暗，影子位置与光源相反；<br>2、光是一种粒子，会被物体吸收和反射；<br>3、光直射的区域是高光；阴影里面稍亮的区域是反光；</p>
+<p>接下来结合文章里绘制立方体来学习绘制明暗。<br>步骤一：<br>准备调色板</p>
+<ol>
+<li>以土黄色单色为主</li>
+<li>明暗上的变化以饱和度和亮度变化为主(单纯绘制明暗，暂时不考虑色相变化)<br><img src="/img/GameArt/MingAnPalette.png" alt="MingAnPalette"></li>
+</ol>
+<p>步骤二：<br>绘制基础形状外观<br><img src="/img/GameArt/BasicOutline.png" alt="BasicOutline"></p>
+<p>步骤三：<br>确定光源位置(假设光源在左侧)，会出暗部和亮部以及影子<br><img src="/img/GameArt/MingAnWhithLight.png" alt="MingAnWhithLight"></p>
+<p>步骤四：<br>调整颜色以及细节明暗。<br><img src="/img/GameArt/MingAnFinal.png" alt="MingAnFinal"></p>
 <h1 id="Reference">Reference</h1><h2 id="Conception_Part">Conception Part</h2><p><a href="https://zh.wikipedia.org/wiki/%E5%83%8F%E7%B4%A0%E7%94%BB" target="_blank" rel="external">像素画</a><br><a href="https://zh.wikipedia.org/wiki/%E4%BD%8D%E5%9B%BE" target="_blank" rel="external">位图</a><br><a href="https://zh.wikipedia.org/wiki/%E7%9F%A2%E9%87%8F%E5%9B%BE%E5%BD%A2" target="_blank" rel="external">矢量图形</a></p>
 <h2 id="Background_knowledge_Part">Background knowledge Part</h2><p><a href="https://zh.wikipedia.org/wiki/%E9%9B%BB%E5%AD%90%E9%81%8A%E6%88%B2%E5%8F%B2" target="_blank" rel="external">电子游戏史</a><br><a href="https://jobyu.gitbooks.io/rpgmakerpixeltutorials/" target="_blank" rel="external">RPGMaker官方像素画教程</a><br><a href="https://indienova.com/indie-game-development/learn-pixel-drawing-by-myself-02/" target="_blank" rel="external">二维平面像素介绍</a><br><a href="https://zh.wikipedia.org/wiki/%E8%A1%97%E6%9C%BA" target="_blank" rel="external">街机</a><br><a href="https://zh.wikipedia.org/wiki/Game_Boy" target="_blank" rel="external">Game Boy</a><br><a href="https://baike.baidu.com/item/%E6%8E%8C%E4%B8%8A%E6%B8%B8%E6%88%8F%E6%9C%BA/9794830?fromtitle=%E6%8E%8C%E6%9C%BA&amp;fromid=2088143" target="_blank" rel="external">Game Boy Advanced</a><br><a href="https://baike.baidu.com/item/SFC/99631" target="_blank" rel="external">SFC</a><br><a href="https://baike.baidu.com/item/%E4%BB%BB%E5%A4%A9%E5%A0%8264/2619380?fromtitle=N64&amp;fromid=2387227" target="_blank" rel="external">N64</a><br><a href="https://baike.baidu.com/item/NGC/7005912" target="_blank" rel="external">NGC</a><br><a href="https://baike.baidu.com/item/Wii" target="_blank" rel="external">Wii</a><br><a href="https://zh.wikipedia.org/wiki/Wii_U" target="_blank" rel="external">WiiU</a><br><a href="https://baike.baidu.com/item/PSP/85995" target="_blank" rel="external">Play Station Portable</a><br><a href="https://zh.wikipedia.org/wiki/PlayStation_4" target="_blank" rel="external">PS4</a><br><a href="https://zh.wikipedia.org/wiki/%E7%94%B5%E8%84%91%E6%B8%B8%E6%88%8F" target="_blank" rel="external">电脑游戏</a></p>
 <h2 id="Pixel_Art_Part">Pixel Art Part</h2><p><a href="https://indienova.com/indie-game-development/pixel-art-academy-1/" target="_blank" rel="external">什么是像素画</a><br><a href="https://32comic.com/tag/%E5%85%A5%E9%97%A8/" target="_blank" rel="external">教你画像素画</a><br><a href="https://www.youtube.com/watch?v=Md6W79jtLJM&amp;feature=youtu.be" target="_blank" rel="external">Mort的系列视频</a><br><a href="https://indienova.com/resource/tag/pixel-art" target="_blank" rel="external">像素艺术</a><br><a href="http://pixeljoint.com/" target="_blank" rel="external">pixeljoint</a></p>
@@ -462,7 +487,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Unity/" title="Unity">Unity<sup>4</sup></a></li>
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>5</sup></a></li>
 			
 		
 			
@@ -478,6 +503,10 @@
 			
 		
 			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
 			
 		
@@ -486,11 +515,11 @@
 			
 		
 			
-				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+				<li><a href="/tags/Game/" title="Game">Game<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
 			
 		
 			
