@@ -1,0 +1,724 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Python使用 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="Python StudyIntroductionWhenPython is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.)Python第一版发布于1991年，由Guido va">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python使用">
+<meta property="og:url" content="http://tonytang1990.github.io/2017/06/12/Python使用/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="Python StudyIntroductionWhenPython is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.)Python第一版发布于1991年，由Guido va">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PipPackageInstallation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PipListInstalledPackages.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonPackageLocation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/ArgparseHelpInfo.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/ArgparseUsing.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonKeywords.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/DocString.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonInputAndOutput.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/ImoprtSearchPath.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonLogicalOperator.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonIdentityOperator.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonMemberOperator.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/FlowControlForUsing.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonFunctionDefinition.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonAnonymousFunction.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonModuleImportAndUsing.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonPackageUsing.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/DataTypeCheck.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/ComplexNumber.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/NumberSystem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonList.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/TupleUsing.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonStrings.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonSet.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/SetStudy.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonDictionary.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonDataConversion.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonFileOperation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonDirectory.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonNameOutput.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonName.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/TheZenOfPython.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonNamespaceHierarchical.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonScope.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonClassDefinition.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/EncodeAndDecode.png">
+<meta property="og:updated_time" content="2019-03-04T16:49:29.139Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python使用">
+<meta name="twitter:description" content="Python StudyIntroductionWhenPython is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.)Python第一版发布于1991年，由Guido va">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/06/12/Python使用/" title="Python使用" itemprop="url">Python使用</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2017-06-12T14:45:55.000Z" itemprop="datePublished"> 發表於 2017-06-12</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Python_Study"><span class="toc-number">1.</span> <span class="toc-text">Python Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#When"><span class="toc-number">1.1.1.</span> <span class="toc-text">When</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What"><span class="toc-number">1.1.2.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">1.1.3.</span> <span class="toc-text">Why</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IDE_&_Editor"><span class="toc-number">1.2.</span> <span class="toc-text">IDE & Editor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python_Version_Choosen"><span class="toc-number">1.3.</span> <span class="toc-text">Python Version Choosen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Useful_Package"><span class="toc-number">1.4.</span> <span class="toc-text">Useful Package</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pip"><span class="toc-number">1.4.1.</span> <span class="toc-text">Pip</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#argparse"><span class="toc-number">1.4.2.</span> <span class="toc-text">argparse</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tutorial(基础篇)"><span class="toc-number">1.5.</span> <span class="toc-text">Tutorial(基础篇)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Introduction-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Keywords_and_Identifier"><span class="toc-number">1.5.1.1.</span> <span class="toc-text">Keywords and Identifier</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Statements_&_Comments"><span class="toc-number">1.5.1.2.</span> <span class="toc-text">Statements & Comments</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python_I/O_and_Import"><span class="toc-number">1.5.1.3.</span> <span class="toc-text">Python I/O and Import</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python_Operators"><span class="toc-number">1.5.1.4.</span> <span class="toc-text">Python Operators</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flow_Control"><span class="toc-number">1.5.2.</span> <span class="toc-text">Flow Control</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Function"><span class="toc-number">1.5.3.</span> <span class="toc-text">Function</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Modules"><span class="toc-number">1.5.3.1.</span> <span class="toc-text">Modules</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Package"><span class="toc-number">1.5.3.2.</span> <span class="toc-text">Package</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Datatypes"><span class="toc-number">1.5.4.</span> <span class="toc-text">Datatypes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Basic_Data_Types"><span class="toc-number">1.5.4.1.</span> <span class="toc-text">Basic Data Types</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#List"><span class="toc-number">1.5.4.1.1.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Tuple"><span class="toc-number">1.5.4.1.2.</span> <span class="toc-text">Tuple</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Strings"><span class="toc-number">1.5.4.1.3.</span> <span class="toc-text">Strings</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Set"><span class="toc-number">1.5.4.1.4.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Dictionary"><span class="toc-number">1.5.4.1.5.</span> <span class="toc-text">Dictionary</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Conversion_between_data_types"><span class="toc-number">1.5.4.2.</span> <span class="toc-text">Conversion between data types</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Files"><span class="toc-number">1.5.5.</span> <span class="toc-text">Files</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#File_Operation"><span class="toc-number">1.5.5.1.</span> <span class="toc-text">File Operation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Directory"><span class="toc-number">1.5.5.2.</span> <span class="toc-text">Directory</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Exception"><span class="toc-number">1.5.5.3.</span> <span class="toc-text">Exception</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object_&_Class"><span class="toc-number">1.5.6.</span> <span class="toc-text">Object & Class</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Name"><span class="toc-number">1.5.6.1.</span> <span class="toc-text">Name</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Namepsace_&_Scope"><span class="toc-number">1.5.6.2.</span> <span class="toc-text">Namepsace & Scope</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Class"><span class="toc-number">1.5.6.3.</span> <span class="toc-text">Class</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Inheritance"><span class="toc-number">1.5.6.4.</span> <span class="toc-text">Inheritance</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tips"><span class="toc-number">1.6.</span> <span class="toc-text">Tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#encode_and_decode"><span class="toc-number">1.6.1.</span> <span class="toc-text">encode and decode</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python_GUI"><span class="toc-number">1.7.</span> <span class="toc-text">Python GUI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TKinter"><span class="toc-number">1.7.1.</span> <span class="toc-text">TKinter</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Conception_Part"><span class="toc-number">2.1.</span> <span class="toc-text">Conception Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tutorial_Part"><span class="toc-number">2.2.</span> <span class="toc-text">Tutorial Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other_Part"><span class="toc-number">2.3.</span> <span class="toc-text">Other Part</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="Python_Study">Python Study</h1><h2 id="Introduction">Introduction</h2><h3 id="When">When</h3><p><a href="https://en.wikipedia.org/wiki/Python_(programming_language" target="_blank" rel="external">Python is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.</a>)<br>Python第一版发布于1991年，由<a href="https://en.wikipedia.org/wiki/Guido_van_Rossum" target="_blank" rel="external">Guido van Rossum</a>编写。</p>
+<h3 id="What">What</h3><p><a href="https://en.wikipedia.org/wiki/Python_(programming_language" target="_blank" rel="external">An interpreted language, Python has a design philosophy which emphasizes code readability (notably using whitespace indentation to delimit code blocks rather than curly brackets or keywords), and a syntax which allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java.[22][23] The language provides constructs intended to enable writing clear programs on both a small and large scale.</a>)<br>首先我们要知道Python跟Lua一样，是解释型语言(不需要编译，通过解析执行，有自己的解析器)。Python设计理念强调可读性(通过缩进而非{}来表示代码块)。</p>
+<p><a href="https://en.wikipedia.org/wiki/Python_(programming_language" target="_blank" rel="external">Python features a dynamic type system and automatic memory management and supports multiple programming paradigms, including object-oriented, imperative, functional programming, and procedural styles.</a>)<br>Python是动态类型语言，同时有自己的内存管理机制，支持多种编程范式(待深入学习了解)。</p>
+<h3 id="Why">Why</h3><p>了解了Python When &amp; What。那么我们Why什么要选择学习使用Python了？<br><a href="https://www.python.org/about/" target="_blank" rel="external">Python is powerful… and fast; plays well with others; runs everywhere; is friendly &amp; easy to learn; is Open. </a><br><a href="https://en.wikipedia.org/wiki/Python_(programming_language" target="_blank" rel="external">supports multiple programming paradigms. It has a large and comprehensive standard library.[25]</a>)<br>把上面可以归纳如下:</p>
+<ol>
+<li>Run everywhere(跨平台)</li>
+<li>Friendly &amp; easy to learn(学习更友好更容易(对于无编程经验的人更加友好，语法更nature))</li>
+<li>Supports multiple programming paradigms(支持多种编程范式)</li>
+<li>Large and comprehensive standard library(丰富的标准库和Package)</li>
+</ol>
+<p>Note:<br>这里提一句Python里很有名的一句话:<br>“Life is short, you need python.”</p>
+<h2 id="IDE_&amp;_Editor">IDE &amp; Editor</h2><p>学习任何一门编程语言，好的IDE或者Editor都能帮助我们更加快速的学习。<br>因为初学Python且Python是解析执行，这里暂时不考虑过于强大的IDE。<br>IDE详情选择可以参考<a href="https://wiki.python.org/moin/IntegratedDevelopmentEnvironments" target="_blank" rel="external">Python IDE</a><br>这里通过使用Sublime Text 3以及其Python相关的扩展插件作为学习Python的Editor。<br><a href="http://tonytang1990.github.io/2017/02/17/Editor-Sublime-Text-3/#Usefule_Commands">Sublime Text 3 Python相关插件设置详情</a></p>
+<h2 id="Python_Version_Choosen">Python Version Choosen</h2><p>Python有一个比较重要版本分割线2.x &amp; 3.x。<br>详情参见<a href="https://wiki.python.org/moin/Python2orPython3" target="_blank" rel="external">Python2orPython3</a><br>这里就不深入去了解2.x和3.x之间的区别了。<br>简单的理解就是3.x提供了更多更全的功能支持，同时有更多的丰富的库支持。如果作为初学者，并不需要维护老版本(2.x)的工具代码时，完全可以从3.x学起。</p>
+<h2 id="Useful_Package">Useful Package</h2><h3 id="Pip">Pip</h3><p>Python有丰富的标准库。而其中最重要也是新手第一时间就应该安装的就是Pip。<br>Pip对于Python就好比Package Control好比Sublime Text 3。<br>Pip(Python Package Index)是一个Python Package集中管理安装的扩展包。<br><a href="https://pip.pypa.io/en/stable/installing/" target="_blank" rel="external">Pip安装详情参考官方文档</a><br>Pip安装成功后我们就可以通过Pip去查看或安装丰富的Python Package了。<br>Package Install:<br><img src="/img/Python/PipPackageInstallation.PNG" alt="PipPackageInstallation"><br>Show Intalled Packages:<br><img src="/img/Python/PipListInstalledPackages.PNG" alt="PipListInstalledPackages"><br>安装之后的Package可以在安装目录查看到:<br><img src="/img/Python/PythonPackageLocation.PNG" alt="PythonPackageLocation"><br><a href="https://pip.pypa.io/en/stable/user_guide/#installing-packages" target="_blank" rel="external">更多关于Pip使用查看官方文档</a></p>
+<h3 id="argparse">argparse</h3><p><a href="https://docs.python.org/3/library/argparse.html" target="_blank" rel="external">The argparse module makes it easy to write user-friendly command-line interfaces. The program defines what arguments it requires, and argparse will figure out how to parse those out of sys.argv. The argparse module also automatically generates help and usage messages and issues errors when users give the program invalid arguments.</a></p>
+<p>argparse是Python里帮助我们引导输入参数和快速解析参数的模块。</p>
+<p>接下来我们直接上学习Demo，简单学习了解下如何使用argparse帮助我们快速引导输入参数和快速解析参数:<br>argparsestudy.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># 指定文件包含非anscii字符</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="comment"># argparse解析参数输入，需要先定义一个ArgumentParser对象</span></span><br><span class="line"><span class="comment"># description - -h的时候显示在最前面的信息</span></span><br><span class="line">parser = argparse.ArgumentParser(description=<span class="string">'Study argparse module.'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># add_argument - 定义如何解析一个参数</span></span><br><span class="line"><span class="comment"># 第一个参数代表参数名</span></span><br><span class="line"><span class="comment"># type - 指定参数数据类型</span></span><br><span class="line"><span class="comment"># help - -h时解释该参数的用意</span></span><br><span class="line"><span class="comment"># dest - 表示该参数最终在parser.parse_args()返回对象里的名字</span></span><br><span class="line"><span class="comment"># default - 表示该参数的默认值</span></span><br><span class="line"><span class="comment"># required - 表示该参数是不是必须填的参数</span></span><br><span class="line">parser.add_argument(<span class="string">'--APKName'</span>, type=str,</span><br><span class="line">                    help=<span class="string">'APK名字'</span>, dest=<span class="string">'APKName'</span>,</span><br><span class="line">                    required=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">parser.add_argument(<span class="string">'--ClientChId'</span>, type=str,</span><br><span class="line">                    help=<span class="string">'新的ClientChId值'</span>, dest=<span class="string">'New_Clientchid'</span>,</span><br><span class="line">                    default=<span class="string">'com.default.com'</span>)</span><br><span class="line"></span><br><span class="line">parser.add_argument(<span class="string">'--LEBIAN_VERCODE'</span>, type=int,</span><br><span class="line">                     help=<span class="string">'新的LEBIAN_VERCODE值'</span>, dest=<span class="string">'New_Lebian_Vercode'</span>,</span><br><span class="line">                     default=<span class="string">'0'</span>)</span><br><span class="line"></span><br><span class="line">parser.add_argument(<span class="string">'--TemplateValue'</span>, type=str,</span><br><span class="line">                    help=<span class="string">'替换AndroidManifest.xml里quicksdk_packName字段为新的*'</span>, dest=<span class="string">'NewTemplateValue'</span>,</span><br><span class="line">                    default=<span class="string">'com.defaulttemplatevalue.com'</span>)</span><br><span class="line"></span><br><span class="line">parser.add_argument(<span class="string">'--ResourcePath'</span>, type=str,</span><br><span class="line">                    help=<span class="string">'放入新资源到指定包内目录'</span>, dest=<span class="string">'NewResourcePath'</span>,</span><br><span class="line">                    default=<span class="string">'./default.aba'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析输入的参数</span></span><br><span class="line">args = parser.parse_args()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印参数的详细信息，通过访问parser.parse_args()的对象去访问</span></span><br><span class="line">print(args)</span><br><span class="line">print(<span class="string">"APKName : &#123;0&#125;"</span>.format(args.APKName))</span><br><span class="line">print(<span class="string">"New_Clientchid : &#123;0&#125;"</span>.format(args.New_Clientchid))</span><br><span class="line">print(<span class="string">"New_Lebian_Vercode : &#123;0&#125;"</span>.format(args.New_Lebian_Vercode))</span><br><span class="line">print(<span class="string">"NewTemplateValue : &#123;0&#125;"</span>.format(args.NewTemplateValue))</span><br><span class="line">print(<span class="string">"NewResourcePath : &#123;0&#125;"</span>.format(args.NewResourcePath))</span><br></pre></td></tr></table></figure></p>
+<p>命令行输入:<br>Python .\argparsestudy.py -h<br>会看到每个参数的详细信息<br><img src="/img/Python/ArgparseHelpInfo.png" alt="ArgparseHelpInfo"></p>
+<p>真正使用时因为—APKName是必传参数，所以按下面方式调用即可:<br>Python .\argparsestudy.py —APKName com.tonytang.com<br><img src="/img/Python/ArgparseUsing.png" alt="ArgparseUsing"><br>可以看到我们通过argparse模块轻松的完成参数输入引导以及参数解析的任务。</p>
+<p>更多详细学习参考:<br><a href="https://docs.python.org/3/library/argparse.html#the-add-argument-method" target="_blank" rel="external">argparse — Parser for command-line options, arguments and sub-commands</a></p>
+<h2 id="Tutorial(基础篇)">Tutorial(基础篇)</h2><h3 id="Introduction-1">Introduction</h3><h4 id="Keywords_and_Identifier">Keywords and Identifier</h4><p>Identifier(标识.e.g funcname, variable ……)定义规则:</p>
+<ol>
+<li>Keywords不能用做变量声明(这应该是任何语言都通用的规范了吧)</li>
+<li>变量名不能以数字开头</li>
+<li>变量名不能用特殊符号(e.g. !, @, #, $, %)<br>简单了解下Python的关键词：<br><img src="/img/Python/PythonKeywords.PNG" alt="PythonKeywords"></li>
+</ol>
+<p>Note:<br><a href="https://www.programiz.com/python-programming/keywords-identifier" target="_blank" rel="external">Python is a case-sensitive language. This means, Variable and variable are not the same. Always name identifiers that make sense.</a><br>Python是大小写敏感的，大小写不同的变量名是不同变量。</p>
+<h4 id="Statements_&amp;_Comments">Statements &amp; Comments</h4><p><a href="https://www.programiz.com/python-programming/statement-indentation-comments" target="_blank" rel="external">Instructions that a Python interpreter can execute are called statements.</a><br>Python可解析执行的语句叫做Statements。<br>多行Statements可以通过\或者[]或者{}或者()链接或封装：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span> + <span class="number">2</span> + \</span><br><span class="line">    <span class="number">3</span> + <span class="number">4</span> + \</span><br><span class="line">    <span class="number">5</span> + <span class="number">6</span></span><br><span class="line"></span><br><span class="line">b = (<span class="number">1</span> + <span class="number">2</span> + <span class="number">3</span> + <span class="number">4</span>)</span><br></pre></td></tr></table></figure></p>
+<p>Python设计理念强调可读性(通过缩进而非{}来表示代码块)：<br>同时Python注释是通过# or ‘’’ or “””:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">    <span class="keyword">if</span> i &gt;= <span class="number">5</span>:</span><br><span class="line">        print(<span class="string">"&#123;0&#125; &gt;= 5"</span>.format(i))</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># No break happends in for loop</span></span><br><span class="line">    <span class="comment"># Then execute this block</span></span><br><span class="line">    print(<span class="string">"No number is equal or greater than 5!"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>Docstring(Docstring is short for documentation string):<br>可以看出Docstring是一段文档描述(好比在C#里通过///编写描述信息一样)。Python在书写格式上要求比较严，虽然不会导致报错，但会算作不是规范的写法，这也就是我们为什么会去安装Sublime Text 3 flake8这样的linter插件了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addition</span><span class="params">(par1, par2)</span>:</span></span><br><span class="line">    <span class="string">"""This funtion is used to get result of (a + b)."""</span></span><br><span class="line">    <span class="keyword">return</span> par1 + par2</span><br><span class="line"></span><br><span class="line">print(addition(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">print(addition.__doc__)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/DocString.PNG" alt="DocString"><br>可以看到我们定义了一个加法函数，并编写了docstring。<br>通过func<em>name.<em>_doc</em></em>我们可以得到那段描述</p>
+<h4 id="Python_I/O_and_Import">Python I/O and Import</h4><p>Python里的输入输出交互(好比C++里的cin,cout)是通过input和print。<br>因为需要交互所以需要在可执行Python代码的terminal里执行python脚本:<br><img src="/img/Python/PythonInputAndOutput.PNG" alt="PythonInputAndOutput"></p>
+<p>因为Python的import是指import Module，我们需要知道Python里Module的定义，<br><a href="https://www.programiz.com/python-programming/modules" target="_blank" rel="external">Modules refer to a file containing Python statements and definitions.</a><br>Modules在Python里是指一个文件所包含的所有定义和声明(以文件为单位划分，文件名即为import的名字)。</p>
+<p>在import Module还有一个重要的点就是，我们需要知道Python查找所有*.py的搜索路径(跟环境变量有点像):<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"sys.path:&#123;0&#125;"</span>.format(sys.path))</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/ImoprtSearchPath.PNG" alt="ImoprtSearchPath"></p>
+<p>我们可以指定只导入特定定义(e.g. from math import pi)</p>
+<p>Note:<br>Python的Module和C#的namespace概念不一样，前者是以文件为单位，后者是以命名空间划分(支持在多个文件里定义在同一命名空间下)</p>
+<h4 id="Python_Operators">Python Operators</h4><p>运算符跟大多数编程差不多，这里只讲几个比较特殊的:<br>Logical Operators:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="keyword">True</span></span><br><span class="line">y = <span class="keyword">False</span></span><br><span class="line">print(x <span class="keyword">and</span> y)</span><br><span class="line">print(x <span class="keyword">or</span> y)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonLogicalOperator.PNG" alt="PythonLogicalOperator"><br>或许跟Python提倡简洁明了有关，可以直接采用and or not之类的逻辑运算符</p>
+<p>Identity operators：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">x1 = <span class="number">1</span></span><br><span class="line">y1 = <span class="number">1</span></span><br><span class="line">print(<span class="string">"x1 is y1 = "</span>, x1 <span class="keyword">is</span> y1)</span><br><span class="line">y1 = <span class="number">2</span></span><br><span class="line">print(<span class="string">"After y1 = 2. x1 is y1 = "</span>, x1 <span class="keyword">is</span> y1)</span><br><span class="line"></span><br><span class="line">list1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">list2 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">print(<span class="string">"list1 is list2 = "</span>, list1 <span class="keyword">is</span> list2)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonIdentityOperator.PNG" alt="PythonIdentityOperator"></p>
+<p>Note:<br><a href="https://www.programiz.com/python-programming/operators" target="_blank" rel="external">is and is not are used to check if two values (or variables) are located on the same part of the memory.</a><br><strong>List可以理解成分配了不同的内存去存储实际成员值所以是不同identity，上面x1 = 1和y1 = 1是located on the same part of the memory就需要理解后续会讲到的<a href="http://tonytang1990.github.io/2017/06/12/Python-Study/#Object &amp; Class">Namespaces概念</a></strong></p>
+<p>Membership operators:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list3 = [<span class="number">1</span>, <span class="string">'T'</span>, <span class="string">'H'</span>]</span><br><span class="line">print(<span class="string">'T'</span> <span class="keyword">in</span> list3)</span><br><span class="line">print(<span class="number">1</span> <span class="keyword">not</span> <span class="keyword">in</span> list3)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonMemberOperator.PNG" alt="PythonMemberOperator"></p>
+<p>Note:<br><a href="https://www.programiz.com/python-programming/operators" target="_blank" rel="external">in &amp; not in are used to test whether a value or variable is found in a sequence (string, list, tuple, set and dictionary).</a><br>in &amp; not in 主要是用于判断特定变量或者值是否存在于特定sequence里。</p>
+<h3 id="Flow_Control">Flow Control</h3><p>if,elif,else,while,for这里主要记录一些Python相对于C++,C#,Java这些语言里的一些区别。</p>
+<p>Python里是以:结束条件语句，以缩进表示层级。<br>while和for有一点比较特殊，支持else语句(没有break语句执行时)。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">    <span class="keyword">if</span> i &gt;= <span class="number">5</span>:</span><br><span class="line">        print(<span class="string">"&#123;0&#125; &gt;= 5"</span>.format(i))</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># No break happends in for loop</span></span><br><span class="line">    <span class="comment"># Then execute this block</span></span><br><span class="line">    print(<span class="string">"No number is equal or greater than 5!"</span>)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/FlowControlForUsing.PNG" alt="FlowControlForUsing"></p>
+<h3 id="Function">Function</h3><p>Python的Function定义关键词是def，格式如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_name</span><span class="params">(paras)</span>:</span></span><br><span class="line">    <span class="string">"""Docstring"""</span></span><br><span class="line">    Statements</span><br></pre></td></tr></table></figure></p>
+<p>Python支持显示传递参数，也支持默认参数和不限数量参数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># User-defined functions</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_python_function</span><span class="params">(para1, dp1=<span class="string">"dp1"</span>, dp2=<span class="string">"dp2"</span>)</span>:</span></span><br><span class="line">    <span class="string">"""My Python Function Docstring."""</span></span><br><span class="line">    <span class="comment"># Build-in functions</span></span><br><span class="line">    print(<span class="string">"my_python_function(para1:&#123;0&#125; dp1:&#123;1&#125; dp2:&#123;2&#125;)"</span>.format(para1, dp1, dp2))</span><br><span class="line"></span><br><span class="line">my_python_function(<span class="string">"Tony"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Keyword para call</span></span><br><span class="line">my_python_function(dp1=<span class="string">"ndp1"</span>, para1=<span class="string">"Tang"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Parameters without length limited</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">arbitrary_para_function</span><span class="params">(*paras)</span>:</span></span><br><span class="line">    <span class="string">""" Python function without length of parameter limitation."""</span></span><br><span class="line">    <span class="keyword">for</span> para <span class="keyword">in</span> paras:</span><br><span class="line">        print(para)</span><br><span class="line"></span><br><span class="line">arbitrary_para_function(<span class="string">"para1"</span>, <span class="string">"para2"</span>, <span class="string">"para3"</span>)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonFunctionDefinition.PNG" alt="PythonFunctionDefinition"></p>
+<p>Python也支持匿名函数(Lambda Function),只是不像C++，C#使用(x)=&gt;表示而是lambda x:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sqrfunc = <span class="keyword">lambda</span> x: x * <span class="number">2</span></span><br><span class="line">print(sqrfunc(<span class="number">2</span>))</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonAnonymousFunction.PNG" alt="PythonAnonymousFunction"></p>
+<h4 id="Modules">Modules</h4><p>C,C++里有#include。C#有using。Java有import。Python里有Modules。<br>但Python里的Modules更像C,C++是针对文件为单位。<br>使用的时候通过import filename即可(也支持指定别名 as newname)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_first_python_func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""MyFirstPython.py's function."""</span></span><br><span class="line">    print(<span class="string">"my_first_python_func() called"</span>)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> MyFirstPython <span class="keyword">as</span> MFP</span><br><span class="line"></span><br><span class="line">MFP.my_first_python_func()</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Python/PythonModuleImportAndUsing.PNG" alt="PythonModuleImportAndUsing"></p>
+<p>知道了Python是以文件为单位导入的，那么我们也需要知道Python导入文件时的搜索路径(通过打印sys.path即可)</p>
+<p>Note:<br>Python也支持只导入指定文件里的指定对象<br>e.g.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> pi</span><br></pre></td></tr></table></figure></p>
+<h4 id="Package">Package</h4><p>C++，C#里有namespace。Java有package。Python里有Package(相当于Java里package和C#里namespace概念，负责抽象对应Directory到指定Package里)<br>Steps:</p>
+<ol>
+<li>创建文件夹(文件夹名作为Package Name)</li>
+<li>文件夹目录下创建一个<strong>init</strong>.py文件(默认可以不写任何内容)</li>
+<li>通过import PackageName.Module引入特定文件<br>e.g.<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> MyPackage.MyFirstPython</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/img/Python/PythonPackageUsing.PNG" alt="PythonPackageUsing"></p>
+<p>Note:<br>Package是针对Directory而言，Module是针对file而言</p>
+<h3 id="Datatypes">Datatypes</h3><p>Variable变量赋值在Python里简单明了:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p1 = <span class="number">1</span></span><br><span class="line">p2, p3, p4 = <span class="number">2</span>, <span class="number">3</span>, <span class="string">"Tony"</span></span><br><span class="line">print(p1, p2, p3, p4)</span><br></pre></td></tr></table></figure></p>
+<p>判断数据类型Python是通过type()这个类似C#GetType()。<br>判断是否是某个类型实例Python是通过isinstance()，类似于Python里的is关键词。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span>:</span></span><br><span class="line">    <span class="string">"""My first class."""</span></span><br><span class="line"></span><br><span class="line">    name</span><br><span class="line"></span><br><span class="line">myclassinstance = MyClass()</span><br><span class="line">myclassinstance.name = <span class="string">"Tony"</span></span><br><span class="line">mystring = <span class="string">"Tony"</span></span><br><span class="line">print(myclassinstance, <span class="string">" is typeof "</span>, type(myclassinstance))</span><br><span class="line">print(<span class="string">"myclassinstance is typeof MyClass:"</span>, isinstance(myclassinstance, MyClass))</span><br><span class="line">print(mystring, <span class="string">" is typeof "</span>, type(mystring))</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/DataTypeCheck.PNG" alt="DataTypeCheck"><br>可以看出在Python是弱语言类型，声明变量是无需显示指定变量类型。<br>同时通过type和isinstance可以判断实例对象类型。</p>
+<p>Note:<br>这里的Data Type是指实例对象的类型，Python是弱类型语言。</p>
+<h4 id="Basic_Data_Types">Basic Data Types</h4><p>Python支持大部分基本数据类型，e.g. int, float等。<br>有一点比较特殊的是Python支持complex numbers(复数)：x + yj(x为实部，yj为虚部)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cn = <span class="number">2</span> + <span class="number">3j</span></span><br><span class="line">print(<span class="string">"cn = &#123;0&#125;"</span>.format(cn))</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/ComplexNumber.PNG" alt="ComplexNumber"><br>同时表示不同进制的Number只需添加不同前缀即可：<br><img src="/img/Python/NumberSystem.PNG" alt="NumberSystem"></p>
+<h5 id="List">List</h5><p><a href="https://www.programiz.com/python-programming/variables-datatypes" target="_blank" rel="external">List is an ordered sequence of items. It is one of the most used datatype in Python and is very flexible. All the items in a list do not need to be of the same type.</a><br>Python的List好比数组，但是更灵活，可存储不同类型的对象。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pythonList = [<span class="number">1</span>, <span class="string">"a"</span>, <span class="number">3.0</span>, <span class="keyword">True</span>]</span><br><span class="line"><span class="keyword">for</span> member <span class="keyword">in</span> pythonList:</span><br><span class="line">    print(member, <span class="string">" is typof "</span>, type(member))</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonList.PNG" alt="PythonList"></p>
+<p>更多的List处理参见List.Method和其他Build-in Functions(比如len(),sorted()等)</p>
+<p>Note：<br>List是通过[]定义。</p>
+<h5 id="Tuple">Tuple</h5><p><a href="https://www.programiz.com/python-programming/variables-datatypes" target="_blank" rel="external">Tuple is an ordered sequence of items same as list.The only difference is that tuples are immutable. Tuples once created cannot be modified.</a><br>Tuple和List的唯一区别就是创建后不可再被改变，但如果内嵌可变的(e.g. List)那么List的数据是可以被改变的。Tuple是通过()定义内容。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">my_tuple = (<span class="number">1</span>, <span class="string">"string"</span>, [<span class="number">1</span>, <span class="string">"th"</span>])</span><br><span class="line">my_tuple[<span class="number">2</span>][<span class="number">0</span>] = <span class="number">2</span></span><br><span class="line"><span class="keyword">for</span> tuplemember <span class="keyword">in</span> my_tuple:</span><br><span class="line">    print(tuplemember)</span><br><span class="line"><span class="keyword">del</span> my_tuple</span><br><span class="line"><span class="comment"># my_tuple -- Error: name 'my_tuple' is not defined</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/TupleUsing.PNG" alt="TupleUsing"><br>从上面可以看出del关键词可以删除变量的引用。</p>
+<p>Note：<br>Tuple是通过()定义。<br>Tuple相比List更适合用于存储固定的不同数据类型的数据。<br><a href="https://www.programiz.com/python-programming/keyword-list#del" target="_blank" rel="external">Everything is object in Python.</a>(这一点跟Java，C#一样)</p>
+<h5 id="Strings">Strings</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mypythonstring = <span class="string">"我的名字是TonyTang"</span></span><br><span class="line">print(mypythonstring)</span><br><span class="line">print(mypythonstring[<span class="number">0</span>])</span><br><span class="line">mypythonstring[<span class="number">0</span>] = <span class="string">'你'</span></span><br></pre></td></tr></table></figure>
+<p><img src="/img/Python/PythonStrings.PNG" alt="PythonStrings"></p>
+<p>Note:<br><a href="https://www.programiz.com/python-programming/variables-datatypes" target="_blank" rel="external">String is sequence of Unicode characters. Strings are immutable</a><br>Python里是采用Unicode编码存储字符串。Strings可以通过[]访问，但是不可被改变的。<br><a href="https://www.programiz.com/python-programming/string" target="_blank" rel="external">We cannot delete or remove characters from a string. But deleting the string entirely is possible using the keyword del.</a>因为string是immutable的，所以我们不能通过del删除string里面的个别character，但是我们可以删除对string的整个引用。</p>
+<h5 id="Set">Set</h5><p><a href="https://www.programiz.com/python-programming/variables-datatypes" target="_blank" rel="external">Set is an unordered collection of unique items. Set is defined by values separated by comma inside braces { }. Items in a set are not ordered.</a><br>Set也是一系列数据的集合类型，但是是无序的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mySet1 = &#123;<span class="number">1</span>, <span class="string">"a"</span>, <span class="number">2</span>, <span class="string">"b"</span>, <span class="number">1</span>&#125;</span><br><span class="line"><span class="keyword">for</span> member <span class="keyword">in</span> mySet1:</span><br><span class="line">    print(<span class="string">"member in mySet1:&#123;0&#125;"</span>.format(member))</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonSet.PNG" alt="PythonSet"><br>可以看出因为Set是无序的，连循环遍历出来的结果也是不确定的。所以针对Set，[]访问就是无意义也是不被允许的。</p>
+<p><a href="https://www.programiz.com/python-programming/set" target="_blank" rel="external">Every element is unique (no duplicates) and must be immutable (which cannot be changed).</a><br>Set还有一点特性就是成员是唯一且不可变的同时支持类似于集合与或等操作:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mySet2 = &#123;<span class="string">"a"</span>, <span class="number">2</span>, <span class="string">"b"</span>&#125;</span><br><span class="line"><span class="keyword">for</span> member <span class="keyword">in</span> (mySet1 &amp; mySet2):</span><br><span class="line">    print(<span class="string">"member in (mySet1 &amp; mySet2):&#123;0&#125;"</span>.format(member))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> member <span class="keyword">in</span> (mySet1 - mySet2):</span><br><span class="line">    print(<span class="string">"member in (mySet1 - mySet2):&#123;0&#125;"</span>.format(member))</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/SetStudy.PNG" alt="SetStudy"></p>
+<p>Note：<br>Set是通过{}定义。<br>更多操作参考Set.API</p>
+<h5 id="Dictionary">Dictionary</h5><p><a href="https://www.programiz.com/python-programming/variables-datatypes" target="_blank" rel="external">Dictionary is an unordered collection of key-value pairs.</a><br>Python里的Dictionary跟C#里的Dictionary差不多，代表无序的Key-Value主键值对。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">myDictionary = &#123;<span class="number">1</span>: <span class="string">"Tony"</span>, <span class="string">"Tang"</span>: <span class="number">2</span>&#125;</span><br><span class="line">print(myDictionary[<span class="number">1</span>])</span><br><span class="line">print(myDictionary[<span class="string">"Tang"</span>])</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonDictionary.PNG" alt="PythonDictionary"><br>可以看出Python里Dictionary的键值对定义时通过:分割，然后通过[]去方案对应Key得到Value值。</p>
+<p>Note：<br>Dictionary是通过{}定义。<br>更多操作参考Dictionary.API</p>
+<h4 id="Conversion_between_data_types">Conversion between data types</h4><p>基础数据类型转换通过int,float,complex显示转换即可：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">myint = int(<span class="number">2.5</span>)</span><br><span class="line">print(myint)</span><br><span class="line">mylist = list(<span class="string">'hello'</span>)</span><br><span class="line"><span class="keyword">for</span> member <span class="keyword">in</span> mylist:</span><br><span class="line">    print(member)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonDataConversion.PNG" alt="PythonDataConversion"></p>
+<h3 id="Files">Files</h3><h4 id="File_Operation">File Operation</h4><p>首先看看最新官方文档给出的API说明:<br><a href="https://docs.python.org/3/library/functions.html#open" target="_blank" rel="external">open(file, mode=’r’, buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None)</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># try: finally: Make sure f close successfully</span></span><br><span class="line"><span class="comment"># specify encoding='utf-8' is used to avoid platform dependent problems</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    f = open(<span class="string">"./FilesFolder/TonyTangFile.txt"</span>, mode=<span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        print(line)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Another way to make sure file close successfully</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"./FilesFolder/TonyTangFile.txt"</span>, mode=<span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="comment"># Do file operation here</span></span><br><span class="line">    f.write(<span class="string">"Flow my heart!\nI have a dream!"</span>)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonFileOperation.PNG" alt="PythonFileOperation"><br>从上面可以看到，open的几个关键参数，mode决定了可读还是可写等模式，encoding决定编码格式是为了确保不同平台脚本的一致性。</p>
+<h4 id="Directory">Directory</h4><p>Python提供了<a href="https://docs.python.org/3/library/os.html" target="_blank" rel="external">os module</a>支持很多文件夹目录操作的API<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">print(os.getcwd())</span><br><span class="line">print(os.listdir())</span><br><span class="line">os.chdir(<span class="string">"./FilesFolder"</span>)</span><br><span class="line">print(os.getcwd())</span><br><span class="line"><span class="keyword">if</span> os.path.exists(<span class="string">"MyNewFilesFolder"</span>) == <span class="keyword">False</span>:</span><br><span class="line">    os.mkdir(<span class="string">"MyNewFilesFolder"</span>)</span><br><span class="line">print(os.listdir())</span><br><span class="line"><span class="keyword">if</span> os.path.exists(<span class="string">"MyRenameFilesFolder"</span>) == <span class="keyword">True</span>:</span><br><span class="line">    os.removedirs(<span class="string">"MyRenameFilesFolder"</span>)</span><br><span class="line">os.rename(<span class="string">'MyNewFilesFolder'</span>, <span class="string">'MyRenameFilesFolder'</span>)</span><br><span class="line">print(os.listdir())</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonDirectory.PNG" alt="PythonDirectory"><br>从上面可以看出Python的API都很简洁明了，跟bat，shell很像，具体使用过程中主要还是按需求差文档写自己的自动化即可。</p>
+<h4 id="Exception">Exception</h4><p><a href="https://www.programiz.com/python-programming/exceptions" target="_blank" rel="external">Python Exception</a><br><a href="https://www.programiz.com/python-programming/exception-handling" target="_blank" rel="external">Exception Handling</a><br><a href="https://www.programiz.com/python-programming/user-defined-exception" target="_blank" rel="external">User-defined Exception</a></p>
+<h3 id="Object_&amp;_Class">Object &amp; Class</h3><h4 id="Name">Name</h4><p><a href="https://www.programiz.com/python-programming/namespace" target="_blank" rel="external">Name (also called identifier) is simply a name given to objects.</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">2</span></span><br><span class="line">print(<span class="string">'id(2) = '</span>, id(<span class="number">2</span>))</span><br><span class="line">print(<span class="string">'id(a) = '</span>, id(a))</span><br><span class="line"></span><br><span class="line">a = a + <span class="number">1</span></span><br><span class="line">print(<span class="string">'id(a) = '</span>, id(a))</span><br><span class="line">print(<span class="string">'id(3) = '</span>, id(<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">b = <span class="number">2</span></span><br><span class="line">print(<span class="string">'id(2) = '</span>, id(<span class="number">2</span>))</span><br><span class="line">print(<span class="string">'id(b) = '</span>, id(b))</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Python/PythonNameOutput.PNG" alt="PythonNamespaceOutput"><br>id()适用于打印object地址，从上面的输出可以看到只要Name指向Object的值是一致的，那么他们所指向的地址就是一致的。详情参考下图:<br><img src="/img/Python/PythonName.PNG" alt="PythonName"><br><a href="https://www.programiz.com/python-programming/namespace" target="_blank" rel="external">This is efficient as Python doesn’t have to create a new duplicate object. This dynamic nature of name binding makes Python powerful; a name could refer to any type of object.</a></p>
+<p>Note:<br><a href="https://www.programiz.com/python-programming/namespace" target="_blank" rel="external">Everything in Python is an object.</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> this</span><br></pre></td></tr></table></figure></p>
+<p>上面这段代码很有意思，会在控制台打印出Python的编程哲学:<br><img src="/img/Python/TheZenOfPython.PNG" alt="TheZenOfPython"></p>
+<h4 id="Namepsace_&amp;_Scope">Namepsace &amp; Scope</h4><p><a href="https://www.programiz.com/python-programming/namespace" target="_blank" rel="external">namespace is a collection of names.</a>(前面讲解了什么是Name，接下来要理解的Namespace就好比一系列Name的集合)<br>我们平时用到的Build-in Functions就属于Build-in Namespace里。<br>让我们结合下图看看Python里Namespace的层级：<br><img src="/img/Python/PythonNamespaceHierarchical.PNG" alt="PythonNamespaceHierarchical"></p>
+<p>讲完Namespace，Python里还有一点跟Namespace密切相关的Scope:<br><a href="https://www.programiz.com/python-programming/namespace" target="_blank" rel="external">Scope is the portion of the program from where a namespace can be accessed directly without any prefix.</a>(Namespace在Python就好比C++,C#里的namespace。Scope就好比C++,C#里变量的有效区域。)</p>
+<p>现阶段主要分为3中Scope:</p>
+<ol>
+<li>Scope of the current function which has local names(当前function scope)</li>
+<li>Scope of the module which has global names(全局scope)</li>
+<li>Outermost scope which has build-in names(最外层Build-in scope)</li>
+</ol>
+<p>接下来透过实例学习理解Python里的Scope:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer_function</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""Outer Function."""</span></span><br><span class="line">    a = <span class="number">20</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_function</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="string">"""Inner Function."""</span></span><br><span class="line">        <span class="keyword">global</span> a</span><br><span class="line">        a = <span class="number">30</span></span><br><span class="line">        print(<span class="string">"a = "</span>, a)</span><br><span class="line"></span><br><span class="line">    inner_function()</span><br><span class="line">    print(<span class="string">"a = "</span>, a)</span><br><span class="line"></span><br><span class="line">a = <span class="number">10</span></span><br><span class="line">outer_function()</span><br><span class="line">print(<span class="string">"a = "</span>, a)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonScope.PNG" alt="PythonScope"><br>可以看出在Function内的定义因为在不同的Scope不会覆盖Global Scope的a定义。当我们显示指定Function Scope里的a为global的a时，我们可以在Function Scope内引用到Global的a。</p>
+<h4 id="Class">Class</h4><p>接触过面向对象编程的人应该对Class都不陌生，他是我们抽象对象定义的关键类型。<br>在面向对象编程语言的Python里Class也起着同样的作用，只不过定义的方式有所区别，详情如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyFirstClass</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""docstring for MyClass"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, arg)</span>:</span></span><br><span class="line">        <span class="string">"""Class Constructor."""</span></span><br><span class="line">        super(MyFirstClass, self).__init__()</span><br><span class="line">        self.name = arg</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sayhi</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""Class Member Function."""</span></span><br><span class="line">        print(<span class="string">"Hello World!"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">printname</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""Print name member."""</span></span><br><span class="line">        print(<span class="string">"self.name = "</span>, self.name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里因为我是定义在MyFirstPython.py文件里的，所以导入的是MyFirstPython</span></span><br><span class="line"><span class="keyword">import</span> MyFirstPython</span><br><span class="line">mfp = MyFirstPython.MyFirstClass(<span class="string">"Tony"</span>)</span><br><span class="line">mfp.sayhi()</span><br><span class="line">mfp.printname()</span><br><span class="line">print(mfp.name)</span><br><span class="line">mfp.age = <span class="number">10</span></span><br><span class="line">print(mfp.age)</span><br><span class="line"><span class="keyword">del</span> mfp.name</span><br><span class="line"><span class="comment"># mfp.printname() AttributeError: 'MyFirstClass' object has no attribute 'name'</span></span><br><span class="line"><span class="keyword">del</span> mfp</span><br><span class="line"><span class="comment"># mfp.sayhi() NameError: name 'mfp' is not defined</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Python/PythonClassDefinition.PNG" alt="PythonClassDefinition"><br>从上面可以看出Python里Class的定义格式如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">classname</span><span class="params">(父类)</span>:</span></span><br><span class="line">    <span class="string">"""Docstring Class description."""</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,arg)</span>:</span></span><br><span class="line">        <span class="string">"""Docstring Constructor description."""</span></span><br><span class="line">        <span class="comment"># constructor's body</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">functionname</span><span class="params">(arg)</span>:</span></span><br><span class="line">        <span class="string">"""DocString Member Function description."""</span></span><br><span class="line">        <span class="comment"># body</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>init</strong>就好比C++里的构造函数。<br>Python里的继承写法:classname()括号里面跟的是父类，在子类可以通过super去访问父类。<br>值得一提的是Docstring，每一个类或者方法都有Docstring，我们可以通过classname.<strong>doc</strong>的方式去访问。<br>同时我们看到Python里还可以在运行时动态定义成员变量(e.g. mfp.age)<br>Python里不是通过new关键词去实例化类对象，但del关键词就好比C++里和new配对的delete，但这里的delete不仅是针对new出来的实例化对象进行回收，还能针对特定实例化成员进行删除。(当我们del mfp实例对象时，我们只是把mfp的对于Object的引用从corresponding namespace里移除而非真的销毁内存里Object。真正的销毁是发生在没有人在绑定到该Object时。)</p>
+<p><a href="https://www.programiz.com/python-programming/class" target="_blank" rel="external">This automatic destruction of unreferenced objects in Python is also called garbage collection.</a>(真正的销毁就好比C++里的GC对内存进行释放)</p>
+<p>Note:<br><a href="https://www.programiz.com/python-programming/class" target="_blank" rel="external">Python is an object oriented programming language.</a></p>
+<h4 id="Inheritance">Inheritance</h4><p><a href="https://www.programiz.com/python-programming/multiple-inheritance" target="_blank" rel="external">Like C++, a class can be derived from more than one base classes in Python. This is called multiple inheritance.</a><br>待续……</p>
+<h2 id="Tips">Tips</h2><h3 id="encode_and_decode">encode and decode</h3><p>字符编码问题，无论是shell，python都是需要考虑的，不然会出现乱码的情况。</p>
+<p>encode(编码)和decode(解码)是需要一一对应的，不然同一个二进制数据，通过不同的编码和解码会得出不一样的结果。</p>
+<p>首先我们来看看Python官网对于Encode和Decode的介绍:<br><a href="https://docs.python.org/3/library/codecs.html#encodings-and-unicode" target="_blank" rel="external">Strings are stored internally as sequences of code points in range 0x0–0x10FFFF. (See PEP 393 for more details about the implementation.) Once a string object is used outside of CPU and memory, endianness and how these arrays are stored as bytes become an issue. As with other codecs, serialising a string into a sequence of bytes is known as encoding, and recreating the string from the sequence of bytes is known as decoding.</a></p>
+<p>从上面可以看出，我们的string最终都是以字节码形式存储起来的。我们指定如何编码字符串到字节码的方法叫做编码。我们制定如何解析字节码到字符串的方法叫做解码。</p>
+<p>关于字符编码的详细学习，这里参考以前转载的一片文章来加深理解:<br><a href="http://www.imkevinyang.com/2010/06/关于字符编码，你所需要知道的.html" target="_blank" rel="external">关于字符编码，你所需要知道的（ASCII,Unicode,Utf-8,GB2312…）</a></p>
+<p>不难看出，编码和解码方式要是不一致，最终字节码数据解析出来就会出现不正确(比如乱码)的情况。</p>
+<p>这里需要提一下Python 3.X里有提供codecs的Package专门负责处理encode，decode问题。<br><a href="https://docs.python.org/3/library/codecs.html#standard-encodings" target="_blank" rel="external">codecs深入了解链接</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># 指定文件包含非anscii字符</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> codecs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印系统默认编码</span></span><br><span class="line">print(sys.getdefaultencoding())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果默认编码不是utf-8，强制设置成utf8去支持文本内非anscii字符</span></span><br><span class="line"><span class="comment"># 下面这段代码针对Python 2.X</span></span><br><span class="line"><span class="comment"># Phtyon 3.X默认就是utf-8编码不需要自己设定utf-8编码</span></span><br><span class="line"><span class="comment">#reload(sys)</span></span><br><span class="line"><span class="comment">#sys.setdefaultencoding('utf-8')</span></span><br><span class="line"></span><br><span class="line">s=<span class="string">"English-中文"</span></span><br><span class="line">print(s)</span><br><span class="line"></span><br><span class="line">s2=codecs.encode(s,<span class="string">"gb2312"</span>)</span><br><span class="line">print(codecs.decode(s2,<span class="string">"gb2312"</span>))</span><br><span class="line"><span class="comment">#解码格式与编码格式gb2312不一致，报错，无法解析</span></span><br><span class="line"><span class="comment">#print(codecs.decode(s2,"utf-8"))</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 需要指定和文件一样的编码格式才能正确解析文件里的内容</span></span><br><span class="line"><span class="comment"># 读取解码格式与inputfile.txt保存的编码格式utf-8不一致报错</span></span><br><span class="line"><span class="comment">#f = open('inputfile.txt','r',encoding='gb2312')</span></span><br><span class="line">f = open(<span class="string">'inputfile.txt'</span>,<span class="string">'r'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">content = f.read()</span><br><span class="line">print(content)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Python/EncodeAndDecode.png" alt="EncodeAndDecode"></p>
+<p>可以看到当我们把通过gb2312编码的字符串通过对应的gb2312解析时能正确显示，但用utf-8去解析时就出现了问题。同理文件读取指定的解码格式与文件自身的编码格式不一致也会出现无法读取的情况。</p>
+<p>结论：<br>编码和解码格式要一一对应才能正确解析显示。<br><a href="https://www.programiz.com/python-programming/variables-datatypes" target="_blank" rel="external">String is sequence of Unicode characters. Strings are immutable. We cannot delete or remove characters from a string. But deleting the string entirely is possible using the keyword del.</a><br>Python里是采用Unicode编码存储字符串。Strings可以通过[]访问，但是不可被改变的。<br>因为string是immutable的，所以我们不能通过del删除string里面的个别character，但是我们可以删除对string的整个引用。</p>
+<h2 id="Python_GUI">Python GUI</h2><p>GUI(Graphic User Interface)可视化用户界面。<br>Python实现GUI有很多选择，这里参考一位博主的分享：<br><a href="https://zhuanlan.zhihu.com/p/22619896" target="_blank" rel="external">Python 的图形界面（GUI）编程？</a></p>
+<p>学习需要从需求出发，这里本人主要是想用Python写点简单的GUI来满足可视化即可，所以对GUI要求不高，本人不是以Python为主，只是用Python写点周边小工具，所以这里本人考虑的是学习了解Python自带的TKinter。</p>
+<p>如果对GUI要求比较高，有比较常用Python，根据上面那位博主的建议来看，PyQT是个不错的选择。</p>
+<h3 id="TKinter">TKinter</h3><p>官方介绍：<br><a href="https://wiki.python.org/moin/TkInter/" target="_blank" rel="external">Tkinter is Python’s de-facto standard GUI (Graphical User Interface) package. It is a thin object-oriented layer on top of Tcl/Tk.</a></p>
+<p>接下来将根据<a href="http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/index.html" target="_blank" rel="external">Tkinter 8.5 reference: a GUI for Python</a>去学习了解TKinter的概念以及使用。</p>
+<p>待续……</p>
+<h1 id="Reference">Reference</h1><h2 id="Conception_Part">Conception Part</h2><p><a href="https://www.python.org" target="_blank" rel="external">Python</a><br><a href="https://en.wikipedia.org/wiki/Guido_van_Rossum" target="_blank" rel="external">Guido van Rossum</a></p>
+<p><a href="https://wiki.python.org/moin/TkInter/" target="_blank" rel="external">Tkinter</a></p>
+<p><a href="https://docs.python.org/3/library/codecs.html#encodings-and-unicode" target="_blank" rel="external">Encode and Decode in Python</a></p>
+<h2 id="Tutorial_Part">Tutorial Part</h2><p><a href="https://www.programiz.com/python-programming/keywords-identifier" target="_blank" rel="external">Python Tutorial</a><br><a href="https://pip.pypa.io/en/stable/user_guide/#installing-packages" target="_blank" rel="external">Python Package Index</a></p>
+<p><a href="http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/index.html" target="_blank" rel="external">Tkinter 8.5 reference: a GUI for Python</a></p>
+<p><a href="https://docs.python.org/3/library/codecs.html#standard-encodings" target="_blank" rel="external">codecs</a></p>
+<p><a href="https://docs.python.org/3/library/argparse.html" target="_blank" rel="external">argparse</a></p>
+<h2 id="Other_Part">Other Part</h2><p><a href="https://wiki.python.org/moin/Python2orPython3" target="_blank" rel="external">Python2orPython3</a><br><a href="https://zhuanlan.zhihu.com/p/22619896" target="_blank" rel="external">Python 的图形界面（GUI）编程？</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Programming-Language/">Programming Language</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Python/">Python</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2017/06/12/Python使用/" data-title="Python使用 | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/06/14/Android自动化签包/" title="Android-Sign-Study">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Android-Sign-Study</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/04/29/Unity自动化&IOS自动化签包/"  title="Unity自动化&amp;IOS自动化签包">
+ <strong>下一篇：</strong><br/> 
+ <span>Unity自动化&amp;IOS自动化签包
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2017/06/12/Python使用/" data-title="Python使用" data-url="http://tonytang1990.github.io/2017/06/12/Python使用/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Python_Study"><span class="toc-number">1.</span> <span class="toc-text">Python Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#When"><span class="toc-number">1.1.1.</span> <span class="toc-text">When</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What"><span class="toc-number">1.1.2.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">1.1.3.</span> <span class="toc-text">Why</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IDE_&_Editor"><span class="toc-number">1.2.</span> <span class="toc-text">IDE & Editor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python_Version_Choosen"><span class="toc-number">1.3.</span> <span class="toc-text">Python Version Choosen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Useful_Package"><span class="toc-number">1.4.</span> <span class="toc-text">Useful Package</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pip"><span class="toc-number">1.4.1.</span> <span class="toc-text">Pip</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#argparse"><span class="toc-number">1.4.2.</span> <span class="toc-text">argparse</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tutorial(基础篇)"><span class="toc-number">1.5.</span> <span class="toc-text">Tutorial(基础篇)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Introduction-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Keywords_and_Identifier"><span class="toc-number">1.5.1.1.</span> <span class="toc-text">Keywords and Identifier</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Statements_&_Comments"><span class="toc-number">1.5.1.2.</span> <span class="toc-text">Statements & Comments</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python_I/O_and_Import"><span class="toc-number">1.5.1.3.</span> <span class="toc-text">Python I/O and Import</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python_Operators"><span class="toc-number">1.5.1.4.</span> <span class="toc-text">Python Operators</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flow_Control"><span class="toc-number">1.5.2.</span> <span class="toc-text">Flow Control</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Function"><span class="toc-number">1.5.3.</span> <span class="toc-text">Function</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Modules"><span class="toc-number">1.5.3.1.</span> <span class="toc-text">Modules</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Package"><span class="toc-number">1.5.3.2.</span> <span class="toc-text">Package</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Datatypes"><span class="toc-number">1.5.4.</span> <span class="toc-text">Datatypes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Basic_Data_Types"><span class="toc-number">1.5.4.1.</span> <span class="toc-text">Basic Data Types</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#List"><span class="toc-number">1.5.4.1.1.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Tuple"><span class="toc-number">1.5.4.1.2.</span> <span class="toc-text">Tuple</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Strings"><span class="toc-number">1.5.4.1.3.</span> <span class="toc-text">Strings</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Set"><span class="toc-number">1.5.4.1.4.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Dictionary"><span class="toc-number">1.5.4.1.5.</span> <span class="toc-text">Dictionary</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Conversion_between_data_types"><span class="toc-number">1.5.4.2.</span> <span class="toc-text">Conversion between data types</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Files"><span class="toc-number">1.5.5.</span> <span class="toc-text">Files</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#File_Operation"><span class="toc-number">1.5.5.1.</span> <span class="toc-text">File Operation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Directory"><span class="toc-number">1.5.5.2.</span> <span class="toc-text">Directory</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Exception"><span class="toc-number">1.5.5.3.</span> <span class="toc-text">Exception</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object_&_Class"><span class="toc-number">1.5.6.</span> <span class="toc-text">Object & Class</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Name"><span class="toc-number">1.5.6.1.</span> <span class="toc-text">Name</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Namepsace_&_Scope"><span class="toc-number">1.5.6.2.</span> <span class="toc-text">Namepsace & Scope</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Class"><span class="toc-number">1.5.6.3.</span> <span class="toc-text">Class</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Inheritance"><span class="toc-number">1.5.6.4.</span> <span class="toc-text">Inheritance</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tips"><span class="toc-number">1.6.</span> <span class="toc-text">Tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#encode_and_decode"><span class="toc-number">1.6.1.</span> <span class="toc-text">encode and decode</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python_GUI"><span class="toc-number">1.7.</span> <span class="toc-text">Python GUI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TKinter"><span class="toc-number">1.7.1.</span> <span class="toc-text">TKinter</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Conception_Part"><span class="toc-number">2.1.</span> <span class="toc-text">Conception Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tutorial_Part"><span class="toc-number">2.2.</span> <span class="toc-text">Tutorial Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other_Part"><span class="toc-number">2.3.</span> <span class="toc-text">Other Part</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Game/" title="Game">Game<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
