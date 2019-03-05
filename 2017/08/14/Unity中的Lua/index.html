@@ -21,12 +21,12 @@
 <meta property="og:description" content="Lua结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。
 首先我们要知道Lua是脚本语言，是有自己的虚拟机，是解析执行而非像C#,C++,Java这些编译执行。同时Lua是弱类型语言。
 这里不更多的讲解Lua虚拟机相关概念，详情参考http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html这里只要知道Lua的虚拟机(程序模拟线程，堆栈等)是">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/Virtual_Machine_Working_Levels.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/Virtual_Machine_Working_Levels.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaDotAndColon.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaFirstClassValues.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaPairsAndIpairs.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaType.png">
-<meta property="og:updated_time" content="2019-03-05T14:37:54.129Z">
+<meta property="og:updated_time" content="2019-03-05T16:26:02.341Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity中的Lua">
 <meta name="twitter:description" content="Lua结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。
@@ -113,7 +113,7 @@
 		
 		<h1 id="Lua">Lua</h1><p>结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。</p>
 <p>首先我们要知道Lua是脚本语言，是有自己的虚拟机，是解析执行而非像C#,C++,Java这些编译执行。同时Lua是弱类型语言。</p>
-<p>这里不更多的讲解Lua虚拟机相关概念，详情参考<a href="Scripting System">http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html</a><br><img src="/img/Lua/Virtual_Machine_Working_Levels.PNG" alt="Virtual_Machine_Working_Levels"><br>这里只要知道Lua的虚拟机(程序模拟线程，堆栈等)是运行在程序里而非物理CPU上，因此只要虚拟机把Lua脚本解析成对应平台的机器码就能支持跨平台(好比Java的JVM)。</p>
+<p>这里不更多的讲解Lua虚拟机相关概念，详情参考<a href="Scripting System">http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html</a><br><img src="/img/Unity/Lua/Virtual_Machine_Working_Levels.PNG" alt="Virtual_Machine_Working_Levels"><br>这里只要知道Lua的虚拟机(程序模拟线程，堆栈等)是运行在程序里而非物理CPU上，因此只要虚拟机把Lua脚本解析成对应平台的机器码就能支持跨平台(好比Java的JVM)。</p>
 <h1 id="Lua_Study">Lua Study</h1><p>以前的部分学习参考:<br><a href="http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html" target="_blank" rel="external">Scripting System &amp; Lua Study</a><br><a href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0rk.html" target="_blank" rel="external">Lua — some important concept and knowledge</a><br><a href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0zp.html" target="_blank" rel="external">Lua - C API </a><br><a href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0zs.html" target="_blank" rel="external">Lua - C call Lua &amp; Lua call C</a><br><a href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0s9.html" target="_blank" rel="external">Lua - Object Oriented Programming</a><br><a href="http://blog.sina.com.cn/s/blog_8c7d49f20102v1qg.html" target="_blank" rel="external">Lua - Userdata</a><br><a href="http://blog.sina.com.cn/s/blog_8c7d49f20102v383.html" target="_blank" rel="external">Lua - Managing Resources &amp; Threads and States</a></p>
 <h2 id="Weak_Tables_And_Finalizers">Weak Tables And Finalizers</h2><p>“and Finalizers Lua  does  automatic  memory  management. Programs  create  objects  (tables, threads,  etc.),  but  there  is  no  function  to  delete  objects. Lua  automatically deletes  objects that become garbage,  using garbage  collection. “</p>
 <p><strong>Weak Table</strong><br>“Weak tables allow the collection of Lua objects that are still accessible to the program”</p>
