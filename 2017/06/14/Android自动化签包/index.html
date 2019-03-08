@@ -36,7 +36,7 @@ IntroductionWhenAndroid requires that all APKs be digitally signe">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Android/AndroidResignAPKCommandsUsing.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Android/AndroidResignFinalAPK.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Android/AndroidResignAndReplaceResourceDynamically.png">
-<meta property="og:updated_time" content="2019-03-08T11:16:13.000Z">
+<meta property="og:updated_time" content="2019-03-08T15:31:39.286Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android自动化签包">
 <meta name="twitter:description" content="Android Sign Study这一章主要是学习Android签包相关的概念和方法。通过采用原始签包工具(zipalign &amp;amp; apksigner &amp;amp; keytool)，使用命令行的形式对于已经经过Unity打包签名的包进行重签来学习理解相关概念。
@@ -179,7 +179,7 @@ IntroductionWhenAndroid requires that all APKs be digitally signe">
 <p>那么上面三个文件就能确保APK的唯一性和安全性了吗？<br>一下来自<a href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000" target="_blank" rel="external">Android签名机制之—-签名过程详解</a>的总结：<br>首先，如果你改变了apk包中的任何文件，那么在apk安装校验时，改变后的文件摘要信息与MANIFEST.MF的检验信息不同，于是验证失败，程序就不能成功安装。<br>其次，如果你对更改的过的文件相应的算出新的摘要值，然后更改MANIFEST.MF文件里面对应的属性值，那么必定与CERT.SF文件中算出的摘要值不一样，照样验证失败。<br>最后，如果你还不死心，继续计算MANIFEST.MF的摘要值，相应的更改CERT.SF里面的值，那么数字签名值必定与CERT.RSA文件中记录的不一样，还是失败。<br>那么能不能继续伪造数字签名呢？不可能，因为没有数字证书对应的私钥。<br>所以，如果要重新打包后的应用程序能再Android设备上安装，必须对其进行重签名。</p>
 <p>从上面的分析可以得出，只要修改了Apk中的任何内容，就必须重新签名，不然会提示安装失败，当然这里不会分析，后面一篇文章会注重分析为何会提示安装失败。</p>
 <p>从上面的总结可以看出，Keystore的Private Key是作为我们APK签名安全的最后一道防线，确保数字签名不会被伪造。</p>
-<h1 id="Android_Stuido_and_Gradle">Android Stuido and Gradle</h1><p>在开始实战APK重签之前，这里需要先学习了解Android Studio和Gradle，这一步可以帮助我们把java代码打包成jar来使用。<br>详情参考<a href=""></a></p>
+<h1 id="Android_Stuido_and_Gradle">Android Stuido and Gradle</h1><p>在开始实战APK重签之前，这里需要先学习了解Android Studio和Gradle，这一步可以帮助我们把java代码打包成jar来使用。<br>详情参考<a href="http://tonytang1990.github.io/2016/12/11/Unity%E5%8E%9F%E7%94%9F&amp;%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8F%92%E4%BB%B6/#Android_Studio">Android Studio</a></p>
 <h1 id="APK重签实战">APK重签实战</h1><p>通过上面的学习，我们知道了APK的重签需要经过一下步骤:</p>
 <ol>
 <li>反解APK</li>
