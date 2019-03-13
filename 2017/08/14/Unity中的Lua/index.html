@@ -23,9 +23,10 @@
 这里不更多的讲解Lua虚拟机相关概念，详情参考http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html这里只要知道Lua的虚拟机(程序模拟线程，堆栈等)是">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/Virtual_Machine_Working_Levels.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaDotAndColon.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaFirstClassValues.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaPairsAndIpairs.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaType.png">
-<meta property="og:updated_time" content="2019-03-13T15:52:15.307Z">
+<meta property="og:updated_time" content="2019-03-13T15:54:13.716Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity中的Lua">
 <meta name="twitter:description" content="Lua结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。
@@ -165,11 +166,9 @@
 <p> <img src="/img/Unity/Lua/LuaDotAndColon.png" alt="LuaDotAndColon"><br> Note:<br> :只是起了省略第一个参数self的作用，该self指向调用者本身，并没有其他特殊的地方。</p>
 </li>
 <li><p>Lua中的函数是带有词法定界（lexical scoping）的第一类值（first-class values）(在Lua中函数和其他值（数值、字符串）一样，函数可以被存放在变量中，也可以存放在表中，可以作为函数的参数，还可以作为函数的返回值)</p>
-</li>
-</ol>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">class:Func</span><span class="params">(param1, func)</span></span></span><br><span class="line">    <span class="built_in">print</span>(param1)</span><br><span class="line">    func()</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">myfunc = <span class="function"><span class="keyword">function</span><span class="params">()</span></span> <span class="built_in">print</span>(<span class="string">"tempFunc()"</span>) <span class="keyword">end</span></span><br><span class="line">class:Func(<span class="number">1</span>, myfunc)</span><br></pre></td></tr></table></figure>
-<pre><code>![<span class="link_label">LuaFirstClassValues</span>](<span class="link_url">/img/Unity/Lua/LuaFirstClassValues.png</span>)
-</code></pre><ol>
+<p> <img src="/img/Unity/Lua/LuaFirstClassValues.png" alt="LuaFirstClassValues"></p>
+</li>
 <li><p>指定Lua搜索文件路径</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">package</span>.path = *</span><br></pre></td></tr></table></figure>
 <p> package.path是在Lua触发require时会去搜索的路径，默认是LUA_PATH_5_3或者LUA_PATH，详情参考:<a href="https://www.lua.org/manual/5.3/manual.html#pdf-package.path" target="_blank" rel="external">Lua Manual</a></p>
