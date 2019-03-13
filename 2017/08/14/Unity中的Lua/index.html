@@ -23,10 +23,9 @@
 这里不更多的讲解Lua虚拟机相关概念，详情参考http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html这里只要知道Lua的虚拟机(程序模拟线程，堆栈等)是">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/Virtual_Machine_Working_Levels.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaDotAndColon.png">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaFirstClassValues.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaPairsAndIpairs.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaType.png">
-<meta property="og:updated_time" content="2019-03-13T15:49:43.828Z">
+<meta property="og:updated_time" content="2019-03-13T15:52:15.307Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity中的Lua">
 <meta name="twitter:description" content="Lua结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。
@@ -169,32 +168,29 @@
 </li>
 </ol>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">class:Func</span><span class="params">(param1, func)</span></span></span><br><span class="line">    <span class="built_in">print</span>(param1)</span><br><span class="line">    func()</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">myfunc = <span class="function"><span class="keyword">function</span><span class="params">()</span></span> <span class="built_in">print</span>(<span class="string">"tempFunc()"</span>) <span class="keyword">end</span></span><br><span class="line">class:Func(<span class="number">1</span>, myfunc)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/Unity/Lua/LuaFirstClassValues.png" alt="LuaFirstClassValues"></p>
-<ol>
-<li>指定Lua搜索文件路径<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">package</span>.path = *</span><br></pre></td></tr></table></figure>
+<pre><code>![<span class="link_label">LuaFirstClassValues</span>](<span class="link_url">/img/Unity/Lua/LuaFirstClassValues.png</span>)
+</code></pre><ol>
+<li><p>指定Lua搜索文件路径</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">package</span>.path = *</span><br></pre></td></tr></table></figure>
+<p> package.path是在Lua触发require时会去搜索的路径，默认是LUA_PATH_5_3或者LUA_PATH，详情参考:<a href="https://www.lua.org/manual/5.3/manual.html#pdf-package.path" target="_blank" rel="external">Lua Manual</a></p>
 </li>
-</ol>
-<p>package.path是在Lua触发require时会去搜索的路径，默认是LUA_PATH_5_3或者LUA_PATH，详情参考:<a href="https://www.lua.org/manual/5.3/manual.html#pdf-package.path" target="_blank" rel="external">Lua Manual</a></p>
-<ol>
 <li><p>Lua文件热重载<br>Lua通过require加载进来的文件都会被记录在package.loaded里，所以Lua热重载的核心就是让pacakge.loaded里的对应Lua文件清除后重新加载。</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">---热重载指定Lua脚本</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reloadLua</span><span class="params">(filename)</span></span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">package</span>.loaded[filename] == <span class="keyword">nil</span>) <span class="keyword">then</span></span><br><span class="line">        Log.log(<span class="built_in">string</span>.format(<span class="string">"lua脚本 : %s 未被加载"</span>, filename))</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        Log.log(<span class="built_in">string</span>.format(<span class="string">"lua脚本 : %s 已加载"</span>, filename))</span><br><span class="line">        <span class="comment">--重置loaded信息</span></span><br><span class="line">        <span class="built_in">package</span>.loaded[filename] = <span class="keyword">nil</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment">--重新加载Lua脚本</span></span><br><span class="line">    <span class="built_in">require</span>(filename)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>Lua里pairs和ipairs有区别。pairs是key，value的形式遍历所有值。ipairs是从1开始按顺序递增遍历。</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">testtab = &#123;[<span class="number">1</span>] = <span class="string">"Tony"</span>, [<span class="number">4</span>] = <span class="string">"Huan"</span>, [<span class="number">2</span>] = <span class="string">"Tang"</span>, [<span class="number">5</span>] = <span class="keyword">nil</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="built_in">pairs</span>(testtab) <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(k)</span><br><span class="line">    <span class="built_in">print</span>(v)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"================="</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">ipairs</span>(testtab) <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line">    <span class="built_in">print</span>(v)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p> <img src="/img/Unity/Lua/LuaPairsAndIpairs.png" alt="LuaPairsAndIpairs"></p>
+<p> Note:<br> <strong>pairs和ipairs都会被nil打断</strong><br> <strong>ipairs还会被不是按1递增的打断</strong></p>
 </li>
-</ol>
-<p><img src="/img/Unity/Lua/LuaPairsAndIpairs.png" alt="LuaPairsAndIpairs"></p>
-<p>Note:<br><strong>pairs和ipairs都会被nil打断</strong><br><strong>ipairs还会被不是按1递增的打断</strong></p>
-<ol>
-<li><p>Lua参数传递<br>Lua里通过arg[?]的形式访问传入的参数，默认第一个参数是arg[1]，arg[0]是lua脚本自身</p>
+<li><p>Lua参数传递<br> Lua里通过arg[?]的形式访问传入的参数，默认第一个参数是arg[1]，arg[0]是lua脚本自身</p>
 </li>
-<li><p>Lua里面可以通过#得到table长度<br>Note:<br><strong>#会被nil打断</strong></p>
+<li><p>Lua里面可以通过#得到table长度<br> Note:<br> <strong>#会被nil打断</strong></p>
 </li>
 <li><p>Lua里打印数据类型用type</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="string">"Tony"</span>))</span><br></pre></td></tr></table></figure>
+<p> <img src="/img/Unity/Lua/LuaType.png" alt="LuaType">  </p>
 </li>
 </ol>
-<p><img src="/img/Unity/Lua/LuaType.png" alt="LuaType">  </p>
 <h1 id="ToLua">ToLua</h1><p>待续……</p>
 <h1 id="XLua">XLua</h1><p>待续……</p>
 <h1 id="Refrence">Refrence</h1><h2 id="以前学习笔记">以前学习笔记</h2><p><a href="Game Scripting Mastery">http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html</a><br><a href="Lua -- some important concept and knowledge">http://blog.sina.com.cn/s/blog_8c7d49f20102v0rk.html</a><br><a href="Lua - Coroutines Study">http://blog.sina.com.cn/s/blog_8c7d49f20102v0s0.html</a><br><a href="Lua - Metatables and Metamethods">http://blog.sina.com.cn/s/blog_8c7d49f20102v0s5.html</a><br><a href="Lua - Object Oriented Programming">http://blog.sina.com.cn/s/blog_8c7d49f20102v0s9.html</a><br><a href="Lua - C API">http://blog.sina.com.cn/s/blog_8c7d49f20102v0zp.html</a><br><a href="Lua - C call Lua &amp; Lua call C">http://blog.sina.com.cn/s/blog_8c7d49f20102v0zs.html</a><br><a href="Lua - Userdata">http://blog.sina.com.cn/s/blog_8c7d49f20102v1qg.html</a><br><a href="Lua - Managing Resources &amp; Threads and States">http://blog.sina.com.cn/s/blog_8c7d49f20102v383.html</a></p>
