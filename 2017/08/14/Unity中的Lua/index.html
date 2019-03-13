@@ -22,11 +22,9 @@
 首先我们要知道Lua是脚本语言，是有自己的虚拟机，是解析执行而非像C#,C++,Java这些编译执行。同时Lua是弱类型语言。
 这里不更多的讲解Lua虚拟机相关概念，详情参考http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html这里只要知道Lua的虚拟机(程序模拟线程，堆栈等)是">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/Virtual_Machine_Working_Levels.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaDotAndColon.png">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaFirstClassValues.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaPairsAndIpairs.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaType.png">
-<meta property="og:updated_time" content="2019-03-13T14:54:53.750Z">
+<meta property="og:updated_time" content="2019-03-13T15:39:15.857Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity中的Lua">
 <meta name="twitter:description" content="Lua结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。
@@ -59,7 +57,7 @@
 				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
 				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -98,14 +96,14 @@
 		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
 		
   <p class="article-time">
-    <time datetime="2017-08-14T14:19:01.000Z" itemprop="datePublished"> 發表於 2017-08-14</time>
+    <time datetime="2017-08-14T14:19:01.000Z" itemprop="datePublished"> 发表于 2017-08-14</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目錄</strong>
+			<strong class="toc-title">文章目录</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Lua"><span class="toc-number">1.</span> <span class="toc-text">Lua</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lua_Study"><span class="toc-number">2.</span> <span class="toc-text">Lua Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Weak_Tables_And_Finalizers"><span class="toc-number">2.1.</span> <span class="toc-text">Weak Tables And Finalizers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua里的OOP"><span class="toc-number">2.2.</span> <span class="toc-text">Lua里的OOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class抽象"><span class="toc-number">2.2.1.</span> <span class="toc-text">Class抽象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class定义"><span class="toc-number">2.2.2.</span> <span class="toc-text">Class定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class继承"><span class="toc-number">2.2.3.</span> <span class="toc-text">Class继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class对象实例化"><span class="toc-number">2.2.4.</span> <span class="toc-text">Class对象实例化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua小知识"><span class="toc-number">2.3.</span> <span class="toc-text">Lua小知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ToLua"><span class="toc-number">3.</span> <span class="toc-text">ToLua</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XLua"><span class="toc-number">4.</span> <span class="toc-text">XLua</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Refrence"><span class="toc-number">5.</span> <span class="toc-text">Refrence</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#以前学习笔记"><span class="toc-number">5.1.</span> <span class="toc-text">以前学习笔记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#官方网站"><span class="toc-number">5.2.</span> <span class="toc-text">官方网站</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考书籍"><span class="toc-number">5.3.</span> <span class="toc-text">参考书籍</span></a></li></ol></li></ol>
 		
@@ -162,22 +160,20 @@
 <li><p>Lua里没有Class只有通过Table模拟的Class<br> 参考前面的Lua OOP实现</p>
 </li>
 <li><p>Lua里没有this的概念，self不等价于this，函数调用传的是谁谁就是self。Lua里.定义和:定义相对于self的用法来说相当于静态和成员定义。</p>
-<ul>
-<li>Lua里通过.调用的话是不会默认传递自身作为self的，不主动传的话self为空</li>
-<li>Lua里通过:调用的话默认第一个参数就是调用者，既self</li>
-</ul>
+<p> . Lua里通过.调用的话是不会默认传递自身作为self的，不主动传的话self为空<br> . Lua里通过:调用的话默认第一个参数就是调用者，既self</p>
 </li>
 </ol>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tab = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tab.dotFunc</span><span class="params">(param)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"self = "</span>, self)</span><br><span class="line">    <span class="built_in">print</span>(param)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tab:colonFunc</span><span class="params">(param)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"self = "</span>, self)</span><br><span class="line">    <span class="built_in">print</span>(param)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">tab.dotFunc(<span class="number">1</span>)</span><br><span class="line">tab:colonFunc(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/Unity/Lua/LuaDotAndColon.png" alt="LuaDotAndColon"></p>
-<pre><code><span class="constant">Note:</span>
-<span class="symbol">:</span>只是起了省略第一个参数<span class="keyword">self</span>的作用，该<span class="keyword">self</span>指向调用者本身，并没有其他特殊的地方。
+<pre><code>![<span class="link_label">LuaDotAndColon</span>](<span class="link_url">/img/Unity/Lua/LuaDotAndColon.png</span>)
+
+Note:
+:只是起了省略第一个参数self的作用，该self指向调用者本身，并没有其他特殊的地方。
 </code></pre><ol>
 <li>Lua中的函数是带有词法定界（lexical scoping）的第一类值（first-class values）(在Lua中函数和其他值（数值、字符串）一样，函数可以被存放在变量中，也可以存放在表中，可以作为函数的参数，还可以作为函数的返回值)</li>
 </ol>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">class:Func</span><span class="params">(param1, func)</span></span></span><br><span class="line">    <span class="built_in">print</span>(param1)</span><br><span class="line">    func()</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">myfunc = <span class="function"><span class="keyword">function</span><span class="params">()</span></span> <span class="built_in">print</span>(<span class="string">"tempFunc()"</span>) <span class="keyword">end</span></span><br><span class="line">class:Func(<span class="number">1</span>, myfunc)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/Unity/Lua/LuaFirstClassValues.png" alt="LuaFirstClassValues"></p>
-<ol>
+<pre><code>![<span class="link_label">LuaFirstClassValues</span>](<span class="link_url">/img/Unity/Lua/LuaFirstClassValues.png</span>)
+</code></pre><ol>
 <li><p>指定Lua搜索文件路径</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">package</span>.path = *</span><br></pre></td></tr></table></figure>
 <p> package.path是在Lua触发require时会去搜索的路径，默认是LUA_PATH_5_3或者LUA_PATH，详情参考:<a href="https://www.lua.org/manual/5.3/manual.html#pdf-package.path" target="_blank" rel="external">Lua Manual</a></p>
@@ -259,22 +255,22 @@
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目錄</strong>
+  <strong class="toc-title">文章目录</strong>
  
  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Lua"><span class="toc-number">1.</span> <span class="toc-text">Lua</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lua_Study"><span class="toc-number">2.</span> <span class="toc-text">Lua Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Weak_Tables_And_Finalizers"><span class="toc-number">2.1.</span> <span class="toc-text">Weak Tables And Finalizers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua里的OOP"><span class="toc-number">2.2.</span> <span class="toc-text">Lua里的OOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class抽象"><span class="toc-number">2.2.1.</span> <span class="toc-text">Class抽象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class定义"><span class="toc-number">2.2.2.</span> <span class="toc-text">Class定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class继承"><span class="toc-number">2.2.3.</span> <span class="toc-text">Class继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class对象实例化"><span class="toc-number">2.2.4.</span> <span class="toc-text">Class对象实例化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua小知识"><span class="toc-number">2.3.</span> <span class="toc-text">Lua小知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ToLua"><span class="toc-number">3.</span> <span class="toc-text">ToLua</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XLua"><span class="toc-number">4.</span> <span class="toc-text">XLua</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Refrence"><span class="toc-number">5.</span> <span class="toc-text">Refrence</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#以前学习笔记"><span class="toc-number">5.1.</span> <span class="toc-text">以前学习笔记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#官方网站"><span class="toc-number">5.2.</span> <span class="toc-text">官方网站</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考书籍"><span class="toc-number">5.3.</span> <span class="toc-text">参考书籍</span></a></li></ol></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分類</p>
+	<p class="asidetitle">分类</p>
 		<ul>
 		
 		  
@@ -311,7 +307,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">標簽</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -371,7 +367,7 @@
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情鏈接</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -393,7 +389,7 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -618,7 +614,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
