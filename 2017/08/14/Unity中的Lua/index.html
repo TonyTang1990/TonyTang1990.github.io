@@ -26,7 +26,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaFirstClassValues.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaPairsAndIpairs.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Lua/LuaType.png">
-<meta property="og:updated_time" content="2019-03-13T15:46:06.200Z">
+<meta property="og:updated_time" content="2019-03-13T15:47:46.388Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity中的Lua">
 <meta name="twitter:description" content="Lua结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。
@@ -161,13 +161,11 @@
 <h2 id="Lua小知识">Lua小知识</h2><ol>
 <li><p>Lua里没有Class只有通过Table模拟的Class<br> 参考前面的Lua OOP实现</p>
 </li>
-<li><p>Lua里没有this的概念，self不等价于this，函数调用传的是谁谁就是self。Lua里.定义和:定义相对于self的用法来说相当于静态和成员定义。</p>
+<li><p>Lua里没有this的概念，self不等价于this，函数调用传的是谁谁就是self。Lua里.定义和:定义相对于self的用法来说相当于静态和成员定义。<br> Lua里通过.调用的话是不会默认传递自身作为self的，不主动传的话self为空<br> Lua里通过:调用的话默认第一个参数就是调用者，既self</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tab = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tab.dotFunc</span><span class="params">(param)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"self = "</span>, self)</span><br><span class="line">    <span class="built_in">print</span>(param)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tab:colonFunc</span><span class="params">(param)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"self = "</span>, self)</span><br><span class="line">    <span class="built_in">print</span>(param)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">tab.dotFunc(<span class="number">1</span>)</span><br><span class="line">tab:colonFunc(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>Lua里通过.调用的话是不会默认传递自身作为self的，不主动传的话self为空<br>Lua里通过:调用的话默认第一个参数就是调用者，既self</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tab = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tab.dotFunc</span><span class="params">(param)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"self = "</span>, self)</span><br><span class="line">    <span class="built_in">print</span>(param)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tab:colonFunc</span><span class="params">(param)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"self = "</span>, self)</span><br><span class="line">    <span class="built_in">print</span>(param)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">tab.dotFunc(<span class="number">1</span>)</span><br><span class="line">tab:colonFunc(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/Unity/Lua/LuaDotAndColon.png" alt="LuaDotAndColon"></p>
-<p>Note:<br>:只是起了省略第一个参数self的作用，该self指向调用者本身，并没有其他特殊的地方。</p>
+<p><img src="/img/Unity/Lua/LuaDotAndColon.png" alt="LuaDotAndColon"><br>    Note:<br>    :只是起了省略第一个参数self的作用，该self指向调用者本身，并没有其他特殊的地方。</p>
 <ol>
 <li>Lua中的函数是带有词法定界（lexical scoping）的第一类值（first-class values）(在Lua中函数和其他值（数值、字符串）一样，函数可以被存放在变量中，也可以存放在表中，可以作为函数的参数，还可以作为函数的返回值)</li>
 </ol>
