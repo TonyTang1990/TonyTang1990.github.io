@@ -1,0 +1,666 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>版本控制 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="前言本篇文章是为了记录版本控制相关知识，着重学习Git的使用。
+版本控制在项目开发过程中，对项目代码进行维护保存，对于多个人协同工作记录下每一次的变更记录，方便日后查看以及恢复。主流的版本管理工具比如Tortoise SVN,P4,Git等。
+集中式 vs 分布式这里不对版本管理工具做太深入的学习讲解。参见：集中式VS分布式
+分布式工作流：
+
+集中式工作流:
+
+Note：Tortoise SVN是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="版本控制">
+<meta property="og:url" content="http://tonytang1990.github.io/2019/04/19/版本控制/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="前言本篇文章是为了记录版本控制相关知识，着重学习Git的使用。
+版本控制在项目开发过程中，对项目代码进行维护保存，对于多个人协同工作记录下每一次的变更记录，方便日后查看以及恢复。主流的版本管理工具比如Tortoise SVN,P4,Git等。
+集中式 vs 分布式这里不对版本管理工具做太深入的学习讲解。参见：集中式VS分布式
+分布式工作流：
+
+集中式工作流:
+
+Note：Tortoise SVN是">
+<meta property="og:image" content="http://tonytang1990.github.io/img/VersionControl/分布式.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/VersionControl/集中式.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/VisalSVNCreateRepository.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/VisualSVNUserManager.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/VisualSVNGroupManager.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/VersionControl/GitBashUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/VersionControl/GitExtensions.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/VersionControl/GitWorkFlow.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/VersionControl/GitCommit.png">
+<meta property="og:updated_time" content="2019-04-19T07:25:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="版本控制">
+<meta name="twitter:description" content="前言本篇文章是为了记录版本控制相关知识，着重学习Git的使用。
+版本控制在项目开发过程中，对项目代码进行维护保存，对于多个人协同工作记录下每一次的变更记录，方便日后查看以及恢复。主流的版本管理工具比如Tortoise SVN,P4,Git等。
+集中式 vs 分布式这里不对版本管理工具做太深入的学习讲解。参见：集中式VS分布式
+分布式工作流：
+
+集中式工作流:
+
+Note：Tortoise SVN是">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/04/19/版本控制/" title="版本控制" itemprop="url">版本控制</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2019-04-19T04:00:00.000Z" itemprop="datePublished"> 發表於 2019-04-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#版本控制"><span class="toc-number">1.1.</span> <span class="toc-text">版本控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#集中式_vs_分布式"><span class="toc-number">1.1.1.</span> <span class="toc-text">集中式 vs 分布式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Tortoise_SVN"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">Tortoise SVN</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Visual_SVN_Server"><span class="toc-number">1.1.1.1.1.</span> <span class="toc-text">Visual SVN Server</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Tortoise_SVN-1"><span class="toc-number">1.1.1.1.2.</span> <span class="toc-text">Tortoise SVN</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SVN实战实用"><span class="toc-number">1.1.1.1.3.</span> <span class="toc-text">SVN实战实用</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#搭建SVN_Server"><span class="toc-number">1.1.1.1.3.1.</span> <span class="toc-text">搭建SVN Server</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#SVN典型目录结构"><span class="toc-number">1.1.1.1.3.2.</span> <span class="toc-text">SVN典型目录结构</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git"><span class="toc-number">1.1.2.</span> <span class="toc-text">Git</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Git安装"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">Git安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Git_GUI"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">Git GUI</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Git优势"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">Git优势</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Git知识"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">Git知识</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Git实战"><span class="toc-number">1.1.2.5.</span> <span class="toc-text">Git实战</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Git小知识"><span class="toc-number">1.1.2.6.</span> <span class="toc-text">Git小知识</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="前言">前言</h1><p>本篇文章是为了记录版本控制相关知识，着重学习Git的使用。</p>
+<h2 id="版本控制">版本控制</h2><p>在项目开发过程中，对项目代码进行维护保存，对于多个人协同工作记录下每一次的变更记录，方便日后查看以及恢复。<br>主流的版本管理工具比如Tortoise SVN,P4,Git等。</p>
+<h3 id="集中式_vs_分布式">集中式 vs 分布式</h3><p>这里不对版本管理工具做太深入的学习讲解。<br>参见：<br><a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001374027586935cf69c53637d8458c9aec27dd546a6cd6000" target="_blank" rel="external">集中式VS分布式</a></p>
+<p>分布式工作流：</p>
+<p><img src="/img/VersionControl/分布式.png" alt="分布式"></p>
+<p>集中式工作流:</p>
+<p><img src="/img/VersionControl/集中式.png" alt="集中式"></p>
+<p>Note：<br>Tortoise SVN是集中式。</p>
+<p>Git是分布式。</p>
+<h4 id="Tortoise_SVN">Tortoise SVN</h4><h5 id="Visual_SVN_Server">Visual SVN Server</h5><p><a href="https://www.visualsvn.com/server/" target="_blank" rel="external">VisualSVN Server allows you to easily install and manage a fully-functional Subversion server on the Windows platform.</a>(VisualSVN Server是一个在WIndows上帮助我们快速搭建Subversion server的工具。)</p>
+<h5 id="Tortoise_SVN-1">Tortoise SVN</h5><p><a href="https://zh.wikipedia.org/wiki/TortoiseSVN" target="_blank" rel="external">TortoiseSVN是一个Windows平台下的Subversion用户端软件.</a></p>
+<p>前者是针对Server端，后者是针对Client端。<br>两者结合使用就能实现版本管理控制。</p>
+<h5 id="SVN实战实用">SVN实战实用</h5><h6 id="搭建SVN_Server">搭建SVN Server</h6><p>详细设置步骤参考:<br><a href="https://www.visualsvn.com/server/getting-started/" target="_blank" rel="external">VISUALSVN SERVER // Getting started</a></p>
+<p><a href="https://superuser.com/questions/644278/how-to-use-visualsvn-server-and-tortoisesvn-client" target="_blank" rel="external">How to use VisualSVN Server and TortoiseSVN client</a></p>
+<p>个人工作的话，可以只搭建本地服务器。(未测试Jenkins是否能使用本地服务器)<br>为了多人共享工作(打包IOS需要Mac)，我们需要搭建一个SVN服务器用于存放我们的原始文件。<br>以下以多人共享工作，搭建SVN服务器为例:</p>
+<ol>
+<li>下载安装Visual SVN</li>
+<li>创建SVN Repository<br><img src="/img/Unity/VisalSVNCreateRepository.PNG" alt="VisalSVNCreateRepository"></li>
+<li>设置用户成员访问读写权限<br><img src="/img/Unity/VisualSVNUserManager.PNG" alt="VisualSVNUserManager"><br><img src="/img/Unity/VisualSVNGroupManager.PNG" alt="VisualSVNGroupManager"></li>
+<li>Check Out刚才创建的Repository</li>
+</ol>
+<p>Note:</p>
+<p>Mac上可以试试<a href="http://www.smartsvn.com/download" target="_blank" rel="external">SmartSVN</a></p>
+<h6 id="SVN典型目录结构">SVN典型目录结构</h6><p>SVN</p>
+<ul>
+<li>/trunk(主干，用于所有人开发)</li>
+<li>/branches(分支，用于存放多个分支副本(比如开发过程中为了保存特定节点分出来的))</li>
+<li>/tags(存放标记副本)</li>
+</ul>
+<h3 id="Git">Git</h3><p>首先要记住的是Git是分布式的，和Tortoise SVN(集中式)不一样。</p>
+<h4 id="Git安装">Git安装</h4><p><a href="https://git-scm.com/downloads" target="_blank" rel="external">Git download</a></p>
+<p>安装Git没太多说的，直接下载安装即可。</p>
+<p>安装好后就能直接使用Git了，下图是安装后通过Git Bash打开的界面:</p>
+<p><img src="/img/VersionControl/GitBashUI.png" alt="GitBashUI"></p>
+<h4 id="Git_GUI">Git GUI</h4><p>不习惯命令行的话，官方也有很多插件支持可视化Git操作。</p>
+<p><a href="https://git-scm.com/downloads/guis" target="_blank" rel="external">Git GUI</a></p>
+<p>这里本人用的是<a href="https://gitextensions.github.io/" target="_blank" rel="external">GitExtensions</a></p>
+<p><img src="/img/VersionControl/GitExtensions.png" alt="GitExtensions"></p>
+<p>GitExtension UI操作:</p>
+<p><img src="" alt="GitExtensionCommandsUI"></p>
+<h4 id="Git优势">Git优势</h4><ol>
+<li>可离线操作(分布式，可以离线操作。 SVN集中式必须联网和服务器通信)</li>
+<li><p>本地备份不需要本地存在多份实体文件(有抽象的分支概念)</p>
+</li>
+<li><p><a href="https://git-scm.com/about/small-and-fast" target="_blank" rel="external">Small and Fast</a>(小而快)</p>
+</li>
+<li>开源</li>
+</ol>
+<h4 id="Git知识">Git知识</h4><p>下面的知识主要参考:</p>
+<p><a href="https://blog.csdn.net/qq_22337877/article/details/73249912" target="_blank" rel="external">Git 工作区和缓存区</a></p>
+<ol>
+<li>工作区 — 简单来说，电脑中能看到的目录，就是一个工作区。</li>
+<li>缓存区 — 在真正提交改动前会存放的地方</li>
+<li>版本库(分本地和远程版本库) — 工作区中有一个隐藏目录.git，这个不算工作区，而是Git的版本库。</li>
+</ol>
+<p>参考下面这张图详细理解:</p>
+<p><img src="/img/VersionControl/GitWorkFlow.png" alt="GitWorkFlow"></p>
+<p>更多细节学习了解参考:</p>
+<p><a href="https://blog.csdn.net/hsany330/article/details/8668748" target="_blank" rel="external">Git三区（工作区，缓存区，仓库）的互操作</a></p>
+<h4 id="Git实战">Git实战</h4><p><strong>主分支最新+没有冲突提交</strong></p>
+<ol>
+<li><p>git add</p>
+<p>把文件添加进去，实际上是把文件修改添加到暂存区</p>
+</li>
+</ol>
+<p><img src="" alt="GitAdd"></p>
+<ol>
+<li><p>git commit</p>
+<p>提交更改，实际上就是把暂存区的所有内容提交到当前分支。<strong>git commit后还只是提交到自己的分支上，还没有推送到真正的主干分支上。</strong></p>
+</li>
+</ol>
+<p><img src="/img/VersionControl/GitCommit.png" alt="GitCommit"></p>
+<ol>
+<li><p>git push origin master</p>
+<p><strong>git push才是把个人分支的提交推送到主干分支上</strong></p>
+</li>
+</ol>
+<p><strong>落后更新+冲突提交</strong></p>
+<ol>
+<li><p>git pull</p>
+<p>落后分支的话，我们想要提交东西到主分支我们需要先拉去主分支内容</p>
+</li>
+<li><p>git stash</p>
+<p>缓存冲突文件修改，确保能git pull成功</p>
+</li>
+<li><p>git pull</p>
+<p>确保正确拉倒主分支</p>
+</li>
+<li><p>git commit + 解决冲突</p>
+<p>解决冲突，提交缓存区文件倒本地分支</p>
+</li>
+<li><p>git push</p>
+<p>正式推送到主干分支上</p>
+</li>
+</ol>
+<p>从上面可以看出，要想推送最新修改如果落后或者与主分支修改文件有冲突，我们需要先缓存本地修改到缓存区，然后拉取主干分支之后在进行提交推送修改文件流程。</p>
+<p><strong>提交过滤指定文件或文件夹</strong></p>
+<p>git提供了一个.gitignore文件，方便我们编写需要过滤的规则：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="special">#</span> 文件以及目录过滤</span><br><span class="line"><span class="special">#</span> 过滤library目录</span><br><span class="line">Library/</span><br><span class="line"><span class="special">#</span> 过滤.vs目录</span><br><span class="line">.vs/</span><br><span class="line"><span class="special">#</span> 过滤Temp目录</span><br><span class="line">Temp/</span><br><span class="line"><span class="special">#</span> 过滤cs工程文件</span><br><span class="line">*.csproj</span><br><span class="line">*.sln</span><br></pre></td></tr></table></figure>
+<p>详细参考：</p>
+<p><a href="https://git-scm.com/docs/gitignore" target="_blank" rel="external">gitignore</a></p>
+<h4 id="Git小知识">Git小知识</h4><p>待添加…..</p>
+<h1 id="Reference">Reference</h1><p><a href="https://www.visualsvn.com/server/" target="_blank" rel="external">Visual SVN</a><br>[集中式VS分布式](</p>
+<p><a href="https://git-scm.com/about" target="_blank" rel="external">Git Instroduction</a></p>
+<p><a href="https://blog.csdn.net/qq_22337877/article/details/73249912" target="_blank" rel="external">Git 工作区和缓存区</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/VersionControl/">VersionControl</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2019/04/19/版本控制/" data-title="版本控制 | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2018/10/24/AssetBundle资源打包加载管理学习/"  title="AssetBundle资源打包加载管理">
+ <strong>下一篇：</strong><br/> 
+ <span>AssetBundle资源打包加载管理
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2019/04/19/版本控制/" data-title="版本控制" data-url="http://tonytang1990.github.io/2019/04/19/版本控制/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#版本控制"><span class="toc-number">1.1.</span> <span class="toc-text">版本控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#集中式_vs_分布式"><span class="toc-number">1.1.1.</span> <span class="toc-text">集中式 vs 分布式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Tortoise_SVN"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">Tortoise SVN</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Visual_SVN_Server"><span class="toc-number">1.1.1.1.1.</span> <span class="toc-text">Visual SVN Server</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Tortoise_SVN-1"><span class="toc-number">1.1.1.1.2.</span> <span class="toc-text">Tortoise SVN</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SVN实战实用"><span class="toc-number">1.1.1.1.3.</span> <span class="toc-text">SVN实战实用</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#搭建SVN_Server"><span class="toc-number">1.1.1.1.3.1.</span> <span class="toc-text">搭建SVN Server</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#SVN典型目录结构"><span class="toc-number">1.1.1.1.3.2.</span> <span class="toc-text">SVN典型目录结构</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git"><span class="toc-number">1.1.2.</span> <span class="toc-text">Git</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Git安装"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">Git安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Git_GUI"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">Git GUI</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Git优势"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">Git优势</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Git知识"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">Git知识</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Git实战"><span class="toc-number">1.1.2.5.</span> <span class="toc-text">Git实战</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Git小知识"><span class="toc-number">1.1.2.6.</span> <span class="toc-text">Git小知识</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
