@@ -47,7 +47,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadSprites.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png">
-<meta property="og:updated_time" content="2019-03-04T16:57:43.643Z">
+<meta property="og:updated_time" content="2019-05-03T06:04:36.210Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AssetBundle资源打包加载管理">
 <meta name="twitter:description" content="前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。
@@ -391,6 +391,10 @@
 <p> 读者可能注意到shaderlist索引计数为0，也没绑定对象，但没有被卸载，这是因为shaderlist是被我预加载以常驻资源的形式加载进来的(PermanentLoad)，所以永远不会被卸载。</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ModuleManager.Singleton.getModule&lt;ResourceModuleManager&gt;().requstResource(<span class="string">"shaderlist"</span>,</span><br><span class="line">(abi) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    abi.loadAllAsset&lt;UnityEngine.Object&gt;();</span><br><span class="line">&#125;,</span><br><span class="line">ABLoadType.PermanentLoad);          <span class="comment">// Shader常驻</span></span><br></pre></td></tr></table></figure>
 <p> 可以看到上面我们正确的实现了资源加载的管理。详细的内容这里就不再多说，感兴趣的直接去下载源码吧，这里给出Git链接：<br> <a href="https://github.com/TonyTang1990/AssetBundleLoadManager" target="_blank" rel="external">TonyTang1990/AssetBundleLoadManager</a></p>
+<p> Note:</p>
+<ol>
+<li>Git上后续实现和更新了更多的内容，这里就不一一介绍了，详情参见上面的Git链接</li>
+</ol>
 </li>
 </ol>
 <h2 id="AB实战总结">AB实战总结</h2><ol>
@@ -526,7 +530,11 @@
 			
 		
 			
-				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
 			
 		
 			
@@ -538,11 +546,11 @@
 			
 		
 			
-				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
 			
 		
 			
