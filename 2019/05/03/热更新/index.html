@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>热更新学习 | 走停人生路</title>
+    <title>热更新 | 走停人生路</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Tony Tang">
@@ -16,8 +16,8 @@
 热更新首先还是让我们从What，Why，How三个点来学习理解热更新。
 What什么是热更新？从前端的角度来说，我个人理解热更新是指无需通过商店审核上传最新版本就能通过游戏内热更下载最新资源和">
 <meta property="og:type" content="article">
-<meta property="og:title" content="热更新学习">
-<meta property="og:url" content="http://tonytang1990.github.io/2019/05/03/热更新学习/index.html">
+<meta property="og:title" content="热更新">
+<meta property="og:url" content="http://tonytang1990.github.io/2019/05/03/热更新/index.html">
 <meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content="前言本篇文章是为了记录学习游戏开发过程中，版本强更和资源热更相关知识。
 关于资源AssetBundle加载模块相关学习参考:Unity Resource ManagerAssetBundle资源打包加载管理
@@ -29,9 +29,9 @@ What什么是热更新？从前端的角度来说，我个人理解热更新是�
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/HotUpdate/DownloadAPK.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/HotUpdate/InstallAPK.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/HotUpdate/HotUpdateFlowChat.png">
-<meta property="og:updated_time" content="2019-05-04T15:28:35.965Z">
+<meta property="og:updated_time" content="2019-05-07T15:05:54.298Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="热更新学习">
+<meta name="twitter:title" content="热更新">
 <meta name="twitter:description" content="前言本篇文章是为了记录学习游戏开发过程中，版本强更和资源热更相关知识。
 关于资源AssetBundle加载模块相关学习参考:Unity Resource ManagerAssetBundle资源打包加载管理
 热更新首先还是让我们从What，Why，How三个点来学习理解热更新。
@@ -95,7 +95,7 @@ What什么是热更新？从前端的角度来说，我个人理解热更新是�
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/05/03/热更新学习/" title="热更新学习" itemprop="url">热更新学习</a>
+      <a href="/2019/05/03/热更新/" title="热更新" itemprop="url">热更新</a>
   </h1>
   <p class="article-author">By
        
@@ -164,7 +164,7 @@ What什么是热更新？从前端的角度来说，我个人理解热更新是�
 <p>Note:<br><a href="https://blog.csdn.net/hackmind/article/details/78113511" target="_blank" rel="external">IOS appID可以通过itunes的链接获取到，比如我们的游戏链接为:https://itunes.apple.com/app/id1238589899，1238589899 为IOS的appID</a><br><a href="https://blog.csdn.net/hackmind/article/details/78113511" target="_blank" rel="external">google play 的ID通过商店链接获取到，比如我们的游戏链接为:https://play.google.com/store/apps/details?id=com.oasis.movten.android， com.oasis.movten.android 为 Android的appID</a></p>
 <h3 id="资源热更">资源热更</h3><p>资源热更是指在游戏内直接下载最新资源，然后本地游戏通过使用最新下载的资源更新到最新的游戏资源并使用。</p>
 <p>资源热更下载老版本Unity提供了WWW接口，但这个接口官方已经不推荐使用了，取而代之的是UnityWebRequest(http访问资源服务器的形式)。</p>
-<p>资源下载跟前面提到的版本强更APK下载是一个意思。这里不厌其烦的再放一次版本强更和资源热更的流程图加深印象：<br><img src="/img/Unity/HotUpdate/HotUpdateFlowChat.png" alt="HotUpdateFlowChat"><br>代码这里就不贴了，感兴趣的可以直接上Git下载了解：<br><a href="https://github.com/TonyTang1990/AssetBundleLoadManager" target="_blank" rel="external">AssetBundleLoadManager</a></p>
+<p>资源下载跟前面提到的版本强更APK下载是一个意思，只不过需要通过比较本地更新的资源数据和服务器上的资源数据对比出需要更新的资源列表。这里不厌其烦的再放一次版本强更和资源热更的流程图加深印象：<br><img src="/img/Unity/HotUpdate/HotUpdateFlowChat.png" alt="HotUpdateFlowChat"><br>代码这里就不贴了，感兴趣的可以直接上Git下载了解：<br><a href="https://github.com/TonyTang1990/AssetBundleLoadManager" target="_blank" rel="external">AssetBundleLoadManager</a></p>
 <h3 id="代码热更">代码热更</h3><p>代码热更和版本强更不一样，版本强更一般来说是通过更新下载完整的包来实现整个游戏功能版本更新，而代码热更是指我们通过技术手段(e.g. XLua, ILRuntime, ToLua ……)，通过热更代码的形式实现热更功能代码。</p>
 <p>主流的方式有两种：</p>
 <ol>
@@ -201,7 +201,7 @@ What什么是热更新？从前端的角度来说，我个人理解热更新是�
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://tonytang1990.github.io/2019/05/03/热更新学习/" data-title="热更新学习 | 走停人生路" data-tsina="null" class="share clearfix">
+	  <div data-url="http://tonytang1990.github.io/2019/05/03/热更新/" data-title="热更新 | 走停人生路" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -227,7 +227,7 @@ What什么是热更新？从前端的角度来说，我个人理解热更新是�
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2019/05/03/热更新学习/" data-title="热更新学习" data-url="http://tonytang1990.github.io/2019/05/03/热更新学习/"></div>
+	<div class="ds-thread" data-thread-key="2019/05/03/热更新/" data-title="热更新" data-url="http://tonytang1990.github.io/2019/05/03/热更新/"></div>
 </section>
 
 
