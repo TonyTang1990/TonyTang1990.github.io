@@ -1,0 +1,628 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Odin插件 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="前言本篇文章是为了记录学习使用Unity第三方插件Odin，通过深入学习Odin，加快平时我们编写编辑器工具的效率。
+OdinOdin是一款可以帮助我们快速制作友好编辑器界面的工具。
+功能特性Serialize Anything那么什么是序列化？熟悉二进制导表工具和Proto协议数据发送解析的话，对序列化不会陌生。从平时我们编写代码的角度来说序列化就是把数据对象存储成二进制(序列化)的过程，然后再">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Odin插件">
+<meta property="og:url" content="http://tonytang1990.github.io/2019/05/15/Odin插件/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="前言本篇文章是为了记录学习使用Unity第三方插件Odin，通过深入学习Odin，加快平时我们编写编辑器工具的效率。
+OdinOdin是一款可以帮助我们快速制作友好编辑器界面的工具。
+功能特性Serialize Anything那么什么是序列化？熟悉二进制导表工具和Proto协议数据发送解析的话，对序列化不会陌生。从平时我们编写代码的角度来说序列化就是把数据对象存储成二进制(序列化)的过程，然后再">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Odin/UnityListSerializationUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Odin/TurnOnCustomClassOdinSerialization.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Odin/TurnOnOdinSerializationListUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Odin/OdinSerializationUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Odin/OdinSerializationTwoDimensionArrayUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Odin/UnitySerializationOrderUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Odin/OdinPropertyOrderUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Odin/OdinValueDropDownAttributeUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Odin/OdinTabGroupAttributeUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Odin/OdinValideInputAndRequiredAttributeUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Odin/OdinEditorWindowCustomClassInfoDisplayUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Odin/OdinCustomMenuStyleUI.png">
+<meta property="og:updated_time" content="2019-05-19T08:22:50.504Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Odin插件">
+<meta name="twitter:description" content="前言本篇文章是为了记录学习使用Unity第三方插件Odin，通过深入学习Odin，加快平时我们编写编辑器工具的效率。
+OdinOdin是一款可以帮助我们快速制作友好编辑器界面的工具。
+功能特性Serialize Anything那么什么是序列化？熟悉二进制导表工具和Proto协议数据发送解析的话，对序列化不会陌生。从平时我们编写代码的角度来说序列化就是把数据对象存储成二进制(序列化)的过程，然后再">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/05/15/Odin插件/" title="Odin插件" itemprop="url">Odin插件</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2019-05-15T13:33:57.000Z" itemprop="datePublished"> 發表於 2019-05-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Odin"><span class="toc-number">2.</span> <span class="toc-text">Odin</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#功能特性"><span class="toc-number">2.1.</span> <span class="toc-text">功能特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Serialize_Anything"><span class="toc-number">2.1.1.</span> <span class="toc-text">Serialize Anything</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实战"><span class="toc-number">2.1.2.</span> <span class="toc-text">实战</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#New_Attributes"><span class="toc-number">2.1.3.</span> <span class="toc-text">New Attributes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#实战-1"><span class="toc-number">2.1.3.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Effortless_Integration"><span class="toc-number">2.1.4.</span> <span class="toc-text">Effortless Integration</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Extendable"><span class="toc-number">2.1.5.</span> <span class="toc-text">Extendable</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#官方使用建议"><span class="toc-number">2.2.</span> <span class="toc-text">官方使用建议</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">3.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="前言">前言</h1><p>本篇文章是为了记录学习使用Unity第三方插件Odin，通过深入学习Odin，加快平时我们编写编辑器工具的效率。</p>
+<h1 id="Odin">Odin</h1><p>Odin是一款可以帮助我们快速制作友好编辑器界面的工具。</p>
+<h2 id="功能特性">功能特性</h2><h3 id="Serialize_Anything">Serialize Anything</h3><p>那么什么是序列化？<br>熟悉二进制导表工具和Proto协议数据发送解析的话，对序列化不会陌生。<br>从平时我们编写代码的角度来说序列化就是把数据对象存储成二进制(序列化)的过程，然后再通过读取二进制数据能构造出原始对象(反序列化)。</p>
+<p>接下来看看Unity官方对序列化的定义：<br><a href="https://docs.unity3d.com/Manual/script-Serialization.html" target="_blank" rel="external">Serialization is the automatic process of transforming data structures or object states into a format that Unity can store and reconstruct later.</a>(序列化就是将数据结构或对象状态转换成可供Unity保存和随后重建的自动化处理过程。)</p>
+<p>官方的序列化远比我们平常说的数据对象序列化更宏大:</p>
+<ol>
+<li>文件的保存/读取，包括Scene、Asset、AssetBundle，以及自定义的ScriptableObject等。</li>
+<li>Inspector窗口</li>
+<li>编辑器重加载脚本脚本</li>
+<li>Prefab</li>
+<li>Instantiation<br>所有这些都是通过Unity序列化和反序列化来完成的。</li>
+</ol>
+<p>Unity序列化有一套规则，这里就不详细介绍了，详情查看官网:<br><a href="https://docs.unity3d.com/Manual/script-Serialization.html" target="_blank" rel="external">Script Serialization</a></p>
+<p>众所周知，Unity官方序列化并非所有类型都支持，比如：Dictionary，OOP多态。<br>这些限制让我们在编写代码时受到诸多限制，而我们一般是通过特定的处理方式去支持这些缺失的特性(e.g. 通过两个List去模拟Dictionary的序列化或者通过自定义序列化去支持OOP多态)<br>详情查看:<br><a href="https://blog.uwa4d.com/archives/2025.html" target="_blank" rel="external">Unity插件开发基础—浅谈序列化系统</a></p>
+<p>所以这里再引出Odin的一大特性：<br>Serialize Anything(所有序列化都支持(e.g. Dictionary，OOP多态问题等))<br>这一大特性就已经是相当的强大了，这也是我们采用Odin能够快速编写更加友好的编辑器界面工具的一大原因。</p>
+<p>Note:<br><a href="http://www.sirenix.net/odininspector/manual/introduction/serialize-anything" target="_blank" rel="external">Odin’s serialization is currently supported on all platforms, save Universal Windows Platform without IL2CPP..</a></p>
+<h3 id="实战">实战</h3><p><a href="Odin会默认给我们没有自定义Editor显示的类型注入面板显示。但我们依然还是需要显示的指定使用Odin序列化。">While Odin by default injects itself into the inspector for every type that doesn’t already have a custom editor defined, the serialization system is more conservative than that. You always have to explicitly decide to make use of Odin’s serialization system.</a></p>
+<ol>
+<li>开启Odin代码Inspector<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SerializeStudy</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Unity自身不支持序列化的Dictionary</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Dictionary&lt;<span class="keyword">int</span>, <span class="keyword">string</span>&gt; SerializeDictionary = <span class="keyword">new</span> Dictionary&lt;<span class="keyword">int</span>, <span class="keyword">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Unity自身支持序列化的List</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> List&lt;<span class="keyword">string</span>&gt; SerializeNormalList = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/img/Unity/Odin/UnityListSerializationUI.png" alt="UnityListSerializationUI"><br>可以看到默认的Dictionary是不支持序列化的，同时默认的List面板是长上面那样的。</p>
+<p>接下来我们通过打开Odin序列化再来对比下区别：<br>Tools -&gt; Odin Inspector -&gt; Preference -&gt; Editor Types -&gt; User Types<br>指定我们自定义的SerializeStudy类使用Odin的序列化:<br><img src="/img/Unity/Odin/TurnOnCustomClassOdinSerialization.png" alt="TurnOnCustomClassOdinSerialization"><br>再次对比查看序列化面板:<br><img src="/img/Unity/Odin/TurnOnOdinSerializationListUI.png" alt="TurnOnOdinSerializationListUI"><br>可以看到List默认的面板显示已经变成了Odin自定义的了，但是Dictionary依然没有被序列化显示出来，因为我们只是指定了SerializeStudy类使用Odin的Inspector，但还未指定SerializeStudy使用Odin的序列化。</p>
+<ol>
+<li>指定使用Odin序列化<br>要支持Dictionary使用Odin的序列化，我们需要显示指定(继承至SerializedMonoBehaviour or SerializedScriptableObject)使用Odin的序列化:<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SerializeStudy</span> : <span class="title">SerializedMonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/img/Unity/Odin/OdinSerializationUI.png" alt="OdinSerializationUI"><br>可以看到我们成功的使用Odin序列化了Dictionary且采用Odin自定义的Inspector显示。</p>
+<p>这里再展现一个Odin二维数组类型的序列化使用，从这个可以看出Odin的强大之处:<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SerializeStudy</span> : <span class="title">SerializedMonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Unity的自身不支持的二维数组</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span>[,] TwoDimensionArray = <span class="keyword">new</span> <span class="keyword">bool</span>[<span class="number">5</span>, <span class="number">5</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Unity/Odin/OdinSerializationTwoDimensionArrayUI.png" alt="OdinSerializationTwoDimensionArrayUI"><br>可以看到一句简单的定义在Odin序列化和Odin自定义Inspector的帮助下，帮助我们快速构建和支持了Dictionary和二维数组的序列化，这对于我们构建自己的编辑器可以说是如有神助，而这正式Odin的强大之处。</p>
+<p>Note:<br>关于OOP多态序列化问题，本人测试和<a href="https://blog.uwa4d.com/archives/2025.html" target="_blank" rel="external">Unity插件开发基础—浅谈序列化系统</a>文章里的测试结果不一致(Unity自带序列化支持多态)，本人使用的是2017.4.3f1，所以这里就不实战Odin的OOP多态功能了。</p>
+<h3 id="New_Attributes">New Attributes</h3><p>这里的Attribute指的是C#语言里的那个标签Attribute。<br><a href="http://www.sirenix.net/odininspector/manual/introduction/design-with-attributes" target="_blank" rel="external">A core feature of Odin is how easy it makes it to change the appearance of your scripts in the editor - essentially letting you create powerful, complex custom editors at a whim merely by applying a few attributes to your members.</a></p>
+<p>在不使用Odin前，我们一般是类通过自定义CustomEditor的形式去自定义Editor UI或者是直接通过继承EditorWindow去编写Editor UI工具，主要是通过EditorGUILayout，GUILayout一系列的类来手动完成布局和排版显示等功能。<br>使用Odin后，我们可以通过Odin提供的Attribute可以快速影响我们自定义脚本的Editor表现，帮助我们快速创建友好的可视化界面。</p>
+<h4 id="实战-1">实战</h4><ol>
+<li>PropertyOrder(快速指定面板显示顺序)<br>Unity默认排序是跟Public可序列化成员变量定义的顺序挂钩的：<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AttributeStudy</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> Second;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> First;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/img/Unity/Odin/UnitySerializationOrderUI.png" alt="UnitySerializationOrderUI"><br>通过Odin的PropertyOrder属性我们可以快速的指定排版顺序<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AttributeStudy</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    [PropertyOrder(<span class="number">2</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> Second;</span><br><span class="line"></span><br><span class="line">    [PropertyOrder(<span class="number">1</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> First;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/Unity/Odin/OdinPropertyOrderUI.png" alt="OdinPropertyOrderUI"></p>
+<ol>
+<li>ValueDropdown属性(显示指定成员变量下拉可选值)<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AttributeStudy</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    [ValueDropdown(<span class="string">"DropDownListString"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> DropDownListStringName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;<span class="keyword">string</span>&gt; DropDownListString = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;()&#123;</span><br><span class="line">        <span class="string">"Tony"</span>,</span><br><span class="line">        <span class="string">"Tang"</span>,</span><br><span class="line">        <span class="string">"Huan"</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/img/Unity/Odin/OdinValueDropDownAttributeUI.png" alt="OdinValueDropDownAttributeUI"></p>
+<ol>
+<li>TabGroup属性(指定序列化显示分组)<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AttributeStudy</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    [TabGroup(<span class="string">"Normal List Tab"</span>)]</span><br><span class="line">    [PropertyOrder(<span class="number">2</span>)]</span><br><span class="line">    <span class="keyword">public</span> List&lt;<span class="keyword">string</span>&gt; NormalListString = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;()&#123;</span><br><span class="line">        <span class="string">"Tony2"</span>,</span><br><span class="line">        <span class="string">"Tang2"</span>,</span><br><span class="line">        <span class="string">"Huan2"</span>,</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    [TabGroup(<span class="string">"Drop Down Tab"</span>)]</span><br><span class="line">    [PropertyOrder(<span class="number">1</span>)]</span><br><span class="line">    [ValueDropdown(<span class="string">"DropDownListString"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> DropDownListStringName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;<span class="keyword">string</span>&gt; DropDownListString = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;()&#123;</span><br><span class="line">        <span class="string">"Tony1"</span>,</span><br><span class="line">        <span class="string">"Tang1"</span>,</span><br><span class="line">        <span class="string">"Huan1"</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/img/Unity/Odin/OdinTabGroupAttributeUI.png" alt="OdinTabGroupAttributeUI"></p>
+<ol>
+<li>MetaAttributes属性(e.g. ValidateInput, Required 验证序列化数据输入)<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AttributeStudy</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    [ValidateInput(<span class="string">"IsGreaterThanZero"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> GreaterThanZero;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">IsGreaterThanZero</span>(<span class="params"><span class="keyword">int</span> <span class="keyword">value</span></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">value</span> &gt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [Required]</span><br><span class="line">    <span class="keyword">public</span> GameObject RequiredValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/img/Unity/Odin/OdinValideInputAndRequiredAttributeUI.png" alt="OdinValideInputAndRequiredAttributeUI"><br>这里就不所有都一一举例了，从上面可以看出，借助于Odin的Attribute和序列化以及Ordin自定义的Inspector，可以快速帮助我们管理UI排版以及编写高效准确的UI。<br>更多Attribute详情:<br><a href="http://www.sirenix.net/odininspector/documentation/sirenix/odininspector/assetlistattribute" target="_blank" rel="external">Odin Attributes</a><br>Odin官方给的Demo(Assets\Plugins\Sirenix\Demos\Attributes Overview.unitypackage)</p>
+<h3 id="Effortless_Integration">Effortless Integration</h3><p>容易集成这一特性从前面的Serialize Anything和Attribute的简单易用其实已经不言而喻了。</p>
+<p>接下来主要学习Odin是如何帮助我们快速创建自定义窗口UI显示的。</p>
+<ol>
+<li>Odin普通编辑器窗口<br>一般来说我们要自定义窗口UI，我们会继承EditorWindow然后结合EditorGUILayout和GUILayout之类的类来定义窗口UI的显示排版以及逻辑处理。<br>基础的Odin窗口需要继承至OdinEditorWindow：<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomClassInfoDisplayOdinEditorWindow</span> : <span class="title">OdinEditorWindow</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomClass</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> Index;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> Name;</span><br><span class="line">        <span class="keyword">public</span> GameObject Go;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [MenuItem(<span class="string">"/TonyTang/Tools/OdinEditorWindow/MyFirstOdinEditorWindow"</span>)]</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">OpenWindow</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> window = GetWindow&lt;CustomClassInfoDisplayOdinEditorWindow&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;CustomClass&gt; CustomClassListData = <span class="keyword">new</span> List&lt;CustomClass&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/img/Unity/Odin/OdinEditorWindowCustomClassInfoDisplayUI.png" alt="OdinEditorWindowCustomClassInfoDisplayUI"><br>可以看到借助于继承OdinEditorWindow,我们不再需要重写OnGUI之后去自己定义GUI排版显示以及数据处理，直接编写public可序列化变量就能达到快速显示UI操作交互界面。</p>
+<ol>
+<li>Odin带菜单栏的自定义编辑器窗口<ul>
+<li>带菜单栏的Odin窗口需要继承至OdinMenuEditorWindow</li>
+<li>OdinMenuTree用于创建窗口菜单管理</li>
+<li>OdinMenuItem用于创建自定义菜单节点(重写OnDrawMenuItem可自定义菜单节点显示)</li>
+<li>自定义类结合Odin Attribute做自定义显示界面<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Sirenix.OdinInspector;</span><br><span class="line"><span class="keyword">using</span> Sirenix.OdinInspector.Editor;</span><br><span class="line"><span class="keyword">using</span> Sirenix.Utilities;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 自定义含菜单的Odin窗口</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomOdinMenuEditorWindow</span> : <span class="title">OdinMenuEditorWindow</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 自定义的OdinMenuItem类</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomMenuItem</span> : <span class="title">OdinMenuItem</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 自定义OdinMenuItem类的数据抽象类</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomMenuItemContentClass</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">int</span> Index;</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">string</span> Name;</span><br><span class="line">            <span class="keyword">public</span> GameObject Go;</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">bool</span> CheckOn;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">CustomMenuItemContentClass</span>(<span class="params"><span class="keyword">int</span> index, <span class="keyword">string</span> name, GameObject go, <span class="keyword">bool</span> checkon</span>)</span><br><span class="line">            </span>&#123;</span><br><span class="line">                Index = index;</span><br><span class="line">                Name = name;</span><br><span class="line">                Go = go;</span><br><span class="line">                CheckOn = checkon;</span><br><span class="line">        &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CustomMenuItem</span>(<span class="params">OdinMenuTree tree, <span class="keyword">string</span> name, IList <span class="keyword">value</span></span>) : <span class="title">base</span>(<span class="params">tree, name, <span class="keyword">value</span></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CustomMenuItem</span>(<span class="params">OdinMenuTree tree, <span class="keyword">string</span> name, <span class="keyword">object</span> <span class="keyword">value</span></span>) : <span class="title">base</span>(<span class="params">tree, name, <span class="keyword">value</span></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 自定义显示界面的OdinMenuItem类</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomDrawMenuItem</span> : <span class="title">OdinMenuItem</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 自定义显示界面OdinMenuItem类的数据抽象类</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomDrawMenuItemContentClass</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//利用Odin Attribute排版显示UI</span></span><br><span class="line">            [FoldoutGroup(<span class="string">"自定义折叠组"</span>)]</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">int</span> Index;</span><br><span class="line">            [FoldoutGroup(<span class="string">"自定义折叠组"</span>)]</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">string</span> Name;</span><br><span class="line">            [FoldoutGroup(<span class="string">"自定义折叠组"</span>)]</span><br><span class="line">            <span class="keyword">public</span> GameObject Go;</span><br><span class="line">            [FoldoutGroup(<span class="string">"自定义折叠组"</span>)]</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">bool</span> CheckOn;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">CustomDrawMenuItemContentClass</span>(<span class="params"><span class="keyword">int</span> index, <span class="keyword">string</span> name, GameObject go, <span class="keyword">bool</span> checkon</span>)</span><br><span class="line">            </span>&#123;</span><br><span class="line">                Index = index;</span><br><span class="line">                Name = name;</span><br><span class="line">                Go = go;</span><br><span class="line">                CheckOn = checkon;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 自行保存需要显示的数据</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> CustomDrawMenuItemContentClass mCustomDrawMenuData;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CustomDrawMenuItem</span>(<span class="params">OdinMenuTree tree, <span class="keyword">string</span> name, CustomDrawMenuItemContentClass data</span>) : <span class="title">base</span>(<span class="params">tree, name, data</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            mCustomDrawMenuData = data;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CustomDrawMenuItem</span>(<span class="params">OdinMenuTree tree, <span class="keyword">string</span> name, IList <span class="keyword">value</span></span>) : <span class="title">base</span>(<span class="params">tree, name, <span class="keyword">value</span></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CustomDrawMenuItem</span>(<span class="params">OdinMenuTree tree, <span class="keyword">string</span> name, <span class="keyword">object</span> <span class="keyword">value</span></span>) : <span class="title">base</span>(<span class="params">tree, name, <span class="keyword">value</span></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 自定义MenuItem显示</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="rect"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="labelRect"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnDrawMenuItem</span>(<span class="params">Rect rect, Rect labelRect</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            labelRect.x -= <span class="number">16</span>;</span><br><span class="line">            <span class="keyword">this</span>.mCustomDrawMenuData.CheckOn = GUI.Toggle(labelRect.AlignMiddle(<span class="number">18</span>).AlignLeft(<span class="number">16</span>), <span class="keyword">this</span>.mCustomDrawMenuData.CheckOn, GUIContent.none);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [MenuItem(<span class="string">"TonyTang/Tools/OdinMenuEditorWindow/CustomOdinMenuEditorWindow"</span>)]</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">OpenWindow</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> window = GetWindow&lt;CustomOdinMenuEditorWindow&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> OdinMenuTree <span class="title">BuildMenuTree</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> menutree = <span class="keyword">new</span> OdinMenuTree(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> custommenustyle = <span class="keyword">new</span> OdinMenuStyle</span><br><span class="line">        &#123;</span><br><span class="line">            BorderPadding = <span class="number">0</span>f,</span><br><span class="line">            AlignTriangleLeft = <span class="keyword">true</span>,</span><br><span class="line">            TriangleSize = <span class="number">16</span>f,</span><br><span class="line">            TrianglePadding = <span class="number">0</span>f,</span><br><span class="line">            Offset = <span class="number">20</span>f,</span><br><span class="line">            Height = <span class="number">23</span>,</span><br><span class="line">            IconPadding = <span class="number">0</span>f,</span><br><span class="line">            BorderAlpha = <span class="number">0.323</span>f</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        menutree.DefaultMenuStyle = custommenustyle;</span><br><span class="line">        <span class="comment">//添加菜单风格控制显示菜单</span></span><br><span class="line">        menutree.AddObjectAtPath(<span class="string">"菜单风格"</span>, custommenustyle);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//添加MenuItem节点</span></span><br><span class="line">        <span class="keyword">var</span> custommenuitemdata = <span class="keyword">new</span> CustomMenuItem.CustomMenuItemContentClass(<span class="number">1</span>, <span class="string">"CustomMenuItemContentClass"</span>, <span class="keyword">null</span>, <span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">var</span> custommenuitemobj = <span class="keyword">new</span> CustomMenuItem(menutree, <span class="string">"默认菜单子子节点名"</span>, custommenuitemdata);</span><br><span class="line">        menutree.AddMenuItemAtPath(<span class="string">"菜单子节点1"</span>, custommenuitemobj);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> customdrawmenuitemdata = <span class="keyword">new</span> CustomDrawMenuItem.CustomDrawMenuItemContentClass(<span class="number">1</span>, <span class="string">"CustomDrawMenuItemContentClass"</span>, <span class="keyword">null</span>, <span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">var</span> customdrawmenuitemobj = <span class="keyword">new</span> CustomDrawMenuItem(menutree, <span class="string">"自定义菜单子子节点名"</span>, customdrawmenuitemdata);</span><br><span class="line">        menutree.AddMenuItemAtPath(<span class="string">"菜单子节点2"</span>, customdrawmenuitemobj);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        menutree.EnumerateTree().AddThumbnailIcons().SortMenuItemsByName();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> menutree;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<p><img src="/img/Unity/Odin/OdinCustomMenuStyleUI.png" alt="OdinCustomMenuStyleUI"><br>可以看到借助于Odin我们很轻松的创建定义了复杂的编辑器窗口UI显示，不再需要手动通过EditorGUILayout去编写排版，开发效率大大提升，编写出来的UI也更加美观。</p>
+<p>这里就不再一一学习使用Odin相关特性，详情查询:<br><a href="http://www.sirenix.net/odininspector/documentation/sirenix/odininspector/editor/odinmenueditorwindow" target="_blank" rel="external">Code Reference</a><br>Odin官方给的Demo(Assets\Plugins\Sirenix\Demos\Editor Windows.unitypackage)</p>
+<h3 id="Extendable">Extendable</h3><h2 id="官方使用建议">官方使用建议</h2><p><a href="http://www.sirenix.net/odininspector/manual/introduction/getting-started" target="_blank" rel="external">Getting Started</a></p>
+<h1 id="Reference">Reference</h1><p><a href="https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041" target="_blank" rel="external">Odin Asset Store链接</a><br><a href="http://sirenix.net/odininspector" target="_blank" rel="external">Odin官网</a><br><a href="https://docs.unity3d.com/Manual/script-Serialization.html" target="_blank" rel="external">Script Serialization</a><br><a href="https://blog.uwa4d.com/archives/2025.html" target="_blank" rel="external">Unity插件开发基础—浅谈序列化系统</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Editor/">Editor</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2019/05/15/Odin插件/" data-title="Odin插件 | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2019/05/03/热更新/"  title="热更新">
+ <strong>下一篇：</strong><br/> 
+ <span>热更新
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2019/05/15/Odin插件/" data-title="Odin插件" data-url="http://tonytang1990.github.io/2019/05/15/Odin插件/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Odin"><span class="toc-number">2.</span> <span class="toc-text">Odin</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#功能特性"><span class="toc-number">2.1.</span> <span class="toc-text">功能特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Serialize_Anything"><span class="toc-number">2.1.1.</span> <span class="toc-text">Serialize Anything</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实战"><span class="toc-number">2.1.2.</span> <span class="toc-text">实战</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#New_Attributes"><span class="toc-number">2.1.3.</span> <span class="toc-text">New Attributes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#实战-1"><span class="toc-number">2.1.3.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Effortless_Integration"><span class="toc-number">2.1.4.</span> <span class="toc-text">Effortless Integration</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Extendable"><span class="toc-number">2.1.5.</span> <span class="toc-text">Extendable</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#官方使用建议"><span class="toc-number">2.2.</span> <span class="toc-text">官方使用建议</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">3.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

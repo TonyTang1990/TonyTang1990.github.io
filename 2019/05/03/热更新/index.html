@@ -29,7 +29,7 @@ What什么是热更新？从前端的角度来说，我个人理解热更新是�
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/HotUpdate/DownloadAPK.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/HotUpdate/InstallAPK.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/HotUpdate/HotUpdateFlowChat.png">
-<meta property="og:updated_time" content="2019-05-07T15:05:54.298Z">
+<meta property="og:updated_time" content="2019-05-12T15:56:19.987Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="热更新">
 <meta name="twitter:description" content="前言本篇文章是为了记录学习游戏开发过程中，版本强更和资源热更相关知识。
@@ -111,7 +111,7 @@ What什么是热更新？从前端的角度来说，我个人理解热更新是�
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#热更新"><span class="toc-number">2.</span> <span class="toc-text">热更新</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What"><span class="toc-number">2.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-number">2.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How"><span class="toc-number">2.3.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#版本强更"><span class="toc-number">2.3.1.</span> <span class="toc-text">版本强更</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#实战"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#资源热更"><span class="toc-number">2.3.2.</span> <span class="toc-text">资源热更</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码热更"><span class="toc-number">2.3.3.</span> <span class="toc-text">代码热更</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#XLua"><span class="toc-number">2.3.3.1.</span> <span class="toc-text">XLua</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">3.</span> <span class="toc-text">Reference</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Git"><span class="toc-number">4.</span> <span class="toc-text">Git</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#热更新"><span class="toc-number">2.</span> <span class="toc-text">热更新</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What"><span class="toc-number">2.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-number">2.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How"><span class="toc-number">2.3.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#版本强更"><span class="toc-number">2.3.1.</span> <span class="toc-text">版本强更</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#实战"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#资源热更"><span class="toc-number">2.3.2.</span> <span class="toc-text">资源热更</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码热更"><span class="toc-number">2.3.3.</span> <span class="toc-text">代码热更</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#资源服务器"><span class="toc-number">2.3.4.</span> <span class="toc-text">资源服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#XLua"><span class="toc-number">2.3.4.1.</span> <span class="toc-text">XLua</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">3.</span> <span class="toc-text">Reference</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Git"><span class="toc-number">4.</span> <span class="toc-text">Git</span></a></li></ol>
 		
 		</div>
 		
@@ -180,6 +180,8 @@ What什么是热更新？从前端的角度来说，我个人理解热更新是�
 <ol>
 <li><a href="https://gameinstitute.qq.com/community/detail/119660" target="_blank" rel="external">苹果禁止了C#的部分反射操作，禁止JIT（即时编译，程序运行时创建并运行新代码），不允许逻辑热更新，只允许使用AssetBundle进行资源热更新。</a></li>
 </ol>
+<h3 id="资源服务器">资源服务器</h3><p>前面提到的版本强更和资源热更都离不开资源服务器，这里说的资源服务器是指静态资源服务器，接下来通过实战学习了解静态资源服务器相关的概念以及静态资源服务器选择和使用。</p>
+<p>待续……</p>
 <h4 id="XLua">XLua</h4><p>官网：<br><a href="https://github.com/Tencent/xLua" target="_blank" rel="external">XLua</a></p>
 <p>待续……</p>
 <h1 id="Reference">Reference</h1><p><a href="https://blog.csdn.net/janeky/article/details/17666409" target="_blank" rel="external">Unity手游之路手游资源热更新策略探讨</a><br><a href="http://copyfuture.com/blogs-details/cd4f28bd6dfae0a2ece7cd43a6f90e62" target="_blank" rel="external">Unity 大版本更新之APK的下载与覆盖安装</a><br><a href="https://gameinstitute.qq.com/community/detail/119660" target="_blank" rel="external">Unity3D热更新方案总结</a><br><a href="http://lazybios.com/2016/12/install-apk-by-intent-compatible-adnroid-n/" target="_blank" rel="external">使用Intent安装APK方法(兼容Android N)</a><br><a href="http://yifeng.studio/2017/05/03/android-7-0-compat-fileprovider/" target="_blank" rel="external">关于 Android 7.0 适配中 FileProvider 部分的总结</a><br><a href="https://blog.csdn.net/hackmind/article/details/78113511" target="_blank" rel="external">Unity app 如何打开商店</a></p>
@@ -214,6 +216,14 @@ What什么是热更新？从前端的角度来说，我个人理解热更新是�
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2019/05/15/Odin插件/" title="Odin插件">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Odin插件</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2019/04/19/版本控制/"  title="版本控制">
@@ -237,7 +247,7 @@ What什么是热更新？从前端的角度来说，我个人理解热更新是�
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#热更新"><span class="toc-number">2.</span> <span class="toc-text">热更新</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What"><span class="toc-number">2.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-number">2.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How"><span class="toc-number">2.3.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#版本强更"><span class="toc-number">2.3.1.</span> <span class="toc-text">版本强更</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#实战"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#资源热更"><span class="toc-number">2.3.2.</span> <span class="toc-text">资源热更</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码热更"><span class="toc-number">2.3.3.</span> <span class="toc-text">代码热更</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#XLua"><span class="toc-number">2.3.3.1.</span> <span class="toc-text">XLua</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">3.</span> <span class="toc-text">Reference</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Git"><span class="toc-number">4.</span> <span class="toc-text">Git</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#热更新"><span class="toc-number">2.</span> <span class="toc-text">热更新</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What"><span class="toc-number">2.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-number">2.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How"><span class="toc-number">2.3.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#版本强更"><span class="toc-number">2.3.1.</span> <span class="toc-text">版本强更</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#实战"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#资源热更"><span class="toc-number">2.3.2.</span> <span class="toc-text">资源热更</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码热更"><span class="toc-number">2.3.3.</span> <span class="toc-text">代码热更</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#资源服务器"><span class="toc-number">2.3.4.</span> <span class="toc-text">资源服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#XLua"><span class="toc-number">2.3.4.1.</span> <span class="toc-text">XLua</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">3.</span> <span class="toc-text">Reference</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Git"><span class="toc-number">4.</span> <span class="toc-text">Git</span></a></li></ol>
  
   </div>
 
@@ -300,7 +310,7 @@ What什么是热更新？从前端的角度来说，我个人理解热更新是�
 			
 		
 			
-				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>2</sup></a></li>
 			
 		
 			
@@ -324,7 +334,7 @@ What什么是热更新？从前端的角度来说，我个人理解热更新是�
 			
 		
 			
-				<li><a href="/tags/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
 			
 		
 			

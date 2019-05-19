@@ -60,7 +60,7 @@ Why那么为什么需要数据">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Data-Config-Automation/XbufferExcelToDataTimeConsume.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Data-Config-Automation/Profiler_GetMonoUsedSizeLong_MemoryUsing.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Data-Config-Automation/AndroidDevice_Profiler_GetMonoUsedSizeLong_MemoryUsing.png">
-<meta property="og:updated_time" content="2019-03-04T16:44:15.265Z">
+<meta property="og:updated_time" content="2019-05-15T13:55:11.197Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="导表工具">
 <meta name="twitter:description" content="Introduction游戏开发过程中，避免不了和数据打交道，数据是游戏最基础也是很重要的一部分。本篇文章正式为了学习了解游戏开发过程中关于数据配置自动化导表生成代码等一系列自动化相关的知识而写。
@@ -154,7 +154,7 @@ Why那么为什么需要数据">
 <li>多语言显示 — 数据配置用于语言包显示也帮助我们很方便的实现多语言的版本(读取不同语言版本的数据配置即可)。</li>
 </ol>
 <h2 id="How">How</h2><p>实现数据配置读取原理上是把数据序列化导出保存在本地(.xml, .json .bytes……)，然后通过反序列化读取回来。<br>这里我们不单单是针对个别数据进行序列化反序列化。这里要实现的是一个针对表格配置，可以动态生成支持反序列化读取(非反射机制)读取到程序里的工具。</p>
-<p>序列化相关知识学习参考<a href="http://tonytang1990.github.io/2015/08/15/CSharp-Study/#Runtime_Serialization">Runtime Serialization</a><br>PC端Excel读取库选择参考:<a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#Excel数据读取">Excel数据读取</a></p>
+<p>序列化相关知识学习参考<a href="http://tonytang1990.github.io/2015/08/15/CS%E5%AD%A6%E4%B9%A0/#Runtime_Serialization">Runtime Serialization</a><br>PC端Excel读取库选择参考:<a href="http://tonytang1990.github.io/2015/07/15/Unity%E5%AD%A6%E4%B9%A0/#Excel%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96">Excel数据读取</a></p>
 <p>Note:<br>这里注意反射和反序列化不是一回事，反序列化可以用反射也可以不用反射来实现。</p>
 <h3 id="Functional_Requirement(功能需求)">Functional Requirement(功能需求)</h3><ol>
 <li>支持int，float，string基础数据配置</li>
@@ -818,7 +818,7 @@ Mono 2.x
 			
 		
 			
-				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>2</sup></a></li>
 			
 		
 			
@@ -842,7 +842,7 @@ Mono 2.x
 			
 		
 			
-				<li><a href="/tags/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
 			
 		
 			
