@@ -1,0 +1,700 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>网络模块学习 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="前言本章节是为了记录学习游戏开发过程中的服务器搭建以及前后端网络通信相关的知识点，游戏开发中联网是必不可少的，无论是从游戏热更新(服务器通知版本以及热更相关信息)，还是游戏社交(微信分享，联机组队)，还是防破解(服务器校验)都离不开网络通信和服务器。
+本人是前端程序，对后端服务器开发几乎一窍不通，本篇文章也算是为了开阔自己的眼界，同时也是为了未来自己的游戏有网络这一块的支持需要对服务器搭建以及网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络模块学习">
+<meta property="og:url" content="http://tonytang1990.github.io/2019/05/20/网络模块学习/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="前言本章节是为了记录学习游戏开发过程中的服务器搭建以及前后端网络通信相关的知识点，游戏开发中联网是必不可少的，无论是从游戏热更新(服务器通知版本以及热更相关信息)，还是游戏社交(微信分享，联机组队)，还是防破解(服务器校验)都离不开网络通信和服务器。
+本人是前端程序，对后端服务器开发几乎一窍不通，本篇文章也算是为了开阔自己的眼界，同时也是为了未来自己的游戏有网络这一块的支持需要对服务器搭建以及网络">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Network/FrameSync.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Network/ByteBufferOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Network/ServerOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Network/ClientOutput.png">
+<meta property="og:updated_time" content="2019-07-14T15:15:56.175Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络模块学习">
+<meta name="twitter:description" content="前言本章节是为了记录学习游戏开发过程中的服务器搭建以及前后端网络通信相关的知识点，游戏开发中联网是必不可少的，无论是从游戏热更新(服务器通知版本以及热更相关信息)，还是游戏社交(微信分享，联机组队)，还是防破解(服务器校验)都离不开网络通信和服务器。
+本人是前端程序，对后端服务器开发几乎一窍不通，本篇文章也算是为了开阔自己的眼界，同时也是为了未来自己的游戏有网络这一块的支持需要对服务器搭建以及网络">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/05/20/网络模块学习/" title="网络模块学习" itemprop="url">网络模块学习</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2019-05-20T15:29:25.000Z" itemprop="datePublished"> 發表於 2019-05-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#目标"><span class="toc-number">2.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#服务器"><span class="toc-number">3.</span> <span class="toc-text">服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据存储"><span class="toc-number">3.1.</span> <span class="toc-text">数据存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#消息通信"><span class="toc-number">3.2.</span> <span class="toc-text">消息通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网方式"><span class="toc-number">3.2.1.</span> <span class="toc-text">联网方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据格式定义"><span class="toc-number">3.2.2.</span> <span class="toc-text">数据格式定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据收发"><span class="toc-number">3.2.3.</span> <span class="toc-text">数据收发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据解析"><span class="toc-number">3.2.4.</span> <span class="toc-text">数据解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器验证"><span class="toc-number">3.3.</span> <span class="toc-text">服务器验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网络通信"><span class="toc-number">4.</span> <span class="toc-text">网络通信</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实战"><span class="toc-number">5.</span> <span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#联网通信实现"><span class="toc-number">5.1.</span> <span class="toc-text">联网通信实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#二进制抽象类"><span class="toc-number">5.1.0.1.</span> <span class="toc-text">二进制抽象类</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络通信-1"><span class="toc-number">5.1.1.</span> <span class="toc-text">网络通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据格式解析"><span class="toc-number">5.2.</span> <span class="toc-text">数据格式解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器-1"><span class="toc-number">5.3.</span> <span class="toc-text">服务器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#进阶篇"><span class="toc-number">6.</span> <span class="toc-text">进阶篇</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">7.1.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战讲解"><span class="toc-number">7.2.</span> <span class="toc-text">实战讲解</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="前言">前言</h1><p>本章节是为了记录学习游戏开发过程中的服务器搭建以及前后端网络通信相关的知识点，游戏开发中联网是必不可少的，无论是从游戏热更新(服务器通知版本以及热更相关信息)，还是游戏社交(微信分享，联机组队)，还是防破解(服务器校验)都离不开网络通信和服务器。</p>
+<p>本人是前端程序，对后端服务器开发几乎一窍不通，本篇文章也算是为了开阔自己的眼界，同时也是为了未来自己的游戏有网络这一块的支持需要对服务器搭建以及网络通信要有所了解。本文着重点不在于高效和优美的框架设计，着眼于基础的网络通信和服务器搭建，而这正是此篇博客的初衷。</p>
+<h1 id="目标">目标</h1><ol>
+<li>理解游戏服务器工作原理</li>
+<li>理解帧同步和状态同步的区别和优劣以及运用场景</li>
+<li>理解不同服务器框架的优劣，选择合适的服务器框架</li>
+<li><strong>学会搭建基础的游戏服务器，具备基础的数据存储功能(本文重点)</strong></li>
+<li><strong>掌握网络通信知识，搭建前后端通信框架，支持前后端通信(本文重点)</strong></li>
+</ol>
+<h1 id="服务器">服务器</h1><p>那么什么是服务器了？</p>
+<p>个人简单的理解，可以把服务器理解成运行在远程电脑上，通过网络对客户端提供服务(数据处理，数据存储读取，消息转发等)的机器或者软件。</p>
+<p>了解服务器架构：</p>
+<p><a href="https://www.infoq.cn/article/a-brief-history-of-the-game-server-architecture" target="_blank" rel="external">游戏服务器架构的演进简史</a></p>
+<p>从上面可以看出服务器有以下几个基础功能：</p>
+<ol>
+<li>对于游戏数据和玩家数据的存储(数据存储)</li>
+<li>对玩家数据进行数据广播和同步(消息通信)</li>
+<li>把一部分游戏逻辑在服务器上运算，做好验证，防止外挂(服务器验证)</li>
+</ol>
+<p>第三点涉及到前后端框架设计(帧同步 or 状态同步等)，本文着眼点是前两点，第三点作为未来学习的一个知识点。</p>
+<h2 id="数据存储">数据存储</h2><p>MySQL?</p>
+<p>Redis?</p>
+<p>待续……</p>
+<h2 id="消息通信">消息通信</h2><p>消息通信是本篇文章的重点，首先让我们理一理实现消息通信前我们需要做些什么？</p>
+<ol>
+<li>联网方式(选择通信协议，比如: TCP || UPD)</li>
+<li>数据格式定义(会影响数据编码和解析，比如: Protobuf)</li>
+<li>数据收发(涉及到网络通信监听，比如: Socket编程)</li>
+<li>数据解析(涉及到二进制数据写入和读取，一般来说都不会明文传输)</li>
+</ol>
+<p>一般来说消息通信的流程如下：</p>
+<ol>
+<li>服务器启动了网络监听(比如通过Socket监听固定端口等待客户端连接)</li>
+<li>客户端通过Socket连接服务器端口</li>
+<li>指定前后端消息协议(Protobuf)，基于协议封装消息数据</li>
+<li>客户端通过封装二进制消息数据通过Socket传递给服务器</li>
+<li>服务器接受到二进制数据通过对应方式解析消息后返回客户端消息</li>
+<li>客户端做出对应表现</li>
+</ol>
+<h3 id="联网方式">联网方式</h3><p>了解联网方式之前，我们需要知道一些相关的网络知识。</p>
+<p>以前学计算机网络课程时，印象最深的就是网络的OSI七层分类：</p>
+<p><a href="https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B" target="_blank" rel="external">OSI模型</a></p>
+<p>这里我们主要关注的是以下两层：</p>
+<ol>
+<li><p>会话层</p>
+<p> <a href="https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B" target="_blank" rel="external">负责在数据传输中设置和维护计算机网络中两台计算机之间的通信连接。</a>这一层是负责网络连接的，比如我们通过Socket启动端口监听</p>
+</li>
+<li><p>传输层</p>
+<p><a href="https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B" target="_blank" rel="external">把传输表头（TH）加至数据以形成数据包。传输表头包含了所使用的协议等发送信息。例如:传输控制协议（TCP）等。</a>这一层负责添加网络协议相关信息，比如根据不同网络协议(TCP or UDP)用不同的方式处理丢包问题</p>
+</li>
+</ol>
+<p>更详细的网络相关知识介绍参考:</p>
+<p><a href="https://zhuanlan.zhihu.com/p/24860273" target="_blank" rel="external">TCP和UDP的区别</a></p>
+<p>这里我们只要知道<strong>TCP(Transmission Control Protocol，传输控制协议)</strong>协议是<strong>面向连接的可靠传输协议</strong>，有三次握手过程。而<strong>UDP(User Data Protocol，用户数据报协议)</strong>协议是<strong>无连接不可靠协议</strong>。</p>
+<p>传输协议选择？<br>TCP<br>理由：</p>
+<ol>
+<li>游戏对网络数据准确性要求较高</li>
+</ol>
+<h3 id="数据格式定义">数据格式定义</h3><p>这里的数据格式指的是网络消息数据格式定义。</p>
+<p>在完成了客户端和服务器基础网络数据传输能力(TPC)后，我们必须定义一个统一的消息定义(即数据格式)和消息处理的方式，这样客户端和服务器端才能正常的解析网络数据。</p>
+<p>数据格式需求：</p>
+<ol>
+<li>知道数据大小</li>
+<li>知道数据类型</li>
+<li>知道如何序列化和反序列化数据</li>
+</ol>
+<p>基础的数据格式定义如下:</p>
+<ol>
+<li>数据长度(short - 2字节) — 用于存储消息数据长度</li>
+<li>消息ID(short - 2字节) — 用于区分消息类型</li>
+<li>二进制数据(Protobuf) — 用于序列化和反序列化数据</li>
+</ol>
+<h3 id="数据收发">数据收发</h3><p>有了TCP网络数据传输的能力后，我们还需要网络通信的能力。<br>网路通信方式选择？<br>Socket</p>
+<h3 id="数据解析">数据解析</h3><p>数据的解析就是前面提到的数据序列化和反序列化的能力。</p>
+<p>数据解析协议选择？<br>Protobuf<br>理由：</p>
+<ol>
+<li>强大的生态圈，多语言支持，数据前后兼容性，强大序列化反序列化能力等</li>
+</ol>
+<h2 id="服务器验证">服务器验证</h2><p>为什么需要验证？</p>
+<p>单机游戏不联网很容易有外挂的一个原因就是本地数据(本地存储或者只存在内存中)很容易被串改且无法验证正确性，比如通过修改内存数据(e.g. 数值挂)，修改游戏运行速度(e.g. 加速挂)</p>
+<p>解决这一问题的关键正式服务器验证，把所有的数据都存储在服务器上，所有的数据修改都必须通过服务器校验才能通过，这样一来客户端伪造数据就能被识别出来从而防止部分外挂。</p>
+<p>服务器验证的应用场景？</p>
+<p>服务器验证有一点很重要的应用就是服务器运行战斗逻辑，确保所有客户端结果一致性。</p>
+<p>这一点涉及到前后端同步框架相关的知识，详情参考:</p>
+<p><a href="https://zhuanlan.zhihu.com/p/36884005" target="_blank" rel="external">两种同步模式：状态同步和帧同步</a></p>
+<p>这里直接借用博客里的一些定义来加深基础理解：</p>
+<p>什么是同步？</p>
+<p><a href="https://zhuanlan.zhihu.com/p/36884005" target="_blank" rel="external">所谓同步，就是要多个客户端表现效果是一致，数据是一致。</a></p>
+<p>什么是状态同步？</p>
+<p><a href="https://zhuanlan.zhihu.com/p/36884005" target="_blank" rel="external">状态同步下，客户端更像是一个服务端数据的表现层。</a>以服务器通知为准。</p>
+<p>什么是帧同步？</p>
+<p><a href="https://zhuanlan.zhihu.com/p/36884005" target="_blank" rel="external">帧同步下，通信就比较简单了，服务端只转发操作，不做任何逻辑处理。</a></p>
+<p><img src="/img/Network/FrameSync.png" alt="FrameSync"></p>
+<p>状态同步和帧同步的区别？</p>
+<p><a href="https://zhuanlan.zhihu.com/p/36884005" target="_blank" rel="external">最大的区别就是战斗核心逻辑写在哪，状态同步的战斗逻辑在服务端，帧同步的战斗逻辑在客户端。</a></p>
+<p>这里只是简单的引用上面博主的部分说明来加深理解，更深入学习请参考前面给出的博客链接。</p>
+<h1 id="网络通信">网络通信</h1><p>网络通信是指通过网络进行数据传输处理的能力。为了实现网络通信，我们需要借助于TCP( or UDP or **)协议进行数据传输，借助Socket进行端口监听，从而实现网络通信的能力。</p>
+<h1 id="实战">实战</h1><p>联网方式选择？<br>TCP协议 + Socket<br>理由：</p>
+<ol>
+<li>游戏开发对网络稳定性要求较高，所以选择以TCP作为网络传输协议。</li>
+</ol>
+<p>数据格式定义选择？<br>Protobuf<br>理由：</p>
+<ol>
+<li>强大的生态圈，多语言支持，数据前后兼容性，强大序列化反序列化能力等</li>
+</ol>
+<p>前后端通信模式选择？<br>帧同步<br>理由：</p>
+<ol>
+<li>现阶段只是为了实现前后端的通信能力，只是希望后端提供消息处理和数据存储的功能，暂时不考虑反外挂，服务器验证等问题，所以选择更适合以后端转发通知的CS模式的帧同步。</li>
+</ol>
+<h2 id="联网通信实现">联网通信实现</h2><h4 id="二进制抽象类">二进制抽象类</h4><p>联网通信免不了对二进制数据的写入，所以在实现TPC和Socket网络连接传输消息之前，我们需要实现一个对二进制数据进行读取和写入工具类实现。</p>
+<p>以下代码参考至:<br><a href="https://blog.csdn.net/linshuhe1/article/details/51386559" target="_blank" rel="external">Unity3D —— Socket通信(C#)</a></p>
+<p>ByteBufferWriter.cs<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             ByteBufferWriter.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2019/07/14</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Net</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> ByteBufferWriter.cs</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 二进制写入抽象类</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ByteBufferWriter</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Note:</span></span><br><span class="line">        <span class="comment">// 注意大小端问题</span></span><br><span class="line">        <span class="comment">// BinaryWriter和BinaryReader都是小端读写</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 内存写入类</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> MemoryStream mMemoryStream;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 二进制流写入类</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> BinaryWriter mBinaryWriter;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">ByteBufferWriter</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            mMemoryStream = <span class="keyword">new</span> MemoryStream();</span><br><span class="line">            mBinaryWriter = <span class="keyword">new</span> BinaryWriter(mMemoryStream);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">ByteBufferWriter</span>(<span class="params"><span class="keyword">byte</span>[] data</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(data != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                mMemoryStream = <span class="keyword">new</span> MemoryStream(data);</span><br><span class="line">                mBinaryWriter = <span class="keyword">new</span> BinaryWriter(mMemoryStream);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                mMemoryStream = <span class="keyword">new</span> MemoryStream();</span><br><span class="line">                mBinaryWriter = <span class="keyword">new</span> BinaryWriter(mMemoryStream);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 关闭二进制读取写入</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Close</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            mBinaryWriter.Close();</span><br><span class="line">            mMemoryStream.Close();</span><br><span class="line">            mBinaryWriter = <span class="keyword">null</span>;</span><br><span class="line">            mMemoryStream = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 写入一个字节数据</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="v"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">WriteByte</span>(<span class="params"><span class="keyword">byte</span> v</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            mBinaryWriter.Write(v);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ******</span><br><span class="line">        </span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 获取字节数据</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">byte</span>[] ToBytes()</span><br><span class="line">        &#123;</span><br><span class="line">            mBinaryWriter.Flush();</span><br><span class="line">            <span class="keyword">return</span> mMemoryStream.ToArray();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 写入数据</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Flush</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            mBinaryWriter.Flush();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>ByteBufferReader.cs<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             ByteBufferReader.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2019/07/14</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Net</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> ByteBufferReader.cs</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 二进制读取抽象类</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ByteBufferReader</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Note:</span></span><br><span class="line">        <span class="comment">// 注意大小端问题</span></span><br><span class="line">        <span class="comment">// BinaryWriter和BinaryReader都是小端读写</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 内存写入类</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> MemoryStream mMemoryStream;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 二进制流读取类</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> BinaryReader mBinaryReader;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">ByteBufferReader</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            mMemoryStream = <span class="keyword">new</span> MemoryStream();</span><br><span class="line">            mBinaryReader = <span class="keyword">new</span> BinaryReader(mMemoryStream);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">ByteBufferReader</span>(<span class="params"><span class="keyword">byte</span>[] data</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(data != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                mMemoryStream = <span class="keyword">new</span> MemoryStream(data);</span><br><span class="line">                mBinaryReader = <span class="keyword">new</span> BinaryReader(mMemoryStream);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                mMemoryStream = <span class="keyword">new</span> MemoryStream();</span><br><span class="line">                mBinaryReader = <span class="keyword">new</span> BinaryReader(mMemoryStream);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 关闭二进制读取写入</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Close</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            mBinaryReader.Close();</span><br><span class="line">            mMemoryStream.Close();</span><br><span class="line">            mBinaryReader = <span class="keyword">null</span>;</span><br><span class="line">            mMemoryStream = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 读取一个字节数据</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">byte</span> <span class="title">ReadByte</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> mBinaryReader.ReadByte();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ******</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>测试用例:<br>NetMessage.cs<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Net</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 网络消息抽象类</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">NetMessage</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 消息ID</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">ushort</span> MessageID</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span>;</span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 消息二进制数据</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">byte</span>[] MessageData</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span>;</span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 消息长度</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">ushort</span> MessageLength</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span>;</span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="title">NetMessage</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">NetMessage</span>(<span class="params"><span class="keyword">ushort</span> messageid, <span class="keyword">byte</span>[] messagedata</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            MessageID = messageid;</span><br><span class="line">            MessageData = messagedata;</span><br><span class="line">            MessageLength = (<span class="keyword">ushort</span>)messagedata.Length;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">NetMessage msg = <span class="keyword">new</span> NetMessage(<span class="number">1</span>, Encoding.UTF8.GetBytes(<span class="string">"我是消息内容"</span>));</span><br><span class="line">ByteBufferWriter bbw = <span class="keyword">new</span> ByteBufferWriter();</span><br><span class="line">bbw.WriteShort(msg.MessageLength);</span><br><span class="line">bbw.WriteShort(msg.MessageID);</span><br><span class="line">bbw.WriteBytes(msg.MessageData);</span><br><span class="line"><span class="keyword">var</span> bytesdata = bbw.ToBytes();</span><br><span class="line">bbw.Close();</span><br><span class="line">ByteBufferReader bbb = <span class="keyword">new</span> ByteBufferReader(bytesdata);</span><br><span class="line"><span class="keyword">var</span> msglength = bbb.ReadShort();</span><br><span class="line"><span class="keyword">var</span> msgid = bbb.ReadShort();</span><br><span class="line"><span class="keyword">var</span> msgcontent = bbb.ReadBytes(msglength);</span><br><span class="line">Debug.Log(<span class="string">"msglength = "</span> + msglength);</span><br><span class="line">Debug.Log(<span class="string">"msgid = "</span> + msgid);</span><br><span class="line">Debug.Log(<span class="string">"MessageContent = "</span> + Encoding.UTF8.GetString(msgcontent));</span><br></pre></td></tr></table></figure></p>
+<p>输出:<br><img src="/img/Network/ByteBufferOutput.png" alt="ByteBufferOutput"></p>
+<p>注意问题：</p>
+<ol>
+<li>大小端问题(前后端写入和读取字节的大小端方式必须一致)</li>
+</ol>
+<p>大小端知识:<br><a href="http://www.ruanyifeng.com/blog/2016/11/byte-order.html" target="_blank" rel="external">理解字节序</a><br><a href="http://blog.zhaojie.me/2010/02/byte-order-and-related-library.html" target="_blank" rel="external">浅谈字节序（Byte Order）及其相关操作</a></p>
+<h3 id="网络通信-1">网络通信</h3><p>TCP + Socket<br>流程：</p>
+<ol>
+<li>启动服务器端套接字监听等待客户端连接</li>
+<li>服务器端启动线程监听客户端消息</li>
+<li>启动客户端套接字连接服务器套接字端口</li>
+<li>客户端启动消息发送线程等待向服务器发送客户端消息</li>
+<li>服务器端接受并返回客户端消息</li>
+<li>客户端处理服务器端消息</li>
+</ol>
+<p>NetConnector.cs(网络连接抽象类)<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 网络连接抽象类</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">NetConnector</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> IP地址</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> IpAddress</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 端口号</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> Port</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 网络套接字</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Socket NetSocket</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 是否连接成功</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> IsConnected</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> IP地址</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> IPAddress IP</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> IP以及端口地址</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> IPEndPoint IPEndPoint</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NetConnector</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        NetSocket = <span class="keyword">new</span> Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);</span><br><span class="line">        IsConnected = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NetConnector</span>(<span class="params">ProtocolType protocoltype = ProtocolType.Tcp</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        NetSocket = <span class="keyword">new</span> Socket(AddressFamily.InterNetwork, SocketType.Stream, protocoltype);</span><br><span class="line">        IsConnected = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 监听指定ip和端口地址</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="ipaddress"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="port"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ListenTo</span>(<span class="params"><span class="keyword">string</span> ipaddress, <span class="keyword">int</span> port</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        IpAddress = ipaddress;</span><br><span class="line">        Port = port;</span><br><span class="line">        IP = IPAddress.Parse(IpAddress);</span><br><span class="line">        IPEndPoint = <span class="keyword">new</span> IPEndPoint(IP, Port);</span><br><span class="line">        NetSocket.Bind(IPEndPoint);</span><br><span class="line">        NetSocket.Listen((<span class="keyword">int</span>)SocketOptionName.MaxConnections);</span><br><span class="line">        Console.WriteLine(<span class="string">"启动监听&#123;0&#125;成功"</span>, NetSocket.LocalEndPoint.ToString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 连接指定地址</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="ipaddress"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="port"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">ConnectTo</span>(<span class="params"><span class="keyword">string</span> ipaddress, <span class="keyword">int</span> port</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        IpAddress = ipaddress;</span><br><span class="line">        Port = port;</span><br><span class="line">        IP = IPAddress.Parse(IpAddress);</span><br><span class="line">        IPEndPoint = <span class="keyword">new</span> IPEndPoint(IP, Port);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 连接指定地址</span></span><br><span class="line">            NetSocket.Connect(IPEndPoint);</span><br><span class="line">            IsConnected = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span></span><br><span class="line">        &#123;</span><br><span class="line">            IsConnected = <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> IsConnected;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 断开连接</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Close</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        IsConnected = <span class="keyword">false</span>;</span><br><span class="line">        NetSocket.Shutdown(SocketShutdown.Both);</span><br><span class="line">        NetSocket.Close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>NetServer.cs(网络服务器抽象类)<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 网络服务器抽象类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class NetServer : SingletonTemplate&lt;NetServer&gt;</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 服务器是否启动</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public bool IsServerStart</span><br><span class="line">    &#123;</span><br><span class="line">        get;</span><br><span class="line">        private set;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 网络连接器</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private static NetConnector mNetConnector;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 限定长度的客户端消息接受二进制数组</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private static byte[] ClientMsg = new byte[1024 * 1024];</span><br><span class="line"></span><br><span class="line">    public NetServer()</span><br><span class="line">    &#123;</span><br><span class="line">        mNetConnector = new NetConnector();</span><br><span class="line">        IsServerStart = false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public NetServer(ProtocolType protocoltype = ProtocolType.Tcp)</span><br><span class="line">    &#123;</span><br><span class="line">        mNetConnector = new NetConnector(protocoltype);</span><br><span class="line">        IsServerStart = false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 启动服务器端口监听</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void StartServer()</span><br><span class="line">    &#123;</span><br><span class="line">        if(IsServerStart == false)</span><br><span class="line">        &#123;</span><br><span class="line">            // 启动服务器端口监听以及等待客户端连接线程</span><br><span class="line">            IsServerStart = true;</span><br><span class="line">            mNetConnector.ListenTo("192.168.1.3", 8888);</span><br><span class="line">            Thread clientconnectthread = new Thread(ClientConnectListener);</span><br><span class="line">            clientconnectthread.Start();                </span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine("服务器端已启动!");</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 发送消息到客户端</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name="msg"&gt;&lt;/param&gt;</span><br><span class="line">    public void SendMessage(NetMessage msg)</span><br><span class="line">    &#123;</span><br><span class="line">        //clientsocket.Send(WriteMessage(msg));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 客户端连接请求监听线程</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private void ClientConnectListener()</span><br><span class="line">    &#123;</span><br><span class="line">        while(true)</span><br><span class="line">        &#123;</span><br><span class="line">            // 检查是否有客户端连接(阻塞的)</span><br><span class="line">            Socket clientsocket = mNetConnector.NetSocket.Accept();</span><br><span class="line">            Console.WriteLine("客户端&#123;0&#125;成功连接", clientsocket.RemoteEndPoint.ToString());</span><br><span class="line">            // 想客户端发送连接成功数据(这里的二进制数据可以换成Protobuf序列化的)</span><br><span class="line">            NetMessage netmsg = new NetMessage(1, Encoding.UTF8.GetBytes("连接成功!"));</span><br><span class="line">            clientsocket.Send(WriteMessage(netmsg));</span><br><span class="line">            // 为连接的客户端创建接受消息的线程</span><br><span class="line">            Thread resmsgthread = new Thread(ReceiveMessage);</span><br><span class="line">            resmsgthread.Start(clientsocket);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 写入网络传输所需数据</span><br><span class="line">    /// 1. 数据长度(short - 2字节) -- 用于存储消息数据长度</span><br><span class="line">    /// 2. 消息ID(short - 2字节) -- 用于区分消息类型</span><br><span class="line">    /// 3. 二进制数据(Protobuf) -- 用于序列化和反序列化数据</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name="netmsg"&gt;&lt;/param&gt;</span><br><span class="line">    private byte[] WriteMessage(NetMessage netmsg)</span><br><span class="line">    &#123;</span><br><span class="line">        ByteBufferWriter bbw = new ByteBufferWriter();</span><br><span class="line">        bbw.WriteShort(netmsg.MessageLength);</span><br><span class="line">        bbw.WriteShort(netmsg.MessageID);</span><br><span class="line">        bbw.WriteBytes(netmsg.MessageData);</span><br><span class="line">        bbw.Flush();</span><br><span class="line">        var bytesdata = bbw.ToBytes();</span><br><span class="line">        bbw.Close();</span><br><span class="line">        return bytesdata;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 接受客户端消息</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name="clientsocket"&gt;&lt;/param&gt;</span><br><span class="line">    private void ReceiveMessage(object clientsocket)</span><br><span class="line">    &#123;</span><br><span class="line">        Socket cltsocket = (Socket)clientsocket;</span><br><span class="line">        while(true)</span><br><span class="line">        &#123;</span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                int receivenumber = cltsocket.Receive(ClientMsg);</span><br><span class="line">                if(receivenumber == 0)</span><br><span class="line">                &#123;</span><br><span class="line">                    Console.WriteLine("客户端 : &#123;0&#125;断开了连接!", cltsocket.RemoteEndPoint.ToString());</span><br><span class="line">                    cltsocket.Shutdown(SocketShutdown.Both);</span><br><span class="line">                    cltsocket.Close();</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                else</span><br><span class="line">                &#123;</span><br><span class="line">                    Console.WriteLine(string.Format("接收客户端&#123;0&#125;消息， 长度为&#123;1&#125;", cltsocket.RemoteEndPoint.ToString(), receivenumber));</span><br><span class="line">                    ByteBufferReader bbr = new ByteBufferReader(ClientMsg);</span><br><span class="line">                    // 消息数据长度</span><br><span class="line">                    int msglen = bbr.ReadShort();</span><br><span class="line">                    // 消息id</span><br><span class="line">                    int msgid = bbr.ReadShort();</span><br><span class="line">                    // 数据二进制内容</span><br><span class="line">                    byte[] msgdata = bbr.ReadBytes(msglen);</span><br><span class="line">                    var msgcontent = Encoding.UTF8.GetString(msgdata);</span><br><span class="line">                    Console.WriteLine(string.Format("消息数据长度 : &#123;0&#125; 消息ID : &#123;1&#125; 消息数据内容：&#123;2&#125;", msglen, msgid, msgcontent));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            catch (Exception ex)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(ex.Message);</span><br><span class="line">                cltsocket.Shutdown(SocketShutdown.Both);</span><br><span class="line">                cltsocket.Close();</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>NetClient.cs(网络客户端抽象)<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// NetClient.cs</span><br><span class="line">/// 网络客户端抽象</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class NetClient : SingletonTemplate&lt;NetClient&gt;</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 服务器端的二进制数据缓存区</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private static byte[] ServerMsg = new byte[1024 * 1024];</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 客户端网络连接器</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private NetConnector mNetConnector;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 是否已连接服务器</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public bool IsServerConnected</span><br><span class="line">    &#123;</span><br><span class="line">        get</span><br><span class="line">        &#123;</span><br><span class="line">            return mNetConnector.IsConnected;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 消息接受线程</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private Thread mMsgReceiveThread;</span><br><span class="line"></span><br><span class="line">    public NetClient()</span><br><span class="line">    &#123;</span><br><span class="line">        mNetConnector = new NetConnector();</span><br><span class="line">        mMsgReceiveThread = null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public NetClient(ProtocolType protocoltype = ProtocolType.Tcp)</span><br><span class="line">    &#123;</span><br><span class="line">        mNetConnector = new NetConnector(protocoltype);</span><br><span class="line">        mMsgReceiveThread = null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 连接服务器</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name="ip"&gt;ip地址&lt;/param&gt;</span><br><span class="line">    /// &lt;param name="port"&gt;端口号&lt;/param&gt;</span><br><span class="line">    public void ConnectToServer(string ipaddress, int port)</span><br><span class="line">    &#123;</span><br><span class="line">        if(IsServerConnected)</span><br><span class="line">        &#123;</span><br><span class="line">            mNetConnector.Close();</span><br><span class="line">        &#125;</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            // 连接服务器</span><br><span class="line">            mNetConnector.ConnectTo(ipaddress, port);</span><br><span class="line">            Debug.Log(string.Format("连接服务器:&#123;0&#125;成功!", mNetConnector.IPEndPoint.ToString()));</span><br><span class="line">        &#125;</span><br><span class="line">        catch</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(string.Format("连接服务器:&#123;0&#125;失败!", mNetConnector.IPEndPoint.ToString()));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (IsServerConnected)</span><br><span class="line">        &#123;</span><br><span class="line">            // 启动客户端线程去监听接受服务器消息</span><br><span class="line">            mMsgReceiveThread = new Thread(ReceiveMessage);</span><br><span class="line">            mMsgReceiveThread.Start(mNetConnector.NetSocket);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 断开连接</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void Close()</span><br><span class="line">    &#123;</span><br><span class="line">        if (IsServerConnected)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(string.Format("断开服务器地址 : &#123;0&#125;连接!", mNetConnector.NetSocket.RemoteEndPoint.ToString()));</span><br><span class="line">            mNetConnector.Close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 发送消息到服务器</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name="msg"&gt;&lt;/param&gt;</span><br><span class="line">    public void SendMessage(NetMessage msg)</span><br><span class="line">    &#123;</span><br><span class="line">        if (IsServerConnected == false)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log("服务器未连接成功，无法发送数据!");</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                mNetConnector.NetSocket.Send(WriteMessage(msg));</span><br><span class="line">            &#125;</span><br><span class="line">            catch</span><br><span class="line">            &#123;</span><br><span class="line">                mNetConnector.Close();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 写入网络传输所需数据</span><br><span class="line">    /// 1. 数据长度(short - 2字节) -- 用于存储消息数据长度</span><br><span class="line">    /// 2. 消息ID(short - 2字节) -- 用于区分消息类型</span><br><span class="line">    /// 3. 二进制数据(Protobuf) -- 用于序列化和反序列化数据</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name="netmsg"&gt;&lt;/param&gt;</span><br><span class="line">    private byte[] WriteMessage(NetMessage netmsg)</span><br><span class="line">    &#123;</span><br><span class="line">        ByteBufferWriter bbw = new ByteBufferWriter();</span><br><span class="line">        bbw.WriteShort(netmsg.MessageLength);</span><br><span class="line">        bbw.WriteShort(netmsg.MessageID);</span><br><span class="line">        bbw.WriteBytes(netmsg.MessageData);</span><br><span class="line">        bbw.Flush();</span><br><span class="line">        var bytesdata = bbw.ToBytes();</span><br><span class="line">        bbw.Close();</span><br><span class="line">        return bytesdata;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 服务器连接消息接受监听线程</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private void ReceiveMessage(object clientsocket)</span><br><span class="line">    &#123;</span><br><span class="line">        Socket cltsocket = (Socket)clientsocket;</span><br><span class="line">        while (true)</span><br><span class="line">        &#123;</span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                if(mNetConnector.IsConnected)</span><br><span class="line">                &#123;</span><br><span class="line">                    if(mNetConnector.NetSocket.Available &gt; 0)</span><br><span class="line">                    &#123;</span><br><span class="line">                        int receivenumber = cltsocket.Receive(ServerMsg);</span><br><span class="line">                        if (receivenumber == 0)</span><br><span class="line">                        &#123;</span><br><span class="line">                            Debug.Log(string.Format("服务器端 : &#123;0&#125;断开了连接!", cltsocket.RemoteEndPoint.ToString()));</span><br><span class="line">                            break;</span><br><span class="line">                        &#125;</span><br><span class="line">                        else</span><br><span class="line">                        &#123;</span><br><span class="line">                            ByteBufferReader bbr = new ByteBufferReader(ServerMsg);</span><br><span class="line">                            var msglength = bbr.ReadShort();</span><br><span class="line">                            var msgid = bbr.ReadShort();</span><br><span class="line">                            var msgdata = bbr.ReadBytes(msglength);</span><br><span class="line">                            string msgcontent = Encoding.UTF8.GetString(msgdata);</span><br><span class="line">                            Debug.Log(string.Format("服务器返回数据: 消息ID : &#123;0&#125; 消息长度 : &#123;1&#125; 消息内容 : &#123;2&#125;", msgid, msglength, msgcontent));</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                else</span><br><span class="line">                &#123;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;                    </span><br><span class="line">            &#125;</span><br><span class="line">            catch (Exception ex)</span><br><span class="line">            &#123;</span><br><span class="line">                Debug.Log(ex.Message);</span><br><span class="line">                mNetConnector.NetSocket.Close();</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>NetMessage.cs(网络消息格式抽象)<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 网络消息抽象类</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">NetMessage</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 消息ID</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">ushort</span> MessageID</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 消息二进制数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] MessageData</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 消息长度</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">ushort</span> MessageLength</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">NetMessage</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NetMessage</span>(<span class="params"><span class="keyword">ushort</span> messageid, <span class="keyword">byte</span>[] messagedata</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        MessageID = messageid;</span><br><span class="line">        MessageData = messagedata;</span><br><span class="line">        MessageLength = (<span class="keyword">ushort</span>)messagedata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>测试用例:</p>
+<ol>
+<li><p>启动服务器</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NetServer.Singleton.StartServer();</span><br><span class="line">Console.ReadLine();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动客户端</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NetClient.Singleton.ConnectToServer(<span class="string">"192.168.1.3"</span>, <span class="number">8888</span>);</span><br><span class="line">NetClient.Singleton.SendMessage(<span class="keyword">new</span> NetMessage(<span class="number">2</span>, Encoding.UTF8.GetBytes(<span class="string">"测试客户端发送给服务器!"</span>)));</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>服务器端输出:<br><img src="/img/Network/ServerOutput.png" alt="ServerOutput"></p>
+<p>客户端输出:<br><img src="/img/Network/ClientOutput.png" alt="ClientOutput"></p>
+<p>可以看到通过Socket编程，我们使用TPC连接成功将消息从客户端发送到服务器以及服务器发送到客户端进行处理。NetMessage的简单封装是为了上层逻辑能区分收到的是什么消息以及消息数据有多少，基于byte[]的存储让我们可以快速的切换数据序列化和反序列化的方式(为后面使用Protobuf打下基础)。</p>
+<h2 id="数据格式解析">数据格式解析</h2><h2 id="服务器-1">服务器</h2><h1 id="进阶篇">进阶篇</h1><p>对于网络框架的设计和理论知识进阶学习：<br><a href="https://mp.weixin.qq.com/s/pThWX8IMtg6zuyjZ0LQajQ" target="_blank" rel="external">教你从头写游戏服务器框架</a></p>
+<h1 id="Reference">Reference</h1><h2 id="基础知识">基础知识</h2><p><a href="https://zhuanlan.zhihu.com/p/36884005" target="_blank" rel="external">两种同步模式：状态同步和帧同步</a></p>
+<p><a href="https://www.infoq.cn/article/a-brief-history-of-the-game-server-architecture" target="_blank" rel="external">游戏服务器架构的演进简史</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/24860273" target="_blank" rel="external">TCP和UDP的区别</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B" target="_blank" rel="external">OSI模型</a></p>
+<h2 id="实战讲解">实战讲解</h2><p><a href="https://zhuanlan.zhihu.com/p/39005219" target="_blank" rel="external">我们来用Unity做一个局域网游戏（上）</a></p>
+<p><a href="https://blog.csdn.net/linshuhe1/article/details/51386559" target="_blank" rel="external">Unity3D —— Socket通信(C#)</a></p>
+<p><a href="https://www.jianshu.com/p/27c99677be67" target="_blank" rel="external">Unity网络服务器搭建【中高级】</a></p>
+<p><a href="https://mp.weixin.qq.com/s/pThWX8IMtg6zuyjZ0LQajQ" target="_blank" rel="external">教你从头写游戏服务器框架</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Network/">Network</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2019/05/20/网络模块学习/" data-title="网络模块学习 | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2019/05/15/Odin插件/"  title="Odin插件">
+ <strong>下一篇：</strong><br/> 
+ <span>Odin插件
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2019/05/20/网络模块学习/" data-title="网络模块学习" data-url="http://tonytang1990.github.io/2019/05/20/网络模块学习/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#目标"><span class="toc-number">2.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#服务器"><span class="toc-number">3.</span> <span class="toc-text">服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据存储"><span class="toc-number">3.1.</span> <span class="toc-text">数据存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#消息通信"><span class="toc-number">3.2.</span> <span class="toc-text">消息通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网方式"><span class="toc-number">3.2.1.</span> <span class="toc-text">联网方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据格式定义"><span class="toc-number">3.2.2.</span> <span class="toc-text">数据格式定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据收发"><span class="toc-number">3.2.3.</span> <span class="toc-text">数据收发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据解析"><span class="toc-number">3.2.4.</span> <span class="toc-text">数据解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器验证"><span class="toc-number">3.3.</span> <span class="toc-text">服务器验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网络通信"><span class="toc-number">4.</span> <span class="toc-text">网络通信</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实战"><span class="toc-number">5.</span> <span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#联网通信实现"><span class="toc-number">5.1.</span> <span class="toc-text">联网通信实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#二进制抽象类"><span class="toc-number">5.1.0.1.</span> <span class="toc-text">二进制抽象类</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络通信-1"><span class="toc-number">5.1.1.</span> <span class="toc-text">网络通信</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据格式解析"><span class="toc-number">5.2.</span> <span class="toc-text">数据格式解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器-1"><span class="toc-number">5.3.</span> <span class="toc-text">服务器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#进阶篇"><span class="toc-number">6.</span> <span class="toc-text">进阶篇</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">7.1.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战讲解"><span class="toc-number">7.2.</span> <span class="toc-text">实战讲解</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
