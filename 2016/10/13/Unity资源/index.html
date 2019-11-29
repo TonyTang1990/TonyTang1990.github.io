@@ -74,7 +74,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NPOT_ETC2.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ETC2SizeRequirement.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVaraintNumber.png">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle/MaterialDebugInspector.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/MaterialDebugInspector.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVariantAssetInspector.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVariantsChoiceDetail.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderCustomVaraints.png">
@@ -88,7 +88,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/WarmUpShaderWithoughtLoadShader.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/LoadActorAfterWarmUpShader.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png">
-<meta property="og:updated_time" content="2019-11-25T22:53:25.865Z">
+<meta property="og:updated_time" content="2019-11-25T22:56:54.323Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity资源管理">
 <meta name="twitter:description" content="前言在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。本章节主要是对于Unity在资源管理方面的进一步学习了解。
@@ -620,7 +620,7 @@
 <p><img src="/img/Unity/AssetBundle-Framework/ShaderVaraintNumber.png" alt="ShaderVaraintNumber"></p>
 <p>查看材质用到哪些变体？</p>
 <p>我们可以在编辑器模式下把材质设置成Debug模式查看使用的变体</p>
-<p><img src="/img/Unity/AssetBundle/MaterialDebugInspector.png" alt="MaterialDebugInspector"></p>
+<p><img src="/img/Unity/AssetBundle-Framework/MaterialDebugInspector.png" alt="MaterialDebugInspector"></p>
 <h4 id="变体搜集">变体搜集</h4><p><a href="https://docs.unity3d.com/Manual/OptimizingShaderLoadTime.html" target="_blank" rel="external">ShaderVariantCollection is an asset that is basically a list of Shaders<br>, and for each of them, a list of Pass types and shader keyword combinations to load. </a></p>
 <p>通过介绍，可以看出ShaderVariantCollection是一种Asset资源，这个资源记录了我们需要包含的Shader变体相关数据。</p>
 <p>Edit -&gt; Project Settings -&gt; Graphics</p>
@@ -641,7 +641,7 @@
 <p>同时参考这篇文章:<a href="https://zhuanlan.zhihu.com/p/68888831" target="_blank" rel="external">Shader变体收集与打包</a></p>
 <p>可以得知Shader的宏是支持控制的(e.g. Material.EnableKeyword() Shader.EnableKeyword()……)，这样一来Unity的静态分析就没有办法正确得出结论了，我想这就是为什么我们需要自行分析需要打包的变体的原因(shader_feature+宏动态控制)。</p>
 <h4 id="实战">实战</h4><p>参考这篇文章:<a href="https://blog.csdn.net/RandomXM/article/details/88642534" target="_blank" rel="external">对Shader Variant的研究(概念介绍、生成方式、打包策略) </a></p>
-<p>Shader的搜集策略有点复杂，本人并没有完全看明白，只是结合自定义Shader和材质理解了一下Shader宏和PassType对Shader变体的影响。测试了BDFramework](<a href="https://github.com/yimengfan/BDFramework.Core)里现成的Shader变体收集方案，发现跟Unity自带搜集的变体差异比较大。" target="_blank" rel="external">https://github.com/yimengfan/BDFramework.Core)里现成的Shader变体收集方案，发现跟Unity自带搜集的变体差异比较大。</a></p>
+<p>Shader的搜集策略有点复杂，本人并没有完全看明白，只是结合自定义Shader和材质理解了一下Shader宏和PassType对Shader变体的影响。测试了<a href="https://github.com/yimengfan/BDFramework.Core" target="_blank" rel="external">BDFramework</a>里现成的Shader变体收集方案，发现跟Unity自带搜集的变体差异比较大。</p>
 <p>这里只放几张简单的测试图来对比自定义Shader宏+PassType在Unity Shader变体搜集功能下和自定义的Shader变体搜集的结果。</p>
 <p>自定义Shader和材质:</p>
 <p><img src="/img/Unity/AssetBundle-Framework/DIYShaderList.png" alt="DIYShaderList"></p>
