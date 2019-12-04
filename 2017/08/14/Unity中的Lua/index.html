@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/EmmyLuaNotation.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaMethodReference.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/VSCodeEmmyLuaDebug.png">
-<meta property="og:updated_time" content="2019-04-29T16:00:15.900Z">
+<meta property="og:updated_time" content="2019-12-04T13:28:58.772Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity中的Lua">
 <meta name="twitter:description" content="Lua结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。
@@ -139,7 +139,7 @@
 <p>前者针对每一个不同的Table都会分配一个defaults入口,table作为key，default value作为value。这样的缺点就是当table数量很大的时候会需要分配很多内存去存储不同table的default value。</p>
 <p>后者针对不同的default value分配了更多的内存(比如mt，entry on metas, closure……)，但优点是同样的default value只需要分配一次即可，所以后者更适用于table数量多但default value大都相同的情况。</p>
 <ol>
-<li>Ephemeron Tables(声明短暂的table Lua 5.2里提供)<br>Ephemeron Table:<br>“In Lua 5.2, a table with weak keys and strong values is an ephemeron table. In an ephemeron table, the accessibility of a key controls the accessibility of its corresponding value.(只当有strong<br>reference to key时value才是strong的)”<br>e.g. constant-function factory</li>
+<li>Ephemeron Tables(声明短暂的table Lua 5.2里提供)<br>Ephemeron Table:<br>“In Lua 5.2, a table with weak keys and strong values is an ephemeron table. In an ephemeron table, the accessibility of a key controls the accessibility of its corresponding value.(只当有strong<br> reference to key时value才是strong的)”<br>e.g. constant-function factory</li>
 </ol>
 <p>Note:<br>“Only objects can be collected from a weak table. Values, such as numbers and booleans, are not collectible”(只有Objects在weak table里能被gc回收，number和booleans这种Value类型不能在weak table里被gc回收)</p>
 <p>“strings are collectible, but string is not removed from weak table(unless its associated value is collected)”</p>
@@ -183,7 +183,7 @@
 <li><p>Lua里pairs和ipairs有区别。pairs是key，value的形式遍历所有值。ipairs是从1开始按顺序递增遍历。</p>
  <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">testtab = &#123;[<span class="number">1</span>] = <span class="string">"Tony"</span>, [<span class="number">4</span>] = <span class="string">"Huan"</span>, [<span class="number">2</span>] = <span class="string">"Tang"</span>, [<span class="number">5</span>] = <span class="keyword">nil</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="built_in">pairs</span>(testtab) <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(k)</span><br><span class="line">    <span class="built_in">print</span>(v)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"================="</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">ipairs</span>(testtab) <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line">    <span class="built_in">print</span>(v)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <p> <img src="/img/Lua/LuaPairsAndIpairs.png" alt="LuaPairsAndIpairs"></p>
-<p> Note:<br> <strong>pairs和ipairs都会被nil打断</strong><br> <strong>ipairs还会被不是按1递增的打断</strong></p>
+<p> Note:<br> <strong>pairs不会被nil打断但ipairs都会被nil打断</strong><br> <strong>ipairs还会被不是按1递增的打断</strong></p>
 </li>
 <li><p>Lua参数传递<br> Lua里通过arg[?]的形式访问传入的参数，默认第一个参数是arg[1]，arg[0]是lua脚本自身</p>
 </li>
