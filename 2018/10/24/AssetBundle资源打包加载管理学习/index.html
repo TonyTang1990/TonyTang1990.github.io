@@ -52,7 +52,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/BuildInResourceReferenceAnalyze.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/BuildInResourceExtraction.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png">
-<meta property="og:updated_time" content="2019-12-04T15:51:20.935Z">
+<meta property="og:updated_time" content="2019-12-30T15:27:57.201Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AssetBundle资源打包加载管理">
 <meta name="twitter:description" content="前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。
@@ -331,7 +331,7 @@
 <h4 id="AB加载管理框架">AB加载管理框架</h4><p>以下实现主要参考了下面两个开源项目：<br><a href="https://github.com/tangzx/ABSystem" target="_blank" rel="external">Unity3D AssetBundle 打包与管理系统</a><br><a href="https://github.com/mr-kelly/KEngine" target="_blank" rel="external">KEngine</a></p>
 <h5 id="框架设计">框架设计</h5><p>支持功能：</p>
 <ol>
-<li>支持AB和Resources目录资源格式加载(方便快速迭代开发，开发时用Resources(待开发)，测试时用AB)</li>
+<li>支持AB和AssetDatabase(限编辑器)资源加载(方便快速迭代开发，开发时用AssetDatabase(也支持快速切换AB模式))</li>
 <li>支持AB同步和异步加载(统一采用callback风格)</li>
 <li>支持三种基本的资源加载类型(NormalLoad — 正常加载(可通过Tick检测判定正常卸载) Preload — 预加载(切场景才会卸载) PermanentLoad — 永久加载(常驻内存永不卸载))</li>
 <li>已加载资源允许变更资源加载类型，但只允许从低往高变(NormalLoad -&gt; Preload -&gt; PermanentLoad)，不允许从高往低(PermanentLoad -&gt; Preload -&gt; NormalLoad)</li>
@@ -545,11 +545,11 @@
 			
 		
 			
-				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
 			
 		
 			
@@ -569,11 +569,15 @@
 			
 		
 			
-				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
 			
 		
 			

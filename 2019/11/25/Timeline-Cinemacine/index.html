@@ -4,42 +4,40 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Timeline &amp; Cinemacine | 走停人生路</title>
+    <title>Unity官方插件 | 走停人生路</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Tony Tang">
     
 
     
-    <meta name="description" content="Timeline Timeline to create cinematic content, game-play sequences, audio sequences, and complex particle effects. 
-官方介绍Timeline可以用于制作类似电影过场表现的工具。
-Timeline分为两个部分：
-
-Timeline Asset(数据)
-Timeline instance">
+    <meta name="description" content="前言本篇文章是为了记录学习Unity官方一些好的第三方插件，作为基础的学习了解，为未来遇到问题思考解决方案时拓宽思路。
+Timeline Timeline to create cinematic content, game-play sequences, audio sequences, and complex particle effects. 
+官方介绍Timeline可以用于制作类似电影过场">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Timeline & Cinemacine">
+<meta property="og:title" content="Unity官方插件">
 <meta property="og:url" content="http://tonytang1990.github.io/2019/11/25/Timeline-Cinemacine/index.html">
 <meta property="og:site_name" content="走停人生路">
-<meta property="og:description" content="Timeline Timeline to create cinematic content, game-play sequences, audio sequences, and complex particle effects. 
-官方介绍Timeline可以用于制作类似电影过场表现的工具。
-Timeline分为两个部分：
-
-Timeline Asset(数据)
-Timeline instance">
+<meta property="og:description" content="前言本篇文章是为了记录学习Unity官方一些好的第三方插件，作为基础的学习了解，为未来遇到问题思考解决方案时拓宽思路。
+Timeline Timeline to create cinematic content, game-play sequences, audio sequences, and complex particle effects. 
+官方介绍Timeline可以用于制作类似电影过场">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Timeline_Cinemachine/TimelineAssetHierachy.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Timeline_Cinemachine/TimelineComponent.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Timeline_Cinemachine/TimelineCustomPlayable.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Timeline_Cinemachine/TimelinePlayableDirectorInspector.png">
-<meta property="og:updated_time" content="2019-11-25T13:30:55.233Z">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/FontAssetCreatePanel.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/SpriteAssetCreatePanel.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/TextMeshProAssignFontAssetAndSpriteAsset.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/TextMeshProUsing.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/CreateFontAssetMaterial.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/FontAssetMaterialChosen.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/TMPSettings.png">
+<meta property="og:updated_time" content="2019-12-31T05:42:46.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Timeline & Cinemacine">
-<meta name="twitter:description" content="Timeline Timeline to create cinematic content, game-play sequences, audio sequences, and complex particle effects. 
-官方介绍Timeline可以用于制作类似电影过场表现的工具。
-Timeline分为两个部分：
-
-Timeline Asset(数据)
-Timeline instance">
+<meta name="twitter:title" content="Unity官方插件">
+<meta name="twitter:description" content="前言本篇文章是为了记录学习Unity官方一些好的第三方插件，作为基础的学习了解，为未来遇到问题思考解决方案时拓宽思路。
+Timeline Timeline to create cinematic content, game-play sequences, audio sequences, and complex particle effects. 
+官方介绍Timeline可以用于制作类似电影过场">
 
     
     <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
@@ -99,7 +97,7 @@ Timeline instance">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/11/25/Timeline-Cinemacine/" title="Timeline &amp; Cinemacine" itemprop="url">Timeline &amp; Cinemacine</a>
+      <a href="/2019/11/25/Timeline-Cinemacine/" title="Unity官方插件" itemprop="url">Unity官方插件</a>
   </h1>
   <p class="article-author">By
        
@@ -115,24 +113,25 @@ Timeline instance">
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Timeline"><span class="toc-number">1.</span> <span class="toc-text">Timeline</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Timeline_Asset"><span class="toc-number">1.1.</span> <span class="toc-text">Timeline Asset</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-number">1.1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-number">1.1.2.</span> <span class="toc-text">分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Playable_Track"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">Playable Track</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Timeline_instance"><span class="toc-number">1.2.</span> <span class="toc-text">Timeline instance</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶"><span class="toc-number">1.3.</span> <span class="toc-text">进阶</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cinemachine"><span class="toc-number">2.</span> <span class="toc-text">Cinemachine</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用"><span class="toc-number">3.</span> <span class="toc-text">引用</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Timeline"><span class="toc-number">1.1.</span> <span class="toc-text">Timeline</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Timeline_Asset"><span class="toc-number">1.1.1.</span> <span class="toc-text">Timeline Asset</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分类"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">分类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Playable_Track"><span class="toc-number">1.1.1.2.1.</span> <span class="toc-text">Playable Track</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Timeline_instance"><span class="toc-number">1.1.2.</span> <span class="toc-text">Timeline instance</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍-1"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">介绍</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进阶"><span class="toc-number">1.1.3.</span> <span class="toc-text">进阶</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cinemachine"><span class="toc-number">1.2.</span> <span class="toc-text">Cinemachine</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TextMeshPro"><span class="toc-number">1.3.</span> <span class="toc-text">TextMeshPro</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What"><span class="toc-number">1.3.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">1.3.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How"><span class="toc-number">1.3.3.</span> <span class="toc-text">How</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用"><span class="toc-number">2.</span> <span class="toc-text">引用</span></a></li></ol>
 		
 		</div>
 		
-		<h1 id="Timeline">Timeline</h1><p><a href="https://docs.unity3d.com/Manual/TimelineSection.html" target="_blank" rel="external"> <strong>Timeline</strong> to create cinematic content, game-play sequences, audio sequences, and complex particle effects. </a></p>
+		<h1 id="前言">前言</h1><p>本篇文章是为了记录学习Unity官方一些好的第三方插件，作为基础的学习了解，为未来遇到问题思考解决方案时拓宽思路。</p>
+<h2 id="Timeline">Timeline</h2><p><a href="https://docs.unity3d.com/Manual/TimelineSection.html" target="_blank" rel="external"> <strong>Timeline</strong> to create cinematic content, game-play sequences, audio sequences, and complex particle effects. </a></p>
 <p>官方介绍Timeline可以用于制作类似电影过场表现的工具。</p>
 <p>Timeline分为两个部分：</p>
 <ol>
 <li>Timeline Asset(数据)</li>
 <li>Timeline instance(数据关联实体对象)</li>
 </ol>
-<h2 id="Timeline_Asset">Timeline Asset</h2><h3 id="介绍">介绍</h3><p><a href="https://docs.unity3d.com/Manual/TimelineOverview.html" target="_blank" rel="external"> <strong>Timeline Asset</strong>: Stores the tracks, clips, and recorded animations without links to the specific GameObjects being animated.</a></p>
+<h3 id="Timeline_Asset">Timeline Asset</h3><h4 id="介绍">介绍</h4><p><a href="https://docs.unity3d.com/Manual/TimelineOverview.html" target="_blank" rel="external"> <strong>Timeline Asset</strong>: Stores the tracks, clips, and recorded animations without links to the specific GameObjects being animated.</a></p>
 <p>通过介绍可以看出Timeline Asset是类似于Animation Clip一样的资源文件可以用于录制动画<strong>但不需要关联到特定的物体上</strong></p>
 <p>Timeline Asset记录的动画数据是以子节点资源的形式挂载在Timeline Asset下的：</p>
 <p><img src="/img/Unity/Timeline_Cinemachine/TimelineAssetHierachy.png" alt="TimelineAssetHierachy"></p>
 <p>Note:</p>
 <p>前面说的不需要关联到特定的物体上是指不需要像AnimationClip那样动画是针对指定物体制作的(挂给其他物体用不了该动画)，Timeline可以通过PlayableDirector动态关联动画对象。</p>
-<h3 id="分类">分类</h3><p>Timeline Asset是以Track为最小单位。</p>
+<h4 id="分类">分类</h4><p>Timeline Asset是以Track为最小单位。</p>
 <p>主要支持以下几种Track:</p>
 <ol>
 <li><p>Track Group(仅分层管理用)</p>
@@ -146,7 +145,7 @@ Timeline instance">
 </ol>
 <p><img src="/img/Unity/Timeline_Cinemachine/TimelineComponent.png" alt="TimelineComponent"></p>
 <p>这里我们着重学习Playable Track,自定义的一些表现行为都是通过Playable Track来做的。其他几个就不一一讲解了。</p>
-<h4 id="Playable_Track">Playable Track</h4><p>自定义Playable Track需要知道两个东西：</p>
+<h5 id="Playable_Track">Playable Track</h5><p>自定义Playable Track需要知道两个东西：</p>
 <ol>
 <li>PlayableAsset(用于支持Timeline创建和显示自定义PlayableAsset)</li>
 <li>PlayableBehaviour(Playable实际的生命周期等逻辑抽象)</li>
@@ -157,19 +156,57 @@ Timeline instance">
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 事件分发器Playable</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EventDispatcherPlayable</span> : <span class="title">PlayableBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 事件</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"事件"</span>)]</span><br><span class="line">    <span class="keyword">public</span> EEventId EventId = EEventId.DefaultEvent;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the owning graph starts playing</span></span><br><span class="line">    <span class="comment">// Playable开始执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnGraphStart</span>(<span class="params">Playable playable</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the owning graph stops playing</span></span><br><span class="line">    <span class="comment">// Playable停止执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnGraphStop</span>(<span class="params">Playable playable</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the state of the playable is set to Play</span></span><br><span class="line">    <span class="comment">// 触发Playable执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnBehaviourPlay</span>(<span class="params">Playable playable, FrameData info</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Debug.Log(<span class="keyword">string</span>.Format(<span class="string">"OnBehaviourPlay() 分发事件 : &#123;0&#125;"</span>, EventId));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the state of the playable is set to Paused</span></span><br><span class="line">    <span class="comment">// Playable暂停执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnBehaviourPause</span>(<span class="params">Playable playable, FrameData info</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called each frame while the state is set to Play</span></span><br><span class="line">    <span class="comment">// Playable更新执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">PrepareFrame</span>(<span class="params">Playable playable, FrameData info</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="/img/Unity/Timeline_Cinemachine/TimelineCustomPlayable.png" alt="TimelineCustomPlayable"></p>
 <p>代码不复杂就不详细介绍了。通过上面的代码，我们支持了一个创建自定义分发事件的Playable Track，而这个自定义的事件分发就可以用作我们Timeline和游戏逻辑之间的一个桥梁，帮助我们在Timeline播放的过程中自定义响应做一些表现。</p>
-<h2 id="Timeline_instance">Timeline instance</h2><h3 id="介绍-1">介绍</h3><p><a href="https://docs.unity3d.com/Manual/TimelineOverview.html" target="_blank" rel="external"> <strong>Timeline instance</strong>: Stores links to the specific GameObjects being animated or affected by the Timeline Asset. These links, referred to as <strong>bindings</strong>, are saved to the Scene. </a></p>
+<h3 id="Timeline_instance">Timeline instance</h3><h4 id="介绍-1">介绍</h4><p><a href="https://docs.unity3d.com/Manual/TimelineOverview.html" target="_blank" rel="external"> <strong>Timeline instance</strong>: Stores links to the specific GameObjects being animated or affected by the Timeline Asset. These links, referred to as <strong>bindings</strong>, are saved to the Scene. </a></p>
 <p>要想关联场景物体和Timeline Asset让我们制作的电影过场动起来，我们需要创建Timeline instance(这里指的Playable Director组件)。</p>
 <p><img src="/img/Unity/Timeline_Cinemachine/TimelinePlayableDirectorInspector.png" alt="TimelinePlayableDirectorInspector"></p>
 <p>可以看到我们通过Timeline Asset录制的动画是通过Playable Director的Bindings动态关联到了场景物体上。</p>
 <p>Note:</p>
 <p><strong>因为Timeline Asset是纯数据，Timeline instance决定了数据关联的对象，所以我们可以重用Timeline Asset对不同的物体做动画表现。</strong></p>
-<h2 id="进阶">进阶</h2><p><a href="https://www.jianshu.com/p/69e60a27bccb" target="_blank" rel="external">Unity使用Cinemachine和Timeline入门</a></p>
+<h3 id="进阶">进阶</h3><p><a href="https://www.jianshu.com/p/69e60a27bccb" target="_blank" rel="external">Unity使用Cinemachine和Timeline入门</a></p>
 <p>Timeline可以看做是自定义展示效果的工具，而Cinemachine可以看做是多摄像机的一套完整控制表现的工具。</p>
 <p>更多学习，待续……</p>
-<h1 id="Cinemachine">Cinemachine</h1><p>待续……</p>
+<h2 id="Cinemachine">Cinemachine</h2><p>待续……</p>
+<h2 id="TextMeshPro">TextMeshPro</h2><h3 id="What">What</h3><p><a href="https://docs.unity3d.com/Manual/com.unity.textmeshpro.html" target="_blank" rel="external">TextMesh Pro is the ultimate text solution for Unity. It’s the perfect replacement for Unity’s UI Text and the legacy Text Mesh.</a></p>
+<p>TextMeshPro原本是第三方个人编写的一款更优的Unity文本替代方案，后被Unity官方收购。</p>
+<h3 id="Why">Why</h3><p>使用TextMeshPro替代原生文本的原因有很多：</p>
+<ol>
+<li>TMP使用了SDF(<strong>Signed Distance Field</strong>)技术达到不失真的放大缩小渲染</li>
+<li>TMP自带实现了图文混排(通过富文本打Tag的形式)以及很多文本所需的功能(e.g. 字间距，自定义字体大小，段落格式，对齐方式等)</li>
+<li>TMP使用Shader去实现更好的文本表现效果(类似PS的一些效果)满足文本需求</li>
+</ol>
+<p>缺点:</p>
+<ol>
+<li>不支持动态字体(看网上说是TMP1.4支持动态字体(Generating Settings)，但我在Unity2018.4.1.f1上导入的TMP没有找到动态字体设置的入口，望知道的朋友告知一声在哪里设置)，需要生成对应的字体纹理库(对于文字多的比如中文来说有很大的内存压力)</li>
+</ol>
+<p>SDF(<strong>Signed Distance Field</strong>)介绍:</p>
+<p><a href="http://www.sardinefish.com/blog/?pid=296" target="_blank" rel="external">一个空间区域的SDF函数定义为，从空间中任意给定的一点到该区域边界的距离，SDF函数值的符号取决于该点在区域的内部还是外部，外部为正，内部为负。</a></p>
+<p>这里可以简单的理解成TMP通过函数式的定义方式(类似矢量图的定义方式)来解决像素图放大模糊的问题来渲染出可动态放大缩小不模糊的图像。深入理解参考下面的链接：<a href="http://www.sardinefish.com/blog/?pid=296" target="_blank" rel="external">函数式编程与 Signed Distance Field</a></p>
+<h3 id="How">How</h3><p>TMP需要通过TMP提供的字体库制作工具制作所需的对应字体文件：</p>
+<p><img src="/img/Unity/TextMeshPro/FontAssetCreatePanel.png" alt="FontAssetCreatePanel"></p>
+<p>如果想要使用图文混排还需要自己制作SpriteAsset:</p>
+<p><img src="/img/Unity/TextMeshPro/SpriteAssetCreatePanel.png" alt="SpriteAssetCreatePanel"></p>
+<p>制作好后创建TextMeshPro组件后指定需要使用的Font Asset和Sprite Asset即可:</p>
+<p><img src="/img/Unity/TextMeshPro/TextMeshProAssignFontAssetAndSpriteAsset.png" alt="TextMeshProAssignFontAssetAndSpriteAsset"></p>
+<p>最终效果：</p>
+<p><img src="/img/Unity/TextMeshPro/TextMeshProUsing.png" alt="TextMeshProUsing"></p>
+<p>TextMeshPro同一个Font Asset需要制作不同的渲染效果需要通过制作不同的Material来实现：</p>
+<p><img src="/img/Unity/TextMeshPro/CreateFontAssetMaterial.png" alt="CreateFontAssetMaterial"></p>
+<p>然后在针对新创建的Material Asset调整Shader和具体效果即可，创建完成后就可以在Font Asset的材质下拉列表里选择需要使用的效果：</p>
+<p><img src="/img/Unity/TextMeshPro/FontAssetMaterialChosen.png" alt="FontAssetMaterialChosen"></p>
+<p>关于TextMeshPro的默认相关设置(e.g. 默认创建的Font Asset，默认Fallback到的Font Asset等)是通过TMP Settings文件里的设置来完成的:</p>
+<p><img src="/img/Unity/TextMeshPro/TMPSettings.png" alt="TMPSettings"></p>
+<p>Note:</p>
+<ol>
+<li>TMP的Fallback的使用是在原始设定的Font Asset里找不到对应文字时的一种回退安全机制，官方的建议是真正使用的Font Asset采用高分率图集，Fallback的Font Asset采用低分辨率图集。</li>
+</ol>
 <h1 id="引用">引用</h1><p><a href="https://blog.csdn.net/qq826364410/article/details/80511057" target="_blank" rel="external">Unity—Timeline自定义PlayableTrack</a></p>
 <p><a href="https://blog.csdn.net/beihuanlihe130/article/details/79233320" target="_blank" rel="external">Unity2017中Timeline的简单使用方法</a></p>
 <p><a href="https://www.jianshu.com/p/69e60a27bccb" target="_blank" rel="external">Unity使用Cinemachine和Timeline入门</a></p>
+<p><a href="https://docs.unity3d.com/Manual/com.unity.textmeshpro.html" target="_blank" rel="external">TextMesh Pro</a></p>
+<p><a href="http://www.sardinefish.com/blog/?pid=296" target="_blank" rel="external">函数式编程与 Signed Distance Field</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/84700094" target="_blank" rel="external">Unity游戏开发——TextMeshPro的使用</a></p>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzU5MjQ1NTEwOA==&amp;mid=2247495323&amp;idx=1&amp;sn=3100249c5c4a88c20435d129d23eb727&amp;chksm=fe1dda30c96a53267a53ed2bc0dd47bc73273f4e76f3a0d8f0ce322992e2e7e0b284d9a1df32&amp;mpshare=1&amp;scene=1&amp;srcid=102134Bhmm1T67EKpzswm7mz#rd" target="_blank" rel="external">在Unity 2018中充分使用TextMesh Pro</a></p>
+<p><a href="https://blogs.unity3d.com/2018/10/16/making-the-most-of-textmesh-pro-in-unity-2018/" target="_blank" rel="external">Making the most of TextMesh Pro in Unity 2018</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -187,7 +224,7 @@ Timeline instance">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://tonytang1990.github.io/2019/11/25/Timeline-Cinemacine/" data-title="Timeline &amp; Cinemacine | 走停人生路" data-tsina="null" class="share clearfix">
+	  <div data-url="http://tonytang1990.github.io/2019/11/25/Timeline-Cinemacine/" data-title="Unity官方插件 | 走停人生路" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -213,7 +250,7 @@ Timeline instance">
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2019/11/25/Timeline-Cinemacine/" data-title="Timeline & Cinemacine" data-url="http://tonytang1990.github.io/2019/11/25/Timeline-Cinemacine/"></div>
+	<div class="ds-thread" data-thread-key="2019/11/25/Timeline-Cinemacine/" data-title="Unity官方插件" data-url="http://tonytang1990.github.io/2019/11/25/Timeline-Cinemacine/"></div>
 </section>
 
 
@@ -223,7 +260,7 @@ Timeline instance">
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Timeline"><span class="toc-number">1.</span> <span class="toc-text">Timeline</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Timeline_Asset"><span class="toc-number">1.1.</span> <span class="toc-text">Timeline Asset</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-number">1.1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-number">1.1.2.</span> <span class="toc-text">分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Playable_Track"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">Playable Track</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Timeline_instance"><span class="toc-number">1.2.</span> <span class="toc-text">Timeline instance</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶"><span class="toc-number">1.3.</span> <span class="toc-text">进阶</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cinemachine"><span class="toc-number">2.</span> <span class="toc-text">Cinemachine</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用"><span class="toc-number">3.</span> <span class="toc-text">引用</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Timeline"><span class="toc-number">1.1.</span> <span class="toc-text">Timeline</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Timeline_Asset"><span class="toc-number">1.1.1.</span> <span class="toc-text">Timeline Asset</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分类"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">分类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Playable_Track"><span class="toc-number">1.1.1.2.1.</span> <span class="toc-text">Playable Track</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Timeline_instance"><span class="toc-number">1.1.2.</span> <span class="toc-text">Timeline instance</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍-1"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">介绍</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进阶"><span class="toc-number">1.1.3.</span> <span class="toc-text">进阶</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cinemachine"><span class="toc-number">1.2.</span> <span class="toc-text">Cinemachine</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TextMeshPro"><span class="toc-number">1.3.</span> <span class="toc-text">TextMeshPro</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What"><span class="toc-number">1.3.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">1.3.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How"><span class="toc-number">1.3.3.</span> <span class="toc-text">How</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用"><span class="toc-number">2.</span> <span class="toc-text">引用</span></a></li></ol>
  
   </div>
 
@@ -278,11 +315,11 @@ Timeline instance">
 			
 		
 			
-				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
 			
 		
 			
@@ -302,11 +339,15 @@ Timeline instance">
 			
 		
 			
-				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
 			
 		
 			
