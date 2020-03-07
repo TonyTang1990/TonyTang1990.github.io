@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>网络模块学习 | 走停人生路</title>
+    <title>网络通信和服务器学习 | 走停人生路</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Tony Tang">
@@ -14,8 +14,8 @@
     <meta name="description" content="前言本章节是为了记录学习游戏开发过程中的服务器搭建以及前后端网络通信相关的知识点，游戏开发中联网是必不可少的，无论是从游戏热更新(服务器通知版本以及热更相关信息)，还是游戏社交(微信分享，联机组队)，还是防破解(服务器校验)都离不开网络通信和服务器。
 本人是前端程序，对后端服务器开发几乎一窍不通，本篇文章也算是为了开阔自己的眼界，同时也是为了未来自己的游戏有网络这一块的支持需要对服务器搭建以及网络">
 <meta property="og:type" content="article">
-<meta property="og:title" content="网络模块学习">
-<meta property="og:url" content="http://tonytang1990.github.io/2019/05/20/网络模块学习/index.html">
+<meta property="og:title" content="网络通信和服务器学习">
+<meta property="og:url" content="http://tonytang1990.github.io/2019/05/20/网络通信和服务器学习/index.html">
 <meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content="前言本章节是为了记录学习游戏开发过程中的服务器搭建以及前后端网络通信相关的知识点，游戏开发中联网是必不可少的，无论是从游戏热更新(服务器通知版本以及热更相关信息)，还是游戏社交(微信分享，联机组队)，还是防破解(服务器校验)都离不开网络通信和服务器。
 本人是前端程序，对后端服务器开发几乎一窍不通，本篇文章也算是为了开阔自己的眼界，同时也是为了未来自己的游戏有网络这一块的支持需要对服务器搭建以及网络">
@@ -23,9 +23,9 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Network/ByteBufferOutput.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Network/ServerOutput.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Network/ClientOutput.png">
-<meta property="og:updated_time" content="2019-08-03T05:23:30.341Z">
+<meta property="og:updated_time" content="2020-01-18T09:06:15.360Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="网络模块学习">
+<meta name="twitter:title" content="网络通信和服务器学习">
 <meta name="twitter:description" content="前言本章节是为了记录学习游戏开发过程中的服务器搭建以及前后端网络通信相关的知识点，游戏开发中联网是必不可少的，无论是从游戏热更新(服务器通知版本以及热更相关信息)，还是游戏社交(微信分享，联机组队)，还是防破解(服务器校验)都离不开网络通信和服务器。
 本人是前端程序，对后端服务器开发几乎一窍不通，本篇文章也算是为了开阔自己的眼界，同时也是为了未来自己的游戏有网络这一块的支持需要对服务器搭建以及网络">
 
@@ -87,7 +87,7 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/05/20/网络模块学习/" title="网络模块学习" itemprop="url">网络模块学习</a>
+      <a href="/2019/05/20/网络通信和服务器学习/" title="网络通信和服务器学习" itemprop="url">网络通信和服务器学习</a>
   </h1>
   <p class="article-author">By
        
@@ -103,7 +103,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#服务器"><span class="toc-number">2.</span> <span class="toc-text">服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据存储"><span class="toc-number">2.1.</span> <span class="toc-text">数据存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#消息通信"><span class="toc-number">2.2.</span> <span class="toc-text">消息通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网方式"><span class="toc-number">2.2.1.</span> <span class="toc-text">联网方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据格式定义"><span class="toc-number">2.2.2.</span> <span class="toc-text">数据格式定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据收发"><span class="toc-number">2.2.3.</span> <span class="toc-text">数据收发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据解析"><span class="toc-number">2.2.4.</span> <span class="toc-text">数据解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器验证"><span class="toc-number">2.3.</span> <span class="toc-text">服务器验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网络通信"><span class="toc-number">3.</span> <span class="toc-text">网络通信</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#实战"><span class="toc-number">3.1.</span> <span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网通信实现"><span class="toc-number">3.1.1.</span> <span class="toc-text">联网通信实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#二进制抽象类"><span class="toc-number">3.1.1.1.</span> <span class="toc-text">二进制抽象类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#网络通信-1"><span class="toc-number">3.1.1.2.</span> <span class="toc-text">网络通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据格式解析"><span class="toc-number">3.1.1.3.</span> <span class="toc-text">数据格式解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务器-1"><span class="toc-number">3.1.1.4.</span> <span class="toc-text">服务器</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶"><span class="toc-number">4.1.</span> <span class="toc-text">进阶</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">4.2.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战讲解"><span class="toc-number">4.3.</span> <span class="toc-text">实战讲解</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#服务器"><span class="toc-number">2.</span> <span class="toc-text">服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据存储"><span class="toc-number">2.1.</span> <span class="toc-text">数据存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关系型数据库"><span class="toc-number">2.1.1.</span> <span class="toc-text">关系型数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非关系型数据库"><span class="toc-number">2.1.2.</span> <span class="toc-text">非关系型数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据库选择"><span class="toc-number">2.1.3.</span> <span class="toc-text">数据库选择</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#消息通信"><span class="toc-number">2.2.</span> <span class="toc-text">消息通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网方式"><span class="toc-number">2.2.1.</span> <span class="toc-text">联网方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据格式定义"><span class="toc-number">2.2.2.</span> <span class="toc-text">数据格式定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据收发"><span class="toc-number">2.2.3.</span> <span class="toc-text">数据收发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据解析"><span class="toc-number">2.2.4.</span> <span class="toc-text">数据解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器验证"><span class="toc-number">2.3.</span> <span class="toc-text">服务器验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实战"><span class="toc-number">3.</span> <span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#网络通信"><span class="toc-number">3.1.</span> <span class="toc-text">网络通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网通信实现"><span class="toc-number">3.1.1.</span> <span class="toc-text">联网通信实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#二进制抽象类"><span class="toc-number">3.1.1.1.</span> <span class="toc-text">二进制抽象类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#网络通信-1"><span class="toc-number">3.1.1.2.</span> <span class="toc-text">网络通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据格式解析"><span class="toc-number">3.1.1.3.</span> <span class="toc-text">数据格式解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务器-1"><span class="toc-number">3.1.1.4.</span> <span class="toc-text">服务器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库Redis"><span class="toc-number">3.2.</span> <span class="toc-text">数据库Redis</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶"><span class="toc-number">4.1.</span> <span class="toc-text">进阶</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">4.2.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战讲解"><span class="toc-number">4.3.</span> <span class="toc-text">实战讲解</span></a></li></ol></li></ol>
 		
 		</div>
 		
@@ -128,11 +128,22 @@
 <li>对于游戏数据和玩家数据的存储(数据存储)</li>
 <li>对玩家数据进行数据广播和同步(消息通信)</li>
 <li>把一部分游戏逻辑在服务器上运算，做好验证，防止外挂(服务器验证)</li>
+<li>服务器架构设计(容灾，性能，扩容等)</li>
 </ol>
-<p>第三点涉及到前后端框架设计(帧同步 or 状态同步等)，本文着眼点是前两点，第三点作为未来学习的一个知识点。</p>
-<h2 id="数据存储">数据存储</h2><p>MySQL?</p>
-<p>Redis?</p>
-<p>待续……</p>
+<p>第三点涉及到前后端框架设计(帧同步 or 状态同步等)，第四点更与服务器端密切相关，本文着眼点是前两点，第三点和第四点作为未来学习的一个知识点，。</p>
+<h2 id="数据存储">数据存储</h2><h3 id="关系型数据库">关系型数据库</h3><p><a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93" target="_blank" rel="external">关系数据库（英语：Relational database），是创建在关系模型基础上的数据库，借助于集合代数等数学概念和方法来处理数据库中的数据。现实世界中的各种实体以及实体之间的各种联系均用关系模型来表示。</a></p>
+<p>个人简单的理解，关系数据库大概就是以前学SQL的时候，数据库里通过表来抽象实体数据，表之间通过ID映射关联起来的概念(e.g. 比如数据库里有两张表，一张员工表，一张员工数据表。员工表用于抽象员工ID，员工名字，员工薪资等信息。而员工数据用于存储员工ID，员工入职日期等信息。然后两张表示通过员工ID来映射关联起来。)。</p>
+<p>典型的关系型数据库:<br>MySQL</p>
+<p>典型的关系型数据查询语言:<br>SQL</p>
+<h3 id="非关系型数据库">非关系型数据库</h3><p><a href="https://zh.wikipedia.org/wiki/NoSQL" target="_blank" rel="external">NoSQL是对不同于传统的关系数据库的数据库管理系统的统称。两者存在许多显著的不同点，其中最重要的是NoSQL不使用SQL作为查询语言。其数据存储可以不需要固定的表格模式，也经常会避免使用SQL的JOIN操作，一般有水平可扩展性的特征。</a></p>
+<p>看了上面Wiki的介绍，本人其实还是一知半解，等待后续深入学习理解非关系型数据库。</p>
+<p>有了关系型数据库为什么还需要非关系型数据库了？<br>[当代典型的关系数据库在一些数据敏感的应用中表现了糟糕的性能，例如为巨量文档创建索引、高流量网站的网页服务，以及发送流式媒体。关系型数据库的典型实现主要被调整用于执行规模小而读写频繁，或者大批量极少写访问的事务。NoSQL的结构通常提供弱一致性的保证，如最终一致性，或交易仅限于单个的数据项。不过，有些系统，提供完整的ACID保证在某些情况​​下，增加了补充中间件层（例如：CloudTPS）(<a href="https://zh.wikipedia.org/wiki/NoSQL" target="_blank" rel="external">https://zh.wikipedia.org/wiki/NoSQL</a>)</p>
+<p>典型的菲关系型数据库:<br>MongoDB，Redis</p>
+<h3 id="数据库选择">数据库选择</h3><p><a href="https://gameinstitute.qq.com/community/detail/102605" target="_blank" rel="external">关系数据库还是NoSQL数据库</a><br><a href="http://www.cppblog.com/sunicdavy/archive/2015/06/19/210992.html" target="_blank" rel="external">数据库选择历程</a><br><a href="https://cloud.tencent.com/developer/article/1197215" target="_blank" rel="external">游戏服务器存储系统设计</a><br>本人对数据库的经验还停留在学校学习SQL的时候，也可以理解成使用过一点关系型数据库。<br>这里是想深入理解关系和非关系之间的区别，同时为选择游戏开发时使用的数据库类型做知识储备。以下理解的不对的地方，忘指出。</p>
+<p>结合上面两篇文章的学习理解，个人理解关系型数据库(e.g. MySQL)适用于读写不频繁(面向表级别的锁定)，需要强大的查询(SQL)功能。<br>而非关系型数据库(e.g. Redis)适用于频繁读写(性能要求高 — Redis是Ke-Vlaue结构，且面向内存的存储模型(使用RDB和AOF做持久化))，需要高扩展性。</p>
+<p>结合网上的学习理解，使用Redis(做内存Cache)+MySQL(做稳定的数据库存储查询)利用各自优势使用在不同模块来实现高性能的服务器存储设计是比较高效合理的。</p>
+<p>这里本人出于学习目的，暂定以关系型数据库(MySQL)作为服务器数据库存储介质，暂时不考虑Redis。</p>
+<p>后期Redis进阶学习:<br><a href="https://www.runoob.com/redis/redis-tutorial.html" target="_blank" rel="external">Redis 教程</a></p>
 <h2 id="消息通信">消息通信</h2><p>消息通信是本篇文章的重点，首先让我们理一理实现消息通信前我们需要做些什么？</p>
 <ol>
 <li>联网方式(选择通信协议，比如: TCP || UPD)</li>
@@ -206,8 +217,8 @@
 <p>状态同步和帧同步的区别？</p>
 <p><a href="https://zhuanlan.zhihu.com/p/36884005" target="_blank" rel="external">最大的区别就是战斗核心逻辑写在哪，状态同步的战斗逻辑在服务端，帧同步的战斗逻辑在客户端。</a></p>
 <p>这里只是简单的引用上面博主的部分说明来加深理解，更深入学习请参考前面给出的博客链接。</p>
-<h1 id="网络通信">网络通信</h1><p>网络通信是指通过网络进行数据传输处理的能力。为了实现网络通信，我们需要借助于TCP( or UDP or **)协议进行数据传输，借助Socket进行端口监听，从而实现网络通信的能力。</p>
-<h2 id="实战">实战</h2><p>联网方式选择？<br>TCP协议 + Socket<br>理由：</p>
+<h1 id="实战">实战</h1><h2 id="网络通信">网络通信</h2><p>网络通信是指通过网络进行数据传输处理的能力。为了实现网络通信，我们需要借助于TCP( or UDP or **)协议进行数据传输，借助Socket进行端口监听，从而实现网络通信的能力。</p>
+<p>联网方式选择？<br>TCP协议 + Socket<br>理由：</p>
 <ol>
 <li>游戏开发对网络稳定性要求较高，所以选择以TCP作为网络传输协议。</li>
 </ol>
@@ -255,8 +266,13 @@
 <p>服务器端输出:<br><img src="/img/Network/ServerOutput.png" alt="ServerOutput"></p>
 <p>客户端输出:<br><img src="/img/Network/ClientOutput.png" alt="ClientOutput"></p>
 <p>可以看到通过Socket编程，我们使用TPC连接成功将消息从客户端发送到服务器以及服务器发送到客户端进行处理。NetMessage的简单封装是为了上层逻辑能区分收到的是什么消息以及消息数据有多少，基于byte[]的存储让我们可以快速的切换数据序列化和反序列化的方式(为后面使用Protobuf打下基础)。</p>
-<h4 id="数据格式解析">数据格式解析</h4><h4 id="服务器-1">服务器</h4><h1 id="Reference">Reference</h1><h2 id="进阶">进阶</h2><p>对于网络框架的设计和理论知识进阶学习：<br><a href="https://mp.weixin.qq.com/s/pThWX8IMtg6zuyjZ0LQajQ" target="_blank" rel="external">教你从头写游戏服务器框架</a></p>
-<h2 id="基础知识">基础知识</h2><p><a href="https://zhuanlan.zhihu.com/p/36884005" target="_blank" rel="external">两种同步模式：状态同步和帧同步</a></p>
+<h4 id="数据格式解析">数据格式解析</h4><h4 id="服务器-1">服务器</h4><h2 id="数据库Redis">数据库Redis</h2><h1 id="Reference">Reference</h1><h2 id="进阶">进阶</h2><p>对于网络框架的设计和理论知识进阶学习：<br><a href="https://mp.weixin.qq.com/s/pThWX8IMtg6zuyjZ0LQajQ" target="_blank" rel="external">教你从头写游戏服务器框架</a></p>
+<h2 id="基础知识">基础知识</h2><p><a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93" target="_blank" rel="external">关系数据库</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/NoSQL" target="_blank" rel="external">NoSQL</a></p>
+<p><a href="https://gameinstitute.qq.com/community/detail/102605" target="_blank" rel="external">关系数据库还是NoSQL数据库</a></p>
+<p><a href="http://www.cppblog.com/sunicdavy/archive/2015/06/19/210992.html" target="_blank" rel="external">数据库选择历程</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/Redis" target="_blank" rel="external">Redis</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/36884005" target="_blank" rel="external">两种同步模式：状态同步和帧同步</a></p>
 <p><a href="https://www.infoq.cn/article/a-brief-history-of-the-game-server-architecture" target="_blank" rel="external">游戏服务器架构的演进简史</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/24860273" target="_blank" rel="external">TCP和UDP的区别</a></p>
 <p><a href="https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B" target="_blank" rel="external">OSI模型</a></p>
@@ -281,7 +297,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://tonytang1990.github.io/2019/05/20/网络模块学习/" data-title="网络模块学习 | 走停人生路" data-tsina="null" class="share clearfix">
+	  <div data-url="http://tonytang1990.github.io/2019/05/20/网络通信和服务器学习/" data-title="网络通信和服务器学习 | 走停人生路" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -295,7 +311,7 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2019/11/25/Timeline-Cinemacine/" title="Unity官方插件">
+ <a href="/2019/11/25/Unity官方插件/" title="Unity官方插件">
   <strong>上一篇：</strong><br/>
   <span>
   Unity官方插件</span>
@@ -315,7 +331,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2019/05/20/网络模块学习/" data-title="网络模块学习" data-url="http://tonytang1990.github.io/2019/05/20/网络模块学习/"></div>
+	<div class="ds-thread" data-thread-key="2019/05/20/网络通信和服务器学习/" data-title="网络通信和服务器学习" data-url="http://tonytang1990.github.io/2019/05/20/网络通信和服务器学习/"></div>
 </section>
 
 
@@ -325,7 +341,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#服务器"><span class="toc-number">2.</span> <span class="toc-text">服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据存储"><span class="toc-number">2.1.</span> <span class="toc-text">数据存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#消息通信"><span class="toc-number">2.2.</span> <span class="toc-text">消息通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网方式"><span class="toc-number">2.2.1.</span> <span class="toc-text">联网方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据格式定义"><span class="toc-number">2.2.2.</span> <span class="toc-text">数据格式定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据收发"><span class="toc-number">2.2.3.</span> <span class="toc-text">数据收发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据解析"><span class="toc-number">2.2.4.</span> <span class="toc-text">数据解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器验证"><span class="toc-number">2.3.</span> <span class="toc-text">服务器验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网络通信"><span class="toc-number">3.</span> <span class="toc-text">网络通信</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#实战"><span class="toc-number">3.1.</span> <span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网通信实现"><span class="toc-number">3.1.1.</span> <span class="toc-text">联网通信实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#二进制抽象类"><span class="toc-number">3.1.1.1.</span> <span class="toc-text">二进制抽象类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#网络通信-1"><span class="toc-number">3.1.1.2.</span> <span class="toc-text">网络通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据格式解析"><span class="toc-number">3.1.1.3.</span> <span class="toc-text">数据格式解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务器-1"><span class="toc-number">3.1.1.4.</span> <span class="toc-text">服务器</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶"><span class="toc-number">4.1.</span> <span class="toc-text">进阶</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">4.2.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战讲解"><span class="toc-number">4.3.</span> <span class="toc-text">实战讲解</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#服务器"><span class="toc-number">2.</span> <span class="toc-text">服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据存储"><span class="toc-number">2.1.</span> <span class="toc-text">数据存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关系型数据库"><span class="toc-number">2.1.1.</span> <span class="toc-text">关系型数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非关系型数据库"><span class="toc-number">2.1.2.</span> <span class="toc-text">非关系型数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据库选择"><span class="toc-number">2.1.3.</span> <span class="toc-text">数据库选择</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#消息通信"><span class="toc-number">2.2.</span> <span class="toc-text">消息通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网方式"><span class="toc-number">2.2.1.</span> <span class="toc-text">联网方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据格式定义"><span class="toc-number">2.2.2.</span> <span class="toc-text">数据格式定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据收发"><span class="toc-number">2.2.3.</span> <span class="toc-text">数据收发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据解析"><span class="toc-number">2.2.4.</span> <span class="toc-text">数据解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器验证"><span class="toc-number">2.3.</span> <span class="toc-text">服务器验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实战"><span class="toc-number">3.</span> <span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#网络通信"><span class="toc-number">3.1.</span> <span class="toc-text">网络通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网通信实现"><span class="toc-number">3.1.1.</span> <span class="toc-text">联网通信实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#二进制抽象类"><span class="toc-number">3.1.1.1.</span> <span class="toc-text">二进制抽象类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#网络通信-1"><span class="toc-number">3.1.1.2.</span> <span class="toc-text">网络通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据格式解析"><span class="toc-number">3.1.1.3.</span> <span class="toc-text">数据格式解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务器-1"><span class="toc-number">3.1.1.4.</span> <span class="toc-text">服务器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库Redis"><span class="toc-number">3.2.</span> <span class="toc-text">数据库Redis</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶"><span class="toc-number">4.1.</span> <span class="toc-text">进阶</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">4.2.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战讲解"><span class="toc-number">4.3.</span> <span class="toc-text">实战讲解</span></a></li></ol></li></ol>
  
   </div>
 
@@ -380,11 +396,11 @@
 			
 		
 			
-				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
 			
 		
 			
@@ -408,11 +424,15 @@
 			
 		
 			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
 			
 		
 			
@@ -505,7 +525,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
 		

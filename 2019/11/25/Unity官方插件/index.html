@@ -1,0 +1,739 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Unity官方插件 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="前言本篇文章是为了记录学习Unity官方一些好的第三方插件，作为基础的学习了解，为未来遇到问题思考解决方案时拓宽思路。
+Sprite Atlas依然从What，Why，How三个角度了学习了解Sprite Atlas。
+WhatSprite Atlas是官方Sprite Packer的升级版本，是为了更好的解决图集打包加载问题而开发的，而图集是为了解决Draw Call问题。
+Why老版Unity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity官方插件">
+<meta property="og:url" content="http://tonytang1990.github.io/2019/11/25/Unity官方插件/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="前言本篇文章是为了记录学习Unity官方一些好的第三方插件，作为基础的学习了解，为未来遇到问题思考解决方案时拓宽思路。
+Sprite Atlas依然从What，Why，How三个角度了学习了解Sprite Atlas。
+WhatSprite Atlas是官方Sprite Packer的升级版本，是为了更好的解决图集打包加载问题而开发的，而图集是为了解决Draw Call问题。
+Why老版Unity">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpriteAtlas/EnableSpriteAtlas.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpriteAtlas/SpriteAtlasSetting.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpriteAtlas/PackPreview.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpriteAtlas/IncludeInBuildCauseRedundancySpriteAtlasTexture.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpriteAtlas/SpriteAtlasVariants.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpriteAtlas/SpriteAtlasAssetBundlePreview.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpriteAtlas/UIPrefabReferenceNotIncludeBuildSpriteAtlas.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpriteAtlas/UIPrefabSpriteMissing.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpriteAtlas/UIPrefabDepencency.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Timeline_Cinemachine/TimelineAssetHierachy.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Timeline_Cinemachine/TimelineComponent.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Timeline_Cinemachine/TimelineCustomPlayable.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Timeline_Cinemachine/TimelinePlayableDirectorInspector.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/FontAssetCreatePanel.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/SpriteAssetCreatePanel.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/TextMeshProAssignFontAssetAndSpriteAsset.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/TextMeshProUsing.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/CreateFontAssetMaterial.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/FontAssetMaterialChosen.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextMeshPro/TMPSettings.png">
+<meta property="og:updated_time" content="2020-02-10T15:20:59.382Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity官方插件">
+<meta name="twitter:description" content="前言本篇文章是为了记录学习Unity官方一些好的第三方插件，作为基础的学习了解，为未来遇到问题思考解决方案时拓宽思路。
+Sprite Atlas依然从What，Why，How三个角度了学习了解Sprite Atlas。
+WhatSprite Atlas是官方Sprite Packer的升级版本，是为了更好的解决图集打包加载问题而开发的，而图集是为了解决Draw Call问题。
+Why老版Unity">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/11/25/Unity官方插件/" title="Unity官方插件" itemprop="url">Unity官方插件</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2019-11-25T13:27:18.000Z" itemprop="datePublished"> 發表於 2019-11-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Sprite_Atlas"><span class="toc-number">1.1.</span> <span class="toc-text">Sprite Atlas</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What"><span class="toc-number">1.1.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">1.1.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How"><span class="toc-number">1.1.3.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建、编辑图集以及设定图集参数"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">创建、编辑图集以及设定图集参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#添加图集Variant（变种）"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">添加图集Variant（变种）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#运行时访问图集"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">运行时访问图集</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Later_Bind"><span class="toc-number">1.1.3.3.1.</span> <span class="toc-text">Later Bind</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#注意事项"><span class="toc-number">1.1.3.3.2.</span> <span class="toc-text">注意事项</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#相关概念"><span class="toc-number">1.1.3.3.3.</span> <span class="toc-text">相关概念</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Bug记录"><span class="toc-number">1.1.3.3.4.</span> <span class="toc-text">Bug记录</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#结论"><span class="toc-number">1.1.3.3.5.</span> <span class="toc-text">结论</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Timeline"><span class="toc-number">1.2.</span> <span class="toc-text">Timeline</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Timeline_Asset"><span class="toc-number">1.2.1.</span> <span class="toc-text">Timeline Asset</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分类"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">分类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Playable_Track"><span class="toc-number">1.2.1.2.1.</span> <span class="toc-text">Playable Track</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Timeline_instance"><span class="toc-number">1.2.2.</span> <span class="toc-text">Timeline instance</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍-1"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">介绍</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进阶"><span class="toc-number">1.2.3.</span> <span class="toc-text">进阶</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cinemachine"><span class="toc-number">1.3.</span> <span class="toc-text">Cinemachine</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TextMeshPro"><span class="toc-number">1.4.</span> <span class="toc-text">TextMeshPro</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-1"><span class="toc-number">1.4.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-1"><span class="toc-number">1.4.3.</span> <span class="toc-text">How</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用"><span class="toc-number">2.</span> <span class="toc-text">引用</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="前言">前言</h1><p>本篇文章是为了记录学习Unity官方一些好的第三方插件，作为基础的学习了解，为未来遇到问题思考解决方案时拓宽思路。</p>
+<h2 id="Sprite_Atlas">Sprite Atlas</h2><p>依然从What，Why，How三个角度了学习了解Sprite Atlas。</p>
+<h3 id="What">What</h3><p>Sprite Atlas是官方Sprite Packer的升级版本，是为了更好的解决图集打包加载问题而开发的，而图集是为了解决Draw Call问题。</p>
+<h3 id="Why">Why</h3><p>老版Unity的时候，图集打包功能(SpritePacker,打Tag的方式)并不完善，更多的是采用第三方好比TexturePacker打包图集在放到Unity项目里的工作流。</p>
+<p>Sprite Atlas主要提供了以下三个功能:<br>1.创建、编辑图集以及设定图集参数<br>2.添加图集Variant（变种）<br>3.运行时访问图集</p>
+<p>新版Sprite Atals已经很完善了，考虑到以下几个原因，决定学习官方的打包图集工具跟着官方走:</p>
+<ol>
+<li>TexturePacker是付费的,Sprite Atlas免费</li>
+<li>Sprite Atlas是官方的，跟官方走一般来说不会错</li>
+<li>Spritre Atlas已经成熟可以商用的级别</li>
+</ol>
+<h3 id="How">How</h3><p>使用Sprite Atlas之前，我们需要打开Sprite Atlas功能开关：<br>Edit -&gt; Project Setting -&gt; Editor -&gt; Sprite Packer -&gt; Mode(Always Enable)<br><img src="/img/Unity/SpriteAtlas/EnableSpriteAtlas.png" alt="EnableSpriteAtlas"></p>
+<h4 id="创建、编辑图集以及设定图集参数">创建、编辑图集以及设定图集参数</h4><p>在Sprite Atlas里Sprite Atlas是作为一种资源(Asset)存在。<br>创建Sprite Atlas：<br>右键 -&gt; Sprite Atlas</p>
+<p>选中创建的Sprite Atlas我们能看到相关设置:<br><img src="/img/Unity/SpriteAtlas/SpriteAtlasSetting.png" alt="SpriteAtlasSetting"><br>这里的设置基本都和图集打包相关，这里就不一一详解了。<br>详情参见官网:<br><a href="https://docs.unity3d.com/Manual/class-SpriteAtlas.html" target="_blank" rel="external">Sprite Atlas</a></p>
+<p>点击Sprite Atlas -&gt; Pack Preview即可查看打包后的结果:<br><img src="/img/Unity/SpriteAtlas/PackPreview.png" alt="PackPreview"></p>
+<p>这里关于Include in Build这个参数要详细说明一下，这个参数会决定一下几方面:</p>
+<ol>
+<li>影响使用SpriteAtlas图集资源的资源是如何关联SpriteAtlas的(会决定使用该SpriteAtlas资源加载时加载哪一个图集资源—这里指的是有图集Variant的情况)</li>
+<li>影响SpriteAtlas是否需要采用Later Bind(触不触发SpriteAtlasManager.atlasRequested接口,通过这个接口结合图集Variant我们可以做到例如不同平台加载不同图集的适配)。反之勾选Include in Build在依赖使用时会自动加载依赖的Sprite Atlas。<br><strong>这里貌似有些Unity版本有个Bug，勾选Include in Build会导致资源打包冗余</strong><br><img src="/img/Unity/SpriteAtlas/IncludeInBuildCauseRedundancySpriteAtlasTexture.png" alt="IncludeInBuildCauseRedundancySpriteAtlasTexture"></li>
+</ol>
+<p>针对第一条详情参考:<br><a href="https://docs.unity3d.com/Manual/SpriteAtlasScenarios.html" target="_blank" rel="external">Resolving different Sprite Atlas scenarios</a></p>
+<p>Note:</p>
+<ol>
+<li><strong>Sprite Atlas支持Objects for Packing设置文件夹</strong></li>
+<li><strong>参与打包的图片必须设置成Sprite(2D and UI)格式</strong></li>
+<li><strong>Include in Build会影响SpriteAtlas的选择(比如是否要使用Later Bind等)</strong></li>
+</ol>
+<h4 id="添加图集Variant（变种）">添加图集Variant（变种）</h4><p>什么是图集Variant?<br><a href="https://docs.unity3d.com/Manual/VariantSpriteAtlas.html" target="_blank" rel="external">A Variant Sprite Atlas is a type of Sprite Atlas that does not contain its own list of selected Textures as it has no Objects for Packing list in its properties. Instead, it receives a copy of the content from the Sprite Atlas set as its Master Atlas.</a><br>图集Variant是指不能指定打包内容的图集，图集Variant内容来源于复制指定的Master图集。</p>
+<p>图集Variant的适用场景?<br>图集Variant的主要目的是为了用于不同分辨率设备适配不同图集来实现，内存和效果的可控。</p>
+<p>图集Variant设置适用：<br><img src="/img/Unity/SpriteAtlas/SpriteAtlasVariants.png" alt="SpriteAtlasVariants"><br>可以看到我们创建一个SpriteAtlas把Type设置成Variant后，然后指定Master Atlas，最后通过调节Scale为0.5我们得到了比playerpreview图集小一倍大小的图集效果。</p>
+<p>疑问:</p>
+<ol>
+<li>打包AB时会把SpriteAtlas对应需要生成的Texture生成并打包进AB，这样一来要想不同平台不同图集适配加载那么就得在打包时得做出分析打包对应的图集资源？</li>
+</ol>
+<p>个人方案：</p>
+<ol>
+<li>要想使用上述说的方案，那么我们需要在打包时动态分析并设置需要打包的对应图集AB名然后结合Later Bind做到不同平台加载不同图集的适配功能</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li>要想只打包使用图集Variant，需要把图集Variant的Include in Build打开，把图集Master的Include in Build关闭</li>
+</ol>
+<h4 id="运行时访问图集">运行时访问图集</h4><p><a href="https://gameinstitute.qq.com/community/detail/127434" target="_blank" rel="external">Sprite Atlas作为一种资源开放给用户，支持在脚本中直接访问，还可以通过名字获取图集中的精灵。</a></p>
+<p><strong>这里我们采用设置不勾选Include in Build的设置打包SpriteAtlas</strong></p>
+<p>接下来我们通过SpriteAtlas接口访问打包AB后的Sprite Atlas里的图片资源试试：<br>首先让我们看看SpriteAtlas打包AB后的的资源数据：<br><img src="/img/Unity/SpriteAtlas/SpriteAtlasAssetBundlePreview.png" alt="SpriteAtlasAssetBundlePreview"><br>可以看到SpriteAtlas作为资源参与AB打包，里面包含了SpriteAtlas，图集Texture2D以及Sprite数据。</p>
+<p>这里我们看看UI预制件引用SpriteAtlas看看依赖打包的情况：<br><img src="/img/Unity/SpriteAtlas/UIPrefabReferenceNotIncludeBuildSpriteAtlas.png" alt="UIPrefabReferenceNotIncludeBuildSpriteAtlas"><br>从上面可以看出UI窗口预制件包含了依赖的Sprite(这里和以前不一样，以前是不会包含依赖的Sprite的，会直接通过依赖关系加载依赖AB实现自动还原)，个人猜测这个和后续讲到的SpriteAtlas的Later Bind有关。</p>
+<p>加载UI窗口预制件后发现Sprite Missing了:<br><img src="/img/Unity/SpriteAtlas/UIPrefabSpriteMissing.png" alt="UIPrefabSpriteMissing"><br>通过查看依赖文件我发现依赖信息是没有对SpriteAtlas的依赖信息的。<strong>不知道这算不算是一个Bug还是设计如此，因为没有依赖信息对资源加载管理会造成问题，忘知道的朋友告知。</strong><br><img src="/img/Unity/SpriteAtlas/UIPrefabDepencency.png" alt="UIPrefabDepencency"></p>
+<p>问题:</p>
+<ol>
+<li><strong>加载使用SpriteAtlas的UI Prefab，SpriteAtlas会自动加载进内存且没有依赖信息。但如果此时主动加载了Sprite Atlas并主动强制卸载该Sprite Atlas的AB会导致UI Prefab使用的Sprite Atlas也跟随被清除。从这里看出UI Prefab对Sprite Atlas的依赖信息是有必要的，不然没法正确的管理资源加载。</strong></li>
+</ol>
+<p>这里引申出了SpriteAtlas一个很重要的功能，<strong>Later Bind</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>图集的被动(依赖)加载管理会有使用该图集的资源所决定(比如UI Prefab使用了SpriteAtlas，两个分别打包AB，这时加载UI Prefab后SpriteAtlas会自动加载进内存，而UI Prefab卸载以后，SpriteAtlas没有其他主动加载该SpriteAtlas的会自动卸载。)</strong></li>
+</ol>
+<h5 id="Later_Bind">Later Bind</h5><p><a href="https://zhuanlan.zhihu.com/p/80584461" target="_blank" rel="external">SpritePacker时代“图集”我们是看不到的，因为设计者的初衷是想让开发者完全不用考虑图集的事。但是，这跟游戏开发时的动态加载图集时矛盾的！我们要动态加载就必须要知道atlas名字和sprite名，这样才能在 运行时动态的找到一张sprite！所以U3D程序员必须要清楚的知道你当前界面用的是哪atlas的哪个sprite。但是按照SpritePacker的做法他的初衷应该是想把图集干掉（干掉的意思让开发者不用关心），只需要考虑sprite即可，但是这是行不通的！<br><strong>SpriteAtlas其实就是为了解决上面说的问题而发布的功能。通过它我们可以将atlas和UIprefab“解耦”。同时，在Unity编辑器状态下我们仍然可以利用未打成SpriteAtlas的Sprite进行开发。等开发完成我们再发布成SpriteAtlas。</strong>Unity提供了所谓“延迟绑定”（late bind）的技术来让我们实现这个功能。</a></p>
+<p>AtlasManager.cs<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public class AtlasManager : SingletonTemplate&lt;AtlasManager&gt;</span><br><span class="line">&#123;</span><br><span class="line">    public AtlasManager()</span><br><span class="line">    &#123;</span><br><span class="line">        DIYLog.Log("添加SpriteAtals图集延时绑定回调!");</span><br><span class="line">        SpriteAtlasManager.atlasRequested += onAtlasRequested;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 响应SpriteAtlas图集加载回调</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name="atlasname"&gt;&lt;/param&gt;</span><br><span class="line">    /// &lt;param name="callback"&gt;&lt;/param&gt;</span><br><span class="line">    private void onAtlasRequested(string atlasname, Action&lt;SpriteAtlas&gt; callback)</span><br><span class="line">    &#123;</span><br><span class="line">        DIYLog.Log($"加载SpriteAtlas:&#123;atlasname&#125;");</span><br><span class="line">        // Later Bind -- 依赖使用SpriteAtlas的加载都会触发这里</span><br><span class="line">        ResourceModuleManager.Singleton.requstResource(</span><br><span class="line">        atlasname,</span><br><span class="line">        (abi) =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            DIYLog.Log($"Later Bind加载SpriteAtlas:&#123;atlasname&#125;");</span><br><span class="line">            var sa = abi.loadAsset&lt;SpriteAtlas&gt;(atlasname);</span><br><span class="line">            callback(sa);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在加载使用SpriteAtlas(<strong>仅当设置成不勾选Include in Build</strong>)的相关资源时(比如UI Prefab)上诉回调会被触发完成对SpriteAtlas的加载，确保引用的Sprite能正确显示。同时这一机制就允许我们做到不同平台的不同图集资源加载适配这样的功能。</p>
+<p>疑问:</p>
+<ol>
+<li>Later Bind只是加载SpriteAtlas提供的一个回调接口(无论是主动还是被动(依赖)加载)，回调接口内只知道加载了指定的SpriteAtlas却不知道具体的详细用法，这样一来基于对象绑定和索引计数的资源管理系统就无法正确的加载管理了(因为被动(依赖)加载得不到SpriteAtlas的依赖信息)。</li>
+</ol>
+<p>个人方案：</p>
+<ol>
+<li>当前这套基于对象绑定和索引计数的方案暂时没想到好的方案，可能需要对SpriteAtals的资源管理单独做一套管理策略来支持Later Bind的用法。有更好方案的朋友，望告知。</li>
+</ol>
+<h5 id="注意事项">注意事项</h5><ol>
+<li>开启Sprite Packer的设置Sprite Packer -&gt; Mode(Always Enable)只决定图集合成时机(比如是运行时还是打包时还是编辑器时)。</li>
+<li>Sprite Atlas支持Objects for Packing设置文件夹</li>
+<li>参与打包的图片必须设置成Sprite(2D and UI)格式</li>
+<li><strong>Include in Build会影响SpriteAtlas图集资源的资源是如何关联SpriteAtlas(比如影响是否需要使用Later Bind,不勾选需要使用Later Bind否则会报警告)</strong></li>
+</ol>
+<h5 id="相关概念">相关概念</h5><ol>
+<li>Sprite Atlas把图集打包的概念延迟到特定时刻(比如打包或者打包AB)而编辑模式依然可以使用原始Sprite工作，总的来说就是延时自动化打包图集时机+允许使用原始Sprite的概念。</li>
+<li>Include in Build设置主要是看有没有动态适配加载图集需求，有的话就建议不勾选，然后结合Later Bind来做动态图集加载适配。反之勾选Include in Build在依赖使用时会自动加载依赖使用的Sprite Atals。</li>
+<li>Include in Build其次还会影响Sprite Atlas变体使用的选择。</li>
+<li>SpriteAtlas到了Unity 2018 LTS版本感觉才稳定些，建议使用稳定版本的SpriteAtlas</li>
+<li>Later Bind不会区分主动加载还是被动(依赖)加载SpriteAtlas,都会统一回调，要使用Later Bind机制的需要取消勾选Include in Build并解决SpriteAtlas的资源加载管理问题(在沿用原来的对象绑定和索引计数的资源管理方案基础上本人暂时没有好的方案)</li>
+<li><strong>Sprite Atlas无论够不够选Include in Build打包AB都得不到Sprite Atlas的依赖信息，感觉这是一个bug</strong></li>
+</ol>
+<h5 id="Bug记录">Bug记录</h5><ol>
+<li><strong>勾选Include in Build会导致资源打包冗余(部分Unity版本比如Unity2018.4.1f1)，建议升级到LTS版本</strong></li>
+</ol>
+<h5 id="结论">结论</h5><p>SpriteAtlas虽然解决了Atlas和UIPrefab的解耦，同时提供了图集变体的概念来解决适配图集适配方案，但也带来了一些新的问题要解决(e.g. 要解决没有依赖信息的SpriteAtals基础上做到正确的资源加载管理)。</p>
+<p>个人暂时未解决没有依赖信息的SpriteAtals基础上做到正确的资源加载管理问题，所以暂时打算还是沿用TexturePacker这样的第三方工具作为图集打包方案。<br>好处如下：</p>
+<ol>
+<li>图集的依赖关系明确，方便做资源管理<br>缺点：</li>
+<li>需要走单独的第三方工具，不是官方的工具后期可能会被官方的方案替代</li>
+</ol>
+<h2 id="Timeline">Timeline</h2><p><a href="https://docs.unity3d.com/Manual/TimelineSection.html" target="_blank" rel="external"> <strong>Timeline</strong> to create cinematic content, game-play sequences, audio sequences, and complex particle effects. </a></p>
+<p>官方介绍Timeline可以用于制作类似电影过场表现的工具。</p>
+<p>Timeline分为两个部分：</p>
+<ol>
+<li>Timeline Asset(数据)</li>
+<li>Timeline instance(数据关联实体对象)</li>
+</ol>
+<h3 id="Timeline_Asset">Timeline Asset</h3><h4 id="介绍">介绍</h4><p><a href="https://docs.unity3d.com/Manual/TimelineOverview.html" target="_blank" rel="external"> <strong>Timeline Asset</strong>: Stores the tracks, clips, and recorded animations without links to the specific GameObjects being animated.</a></p>
+<p>通过介绍可以看出Timeline Asset是类似于Animation Clip一样的资源文件可以用于录制动画<strong>但不需要关联到特定的物体上</strong></p>
+<p>Timeline Asset记录的动画数据是以子节点资源的形式挂载在Timeline Asset下的：</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/TimelineAssetHierachy.png" alt="TimelineAssetHierachy"></p>
+<p>Note:<br>前面说的不需要关联到特定的物体上是指不需要像AnimationClip那样动画是针对指定物体制作的(挂给其他物体用不了该动画)，Timeline可以通过PlayableDirector动态关联动画对象。</p>
+<h4 id="分类">分类</h4><p>Timeline Asset是以Track为最小单位。</p>
+<p>主要支持以下几种Track:</p>
+<ol>
+<li>Track Group(仅分层管理用)</li>
+<li>Activation Track(激活物体Track)</li>
+<li>Animation Track(动画Track)</li>
+<li>Audio Track(音频Track)</li>
+<li>Control Track(时间相关的控制)</li>
+<li>Playable Track(<strong>自定义Track</strong>)</li>
+</ol>
+<p><img src="/img/Unity/Timeline_Cinemachine/TimelineComponent.png" alt="TimelineComponent"></p>
+<p>这里我们着重学习Playable Track,自定义的一些表现行为都是通过Playable Track来做的。其他几个就不一一讲解了。</p>
+<h5 id="Playable_Track">Playable Track</h5><p>自定义Playable Track需要知道两个东西：</p>
+<ol>
+<li>PlayableAsset(用于支持Timeline创建和显示自定义PlayableAsset)</li>
+<li>PlayableBehaviour(Playable实际的生命周期等逻辑抽象)</li>
+</ol>
+<p>示例:<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 枚举事件定义</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> EEventId</span><br><span class="line">&#123;</span><br><span class="line">    DefaultEvent = <span class="number">1</span>,				<span class="comment">// 默认事件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 事件分发器Asset</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[System.Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EventDispatcherAsset</span> : <span class="title">PlayableAsset</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 事件</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> EEventId EventId = EEventId.DefaultEvent;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Factory method that generates a playable based on this asset</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> Playable <span class="title">CreatePlayable</span>(<span class="params">PlayableGraph graph, GameObject go</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> playable = ScriptPlayable&lt;EventDispatcherPlayable&gt;.Create(graph);</span><br><span class="line">        playable.GetBehaviour().EventId = EventId;</span><br><span class="line">        <span class="keyword">return</span> playable;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 事件分发器Playable</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EventDispatcherPlayable</span> : <span class="title">PlayableBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 事件</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"事件"</span>)]</span><br><span class="line">    <span class="keyword">public</span> EEventId EventId = EEventId.DefaultEvent;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the owning graph starts playing</span></span><br><span class="line">    <span class="comment">// Playable开始执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnGraphStart</span>(<span class="params">Playable playable</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the owning graph stops playing</span></span><br><span class="line">    <span class="comment">// Playable停止执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnGraphStop</span>(<span class="params">Playable playable</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the state of the playable is set to Play</span></span><br><span class="line">    <span class="comment">// 触发Playable执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnBehaviourPlay</span>(<span class="params">Playable playable, FrameData info</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Debug.Log(<span class="keyword">string</span>.Format(<span class="string">"OnBehaviourPlay() 分发事件 : &#123;0&#125;"</span>, EventId));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the state of the playable is set to Paused</span></span><br><span class="line">    <span class="comment">// Playable暂停执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnBehaviourPause</span>(<span class="params">Playable playable, FrameData info</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called each frame while the state is set to Play</span></span><br><span class="line">    <span class="comment">// Playable更新执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">PrepareFrame</span>(<span class="params">Playable playable, FrameData info</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Unity/Timeline_Cinemachine/TimelineCustomPlayable.png" alt="TimelineCustomPlayable"></p>
+<p>代码不复杂就不详细介绍了。通过上面的代码，我们支持了一个创建自定义分发事件的Playable Track，而这个自定义的事件分发就可以用作我们Timeline和游戏逻辑之间的一个桥梁，帮助我们在Timeline播放的过程中自定义响应做一些表现。</p>
+<h3 id="Timeline_instance">Timeline instance</h3><h4 id="介绍-1">介绍</h4><p><a href="https://docs.unity3d.com/Manual/TimelineOverview.html" target="_blank" rel="external"> <strong>Timeline instance</strong>: Stores links to the specific GameObjects being animated or affected by the Timeline Asset. These links, referred to as <strong>bindings</strong>, are saved to the Scene. </a></p>
+<p>要想关联场景物体和Timeline Asset让我们制作的电影过场动起来，我们需要创建Timeline instance(这里指的Playable Director组件)。</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/TimelinePlayableDirectorInspector.png" alt="TimelinePlayableDirectorInspector"></p>
+<p>可以看到我们通过Timeline Asset录制的动画是通过Playable Director的Bindings动态关联到了场景物体上。</p>
+<p>Note:<br><strong>因为Timeline Asset是纯数据，Timeline instance决定了数据关联的对象，所以我们可以重用Timeline Asset对不同的物体做动画表现。</strong></p>
+<h3 id="进阶">进阶</h3><p><a href="https://www.jianshu.com/p/69e60a27bccb" target="_blank" rel="external">Unity使用Cinemachine和Timeline入门</a><br>Timeline可以看做是自定义展示效果的工具，而Cinemachine可以看做是多摄像机的一套完整控制表现的工具。</p>
+<p>更多学习，待续……</p>
+<h2 id="Cinemachine">Cinemachine</h2><p>待续……</p>
+<h2 id="TextMeshPro">TextMeshPro</h2><h3 id="What-1">What</h3><p><a href="https://docs.unity3d.com/Manual/com.unity.textmeshpro.html" target="_blank" rel="external">TextMesh Pro is the ultimate text solution for Unity. It’s the perfect replacement for Unity’s UI Text and the legacy Text Mesh.</a></p>
+<p>TextMeshPro原本是第三方个人编写的一款更优的Unity文本替代方案，后被Unity官方收购。</p>
+<h3 id="Why-1">Why</h3><p>使用TextMeshPro替代原生文本的原因有很多：</p>
+<ol>
+<li>TMP使用了SDF(<strong>Signed Distance Field</strong>)技术达到不失真的放大缩小渲染</li>
+<li>TMP自带实现了图文混排(通过富文本打Tag的形式)以及很多文本所需的功能(e.g. 字间距，自定义字体大小，段落格式，对齐方式等)</li>
+<li>TMP使用Shader去实现更好的文本表现效果(类似PS的一些效果)满足文本需求</li>
+</ol>
+<p>缺点:</p>
+<ol>
+<li>不支持动态字体(看网上说是TMP1.4支持动态字体(Generating Settings)，但我在Unity2018.4.1.f1上导入的TMP没有找到动态字体设置的入口，望知道的朋友告知一声在哪里设置)，需要生成对应的字体纹理库(对于文字多的比如中文来说有很大的内存压力)</li>
+</ol>
+<p>SDF(<strong>Signed Distance Field</strong>)介绍:<br><a href="http://www.sardinefish.com/blog/?pid=296" target="_blank" rel="external">一个空间区域的SDF函数定义为，从空间中任意给定的一点到该区域边界的距离，SDF函数值的符号取决于该点在区域的内部还是外部，外部为正，内部为负。</a></p>
+<p>这里可以简单的理解成TMP通过函数式的定义方式(类似矢量图的定义方式)来解决像素图放大模糊的问题来渲染出可动态放大缩小不模糊的图像。深入理解参考下面的链接：<a href="http://www.sardinefish.com/blog/?pid=296" target="_blank" rel="external">函数式编程与 Signed Distance Field</a></p>
+<h3 id="How-1">How</h3><p>TMP需要通过TMP提供的字体库制作工具制作所需的对应字体文件：<br><img src="/img/Unity/TextMeshPro/FontAssetCreatePanel.png" alt="FontAssetCreatePanel"><br>如果想要使用图文混排还需要自己制作SpriteAsset:<br><img src="/img/Unity/TextMeshPro/SpriteAssetCreatePanel.png" alt="SpriteAssetCreatePanel"><br>制作好后创建TextMeshPro组件后指定需要使用的Font Asset和Sprite Asset即可:<br><img src="/img/Unity/TextMeshPro/TextMeshProAssignFontAssetAndSpriteAsset.png" alt="TextMeshProAssignFontAssetAndSpriteAsset"></p>
+<p>最终效果：<br><img src="/img/Unity/TextMeshPro/TextMeshProUsing.png" alt="TextMeshProUsing"><br>TextMeshPro同一个Font Asset需要制作不同的渲染效果需要通过制作不同的Material来实现：<br><img src="/img/Unity/TextMeshPro/CreateFontAssetMaterial.png" alt="CreateFontAssetMaterial"></p>
+<p>然后在针对新创建的Material Asset调整Shader和具体效果即可，创建完成后就可以在Font Asset的材质下拉列表里选择需要使用的效果：<br><img src="/img/Unity/TextMeshPro/FontAssetMaterialChosen.png" alt="FontAssetMaterialChosen"></p>
+<p>关于TextMeshPro的默认相关设置(e.g. 默认创建的Font Asset，默认Fallback到的Font Asset等)是通过TMP Settings文件里的设置来完成的:<br><img src="/img/Unity/TextMeshPro/TMPSettings.png" alt="TMPSettings"></p>
+<p>Note:</p>
+<ol>
+<li>TMP的Fallback的使用是在原始设定的Font Asset里找不到对应文字时的一种回退安全机制，官方的建议是真正使用的Font Asset采用高分率图集，Fallback的Font Asset采用低分辨率图集。</li>
+</ol>
+<h1 id="引用">引用</h1><p><a href="https://docs.unity3d.com/Manual/class-SpriteAtlas.html" target="_blank" rel="external">Sprite Atlas</a><br><a href="https://docs.unity3d.com/Manual/MasterVariantAtlases.html" target="_blank" rel="external">Master and Variant Sprite Atlases</a><br><a href="https://docs.unity3d.com/Manual/VariantSpriteAtlas.html" target="_blank" rel="external">Variant Sprite Atlas</a><br><a href="https://docs.unity3d.com/Manual/SpriteAtlasWorkflow.html" target="_blank" rel="external">Sprite Atlas workflow</a><br><a href="https://docs.unity3d.com/Manual/SpriteAtlasDistribution.html" target="_blank" rel="external">Preparing Sprite Atlases for distribution</a><br><a href="https://docs.unity3d.com/Manual/SpritePackerModes.html" target="_blank" rel="external">Sprite Packer Modes</a><br><a href="https://gameinstitute.qq.com/community/detail/127434" target="_blank" rel="external">Unity2017新功能之Sprite Atlas详解</a><br><a href="https://zhuanlan.zhihu.com/p/80584461" target="_blank" rel="external">UGUI的图集处理方式-SpriteAtlas的前世今生</a><br><a href="https://blog.csdn.net/qq826364410/article/details/80511057" target="_blank" rel="external">Unity—Timeline自定义PlayableTrack</a><br><a href="https://blog.csdn.net/beihuanlihe130/article/details/79233320" target="_blank" rel="external">Unity2017中Timeline的简单使用方法</a><br><a href="https://www.jianshu.com/p/69e60a27bccb" target="_blank" rel="external">Unity使用Cinemachine和Timeline入门</a><br><a href="https://docs.unity3d.com/Manual/com.unity.textmeshpro.html" target="_blank" rel="external">TextMesh Pro</a><br><a href="http://www.sardinefish.com/blog/?pid=296" target="_blank" rel="external">函数式编程与 Signed Distance Field</a><br><a href="https://zhuanlan.zhihu.com/p/84700094" target="_blank" rel="external">Unity游戏开发——TextMeshPro的使用</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzU5MjQ1NTEwOA==&amp;mid=2247495323&amp;idx=1&amp;sn=3100249c5c4a88c20435d129d23eb727&amp;chksm=fe1dda30c96a53267a53ed2bc0dd47bc73273f4e76f3a0d8f0ce322992e2e7e0b284d9a1df32&amp;mpshare=1&amp;scene=1&amp;srcid=102134Bhmm1T67EKpzswm7mz#rd" target="_blank" rel="external">在Unity 2018中充分使用TextMesh Pro</a><br><a href="https://blogs.unity3d.com/2018/10/16/making-the-most-of-textmesh-pro-in-unity-2018/" target="_blank" rel="external">Making the most of TextMesh Pro in Unity 2018</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Unity/">Unity</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2019/11/25/Unity官方插件/" data-title="Unity官方插件 | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2020/02/01/Unity嵌套预制件/" title="Unity嵌套预制件">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Unity嵌套预制件</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/05/20/网络通信和服务器学习/"  title="网络通信和服务器学习">
+ <strong>下一篇：</strong><br/> 
+ <span>网络通信和服务器学习
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2019/11/25/Unity官方插件/" data-title="Unity官方插件" data-url="http://tonytang1990.github.io/2019/11/25/Unity官方插件/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Sprite_Atlas"><span class="toc-number">1.1.</span> <span class="toc-text">Sprite Atlas</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What"><span class="toc-number">1.1.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">1.1.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How"><span class="toc-number">1.1.3.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建、编辑图集以及设定图集参数"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">创建、编辑图集以及设定图集参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#添加图集Variant（变种）"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">添加图集Variant（变种）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#运行时访问图集"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">运行时访问图集</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Later_Bind"><span class="toc-number">1.1.3.3.1.</span> <span class="toc-text">Later Bind</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#注意事项"><span class="toc-number">1.1.3.3.2.</span> <span class="toc-text">注意事项</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#相关概念"><span class="toc-number">1.1.3.3.3.</span> <span class="toc-text">相关概念</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Bug记录"><span class="toc-number">1.1.3.3.4.</span> <span class="toc-text">Bug记录</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#结论"><span class="toc-number">1.1.3.3.5.</span> <span class="toc-text">结论</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Timeline"><span class="toc-number">1.2.</span> <span class="toc-text">Timeline</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Timeline_Asset"><span class="toc-number">1.2.1.</span> <span class="toc-text">Timeline Asset</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分类"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">分类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Playable_Track"><span class="toc-number">1.2.1.2.1.</span> <span class="toc-text">Playable Track</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Timeline_instance"><span class="toc-number">1.2.2.</span> <span class="toc-text">Timeline instance</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍-1"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">介绍</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进阶"><span class="toc-number">1.2.3.</span> <span class="toc-text">进阶</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cinemachine"><span class="toc-number">1.3.</span> <span class="toc-text">Cinemachine</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TextMeshPro"><span class="toc-number">1.4.</span> <span class="toc-text">TextMeshPro</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-1"><span class="toc-number">1.4.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-1"><span class="toc-number">1.4.3.</span> <span class="toc-text">How</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用"><span class="toc-number">2.</span> <span class="toc-text">引用</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
