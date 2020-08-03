@@ -1,0 +1,663 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Unity循环滚动列表 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。
+列表什么是列表了？可以滚动，支持创建多个基于特定模板显示的单元格容器。
+列表的功能需求((√)表示本人已经实现的部分)？
+
+滚动显示(支持滚动到指定位置)(√)
+动态添加(支持任何位置添加元素)(√)
+循环列表(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity循环滚动列表">
+<meta property="og:url" content="http://tonytang1990.github.io/2020/06/08/Unity循环滚动列表/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。
+列表什么是列表了？可以滚动，支持创建多个基于特定模板显示的单元格容器。
+列表的功能需求((√)表示本人已经实现的部分)？
+
+滚动显示(支持滚动到指定位置)(√)
+动态添加(支持任何位置添加元素)(√)
+循环列表(">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/FancyScrollViewExhibition.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/SuperScrollViewExhibition.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/CellContainerExhibition.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/CellContainerExhibition2.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/DepthScrollExhibition.png">
+<meta property="og:updated_time" content="2020-08-03T15:52:58.165Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity循环滚动列表">
+<meta name="twitter:description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。
+列表什么是列表了？可以滚动，支持创建多个基于特定模板显示的单元格容器。
+列表的功能需求((√)表示本人已经实现的部分)？
+
+滚动显示(支持滚动到指定位置)(√)
+动态添加(支持任何位置添加元素)(√)
+循环列表(">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2020/06/08/Unity循环滚动列表/" title="Unity循环滚动列表" itemprop="url">Unity循环滚动列表</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2020-06-08T14:37:17.000Z" itemprop="datePublished"> 發表於 2020-06-08</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#列表"><span class="toc-number">1.1.</span> <span class="toc-text">列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单元格容器"><span class="toc-number">1.2.</span> <span class="toc-text">单元格容器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单元格实现分析"><span class="toc-number">1.2.1.</span> <span class="toc-text">单元格实现分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LoopScrollRect"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">LoopScrollRect</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FancyScrollView"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">FancyScrollView</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#super-scrollview"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">super-scrollview</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实战单元格容器"><span class="toc-number">1.2.2.</span> <span class="toc-text">实战单元格容器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#深入讲解"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">深入讲解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#未来优化"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">未来优化</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="前言">前言</h1><p>多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。</p>
+<h2 id="列表">列表</h2><p>什么是列表了？<br>可以滚动，支持创建多个基于特定模板显示的单元格容器。</p>
+<p>列表的功能需求(<strong>(√)</strong>表示本人已经实现的部分)？</p>
+<ol>
+<li>滚动显示(支持滚动到指定位置)<strong>(√)</strong></li>
+<li>动态添加(支持任何位置添加元素)<strong>(√)</strong></li>
+<li>循环列表(支持从头滚到尾再接着滚动到头的循环方式)</li>
+<li>不同大小单元格显示(支持自适应大小或者自定义传单元格大小)<strong>(√)</strong></li>
+<li>多种列表类型显示(e.g. 横向,竖向，横向网格，竖向网格等)<strong>(√)</strong></li>
+<li>单元格构造自定义传参<strong>(√)</strong></li>
+<li>自定义滚动动画<strong>(√)</strong></li>
+<li>不同单元格朝向(e.g. 从左往右或从右往左。从上往下或者从下往上。)<strong>(√)</strong></li>
+<li>单元格矫正(最终单元格会滚动到某个最近的单元格位置)<strong>(√)</strong></li>
+<li>单元格对象池(e.g. 单元格逻辑对象(Object)对象池。单元格实体对象(GameObject)对象池。)<strong>(√)</strong></li>
+<li>单元格嵌套滚动(e.g. 嵌套不同方向的单元格容器滚动支持)<strong>(√)</strong></li>
+<li>本地单元格模拟创建查看效果(e.g. Inspector支持快速模拟查看排版等)<strong>(√)</strong></li>
+</ol>
+<h2 id="单元格容器">单元格容器</h2><p>这里关于单元格容器，这里主要实现了两套:</p>
+<ol>
+<li>支持不同滚动方向不同初始化朝向支持不同大小(手动传Size或者自动计算Size)嵌套滚动单元格的一套通用单元格容器。</li>
+<li>支持两侧深度滚动显示的单元格容器(这一套实现的效果比较特别所以单独实现的)<br><strong>其中本人主要以第一套(以前在公司学习到的一套实现方案，后来在此基础上扩展支持了很多功能)为重点来学习实战。</strong></li>
+</ol>
+<h3 id="单元格实现分析">单元格实现分析</h3><p>这里通过学习了解市面上常见的单元格实现来了解常见的单元格实现方案：</p>
+<h4 id="LoopScrollRect">LoopScrollRect</h4><p><a href="https://github.com/qiankanglai/LoopScrollRect" target="_blank" rel="external">LoopScrollRect</a><br>这一套是<a href="http://qiankanglai.me/2015/08/15/LoopScrollRect/" target="_blank" rel="external">钱康来</a>大佬编写分享的一套支持循环列表的实现方案。<br>通过查看源码，可以了解到，这一套实现核心是基于ContentSizeFitter，LayoutGroup和LayoutElement相关组件来实现动态计算单元格位置显示循环滚动以及不同大小等效果的。<br><strong>亮点分析:</strong></p>
+<ol>
+<li>使用了原生Scroller，但并不依赖原生ScrolRect那套来计算滚动，这样为<strong>支持循环列表</strong>打下了基础。</li>
+<li><strong>单元格位置数据与单元格逻辑对象分离</strong>，可以做到动态计算单元格显示时<strong>只有需要显示的才有逻辑单元格对象(避免New大量的单元格)</strong>。</li>
+</ol>
+<p><strong>缺点分析:</strong></p>
+<ol>
+<li>虽然基于LayoutGroup和LayoutElement，但并非正向通过他们的排版功能得到不同单元格大小显示，而是反向设置LayoutElement来通过LayoutUtility.GetPreferredHeight()等接口方法来实现正确的计算滚动排版。<strong>这儿也就意味着做不到自动计算单元格大小的功能。</strong></li>
+<li>单元格显示是通过SendMessage的形式触发，感觉这种方式效率可能不如直接调用接口方法来的快(个人感觉)。<br>核心获取单元格大小的代码：<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">float</span> <span class="title">GetSize</span>(<span class="params">RectTransform item</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> size = contentSpacing;</span><br><span class="line">    <span class="keyword">if</span> (m_GridLayout != <span class="keyword">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        size += m_GridLayout.cellSize.y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        size += LayoutUtility.GetPreferredHeight(item);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>单元格初始化显示触发代码:<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">ProvideData</span>(<span class="params">Transform transform, <span class="keyword">int</span> idx</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    transform.SendMessage(<span class="string">"ScrollCellIndex"</span>, idx);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="FancyScrollView">FancyScrollView</h4><p><a href="https://github.com/setchi/FancyScrollView" target="_blank" rel="external">FancyScrollView</a><br><img src="/img/Unity/CellContainer/FancyScrollViewExhibition.png" alt="FancyScrollViewExhibition"><br>这一套是在UWA上看到的，貌似是日本开发者开发的。<br>通过上面的效果图可以看到，这一套实现了很强大的结合自定义动画或者Shader的单元格容器框架。<br>通过查看源代码可以发现，这一套非常强大的一点是通过自定义实现Scroller强大的滚动单元格容器需要的滚动相关的计算和回调支持。<br>上次代码只需要通过ScrollView和Scroller接口设置显示数据以及单元格模板等就能做到很好的单元格容器滚动效果。<br><strong>亮点分析:</strong></p>
+<ol>
+<li>没有依赖原生Scroller，自定义实现了Scroller，可以更加容易的支持循环列表。</li>
+<li>动态计算显示与否是通过当前滚动到的位置来判定，而单元格位置信息并没有耦合到单元格对象里，这样可以做到逻辑对象数量等于最大可显示的数量。</li>
+<li>更新显示回调(UpdatePosition)里有传入位置数据，可以基于位置数据做<strong>动画(Animator)或者Shader相关的表现展示</strong>。</li>
+<li>不依赖于Scroller，LayoutGroup等组件，开销更低</li>
+</ol>
+<p><strong>缺点分析:</strong></p>
+<ol>
+<li><strong>单元格不支持不同大小</strong>，都是按预制件统一大小来计算</li>
+</ol>
+<h4 id="super-scrollview">super-scrollview</h4><p><a href="https://github.com/baba-s/ugui-super-scrollview-example" target="_blank" rel="external">ugui-super-scrollview-example</a><br>这一套是Unity Asset Store里出售的一套滚动单元格插件。<br>让我们先来一张效果图展示：<br><img src="/img/Unity/CellContainer/SuperScrollViewExhibition.png" alt="SuperScrollViewExhibition"><br>从上面可以看到，SuperScrollView可以做到很多效果(e.g. 翻页，动态加载，动态大小变化，滚动到指定位置，动态增删单元格，不同朝向单元格容器显示……)<br>基本上能想到的单元格容器效果，这个插件都支持。<br>接下来让我们结合源码和实例来分析下这一套单元格容器的好坏:<br><strong>亮点分析:</strong></p>
+<ol>
+<li>单元格位置数据与逻辑对象分离，可以<strong>有效的减少逻辑单元格对象数量</strong>。</li>
+<li>自定义的单元格大小抽象，可以<strong>方便的自定义传入不同大小的单元格并显示</strong>。</li>
+<li>支持不同朝向的单元格容器显示(核心是反向初始化和计算单元格位置显示)</li>
+</ol>
+<p><strong>缺点分析:</strong></p>
+<ol>
+<li>使用了ScrollRect部分功能(特别是容器滚动部分)，这一点导致要做循环列表就很困难</li>
+</ol>
+<p><em>*后续本人的单元格容器很大程度上跟SuperScrollView更相近。</em></p>
+<h3 id="实战单元格容器">实战单元格容器</h3><p>通过学习了解市面上的单元格容器实现，可以看到有几个比较重要的点：</p>
+<ol>
+<li><strong>不依赖于ScrollRect滚动，自定义分离单元格位置数据和单元格逻辑对象，是实现循环列表和减少逻辑单元格对象数量的关键。</strong></li>
+<li><strong>大部分都不支持自动计算大小，需要手动计算传递单元格大小，相对来说没那么方便，但开销会小。</strong></li>
+</ol>
+<p>接下来让我们看看博主实战最终实现的效果:<br><img src="/img/Unity/CellContainer/CellContainerExhibition.png" alt="CellContainerExhibition"><br>第一张图展示了我支持的各类单元格容器，比如横向单元格容器，竖向单元格容器，横向网格单元格容器，竖向网格单元格容器，嵌套不同滚动方向的单元格容器。其中各类单元格都支持设置滚动到指定单元格索引，手动设定指定单元格指定大小，也支持基于ContentSizeFitter和LayoutGroup的自动计算大小。<br><img src="/img/Unity/CellContainer/CellContainerExhibition2.png" alt="CellContainerExhibition2"><br>第二章图展示了我支持的不同单元格朝向的构建方式，比如从左往右或者从右往左的横向单元格。从上往下或者从下往上的竖向单元格。<br><img src="/img/Unity/CellContainer/DepthScrollExhibition.png" alt="DepthScrollExhibition"><br>第三章图主要展示的是另一套单元格容器，支持左右两侧指定深度滚动的单元格容器。</p>
+<h4 id="深入讲解">深入讲解</h4><p>让我们通过横向单元格的面板来大致了解下单元格都支持哪些功能：<br>!(HorizontalContainerInspector)(/img/Unity/CellContainer/HorizontalContainerInspector.png)<br>从面板上可以看出，博主的单元格容器主要支持了以下几个功能：</p>
+<ol>
+<li>单元格滚动自动矫正以及相关速度设置(最终确保滚动到单元格正中心位置)</li>
+<li>支持不同朝向的单元格创建显示</li>
+<li>支持嵌套单元格容器(不同朝向的单元格容器可以嵌套滚动)</li>
+<li>支持单元格的间距和初始位置排版设置</li>
+<li>支持自动计算单元格大小(面板上没体现，但实际上基于ContentSizeFitter和LayOutGroup实现了自动计算大小—但这种方式开销比较大，博主本人也不是很推荐使用)</li>
+<li>支持编辑器下快速模拟创建单元格查看排版</li>
+</ol>
+<p><strong>亮点分析:</strong></p>
+<ol>
+<li><strong>支持嵌套单元格滚动(通过判定滚动方向手动向上传递滚动事件实现)</strong></li>
+<li><strong>支持手动传或者自动计算Size(推荐前者，后者开销比较大)</strong></li>
+</ol>
+<p><strong>缺点分析:</strong></p>
+<ol>
+<li><strong>单元格位置没有与单元格逻辑对象分离，导致即使单元格不满足显示条件也会创建总单元格数量的逻辑对象。</strong></li>
+<li><strong>滚动单元格依赖于ScrollRect的滚动回调，导致很难支持循环列表，同时需要一开始就计算出总的单元格大小之和。</strong></li>
+</ol>
+<p>手动计算Size是基于ContentSizeFitter和LayoutGroup组件，代码实现如下：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 立即获取ContentSizeFitter的有效Size</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Vector2 <span class="title">GetPreferredSize</span>(<span class="params"></span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (CellGO != <span class="keyword">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> recttransform = CellGO.transform <span class="keyword">as</span> RectTransform;</span><br><span class="line">        <span class="keyword">if</span> (mPrefabTemplateContentSizeFitter != <span class="keyword">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            LayoutRebuilder.ForceRebuildLayoutImmediate(recttransform);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Vector2(HandleSelfFittingAlongAxis(<span class="number">0</span>, recttransform), HandleSelfFittingAlongAxis(<span class="number">1</span>, recttransform));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> recttransform.sizeDelta;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> Vector2.zero;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Note:<br><strong>此方式开销比较大，不复杂的单元格100个初始化都要耗费50ms</strong></p>
+<h4 id="未来优化">未来优化</h4><ol>
+<li>分离单元格位置和单元格逻辑对象，确保只需创建可见的单元格逻辑对象，减少不必要的计算以及逻辑对象创建开销</li>
+<li>优化来不基于ScrollRect的滚动，为实现循环列表做准备</li>
+</ol>
+<h1 id="Reference">Reference</h1><p><a href="https://github.com/qiankanglai/LoopScrollRect" target="_blank" rel="external">LoopScrollRect</a><br><a href="https://github.com/setchi/FancyScrollView" target="_blank" rel="external">FancyScrollView</a><br><a href="https://github.com/baba-s/ugui-super-scrollview-example" target="_blank" rel="external">ugui-super-scrollview-example</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Unity/">Unity</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2020/06/08/Unity循环滚动列表/" data-title="Unity循环滚动列表 | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2020/05/29/数学与缓动/"  title="数学与缓动">
+ <strong>下一篇：</strong><br/> 
+ <span>数学与缓动
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2020/06/08/Unity循环滚动列表/" data-title="Unity循环滚动列表" data-url="http://tonytang1990.github.io/2020/06/08/Unity循环滚动列表/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#列表"><span class="toc-number">1.1.</span> <span class="toc-text">列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单元格容器"><span class="toc-number">1.2.</span> <span class="toc-text">单元格容器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单元格实现分析"><span class="toc-number">1.2.1.</span> <span class="toc-text">单元格实现分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LoopScrollRect"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">LoopScrollRect</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FancyScrollView"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">FancyScrollView</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#super-scrollview"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">super-scrollview</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实战单元格容器"><span class="toc-number">1.2.2.</span> <span class="toc-text">实战单元格容器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#深入讲解"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">深入讲解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#未来优化"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">未来优化</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
