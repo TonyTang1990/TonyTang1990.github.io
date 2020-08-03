@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Unity循环滚动列表 | 走停人生路</title>
+    <title>Unity滚动列表 | 走停人生路</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Tony Tang">
@@ -19,8 +19,8 @@
 动态添加(支持任何位置添加元素)(√)
 循环列表(">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unity循环滚动列表">
-<meta property="og:url" content="http://tonytang1990.github.io/2020/06/08/Unity循环滚动列表/index.html">
+<meta property="og:title" content="Unity滚动列表">
+<meta property="og:url" content="http://tonytang1990.github.io/2020/06/08/Unity滚动列表/index.html">
 <meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。
 列表什么是列表了？可以滚动，支持创建多个基于特定模板显示的单元格容器。
@@ -34,9 +34,9 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/CellContainerExhibition.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/CellContainerExhibition2.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/DepthScrollExhibition.png">
-<meta property="og:updated_time" content="2020-08-03T15:52:58.165Z">
+<meta property="og:updated_time" content="2020-08-03T16:00:21.108Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Unity循环滚动列表">
+<meta name="twitter:title" content="Unity滚动列表">
 <meta name="twitter:description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。
 列表什么是列表了？可以滚动，支持创建多个基于特定模板显示的单元格容器。
 列表的功能需求((√)表示本人已经实现的部分)？
@@ -103,7 +103,7 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2020/06/08/Unity循环滚动列表/" title="Unity循环滚动列表" itemprop="url">Unity循环滚动列表</a>
+      <a href="/2020/06/08/Unity滚动列表/" title="Unity滚动列表" itemprop="url">Unity滚动列表</a>
   </h1>
   <p class="article-author">By
        
@@ -119,7 +119,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#列表"><span class="toc-number">1.1.</span> <span class="toc-text">列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单元格容器"><span class="toc-number">1.2.</span> <span class="toc-text">单元格容器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单元格实现分析"><span class="toc-number">1.2.1.</span> <span class="toc-text">单元格实现分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LoopScrollRect"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">LoopScrollRect</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FancyScrollView"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">FancyScrollView</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#super-scrollview"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">super-scrollview</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实战单元格容器"><span class="toc-number">1.2.2.</span> <span class="toc-text">实战单元格容器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#深入讲解"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">深入讲解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#未来优化"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">未来优化</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#列表"><span class="toc-number">1.1.</span> <span class="toc-text">列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单元格容器"><span class="toc-number">1.2.</span> <span class="toc-text">单元格容器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单元格实现分析"><span class="toc-number">1.2.1.</span> <span class="toc-text">单元格实现分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LoopScrollRect"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">LoopScrollRect</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FancyScrollView"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">FancyScrollView</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#super-scrollview"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">super-scrollview</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实战单元格容器"><span class="toc-number">1.2.2.</span> <span class="toc-text">实战单元格容器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#深入讲解"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">深入讲解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#未来优化"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">未来优化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#源码分享"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">源码分享</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
 		
 		</div>
 		
@@ -185,7 +185,7 @@
 <li><strong>不依赖于ScrollRect滚动，自定义分离单元格位置数据和单元格逻辑对象，是实现循环列表和减少逻辑单元格对象数量的关键。</strong></li>
 <li><strong>大部分都不支持自动计算大小，需要手动计算传递单元格大小，相对来说没那么方便，但开销会小。</strong></li>
 </ol>
-<p>接下来让我们看看博主实战最终实现的效果:<br><img src="/img/Unity/CellContainer/CellContainerExhibition.png" alt="CellContainerExhibition"><br>第一张图展示了我支持的各类单元格容器，比如横向单元格容器，竖向单元格容器，横向网格单元格容器，竖向网格单元格容器，嵌套不同滚动方向的单元格容器。其中各类单元格都支持设置滚动到指定单元格索引，手动设定指定单元格指定大小，也支持基于ContentSizeFitter和LayoutGroup的自动计算大小。<br><img src="/img/Unity/CellContainer/CellContainerExhibition2.png" alt="CellContainerExhibition2"><br>第二章图展示了我支持的不同单元格朝向的构建方式，比如从左往右或者从右往左的横向单元格。从上往下或者从下往上的竖向单元格。<br><img src="/img/Unity/CellContainer/DepthScrollExhibition.png" alt="DepthScrollExhibition"><br>第三章图主要展示的是另一套单元格容器，支持左右两侧指定深度滚动的单元格容器。</p>
+<p>接下来让我们看看博主实战最终实现的效果(主要讲解第一套单元格):<br><img src="/img/Unity/CellContainer/CellContainerExhibition.png" alt="CellContainerExhibition"><br>第一张图展示了我支持的各类单元格容器，比如横向单元格容器，竖向单元格容器，横向网格单元格容器，竖向网格单元格容器，嵌套不同滚动方向的单元格容器。其中各类单元格都支持设置滚动到指定单元格索引，手动设定指定单元格指定大小，也支持基于ContentSizeFitter和LayoutGroup的自动计算大小。<br><img src="/img/Unity/CellContainer/CellContainerExhibition2.png" alt="CellContainerExhibition2"><br>第二章图展示了我支持的不同单元格朝向的构建方式，比如从左往右或者从右往左的横向单元格。从上往下或者从下往上的竖向单元格。<br><img src="/img/Unity/CellContainer/DepthScrollExhibition.png" alt="DepthScrollExhibition"><br>第三章图主要展示的是另一套单元格容器，支持左右两侧指定深度滚动的单元格容器。</p>
 <h4 id="深入讲解">深入讲解</h4><p>让我们通过横向单元格的面板来大致了解下单元格都支持哪些功能：<br>!(HorizontalContainerInspector)(/img/Unity/CellContainer/HorizontalContainerInspector.png)<br>从面板上可以看出，博主的单元格容器主要支持了以下几个功能：</p>
 <ol>
 <li>单元格滚动自动矫正以及相关速度设置(最终确保滚动到单元格正中心位置)</li>
@@ -211,6 +211,7 @@
 <li>分离单元格位置和单元格逻辑对象，确保只需创建可见的单元格逻辑对象，减少不必要的计算以及逻辑对象创建开销</li>
 <li>优化来不基于ScrollRect的滚动，为实现循环列表做准备</li>
 </ol>
+<h4 id="源码分享">源码分享</h4><p>待上传</p>
 <h1 id="Reference">Reference</h1><p><a href="https://github.com/qiankanglai/LoopScrollRect" target="_blank" rel="external">LoopScrollRect</a><br><a href="https://github.com/setchi/FancyScrollView" target="_blank" rel="external">FancyScrollView</a><br><a href="https://github.com/baba-s/ugui-super-scrollview-example" target="_blank" rel="external">ugui-super-scrollview-example</a></p>
   
 	</div>
@@ -229,7 +230,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://tonytang1990.github.io/2020/06/08/Unity循环滚动列表/" data-title="Unity循环滚动列表 | 走停人生路" data-tsina="null" class="share clearfix">
+	  <div data-url="http://tonytang1990.github.io/2020/06/08/Unity滚动列表/" data-title="Unity滚动列表 | 走停人生路" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -255,7 +256,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2020/06/08/Unity循环滚动列表/" data-title="Unity循环滚动列表" data-url="http://tonytang1990.github.io/2020/06/08/Unity循环滚动列表/"></div>
+	<div class="ds-thread" data-thread-key="2020/06/08/Unity滚动列表/" data-title="Unity滚动列表" data-url="http://tonytang1990.github.io/2020/06/08/Unity滚动列表/"></div>
 </section>
 
 
@@ -265,7 +266,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#列表"><span class="toc-number">1.1.</span> <span class="toc-text">列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单元格容器"><span class="toc-number">1.2.</span> <span class="toc-text">单元格容器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单元格实现分析"><span class="toc-number">1.2.1.</span> <span class="toc-text">单元格实现分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LoopScrollRect"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">LoopScrollRect</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FancyScrollView"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">FancyScrollView</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#super-scrollview"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">super-scrollview</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实战单元格容器"><span class="toc-number">1.2.2.</span> <span class="toc-text">实战单元格容器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#深入讲解"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">深入讲解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#未来优化"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">未来优化</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#列表"><span class="toc-number">1.1.</span> <span class="toc-text">列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单元格容器"><span class="toc-number">1.2.</span> <span class="toc-text">单元格容器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单元格实现分析"><span class="toc-number">1.2.1.</span> <span class="toc-text">单元格实现分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LoopScrollRect"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">LoopScrollRect</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FancyScrollView"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">FancyScrollView</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#super-scrollview"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">super-scrollview</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实战单元格容器"><span class="toc-number">1.2.2.</span> <span class="toc-text">实战单元格容器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#深入讲解"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">深入讲解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#未来优化"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">未来优化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#源码分享"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">源码分享</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
  
   </div>
 
