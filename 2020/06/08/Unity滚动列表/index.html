@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/CellContainerExhibition2.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/DepthScrollExhibition.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/CellContainerUML.png">
-<meta property="og:updated_time" content="2020-08-04T16:45:58.099Z">
+<meta property="og:updated_time" content="2020-08-04T17:29:32.163Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity滚动列表">
 <meta name="twitter:description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。
@@ -215,7 +215,7 @@
 <p>自动计算Size是基于ContentSizeFitter和LayoutGroup组件，代码实现如下：<br>BaseCell.cs(<strong>自动计算单元格大小的代码</strong>)<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 立即获取ContentSizeFitter的有效Size</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Vector2 <span class="title">GetPreferredSize</span>(<span class="params"></span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (CellGO != <span class="keyword">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> recttransform = CellGO.transform <span class="keyword">as</span> RectTransform;</span><br><span class="line">        <span class="keyword">if</span> (mPrefabTemplateContentSizeFitter != <span class="keyword">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            LayoutRebuilder.ForceRebuildLayoutImmediate(recttransform);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Vector2(HandleSelfFittingAlongAxis(<span class="number">0</span>, recttransform), HandleSelfFittingAlongAxis(<span class="number">1</span>, recttransform));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> recttransform.sizeDelta;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> Vector2.zero;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>自动计算单元格大小的核心思想是利用ContentSizeFitter和LayoutGroup通过强制走一遍逻辑后强制触发单帧排版重新计算，然后通过LayoutUtility.GetMinSize()或者LayoutUtility.GetPreferredSize()来获取到真实的排版后单元格大小。</p>
 <p>Note:<br><strong>此方式开销比较大，不复杂的单元格100个初始化都要耗费50ms</strong></p>
-<p>因为单元格的流程和细节还是比较多，这里讲解的不太全面，很多地方没有说到，具体详细的实现大家可以去看源代码，博客最后会给出相关链接。</p>
+<p>因为单元格的流程和细节还是比较多，这里讲解的不太全面，很多地方没有说到，但考虑到项目还在用这两套单元格滚动，所以展示不打算放出源码，等未来实际成熟再分享源码。</p>
 <p><strong>亮点分析:</strong></p>
 <ol>
 <li><strong>支持嵌套单元格滚动(通过判定滚动方向手动向上传递滚动事件实现)</strong></li>
@@ -231,8 +231,13 @@
 <li>分离单元格位置和单元格逻辑对象，确保只需创建可见的单元格逻辑对象，减少不必要的计算以及逻辑对象创建开销</li>
 <li>设计成不基于ScrollRect的滚动机制，为实现循环列表做准备</li>
 </ol>
-<h4 id="源码分享">源码分享</h4><p>待上传</p>
-<h1 id="Reference">Reference</h1><p><a href="https://github.com/qiankanglai/LoopScrollRect" target="_blank" rel="external">LoopScrollRect</a><br><a href="https://github.com/setchi/FancyScrollView" target="_blank" rel="external">FancyScrollView</a><br><a href="https://github.com/baba-s/ugui-super-scrollview-example" target="_blank" rel="external">ugui-super-scrollview-example</a></p>
+<h4 id="源码分享">源码分享</h4><p><strong>待分享</strong></p>
+<p>Note:</p>
+<ol>
+<li>源代码里默认带了一套组件绑定(结合代码生成)的方案，感兴趣的朋友可以自己了解下</li>
+<li>源代码里也默认带了ObjectPool和GameObjectPool两种对象池的实现，感兴趣的朋友可以自己了解下</li>
+</ol>
+<h1 id="Reference">Reference</h1><p><a href="https://github.com/qiankanglai/LoopScrollRect" target="_blank" rel="external">LoopScrollRect</a><br><a href="https://github.com/setchi/FancyScrollView" target="_blank" rel="external">FancyScrollView</a><br><a href="https://github.com/baba-s/ugui-super-scrollview-example" target="_blank" rel="external">ugui-super-scrollview-example</a><br><a href="http://www.xuanyusong.com/archives/4234" target="_blank" rel="external">Unity3D研究院之ContentSizeFitter同步立即响应回调</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
