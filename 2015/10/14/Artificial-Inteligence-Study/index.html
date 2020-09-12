@@ -34,8 +34,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/Adjacency_List.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/SPT_Short_Path_Tree.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/GameStateMachine.png">
-<meta property="og:image" content="http://tonytang1990.github.io/img/AI/BehaviorTreeHierachy.png">
-<meta property="og:updated_time" content="2020-08-23T13:03:27.041Z">
+<meta property="og:updated_time" content="2020-09-12T15:53:08.173Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Artificial-Inteligence-Study">
 <meta name="twitter:description" content="Programming Game AI by Example图的秘密图的术语路径节点叫做节点(node)连接节点的路线被叫做边(edge)权包含了从一个节点移动到另一个节点所需要的开销信息
@@ -120,7 +119,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Programming_Game_AI_by_Example"><span class="toc-number">1.</span> <span class="toc-text">Programming Game AI by Example</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#图的秘密"><span class="toc-number">1.1.</span> <span class="toc-text">图的秘密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图的术语"><span class="toc-number">1.1.1.</span> <span class="toc-text">图的术语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图的分类："><span class="toc-number">1.1.2.</span> <span class="toc-text">图的分类：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图的定义："><span class="toc-number">1.1.3.</span> <span class="toc-text">图的定义：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AI"><span class="toc-number">2.</span> <span class="toc-text">AI</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#状态机"><span class="toc-number">2.1.</span> <span class="toc-text">状态机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分层状态机"><span class="toc-number">2.2.</span> <span class="toc-text">分层状态机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#行为树"><span class="toc-number">2.3.</span> <span class="toc-text">行为树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#节点分类"><span class="toc-number">2.3.1.</span> <span class="toc-text">节点分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点状态"><span class="toc-number">2.3.2.</span> <span class="toc-text">节点状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点选择"><span class="toc-number">2.3.3.</span> <span class="toc-text">节点选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#行为树更新"><span class="toc-number">2.3.4.</span> <span class="toc-text">行为树更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#行为中断"><span class="toc-number">2.3.5.</span> <span class="toc-text">行为中断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#行为树实战"><span class="toc-number">2.3.6.</span> <span class="toc-text">行为树实战</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数据管理"><span class="toc-number">2.3.6.1.</span> <span class="toc-text">数据管理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#抽象行为树"><span class="toc-number">2.3.6.2.</span> <span class="toc-text">抽象行为树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#行为中断-1"><span class="toc-number">2.3.6.3.</span> <span class="toc-text">行为中断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#节点编辑器"><span class="toc-number">2.3.6.4.</span> <span class="toc-text">节点编辑器</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考书籍"><span class="toc-number">3.</span> <span class="toc-text">参考书籍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Programming_Game_AI_by_Example"><span class="toc-number">1.</span> <span class="toc-text">Programming Game AI by Example</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#图的秘密"><span class="toc-number">1.1.</span> <span class="toc-text">图的秘密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图的术语"><span class="toc-number">1.1.1.</span> <span class="toc-text">图的术语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图的分类："><span class="toc-number">1.1.2.</span> <span class="toc-text">图的分类：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图的定义："><span class="toc-number">1.1.3.</span> <span class="toc-text">图的定义：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AI"><span class="toc-number">2.</span> <span class="toc-text">AI</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#状态机"><span class="toc-number">2.1.</span> <span class="toc-text">状态机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分层状态机"><span class="toc-number">2.2.</span> <span class="toc-text">分层状态机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#行为树"><span class="toc-number">2.3.</span> <span class="toc-text">行为树</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考书籍"><span class="toc-number">3.</span> <span class="toc-text">参考书籍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
 		
 		</div>
 		
@@ -213,94 +212,11 @@
 <p>结论：</p>
 <p>FSM(有限状态机)更适合于状态数量不多不复杂的情况(e.g. 游戏状态分类)</p>
 <h2 id="分层状态机">分层状态机</h2><p><a href="https://www.twblogs.net/a/5b7fb24f2b717767c6b1124d/zh-cn" target="_blank" rel="external">详细HFSM参考</a></p>
-<h2 id="行为树">行为树</h2><p>行为树是本章AI决策的重点，因为行为树解决了FSM状态过于复杂后维护成本高不利于扩展的问题。</p>
-<p>行为树首先要知道的一点，是一颗树形结构，树里包含控制决策走向的控制节点和负责展示表现的叶子结点。</p>
-<p>行为树抽象一个角色的简单AI角色逻辑如下：</p>
-<p><img src="/img/AI/BehaviorTreeHierachy.png" alt="BehaviorTreeHierachy"></p>
-<p>优点：</p>
-<ol>
-<li>可视化决策逻辑</li>
-<li>可复用控制节点</li>
-<li>逻辑和实现低耦合(叶子结点才是与上层逻辑挂钩的)</li>
-</ol>
-<h3 id="节点分类">节点分类</h3><p>从设计上来说节点功能划分为两类：</p>
-<ol>
-<li>决策节点(决定行为树走向的非叶子节点)</li>
-<li>行为节点(叶子节点决定最后的行为表现)</li>
-</ol>
-<p>决策节点分类：</p>
-<ol>
-<li>组合节点(序列节点(相当于and)、选择节点(相当于or)、并行节点(相当于for循环)等)</li>
-<li>装饰节点(可以作为某种节点的一种额外的附加条件，如允许次数限制，时间限制，错误处理等。Note:<strong>装饰节点只有一个子节点</strong>)</li>
-</ol>
-<p>行为节点分类：</p>
-<ol>
-<li>条件节点(控制节点结果)</li>
-<li>动作节点(实际的行为表现)</li>
-</ol>
-<h3 id="节点状态">节点状态</h3><p>所有的节点都有两种状态：</p>
-<ol>
-<li>运行中(Running)</li>
-<li>运行完毕(Success / Failed)</li>
-</ol>
-<p>正是通过上面的两种状态来实现行为树的行为决策的(所有节点都有返回状态)</p>
-<h3 id="节点选择">节点选择</h3><p>决策控制选择节点时需要有依据，这里的依据可以看做是选择某个节点的一个前提条件(Precondition)，前提可以让我们快速判定分支避免不必要的子节点判定。控制节点相当于默认返回True，叶子节点可以作为选择节点的依据。</p>
-<p>关于节点选择更多的优化(e.g. 1. 带优先级的选择 2. 带权值的选择……)参考：</p>
-<p><a href="http://www.aisharing.com/archives/99" target="_blank" rel="external">行为树（Behavior Tree）实践（2）– 进一步的讨论</a></p>
-<h3 id="行为树更新">行为树更新</h3><p>行为树更新一般有两种方案：</p>
-<ol>
-<li>每次都从根节点运行</li>
-<li><strong>每次从上次运行的节点运行</strong></li>
-</ol>
-<p>方案一优点是可以很轻松的实现根据实时数据判定最新行为树分支，缺点是每次都需要遍历整棵树开销大。</p>
-<p>方案二从上次运行的节点运行可以避免每次整棵树遍历的开销，但我们需要解决条件不满足时打断当前运行节点行为的机制，否则当条件不满足时，叶节点还是会执行完自身才能出发新的判定。</p>
-<p><strong>这里我们选择方案2</strong></p>
-<h3 id="行为中断">行为中断</h3><p>前面我们已经选择了方案2，这里就要考虑一下如何实现行为打断了。</p>
-<p>从前面可以看出行为树节点是有Running状态的，也就是说只要满足子节点的层层条件后，可以持续执行一段时间(比如寻找目标地点寻路过去这段时间都是Running)。</p>
-<p>试想一下游戏过程中所有的条件数据都是在实时变化的，执行寻找目标地点的条件可以在任何时候出现条件不满足的情况，那么我们如何打断正在执行的Running节点，让行为树判定执行一条符合条件的行为分支了？</p>
-<p>通过了解，BehaviorDesigner里存在4中类型的中断：</p>
-<ol>
-<li><p>None</p>
-<ol>
-<li>Self</li>
-<li>Lower Priority</li>
-<li>Both </li>
-</ol>
-</li>
-</ol>
-<p>详情参考:<a href="https://blog.csdn.net/FireworksFlower/article/details/99655101" target="_blank" rel="external">行为树 中断的理解</a></p>
-<p>核心都是通过标识决策节点的打断类型以及配合设置相应条件节点来实现额外的条件判定，从而实现其他子节点运行时也可以动态判定其他节点条件来实现打断运行节点。</p>
-<p>BehaviorDesigner节点有抽象出节点优先级概念(大概就是树形结构的层级顺序优先级)。</p>
-<p>这里只是为了实现一个简易版的行为树，所以就不实现那么复杂的打断机制了。</p>
-<p>方案：</p>
-<p><strong>通过标识决策节点的打断类型(现阶段只允许两种：1. 不允许打断 2. 允许打断)，实现子节点运行时也判定所有子条件节点来判定是否需要打断当前正在运行的节点(类似于每次都判定前置条件)。</strong></p>
-<h3 id="行为树实战">行为树实战</h3><p>目标：</p>
-<ol>
-<li>实现一个简易的行为树，深入理解行为树的原理和实现</li>
-<li>配套一个简易的节点编辑器(支持可视化编辑和调试)</li>
-</ol>
-<p>实现：</p>
-<ol>
-<li>目标1通过自行实现一个简易版</li>
-<li>目标2基于Unity原生GUI API来实现可视化节点编辑器</li>
-</ol>
-<h4 id="数据管理">数据管理</h4><p><a href="https://www.cnblogs.com/KillerAery/p/10054558.html" target="_blank" rel="external">黑板模式</a></p>
-<p>可以简单的理解成一个共享数据的地方。</p>
-<h4 id="抽象行为树">抽象行为树</h4><p>待添加……</p>
-<h4 id="行为中断-1">行为中断</h4><p>待添加……</p>
-<h4 id="节点编辑器">节点编辑器</h4><p>待添加……</p>
+<h2 id="行为树">行为树</h2><p>行为树是本章AI决策的重点，考虑到篇幅过长，所以另起一篇博客来详解行为树在Unity里的实战学习。</p>
+<p>详情参考:</p>
+<p><a href="[http://tonytang1990.github.io/2020/09/12/%E8%A1%8C%E4%B8%BA%E6%A0%91-Unity/](http://tonytang1990.github.io/2020/09/12/行为树-Unity/">行为树-Unity</a>)</p>
 <h1 id="参考书籍">参考书籍</h1><p>《Programming Game AI by Example》 — Mat Buckland<br>《Artificial Intelligence for Game》 — Ian Millington</p>
-<h1 id="Reference">Reference</h1><p><a href="http://www.aisharing.com/archives/90" target="_blank" rel="external">行为树（Behavior Tree）实践（1）– 基本概念</a></p>
-<p><a href="http://www.aisharing.com/archives/99" target="_blank" rel="external">行为树（Behavior Tree）实践（2）– 进一步的讨论</a></p>
-<p><a href="http://www.aisharing.com/archives/517" target="_blank" rel="external">用800行代码做个行为树（Behavior Tree）的库（1）</a></p>
-<p><a href="http://www.aisharing.com/archives/522" target="_blank" rel="external">用800行代码做个行为树（Behavior Tree）的库（2）</a></p>
-<p><a href="https://www.veinin.com/2018/08/07/ai_behavior_tree_design_and_implementation_01/" target="_blank" rel="external">AI 行为树设计与实现-理论篇</a></p>
-<p><a href="https://www.twblogs.net/a/5b7fb24f2b717767c6b1124d/zh-cn" target="_blank" rel="external">FSM（状态机）、HFSM（分层状态机）、BT（行为树）的区别</a></p>
-<p><a href="https://domicat.me/2017/03/behavior-tree-1/" target="_blank" rel="external">行为树及其实现</a></p>
-<p><a href="https://blog.csdn.net/qq_31850729/article/details/69944324" target="_blank" rel="external">unity 行为树 简单实现</a></p>
-<p><a href="https://blog.csdn.net/fg5823820/article/details/8750606" target="_blank" rel="external">基于Unity行为树设计与实现的尝试</a></p>
-<p><a href="https://www.cnblogs.com/KillerAery/p/10054558.html" target="_blank" rel="external">游戏设计模式——黑板模式</a></p>
-<p>[行为树 中断的理解](</p>
+<h1 id="Reference">Reference</h1><p><a href="https://www.twblogs.net/a/5b7fb24f2b717767c6b1124d/zh-cn" target="_blank" rel="external">FSM（状态机）、HFSM（分层状态机）、BT（行为树）的区别</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -362,7 +278,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Programming_Game_AI_by_Example"><span class="toc-number">1.</span> <span class="toc-text">Programming Game AI by Example</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#图的秘密"><span class="toc-number">1.1.</span> <span class="toc-text">图的秘密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图的术语"><span class="toc-number">1.1.1.</span> <span class="toc-text">图的术语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图的分类："><span class="toc-number">1.1.2.</span> <span class="toc-text">图的分类：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图的定义："><span class="toc-number">1.1.3.</span> <span class="toc-text">图的定义：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AI"><span class="toc-number">2.</span> <span class="toc-text">AI</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#状态机"><span class="toc-number">2.1.</span> <span class="toc-text">状态机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分层状态机"><span class="toc-number">2.2.</span> <span class="toc-text">分层状态机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#行为树"><span class="toc-number">2.3.</span> <span class="toc-text">行为树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#节点分类"><span class="toc-number">2.3.1.</span> <span class="toc-text">节点分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点状态"><span class="toc-number">2.3.2.</span> <span class="toc-text">节点状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点选择"><span class="toc-number">2.3.3.</span> <span class="toc-text">节点选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#行为树更新"><span class="toc-number">2.3.4.</span> <span class="toc-text">行为树更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#行为中断"><span class="toc-number">2.3.5.</span> <span class="toc-text">行为中断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#行为树实战"><span class="toc-number">2.3.6.</span> <span class="toc-text">行为树实战</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数据管理"><span class="toc-number">2.3.6.1.</span> <span class="toc-text">数据管理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#抽象行为树"><span class="toc-number">2.3.6.2.</span> <span class="toc-text">抽象行为树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#行为中断-1"><span class="toc-number">2.3.6.3.</span> <span class="toc-text">行为中断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#节点编辑器"><span class="toc-number">2.3.6.4.</span> <span class="toc-text">节点编辑器</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考书籍"><span class="toc-number">3.</span> <span class="toc-text">参考书籍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Programming_Game_AI_by_Example"><span class="toc-number">1.</span> <span class="toc-text">Programming Game AI by Example</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#图的秘密"><span class="toc-number">1.1.</span> <span class="toc-text">图的秘密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图的术语"><span class="toc-number">1.1.1.</span> <span class="toc-text">图的术语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图的分类："><span class="toc-number">1.1.2.</span> <span class="toc-text">图的分类：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图的定义："><span class="toc-number">1.1.3.</span> <span class="toc-text">图的定义：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AI"><span class="toc-number">2.</span> <span class="toc-text">AI</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#状态机"><span class="toc-number">2.1.</span> <span class="toc-text">状态机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分层状态机"><span class="toc-number">2.2.</span> <span class="toc-text">分层状态机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#行为树"><span class="toc-number">2.3.</span> <span class="toc-text">行为树</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考书籍"><span class="toc-number">3.</span> <span class="toc-text">参考书籍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
  
   </div>
 
