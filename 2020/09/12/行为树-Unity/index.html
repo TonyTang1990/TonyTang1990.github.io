@@ -4,22 +4,23 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>走停人生路</title>
+    <title>行为树-Unity | 走停人生路</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Tony Tang">
     
 
     
-    <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="走停人生路">
-<meta property="og:url" content="http://tonytang1990.github.io/index.html">
+    <meta name="description" content="前言本章节博客是在项目需求设计支持Lua AI系统的前提下，驱动深入学习行为树设计实现。关于AI的相关基础概念学习可以参考:Programming Game AI by Example。而本章节的重点就是行为树，最终目的是实现一份Unity里能够支持项目级使用的支持Lua测使用AI的行为树框架设计。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="行为树-Unity">
+<meta property="og:url" content="http://tonytang1990.github.io/2020/09/12/行为树-Unity/index.html">
 <meta property="og:site_name" content="走停人生路">
-<meta property="og:description">
+<meta property="og:description" content="前言本章节博客是在项目需求设计支持Lua AI系统的前提下，驱动深入学习行为树设计实现。关于AI的相关基础概念学习可以参考:Programming Game AI by Example。而本章节的重点就是行为树，最终目的是实现一份Unity里能够支持项目级使用的支持Lua测使用AI的行为树框架设计。">
+<meta property="og:updated_time" content="2020-09-12T13:52:12.565Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="走停人生路">
-<meta name="twitter:description">
+<meta name="twitter:title" content="行为树-Unity">
+<meta name="twitter:description" content="前言本章节博客是在项目需求设计支持Lua AI系统的前提下，驱动深入学习行为树设计实现。关于AI的相关基础概念学习可以参考:Programming Game AI by Example。而本章节的重点就是行为树，最终目的是实现一份Unity里能够支持项目级使用的支持Lua测使用AI的行为树框架设计。">
 
     
     <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
@@ -73,235 +74,89 @@
 </div>
     </header>
     <div id="container">
-      <div id="main">
-
+      <div id="main" class="post" itemscope itemprop="blogPost">
   
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2020/09/12/行为树-Unity/" title="行为树-Unity" itemprop="url">
-  
-    <h1 itemprop="name">行为树-Unity</h1>
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
     
-     
-           <p itemprop="description" >前言本章节博客是在项目需求设计支持Lua AI系统的前提下，驱动深入学习行为树设计实现。关于AI的相关基础概念学习可以参考:Programming Game AI by Example。而本章节的重点就是行为树，最终目的是实现一份Unity里能够支持项目级使用的支持Lua测使用A</p>
-        
+      <a href="/2020/09/12/行为树-Unity/" title="行为树-Unity" itemprop="url">行为树-Unity</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2020-09-12T13:47:46.000Z" itemprop="datePublished"> 發表於 2020-09-12</time>
     
-    <time datetime="2020-09-12T13:47:46.000Z" itemprop="datePublished">2020-09-12</time>
-  </a>
-</section>
-
-
-
-
-
-
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="前言">前言</h1><p>本章节博客是在项目需求设计支持Lua AI系统的前提下，驱动深入学习行为树设计实现。关于AI的相关基础概念学习可以参考:<a href="http://tonytang1990.github.io/2015/10/14/Artificial-Inteligence-Study/#Programming_Game_AI_by_Example">Programming Game AI by Example</a>。而本章节的重点就是行为树，最终目的是实现一份Unity里能够支持项目级使用的支持Lua测使用AI的行为树框架设计。</p>
   
-<section class="post" itemscope itemprop="blogitem">
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
   
-    <a href="/2020/06/08/Unity滚动列表/" title="Unity滚动列表" itemprop="url">
-  
-    <h1 itemprop="name">Unity滚动列表</h1>
-    
-     
-           <p itemprop="description" >前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。
-列表什么是列表了？可以滚动，支持创建多个基于特定模板显示的单元格容器。
-列表的功能需求((√</p>
-        
-    
-    <time datetime="2020-06-08T14:37:17.000Z" itemprop="datePublished">2020-06-08</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2020/05/29/数学与缓动/" title="数学与缓动" itemprop="url">
-  
-    <h1 itemprop="name">数学与缓动</h1>
-    
-     
-           <p itemprop="description" >前言本章节博客是在使用一段时间Dotween后，对于Dotween是如何实现各种不同的缓动类型效果比较好奇。从本片博客会了解线性方程与线性代数之间的关系，以及数学(线性方程)在缓动中的实际应用和数学公式是如何输出显示的。本博客着重于学习数学在插值动画上的运用学习，博客末尾会给出实</p>
-        
-    
-    <time datetime="2020-05-29T01:15:31.000Z" itemprop="datePublished">2020-05-29</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2020/02/01/Unity嵌套预制件/" title="Unity嵌套预制件" itemprop="url">
-  
-    <h1 itemprop="name">Unity嵌套预制件</h1>
-    
-     
-           <p itemprop="description" >前言本篇文章是为了记录学习Unity官方最新推出的嵌套预制件工作流的相关知识，深入理解新版嵌套预制件的设计思路与使用工作流。
-达到以下几个目标：
-
-理解新版嵌套预制件带来的好处
-如何避免Unity版本升级过程中预制件相关操作工具不兼容等问题。
-设计新的预制件相关工具时考虑新老版本</p>
-        
-    
-    <time datetime="2020-01-31T16:27:00.000Z" itemprop="datePublished">2020-02-01</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2019/11/25/Unity官方插件/" title="Unity官方插件" itemprop="url">
-  
-    <h1 itemprop="name">Unity官方插件</h1>
-    
-     
-           <p itemprop="description" >前言本篇文章是为了记录学习Unity官方一些好的第三方插件，作为基础的学习了解，为未来遇到问题思考解决方案时拓宽思路。
-Sprite Atlas依然从What，Why，How三个角度了学习了解Sprite Atlas。
-WhatSprite Atlas是官方Sprite Pack</p>
-        
-    
-    <time datetime="2019-11-25T13:27:18.000Z" itemprop="datePublished">2019-11-25</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2019/05/20/网络通信和服务器学习/" title="网络通信和服务器学习" itemprop="url">
-  
-    <h1 itemprop="name">网络通信和服务器学习</h1>
-    
-     
-           <p itemprop="description" >前言本章节是为了记录学习游戏开发过程中的服务器搭建以及前后端网络通信相关的知识点，游戏开发中联网是必不可少的，无论是从游戏热更新(服务器通知版本以及热更相关信息)，还是游戏社交(微信分享，联机组队)，还是防破解(服务器校验)都离不开网络通信和服务器。
-本人是前端程序，对后端服务器</p>
-        
-    
-    <time datetime="2019-05-20T15:29:25.000Z" itemprop="datePublished">2019-05-20</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2019/05/15/Odin插件/" title="Odin插件" itemprop="url">
-  
-    <h1 itemprop="name">Odin插件</h1>
-    
-     
-           <p itemprop="description" >前言本篇文章是为了记录学习使用Unity第三方插件Odin，通过深入学习Odin，加快平时我们编写编辑器工具的效率。
-OdinOdin是一款可以帮助我们快速制作友好编辑器界面的工具。
-功能特性Serialize Anything那么什么是序列化？熟悉二进制导表工具和Proto协议</p>
-        
-    
-    <time datetime="2019-05-15T13:33:57.000Z" itemprop="datePublished">2019-05-15</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2019/05/03/热更新/" title="热更新" itemprop="url">
-  
-    <h1 itemprop="name">热更新</h1>
-    
-     
-           <p itemprop="description" >前言本篇文章是为了记录学习游戏开发过程中，版本强更和资源热更相关知识。
-关于资源AssetBundle加载模块相关学习参考:Unity Resource ManagerAssetBundle资源打包加载管理
-热更新首先还是让我们从What，Why，How三个点来学习理解热更新。
-</p>
-        
-    
-    <time datetime="2019-05-03T05:30:16.000Z" itemprop="datePublished">2019-05-03</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2019/04/25/优化/" title="优化篇" itemprop="url">
-  
-    <h1 itemprop="name">优化篇</h1>
-    
-     
-           <p itemprop="description" >前言本章节主要目的是学习记录游戏开发中各个模块里的优化知识，深入理解项目设计里的各种底层知识点，避免前期不考虑后期优化成灾的情况。
-Note:
-
-此处并不是要宣扬优化，项目初期不推崇过度优化毕竟产品做出来才是王道，而是通过深入理解核心知识点在项目初期做出正确的设计来避免没必要的后</p>
-        
-    
-    <time datetime="2019-04-25T06:41:00.000Z" itemprop="datePublished">2019-04-25</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2019/04/19/版本控制/" title="版本控制" itemprop="url">
-  
-    <h1 itemprop="name">版本控制</h1>
-    
-     
-           <p itemprop="description" >前言本篇文章是为了记录版本控制相关知识，着重学习Git的使用。
-版本控制在项目开发过程中，对项目代码进行维护保存，对于多个人协同工作记录下每一次的变更记录，方便日后查看以及恢复。主流的版本管理工具比如Tortoise SVN,P4,Git等。
-集中式 vs 分布式这里不对版本管理</p>
-        
-    
-    <time datetime="2019-04-19T04:00:00.000Z" itemprop="datePublished">2019-04-19</time>
-  </a>
-</section>
-
-
-
-
-
-
-
-  <nav id="page-nav" class="clearfix unexpand">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
-  </nav>
+  <span></span> <a href="/tags/AI/">AI</a>
+  </div>
 
 </div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2020/09/12/行为树-Unity/" data-title="行为树-Unity | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2020/06/08/Unity滚动列表/"  title="Unity滚动列表">
+ <strong>下一篇：</strong><br/> 
+ <span>Unity滚动列表
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2020/09/12/行为树-Unity/" data-title="行为树-Unity" data-url="http://tonytang1990.github.io/2020/09/12/行为树-Unity/"></div>
+</section>
+
+
+</div>  
       <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li></ol>
+ 
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
@@ -539,12 +394,89 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
@@ -617,4 +549,4 @@ $(document).ready(function(){
 <!-- Tiny_search End -->
 
   </body>
- </html>
+</html>
