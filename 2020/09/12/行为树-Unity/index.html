@@ -23,13 +23,13 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/BehaviourTree/GenericMenu.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/BehaviourTree/BTOperationPanel.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/BehaviourTree/GenericMenu.png">
-<meta property="og:image" content="http://tonytang1990.github.io/img/AI/BehaviourTree/BTNodeEditor.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/BehaviourTree/BTEditorNode.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/BehaviourTree/BTNodeConnectLine.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/BehaviourTree/BTJsonData.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/BehaviourTree/BTNodeEditor.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/BehaviourTree/BehaviourTreeUML1.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/BehaviourTree/BehaviourTreeUML2.png">
-<meta property="og:updated_time" content="2020-09-13T01:59:28.260Z">
+<meta property="og:updated_time" content="2020-09-13T02:01:39.355Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="行为树-Unity">
 <meta name="twitter:description" content="前言本章节博客是在项目需求设计支持Lua AI系统的前提下，驱动深入学习行为树设计实现。关于AI的相关基础概念学习可以参考:Programming Game AI by Example。而本章节的重点就是行为树，最终目的是实现一份Unity里能够支持项目级使用的支持Lua测使用AI的行为树框架设计。源代码考虑到公司正在使用所以暂时不放源码，大家可以参考设计思路自行实现。
@@ -200,7 +200,7 @@
 <li>Event — UnityGUI事件响应编写接口类<br> <img src="/img/AI/BehaviourTree/GenericMenu.png" alt="节点编辑器操作响应"></li>
 <li>GUILayout.BeginArea() GUILayout.Toolbar() GUILayout.EndArea() EditorGUILayout.<em>*</em> — GUI自定义面板UI显示接口<br> <img src="/img/AI/BehaviourTree/BTOperationPanel.png" alt="节点编辑器操作面板"></li>
 <li>GenericMenu — Unity编写自定义菜单的类<br> <img src="/img/AI/BehaviourTree/GenericMenu.png" alt="行为树编辑器菜单"></li>
-<li>BeginWindows() GUI.Window() EndWindows() GUI.DragWindow() — Unity编写节点窗口的类(支持拖拽的节点)<br> <img src="/img/AI/BehaviourTree/BTNodeEditor.png" alt="行为树节点窗口"></li>
+<li>BeginWindows() GUI.Window() EndWindows() GUI.DragWindow() — Unity编写节点窗口的类(支持拖拽的节点)<br> <img src="/img/AI/BehaviourTree/BTEditorNode.png" alt="行为树节点窗口"></li>
 <li>Handles.DrawBezier() — 绘制节点曲线(Bezier曲线)连接线的接口<br> <img src="/img/AI/BehaviourTree/BTNodeConnectLine.png" alt="行为树节点连线"></li>
 <li>JsonUtility.ToJson() JsonUtility.FromJson<t>() — Unity Json数据序列化反序列化存储<br> <img src="/img/AI/BehaviourTree/BTJsonData.png" alt="行为树序列化反序列化存储"></t></li>
 </ol>
