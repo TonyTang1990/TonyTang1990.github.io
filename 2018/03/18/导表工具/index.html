@@ -60,7 +60,7 @@ Why那么为什么需要数据">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Data-Config-Automation/XbufferExcelToDataTimeConsume.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Data-Config-Automation/Profiler_GetMonoUsedSizeLong_MemoryUsing.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Data-Config-Automation/AndroidDevice_Profiler_GetMonoUsedSizeLong_MemoryUsing.png">
-<meta property="og:updated_time" content="2019-05-15T13:55:11.197Z">
+<meta property="og:updated_time" content="2021-03-18T13:56:00.819Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="导表工具">
 <meta name="twitter:description" content="Introduction游戏开发过程中，避免不了和数据打交道，数据是游戏最基础也是很重要的一部分。本篇文章正式为了学习了解游戏开发过程中关于数据配置自动化导表生成代码等一系列自动化相关的知识而写。
@@ -651,7 +651,7 @@ Mono 2.x
 <h4 id="优化点">优化点</h4><p>未来需要支持和优化的工作点：</p>
 <ol>
 <li>支持多维数据的配置(放弃支持)<br> 方案1：<pre><code><span class="bullet">- </span>扩展到多维不定长数组
-</code></pre> 问题：<pre><code>-<span class="ruby"> 每一个维度上的数组长度都是不定长的，用多维数组存储会伴随多维数组的维度以及各维度的数量级增长，导致各维度各数量级上的长度信息存储成指数型增长。
+</code></pre> 问题：<pre><code>-<span class="ruby"> 每一个维度上的数组长度都是不定长的，用多维数组存储会伴随多维数组的维度以及各维度的数量级增长，导致各维度各数量级上的长度信息存储过多(占用过多的二进制字节数据)。
 </span>-<span class="ruby"> 同时会需要不定长的多维数组来支持，序列化和反序列化都很复杂
 </span>-<span class="ruby"> 需要扩展<span class="constant">Xbuffer</span>的维度支持</span>
 </code></pre> 方案2：<pre><code><span class="bullet">- </span>扩展到多维定长数组
@@ -806,7 +806,7 @@ Mono 2.x
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Unity/" title="Unity">Unity<sup>6</sup></a></li>
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>7</sup></a></li>
 			
 		
 			
@@ -839,6 +839,10 @@ Mono 2.x
 		
 			
 				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Skill/" title="Skill">Skill<sup>1</sup></a></li>
 			
 		
 			
@@ -943,7 +947,7 @@ Mono 2.x
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2021 
 		
 		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
 		
