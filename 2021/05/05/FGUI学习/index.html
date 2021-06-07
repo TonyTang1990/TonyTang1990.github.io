@@ -23,7 +23,10 @@ FGUI什么是FGUI了？
 FGUI全称是FairyGUI。官方的介绍是:专业游戏 UI 解决方案从对设计师友好的编辑器 到支持 10+ 款引擎的 SDK 助力您生产">
 <meta property="og:image" content="http://tonytang1990.github.io/img/FGUI/FGUIProjectsCapture.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/FGUI/FGUIProjectsStructure.PNG">
-<meta property="og:updated_time" content="2021-05-07T00:50:07.370Z">
+<meta property="og:image" content="http://tonytang1990.github.io/img/FGUI/FGUIPublicInterface.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/FGUI/FGUIPublishAssets.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/FGUI/PictureResourceExport.PNG">
+<meta property="og:updated_time" content="2021-05-18T08:52:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FGUI学习">
 <meta name="twitter:description" content="前言本章节博客是在项目需要使用FGUI的前提下，驱动深入学习FGUI的使用的。关于FGUI个人的认知还停留在第三方跨平台跨引擎制作UI的工具的层面上，接下来还是遵循老规矩从What,Why,How三个步骤来一步一步深入学习FGUI。
@@ -104,7 +107,7 @@ FGUI全称是FairyGUI。官方的介绍是:专业游戏 UI 解决方案从对设
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FGUI"><span class="toc-number">1.1.</span> <span class="toc-text">FGUI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FGUI使用"><span class="toc-number">1.2.</span> <span class="toc-text">FGUI使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FGUI"><span class="toc-number">1.1.</span> <span class="toc-text">FGUI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FGUI使用"><span class="toc-number">1.2.</span> <span class="toc-text">FGUI使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#包"><span class="toc-number">1.2.1.</span> <span class="toc-text">包</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#包的定义"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">包的定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#包的依赖"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">包的依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#资源URL地址"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">资源URL地址</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#发布"><span class="toc-number">1.2.2.</span> <span class="toc-text">发布</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#元件"><span class="toc-number">1.2.3.</span> <span class="toc-text">元件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#GObject"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">GObject</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GComponent"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">GComponent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#图片"><span class="toc-number">1.2.3.3.</span> <span class="toc-text">图片</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动画"><span class="toc-number">1.2.4.</span> <span class="toc-text">动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#骨骼动画"><span class="toc-number">1.2.5.</span> <span class="toc-text">骨骼动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图形"><span class="toc-number">1.2.6.</span> <span class="toc-text">图形</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#装载器"><span class="toc-number">1.2.7.</span> <span class="toc-text">装载器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D内容装载器"><span class="toc-number">1.2.8.</span> <span class="toc-text">3D内容装载器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文本"><span class="toc-number">1.2.9.</span> <span class="toc-text">文本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#富文本"><span class="toc-number">1.2.10.</span> <span class="toc-text">富文本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入文本"><span class="toc-number">1.2.11.</span> <span class="toc-text">输入文本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字体"><span class="toc-number">1.2.12.</span> <span class="toc-text">字体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组"><span class="toc-number">1.2.13.</span> <span class="toc-text">组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组件"><span class="toc-number">1.2.14.</span> <span class="toc-text">组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#滚动容器"><span class="toc-number">1.2.15.</span> <span class="toc-text">滚动容器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#控制器"><span class="toc-number">1.3.</span> <span class="toc-text">控制器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关联系统"><span class="toc-number">1.4.</span> <span class="toc-text">关联系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#标签"><span class="toc-number">1.5.</span> <span class="toc-text">标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#按钮"><span class="toc-number">1.6.</span> <span class="toc-text">按钮</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#下拉框"><span class="toc-number">1.7.</span> <span class="toc-text">下拉框</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进度条"><span class="toc-number">1.8.</span> <span class="toc-text">进度条</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#滑动条"><span class="toc-number">1.9.</span> <span class="toc-text">滑动条</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#滚动条"><span class="toc-number">1.10.</span> <span class="toc-text">滚动条</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#列表"><span class="toc-number">1.11.</span> <span class="toc-text">列表</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#FGUI设计"><span class="toc-number">2.</span> <span class="toc-text">FGUI设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#显示UI面板"><span class="toc-number">2.1.</span> <span class="toc-text">显示UI面板</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">3.</span> <span class="toc-text">Reference</span></a></li></ol>
 		
 		</div>
 		
@@ -131,7 +134,202 @@ FGUI全称是FairyGUI。官方的介绍是:专业游戏 UI 解决方案从对设
 <p><a href="https://www.fairygui.com/docs/editor/index" target="_blank" rel="external">编辑器的基础使用参考这里</a></p>
 <p><a href="https://www.fairygui.com/docs/editor/project_settings" target="_blank" rel="external">项目设置参考这里</a></p>
 <p>接下来学习下FGUI里总要的一些独有概念：</p>
-<p>待续……</p>
+<h3 id="包">包</h3><h4 id="包的定义">包的定义</h4><p><a href="https://www.fairygui.com/docs/editor/package" target="_blank" rel="external">FairyGUI是以包为单位组织资源的。包在文件系统中体现为一个目录。assets目录下每个子目录都表示一个包。**包内的每个资源都有一个是否导出的属性，一个包只能使用其他包设置为已导出的资源，而不设置为导出的资源是不可访问的。</a></p>
+<h4 id="包的依赖">包的依赖</h4><p><a href="https://www.fairygui.com/docs/editor/package" target="_blank" rel="external">FairyGUI是不处理包之间的依赖关系的，如果B包导出了一个元件B1，而A包的A1元件使用了元件B1，那么在创建A1之前，必须保证B包已经被载入，否则A1里的B1不能正确显示（但不会影响程序正常运行）。<strong>这个载入需要由开发者手动调用，FairyGUI不会自动载入。</strong></a></p>
+<h4 id="资源URL地址">资源URL地址</h4><p><a href="https://www.fairygui.com/docs/editor/package" target="_blank" rel="external">在FairyGUI中，每一个资源都有一个URL地址。选中一个资源，右键菜单，选择“复制URL”，就可以得到资源的URL地址。无论在编辑器中还是在代码里，都可以通过这个URL引用资源。</a></p>
+<p>Note:</p>
+<ol>
+<li>URL有两种格式(一种是不可读的一个编码，另一种是ui://包名//资源名)</li>
+</ol>
+<h3 id="发布">发布</h3><p><img src="/img/FGUI/FGUIPublicInterface.PNG" alt="FGUIPublicInterface"></p>
+<p>可以看到FGUI发布是针对前面设定的包的概念来发布的，可以发布一个包也可以发布所有包。发布里面还有很多设置，比如对纹理图片的导出设置等，具体后续用到详细研究详情参考:<a href="https://www.fairygui.com/docs/editor/publish" target="_blank" rel="external">发布</a></p>
+<p>这里主要说下<strong>发布代码</strong>这个设置，看介绍是一个FGUI提供的组件绑定代码自动化生成机制。</p>
+<p>FGUI发布后会得到一个<em>*</em>_fui.bytes的二进制文件:</p>
+<p><img src="/img/FGUI/FGUIPublishAssets.PNG" alt="FGUIPublishAssets"></p>
+<p>Note:</p>
+<ol>
+<li><a href="https://www.fairygui.com/docs/editor/publish" target="_blank" rel="external"><strong>当我们载入包时，需要使用这里设定的文件名，而当创建对象时，需要使用包名称</strong></a></li>
+</ol>
+<h3 id="元件">元件</h3><p><a href="https://www.fairygui.com/docs/editor/object" target="_blank" rel="external">每个舞台中的组成元素我们称之为元件</a></p>
+<p>元件的类型有很多，他们是:</p>
+<ol>
+<li>基础元件(图片，图形，动画，装载器，文本，富文本，组，组件)</li>
+<li>组合型元件(标签，按钮，下拉框，滚动条，滑动条，进度条)</li>
+<li>特殊元件(列表)</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><a href="https://www.fairygui.com/docs/editor/object" target="_blank" rel="external"><strong>关联系统只对元件的宽高有效，不计入Scale的影响</strong></a></li>
+<li><a href="https://www.fairygui.com/docs/editor/object" target="_blank" rel="external">设置元件的倾斜值。 对于Unity平台，你可以放心地对图片、动画、装载器使用倾斜，这几乎不会带来额外消耗，但对于其他类型的元件，例如组件，请谨慎使用</a></li>
+<li><a href="https://www.fairygui.com/docs/editor/object" target="_blank" rel="external">BlendMode这个提供了一部分的混合选项设置。对于Unity平台，对图片、动画、文字，你可以放心地修改它们的BlendMode。但对于组件，请谨慎使用。滤镜设置同理。</a></li>
+</ol>
+<h4 id="GObject">GObject</h4><p>FGUI里大部分元件类的基类。个人理解是元件的根Object抽象。</p>
+<p>关键元件的位置，缩放，旋转，可见，大小等设置接口都在这个类里。</p>
+<h4 id="GComponent">GComponent</h4><p>与Unity里的Component组件不同。个人理解更像是一种包含关系的Component而非GameObject那种绑定Component概念。</p>
+<h4 id="图片">图片</h4><p>可以理解成Unity里导入图片资源，然后可以对图片资源的大小，是否切九宫，纹理集导出设置等进行设置。</p>
+<p>设置图片资源为导出后，发布包会看到生成了两份数据:</p>
+<p><img src="/img/FGUI/PictureResourceExport.PNG" alt="PictureResourceExport"></p>
+<p>一份为图片资源导出后的图集资源</p>
+<p>一份为包的二进制资源</p>
+<p>GImage是图片对应FGUI里的类型，类似Unity的Image，相关设置接口都在GImage类里。</p>
+<p>Note:</p>
+<ol>
+<li><a href="https://www.fairygui.com/docs/editor/image" target="_blank" rel="external">FairyGUI支持的图片格式有：PNG，JPG，TGA，SVG。</a></li>
+<li>默认导入的图片是没有标记小红点的也就是默认不导出的，这里需要选中后右键设置为导出，最后导出包的时候才会导出资源。(<strong>只有导出后的资源才允许被其他包使用</strong>)</li>
+</ol>
+<h3 id="动画">动画</h3><p>FGUI支持三种方式创建动画，详情参考：<a href="https://www.fairygui.com/docs/editor/movieclip" target="_blank" rel="external">动画</a></p>
+<p>这里主要学习直接在FGUI里创建动画的方式：</p>
+<ol>
+<li>资源-&gt; 新建动画</li>
+<li>导入序列帧图片资源</li>
+<li>设置动画属性参数</li>
+</ol>
+<p>动画文件对应FGUI里的GMoviewClip类，相关API参考GMoviewClip源码</p>
+<h3 id="骨骼动画">骨骼动画</h3><p>暂时略过</p>
+<h3 id="图形">图形</h3><p><a href="https://www.fairygui.com/docs/editor/graph" target="_blank" rel="external">FairyGUI支持生成简单的图形。</a></p>
+<p><strong>多边形图形编辑支持直接操作顶点。</strong></p>
+<p><strong>图形的主要用途是用于占位，支持设置绑定原生对象(e.g. Image)</strong></p>
+<p>图形对应FGUI里的GGraph类，相关API参考GGraph源码</p>
+<p>Note:</p>
+<ol>
+<li><strong>图形支持动态创建，动态创建图形需要注意一定要设置图形的大小，否则显示不出来。</strong></li>
+</ol>
+<h3 id="装载器">装载器</h3><p><a href="https://www.fairygui.com/docs/editor/loader" target="_blank" rel="external">装载器的用途是动态载入资源。</a></p>
+<p>装载器对应FGUI里的GLoader类，相关API参考GLoader源码。</p>
+<p>GLoader可以载入图片、动画和组件。如果是UI包里的资源，那么通过“ui://包名/图片名”这种格式的地址就可以载入。</p>
+<p>FGUI支持了我们自定义装载器实现自定义加载，详情参考官网:<a href="https://www.fairygui.com/docs/editor/loader" target="_blank" rel="external">装载器</a></p>
+<p>Note:</p>
+<ol>
+<li><a href="https://www.fairygui.com/docs/editor/loader" target="_blank" rel="external">默认的GLoader具有有限度的的加载外部资源的能力，详情参考参考官网说明</a></li>
+<li>GLoader不管理外部对象的生命周期，不会主动销毁自定义加载的外部资源需要自行管理</li>
+</ol>
+<h3 id="3D内容装载器">3D内容装载器</h3><p><a href="https://www.fairygui.com/docs/editor/loader3d" target="_blank" rel="external">3D内容装载器的用途是动态载入比较复杂的资源，例如<a href="https://www.fairygui.com/docs/editor/skeleton" target="_blank" rel="external">骨骼动画</a>、模型（暂未支持）、粒子特效（暂未支持）等。</a></p>
+<p>暂时略过</p>
+<h3 id="文本">文本</h3><p><a href="https://www.fairygui.com/docs/editor/text" target="_blank" rel="external">文本是FairyGUI的基础控件之一。文本不支持交互，鼠标/触摸感应是关闭的。</a></p>
+<p>文本对应FGUI里的GTextField类，相关API参考GTextField源码。</p>
+<p>使用<strong>文本模板</strong>可以更灵活的动态调整文本输出。解决文本占位输出问题。比如我的元宝:{jin=100}金{yin=200}银。勾选文本模板即可通过直接更新关键字数值即可。</p>
+<p>事例:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aTextField.SetVar(<span class="string">"jin"</span>, <span class="string">"500"</span>).SetVar(<span class="string">"yin"</span>, <span class="string">"500"</span>).FlushVars();</span><br></pre></td></tr></table></figure>
+<p>Note:</p>
+<ol>
+<li><a href="https://www.fairygui.com/docs/editor/text" target="_blank" rel="external">设置文本支持UBB语法。使用UBB语法可以使单个文本包含多种样式，例如字体大小，颜色等。请参考<a href="https://www.fairygui.com/docs/editor/text#ubb语法" target="_blank" rel="external">UBB语法</a>。</a></li>
+<li>文本模板优先于UBB解析</li>
+</ol>
+<h3 id="富文本">富文本</h3><p>富文本与普通文本的区别在于：</p>
+<ol>
+<li>普通文本不支持交互，鼠标/触摸感应是关闭的；富文本支持。</li>
+<li>普通文本不支持链接和图文混排；富文本支持。</li>
+<li>普通文本不支持HTML语法（但可以使用UBB实现不同样式）；富文本支持。</li>
+</ol>
+<p>富文本对应FGUI里的GRichTextField类，相关API参考GRichTextField源码。</p>
+<h3 id="输入文本">输入文本</h3><p><a href="https://www.fairygui.com/docs/editor/inputtext" target="_blank" rel="external">输入文本元件用于接收用户输入文字。</a></p>
+<p>输入文本对应FGUI里的GTextInput类，相关API参考GTextInput源码。</p>
+<p>Note:</p>
+<ol>
+<li>设置文本支持UBB语法。</li>
+</ol>
+<h3 id="字体">字体</h3><p>FairyGUI支持3种字体的使用方式:</p>
+<ol>
+<li>系统字体</li>
+<li>TTF字体</li>
+<li>位图字体</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><a href="https://www.fairygui.com/docs/editor/font" target="_blank" rel="external">无论字体是否设置为导出，它都不会被发布。UI包发布后，引用此字体资源的文本元件的字体名称是该字体的资源名字。</a></li>
+<li>FairyGUI内置支持使用TextMeshPro插件。</li>
+</ol>
+<h3 id="组">组</h3><p><a href="https://www.fairygui.com/docs/editor/group" target="_blank" rel="external">在舞台上选定一个或多个元件，然后按Ctrl+G，就可以建立一个组。 FairyGUI的组有两种类型，<code>普通组</code>和<code>高级组</code>。</a></p>
+<ul>
+<li><p>普通组</p>
+<p><a href="https://www.fairygui.com/docs/editor/group" target="_blank" rel="external">普通组仅在编辑时有效，是辅助你进行UI设计的。普通组发布后不存在，也就是在运行时无法访问到普通组。</a></p>
+<p>普通组作用:</p>
+<ol>
+<li>可以整体一起移动；</li>
+<li>可以整体一起调整深度；</li>
+<li>可以整体复制和粘贴。</li>
+<li>双击组，进入组内部后，可以随意调整各个元件的深度，不影响组外的东西。</li>
+<li>当组大小改变时，组内的内容将同时增大或者缩小。</li>
+</ol>
+</li>
+<li><p>高级组</p>
+<p><a href="https://www.fairygui.com/docs/editor/group" target="_blank" rel="external">高级组除了具有普通组所有的功能外，它在发布后仍然保留，也就是在运行时可以通过代码访问高级组对象。所以它可以像一个普通元件那样设置关联和属性控制。</a></p>
+<p>高级组作用:</p>
+<ol>
+<li>可以设置可见性。如果组不可见，则组内的所有元件均不可见。</li>
+<li>设置属性控制。高级组支持的属性控制有：显示控制，位置控制，大小控制。</li>
+<li>设置关联。</li>
+<li>设置布局。</li>
+</ol>
+</li>
+</ul>
+<p>个人觉得FGUI里的组类似Unity里的父节点，同时高级组实现了一些类似Layout排版组件的布局效果以及其他特殊控制效果。</p>
+<p>高级组对应FGUI里的GGroup类，相关API参考GGroup类源码。</p>
+<h3 id="组件">组件</h3><p><a href="https://www.fairygui.com/docs/editor/component" target="_blank" rel="external">组件是FairyGUI中的一个基础容器。组件可以包含一个或多个基础显示对象，也可以包含组件。</a></p>
+<ul>
+<li><p>自定义属性</p>
+<p><a href="https://www.fairygui.com/docs/editor/component" target="_blank" rel="external">当组件被拖入到到其他组件后，能通过检查器设置的属性一般是固定的，例如一个按钮，我们可以改变它的标题、图标、是否选中等，这些都是编辑器提供的固定属性。但如果我在按钮中放置了额外的文本或者装载器，而且需要设定他们在实例化后的属性时，就需要用自定义属性，将组件的子元件甚至更深层次的元件的属性暴露出来。</a></p>
+</li>
+<li><p>自定义数据</p>
+<p><a href="https://www.fairygui.com/docs/editor/component" target="_blank" rel="external">可以设置一个自定义的数据，这个数据FairyGUI不做解析，按原样发布到最后的描述文件中。开发者可以在运行时获取。</a></p>
+</li>
+</ul>
+<p><strong>设计图功能</strong>是为了快速拼出效果图要的效果。</p>
+<p><strong>点击穿透</strong>设置可以快速将点击事件向后传递。</p>
+<p><strong>点击测试</strong>用于不规则区域的点击响应。</p>
+<p><strong>遮罩</strong>FGUI里分两种：</p>
+<ul>
+<li><p>矩形遮罩</p>
+</li>
+<li><p>自定义遮罩</p>
+</li>
+</ul>
+<p><strong>扩展</strong>功能，<a href="https://www.fairygui.com/docs/editor/component" target="_blank" rel="external">选择哪种“扩展”，组件就有了那种扩展的属性和行为特性。</a></p>
+<p>组件对应FGUI里的GComponent类，相关API详情参考GComponent源码。</p>
+<p><a href="https://www.fairygui.com/docs/editor/component" target="_blank" rel="external">动态创建的组件是空组件，可以作为其他组件的容器。一个常见的用途，如果你要建立一个多层的UI管理系统，那么空组件就是一个合适的层级容器选择。</a></p>
+<p>Note:</p>
+<ol>
+<li>动态创建的组件默认是点击穿透的，也就是说如果直接new一个空组件作为接收点击用途，你还得有额外设置</li>
+<li><a href="https://www.fairygui.com/docs/editor/component" target="_blank" rel="external">在FairyGUI中，显示列表是以树形组织的，下面说的渲染顺序均指在<strong>同一个父元件</strong>下安排的顺序，不同父元件的元件是不可能互相交错的，这是前提，请注意。</a></li>
+<li><a href="https://www.fairygui.com/docs/editor/component" target="_blank" rel="external">GObject.sortingOrder。**这个属性只用于特定的用途，不作常规的使用。它一般用于类似固定置顶的功能，另外，永远不要将sortingOrder用在列表中。</a></li>
+</ol>
+<h3 id="滚动容器">滚动容器</h3><p>滚动容器对应FGUI里的ScrollPane类，相关API详情参考ScrollPane源码。</p>
+<p>……</p>
+<h2 id="控制器">控制器</h2><p><a href="https://www.fairygui.com/docs/editor/controller" target="_blank" rel="external">控制器是FairyGUI核心功能之一，它为UI制作中以下类似需求提供了支持：</a></p>
+<ul>
+<li>分页 一个组件可以由多个页面组成。</li>
+<li>按钮状态 按钮通常有按下、鼠标悬浮等多个状态，我们可以利用控制器为每个状态安排不同的显示内容。</li>
+<li>属性变化 利用控制器，我们可以使元件具有多个不同的形态，并且可以方便地切换。</li>
+</ul>
+<p>这里提到了一个重要的概念:分页。</p>
+<p>控制器的概念是基于分页的，意思就是通过设计控制的页面的控制效果，我们可以提前做好多个页面效果，运行时只需切页来达到对应效果即可。</p>
+<p><a href="https://www.fairygui.com/docs/editor/controller" target="_blank" rel="external">显示控制-2一般和显示控制搭配使用，它可以实现两个控制器控制一个元件显隐的需求。特别还提供了一个逻辑关系的选项，可以选择“与”或者“或”。</a></p>
+<p>控制器可以很方便实现类似Button多种点击状态以及Toggle选中和未选中效果(程序只需负责切页即可，所有显示效果在FGUI编辑器里定义好)。</p>
+<p>比如单选按钮就是通过多个单选按钮配合多个页面控制+按钮联动实现的。</p>
+<p>这里的控制器相当于把操作表现流程放到UI制作流程里了(不得不说FGUI确实对于UI制作流有很大好处，部分逻辑都不再需要程序自行编写了)</p>
+<p>滚动容器对应FGUI里的Controller类，相关API详情参考Controller源码。</p>
+<h2 id="关联系统">关联系统</h2><p><a href="https://www.fairygui.com/docs/editor/relation" target="_blank" rel="external">关联系统是FairyGUI实现自动布局的核心技术。其他UI框架提供的布局系统，一般只提供各种固定的layout，或者锚点，都只能定义元件与容器之间的关系。而FairyGUI的关联能够定义任意两个元件的关系，而且互动方式更多样。</a></p>
+<p>FGUI的关联系统，个人理解更偏向于美术的概念，而非传统程序锚点的概念，左左，左右，右左这些都是显示知名两个Component的位置关系。</p>
+<h2 id="标签">标签</h2><p>标签对应FGUI里的GLabel类，相关API详情参考GLabel源码。</p>
+<p>Note:</p>
+<ol>
+<li>标签里title和icon是两个特殊的名字，FGUI设置标签文本和图表会快速查找对应名字作为对应组件。</li>
+</ol>
+<h2 id="按钮">按钮</h2><p>标签对应FGUI里的GButton类，相关API详情参考GButton源码。</p>
+<p>……</p>
+<h2 id="下拉框">下拉框</h2><p>下拉框对应FGUI里的GComboBox类，相关API详情参考GComboBox源码。</p>
+<p>……</p>
+<h2 id="进度条">进度条</h2><p>进度条对应FGUI里的GProgressBat类，相关API详情参考GProgressBar源码。</p>
+<p>……</p>
+<h2 id="滑动条">滑动条</h2><p>滑动条对应FGUI里的GSlider类，相关API详情参考GSilder源码。</p>
+<p>……</p>
+<h2 id="滚动条">滚动条</h2><p><a href="https://www.fairygui.com/docs/editor/scrollbar" target="_blank" rel="external">与很多UI框架使用皮肤机制定义滚动条不同，在FairyGUI中，滚动条是可以随心设计的。<br><a href="https://www.fairygui.com/docs/editor/scrollpane" target="_blank" rel="external">滚动容器</a>和滚动条是独立的，也就是说，即使没有滚动条，滚动容器也能完成滚动的功能。<br>注意：滚动条不能直接拖到舞台上使用，永远不要这样做。</a></p>
+<p>滚动条对应FGUI里的GScrollBar类，相关API详情参考GScrollBar源码。</p>
+<p>Note:</p>
+<ol>
+<li><a href="https://www.fairygui.com/docs/editor/scrollbar" target="_blank" rel="external">运行时滚动条组件的类型是GScrollBar，但你不需要访问GScrollBar对象。所有滚动相关的操作都通过ScrollPane完成</a></li>
+</ol>
+<h2 id="列表">列表</h2><h1 id="FGUI设计">FGUI设计</h1><h2 id="显示UI面板">显示UI面板</h2><p>待续……</p>
 <h1 id="Reference">Reference</h1><p><a href="https://www.fairygui.com/" target="_blank" rel="external">FGUI</a></p>
   
 	</div>
@@ -186,7 +384,7 @@ FGUI全称是FairyGUI。官方的介绍是:专业游戏 UI 解决方案从对设
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FGUI"><span class="toc-number">1.1.</span> <span class="toc-text">FGUI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FGUI使用"><span class="toc-number">1.2.</span> <span class="toc-text">FGUI使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FGUI"><span class="toc-number">1.1.</span> <span class="toc-text">FGUI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FGUI使用"><span class="toc-number">1.2.</span> <span class="toc-text">FGUI使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#包"><span class="toc-number">1.2.1.</span> <span class="toc-text">包</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#包的定义"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">包的定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#包的依赖"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">包的依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#资源URL地址"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">资源URL地址</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#发布"><span class="toc-number">1.2.2.</span> <span class="toc-text">发布</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#元件"><span class="toc-number">1.2.3.</span> <span class="toc-text">元件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#GObject"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">GObject</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GComponent"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">GComponent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#图片"><span class="toc-number">1.2.3.3.</span> <span class="toc-text">图片</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动画"><span class="toc-number">1.2.4.</span> <span class="toc-text">动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#骨骼动画"><span class="toc-number">1.2.5.</span> <span class="toc-text">骨骼动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图形"><span class="toc-number">1.2.6.</span> <span class="toc-text">图形</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#装载器"><span class="toc-number">1.2.7.</span> <span class="toc-text">装载器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D内容装载器"><span class="toc-number">1.2.8.</span> <span class="toc-text">3D内容装载器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文本"><span class="toc-number">1.2.9.</span> <span class="toc-text">文本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#富文本"><span class="toc-number">1.2.10.</span> <span class="toc-text">富文本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入文本"><span class="toc-number">1.2.11.</span> <span class="toc-text">输入文本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字体"><span class="toc-number">1.2.12.</span> <span class="toc-text">字体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组"><span class="toc-number">1.2.13.</span> <span class="toc-text">组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组件"><span class="toc-number">1.2.14.</span> <span class="toc-text">组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#滚动容器"><span class="toc-number">1.2.15.</span> <span class="toc-text">滚动容器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#控制器"><span class="toc-number">1.3.</span> <span class="toc-text">控制器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关联系统"><span class="toc-number">1.4.</span> <span class="toc-text">关联系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#标签"><span class="toc-number">1.5.</span> <span class="toc-text">标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#按钮"><span class="toc-number">1.6.</span> <span class="toc-text">按钮</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#下拉框"><span class="toc-number">1.7.</span> <span class="toc-text">下拉框</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进度条"><span class="toc-number">1.8.</span> <span class="toc-text">进度条</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#滑动条"><span class="toc-number">1.9.</span> <span class="toc-text">滑动条</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#滚动条"><span class="toc-number">1.10.</span> <span class="toc-text">滚动条</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#列表"><span class="toc-number">1.11.</span> <span class="toc-text">列表</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#FGUI设计"><span class="toc-number">2.</span> <span class="toc-text">FGUI设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#显示UI面板"><span class="toc-number">2.1.</span> <span class="toc-text">显示UI面板</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">3.</span> <span class="toc-text">Reference</span></a></li></ol>
  
   </div>
 
