@@ -41,10 +41,9 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/PageViewScene.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/SpinDatePickerScene.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/SelectAndDeleteOrMoveScene.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/CellContainerExhibition2.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/DepthScrollExhibition.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/CellContainerUML.png">
-<meta property="og:updated_time" content="2021-06-20T13:54:49.469Z">
+<meta property="og:updated_time" content="2021-06-20T14:00:49.632Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity滚动列表">
 <meta name="twitter:description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。
@@ -205,7 +204,7 @@
 <p><img src="/img/Unity/CellContainer/PageViewScene.PNG" alt="PageViewScene"></p>
 <p><img src="/img/Unity/CellContainer/SpinDatePickerScene.PNG" alt="SpinDatePickerScene"></p>
 <p><img src="/img/Unity/CellContainer/SelectAndDeleteOrMoveScene.PNG" alt="SelectAndDeleteOrMoveScene"></p>
-<p>上面展示了我支持的各类单元格容器，比如横向单元格容器，竖向单元格容器，横向网格单元格容器，竖向网格单元格容器，动态大小等各种用法。<br><img src="/img/Unity/CellContainer/CellContainerExhibition2.png" alt="CellContainerExhibition2"><br>第二章图展示了我支持的不同单元格朝向的构建方式，比如从左往右或者从右往左的横向单元格。从上往下或者从下往上的竖向单元格。<br><img src="/img/Unity/CellContainer/DepthScrollExhibition.png" alt="DepthScrollExhibition"><br>第三章图主要展示的是另一套单元格容器，支持左右两侧指定深度滚动的单元格容器。</p>
+<p>上面展示了我支持的各类单元格容器，比如横向单元格容器，竖向单元格容器，横向网格单元格容器，竖向网格单元格容器，动态大小等各种用法。<br><img src="/img/Unity/CellContainer/DepthScrollExhibition.png" alt="DepthScrollExhibition"><br>第三章图主要展示的是另一套单元格容器，支持左右两侧指定深度滚动的单元格容器。</p>
 <p>Note:</p>
 <p>基于ContentSizeFitter和LayoutGroup的自动计算大小测试性能开销比较大最后决定不予支持了。</p>
 <h4 id="深入讲解">深入讲解</h4><p>让我们通过横向单元格的面板来大致了解下单元格都支持哪些功能：<br>!(HorizontalContainerInspector)(/img/Unity/CellContainer/HorizontalContainerInspector.png)<br>从面板上可以看出，博主的单元格容器主要支持了以下几个功能：</p>
