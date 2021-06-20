@@ -26,7 +26,7 @@ FGUI全称是FairyGUI。官方的介绍是:专业游戏 UI 解决方案从对设
 <meta property="og:image" content="http://tonytang1990.github.io/img/FGUI/FGUIPublicInterface.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/FGUI/FGUIPublishAssets.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/FGUI/PictureResourceExport.PNG">
-<meta property="og:updated_time" content="2021-05-18T08:52:54.000Z">
+<meta property="og:updated_time" content="2021-06-20T13:56:17.660Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FGUI学习">
 <meta name="twitter:description" content="前言本章节博客是在项目需要使用FGUI的前提下，驱动深入学习FGUI的使用的。关于FGUI个人的认知还停留在第三方跨平台跨引擎制作UI的工具的层面上，接下来还是遵循老规矩从What,Why,How三个步骤来一步一步深入学习FGUI。
@@ -329,7 +329,14 @@ FGUI全称是FairyGUI。官方的介绍是:专业游戏 UI 解决方案从对设
 <ol>
 <li><a href="https://www.fairygui.com/docs/editor/scrollbar" target="_blank" rel="external">运行时滚动条组件的类型是GScrollBar，但你不需要访问GScrollBar对象。所有滚动相关的操作都通过ScrollPane完成</a></li>
 </ol>
-<h2 id="列表">列表</h2><h1 id="FGUI设计">FGUI设计</h1><h2 id="显示UI面板">显示UI面板</h2><p>待续……</p>
+<h2 id="列表">列表</h2><p>滚动条对应FGUI里的GList类，相关API详情参考GList源码。</p>
+<p>这是我们游戏中会比较常用的组件，FGUI的列表已经实现了数据与渲染分离(虚拟列表)，也实现了列表所需的几乎所有需求(e.g. 动态大小，动态魔板，循环列表，滚动到指定单元格等)</p>
+<p>详情参考:<a href="https://www.fairygui.com/docs/editor/list" target="_blank" rel="external">FGUI列表</a></p>
+<p>Note:</p>
+<ol>
+<li><a href="https://www.fairygui.com/docs/editor/list" target="_blank" rel="external"><strong>不允许使用AddChild或RemoveChild对虚拟列表增删对象。如果要清空列表，必须要通过设置numItems=0，而不是RemoveChildren。</strong></a></li>
+</ol>
+<h1 id="FGUI设计">FGUI设计</h1><h2 id="显示UI面板">显示UI面板</h2><p>待续……</p>
 <h1 id="Reference">Reference</h1><p><a href="https://www.fairygui.com/" target="_blank" rel="external">FGUI</a></p>
   
 	</div>
