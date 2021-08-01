@@ -27,23 +27,23 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaFirstClassValues.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaPairsAndIpairs.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaType.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Lua/WhereMinGW.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Lua/LuaBuildOutput.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Lua/LuaEnvSetting.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Lua/MakeSureLuaExits.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Lua/LuaRocksInstallCommand.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Lua/LuaRocksInstallSuccess.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Lua/LuaRocksPathAndCPath.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Lua/OrignalLuaPathAndCPath.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Lua/LuaEnviromentSetting.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Lua/InstallSerpent.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Lua/SerpentInstallatio.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Lua/SerpentOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/WhereMinGW.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaBuildOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaEnvSetting.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/MakeSureLuaExits.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaRocksInstallCommand.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaRocksInstallSuccess.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaRocksPathAndCPath.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/OrignalLuaPathAndCPath.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaEnviromentSetting.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/InstallSerpent.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/SerpentInstallatio.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/SerpentOutput.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaFolderStructure.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/EmmyLuaNotation.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaMethodReference.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/VSCodeEmmyLuaDebug.png">
-<meta property="og:updated_time" content="2021-08-01T03:28:09.880Z">
+<meta property="og:updated_time" content="2021-08-01T03:36:39.650Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity中的Lua">
 <meta name="twitter:description" content="Lua结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。
@@ -221,9 +221,9 @@
 </li>
 <li><p>Lua里打印数据类型用type</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(<span class="string">"Tony"</span>))</span><br></pre></td></tr></table></figure>
-<p> <img src="/img/Lua/LuaType.png" alt="LuaType">  </p>
 </li>
 </ol>
+<p><img src="/img/Lua/LuaType.png" alt="LuaType">  </p>
 <h1 id="Lua常用插件">Lua常用插件</h1><h2 id="luarocks">luarocks</h2><p><a href="https://luarocks.org/" target="_blank" rel="external"><strong>LuaRocks</strong> is the package manager for Lua modules.</a></p>
 <p>从官方的介绍可以看出，LuaRocks相对于Lua，就好比Package Ctronl在Sublime Text里的存在，主要目的就是包管理器，方便Lua快速安装各种第三方Lua库。</p>
 <p>根据官方的教程，LuaRocks安装设置相当复杂，单纯下载一个exe还有很多环境问题要处理。</p>
@@ -232,7 +232,7 @@
 <ul>
 <li><p>安装<a href="https://sourceforge.net/projects/mingw-w64/" target="_blank" rel="external">MinGW</a>(用于编译源码)</p>
 <p>添加**/MinGW/bin到环境变量，确保gcc编译器能找到.</p>
-<p><img src="./img/Lua/WhereMinGW.png" alt="WhereMinGW"></p>
+<p><img src="/img/Lua/WhereMinGW.png" alt="WhereMinGW"></p>
 <p>关于MinGW和Cygwin的区别这里暂时不深入，详情参考:</p>
 <p><a href="https://cloud.tencent.com/developer/article/1343059" target="_blank" rel="external">MinGw与Cygwin的区别</a></p>
 <p><a href="https://cloud.tencent.com/developer/article/1343059" target="_blank" rel="external">MinGW 的主要方向是让GCC的Windows移植版能使用Win32API来编程。 Cygwin 的目标是能让Unix-like下的程序代码在Windows下直接被编译。</a></p>
@@ -245,10 +245,10 @@
 <p>就能触发编译Lua5.3，但为了LuaSocks后续会用到的相关目录准备工作，这里还是采用前面<a href="https://blog.csdn.net/techfield/article/details/82896403" target="_blank" rel="external">博主</a>提供的build.bat:</p>
 <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">echo</span> off</span><br><span class="line">:: ========================</span><br><span class="line">:: build.bat</span><br><span class="line">::</span><br><span class="line">:: build lua to dist folder</span><br><span class="line">:: tested with lua-<span class="number">5</span>.<span class="number">3</span>.<span class="number">5</span></span><br><span class="line">:: based on:</span><br><span class="line">:: https://medium.com/@CassiusBenard/lua-basics-windows-<span class="number">7</span>-installation-and-running-lua-files-from-the-command-line-e8196e988d71</span><br><span class="line">:: ========================</span><br><span class="line"><span class="keyword">setlocal</span></span><br><span class="line">:: you may change the following variable’s value</span><br><span class="line">:: to suit the downloaded version</span><br><span class="line"><span class="keyword">set</span> work_dir=%~dp0</span><br><span class="line">:: Removes trailing backslash</span><br><span class="line">:: to enhance readability <span class="flow">in</span> the following steps</span><br><span class="line"><span class="keyword">set</span> work_dir=<span class="envvar">%work_dir:~0,-1%</span></span><br><span class="line"><span class="keyword">set</span> lua_install_dir=<span class="envvar">%work_dir%</span>\dist</span><br><span class="line"><span class="keyword">set</span> compiler_bin_dir=<span class="envvar">%work_dir%</span>\tdm-gcc\bin</span><br><span class="line"><span class="keyword">set</span> lua_build_dir=<span class="envvar">%work_dir%</span></span><br><span class="line"><span class="keyword">set</span> <span class="built_in">path</span>=<span class="envvar">%compiler_bin_dir%</span>;<span class="envvar">%path%</span></span><br><span class="line"><span class="built_in">cd</span> /D <span class="envvar">%lua_build_dir%</span></span><br><span class="line">mingw32-make PLAT=mingw</span><br><span class="line"><span class="keyword">echo</span>.</span><br><span class="line"><span class="keyword">echo</span> **** COMPILATION TERMINATED ****</span><br><span class="line"><span class="keyword">echo</span>.</span><br><span class="line"><span class="keyword">echo</span> **** BUILDING BINARY DISTRIBUTION ****</span><br><span class="line"><span class="keyword">echo</span>.</span><br><span class="line">:: create a clean “binary” installation</span><br><span class="line"><span class="built_in">mkdir</span> <span class="envvar">%lua_install_dir%</span></span><br><span class="line"><span class="built_in">mkdir</span> <span class="envvar">%lua_install_dir%</span>\doc</span><br><span class="line"><span class="built_in">mkdir</span> <span class="envvar">%lua_install_dir%</span>\bin</span><br><span class="line"><span class="built_in">mkdir</span> <span class="envvar">%lua_install_dir%</span>\include</span><br><span class="line"><span class="built_in">mkdir</span> <span class="envvar">%lua_install_dir%</span>\lib</span><br><span class="line"><span class="keyword">copy</span> <span class="envvar">%lua_build_dir%</span>\doc\*.* <span class="envvar">%lua_install_dir%</span>\doc\*.*</span><br><span class="line"><span class="keyword">copy</span> <span class="envvar">%lua_build_dir%</span>\src\*.exe <span class="envvar">%lua_install_dir%</span>\bin\*.*</span><br><span class="line"><span class="keyword">copy</span> <span class="envvar">%lua_build_dir%</span>\src\*.dll <span class="envvar">%lua_install_dir%</span>\bin\*.*</span><br><span class="line"><span class="keyword">copy</span> <span class="envvar">%lua_build_dir%</span>\src\luaconf.h <span class="envvar">%lua_install_dir%</span>\include\*.*</span><br><span class="line"><span class="keyword">copy</span> <span class="envvar">%lua_build_dir%</span>\src\lua.h <span class="envvar">%lua_install_dir%</span>\include\*.*</span><br><span class="line"><span class="keyword">copy</span> <span class="envvar">%lua_build_dir%</span>\src\lualib.h <span class="envvar">%lua_install_dir%</span>\include\*.*</span><br><span class="line"><span class="keyword">copy</span> <span class="envvar">%lua_build_dir%</span>\src\lauxlib.h <span class="envvar">%lua_install_dir%</span>\include\*.*</span><br><span class="line"><span class="keyword">copy</span> <span class="envvar">%lua_build_dir%</span>\src\lua.hpp <span class="envvar">%lua_install_dir%</span>\include\*.*</span><br><span class="line"><span class="keyword">copy</span> <span class="envvar">%lua_build_dir%</span>\src\liblua.a <span class="envvar">%lua_install_dir%</span>\lib\liblua.a</span><br><span class="line"><span class="keyword">echo</span>.</span><br><span class="line"><span class="keyword">echo</span> **** BINARY DISTRIBUTION BUILT ****</span><br><span class="line"><span class="keyword">echo</span>.</span><br><span class="line"><span class="envvar">%lua_install_dir%</span>\bin\lua.exe -e "<span class="built_in">print</span> [[Hello!]];<span class="built_in">print</span>[[Simple Lua test successful<span class="envvar">!!!</span>]]"</span><br><span class="line"><span class="keyword">echo</span>.</span><br><span class="line"></span><br><span class="line">:: configure environment variable</span><br><span class="line">:: https://stackoverflow.com/a/<span class="number">21606502</span>/<span class="number">4394850</span></span><br><span class="line">:: http://lua-users.org/wiki/LuaRocksConfig</span><br><span class="line">:: SETX - <span class="keyword">Set</span> an environment variable permanently.</span><br><span class="line">:: /m <span class="keyword">Set</span> the variable <span class="flow">in</span> the system environment HKLM.</span><br><span class="line">setx LUA "<span class="envvar">%lua_install_dir%</span>\bin\lua.exe" /m</span><br><span class="line">setx LUA_BINDIR "<span class="envvar">%lua_install_dir%</span>\bin" /m</span><br><span class="line">setx LUA_INCDIR "<span class="envvar">%lua_install_dir%</span>\include" /m</span><br><span class="line">setx LUA_LIBDIR "<span class="envvar">%lua_install_dir%</span>\lib" /m</span><br><span class="line"></span><br><span class="line"><span class="built_in">pause</span></span><br></pre></td></tr></table></figure>
 <p>这样一来Lua编译以及Lua环境变量设置就搞定了:</p>
-<p><img src="./img/Lua/LuaBuildOutput.png" alt="LuaBuildOutput"></p>
-<p><img src="./img/Lua/LuaEnvSetting.png" alt="LuaEnvSetting"></p>
+<p><img src="/img/Lua/LuaBuildOutput.png" alt="LuaBuildOutput"></p>
+<p><img src="/img/Lua/LuaEnvSetting.png" alt="LuaEnvSetting"></p>
 <p>测试以下Lua使用：</p>
-<p><img src="./img/Lua/MakeSureLuaExits.png" alt="MakeSureLuaExits"></p>
+<p><img src="/img/Lua/MakeSureLuaExits.png" alt="MakeSureLuaExits"></p>
 <p>Note：</p>
 <ol>
 <li><strong>因为我们使用的是MinGW，所以博客上的make命令是找不到的需要用mingw32-make</strong></li>
@@ -259,32 +259,32 @@
 <li><p>编译LuaRocks</p>
 <p>下载<a href="http://luarocks.github.io/luarocks/releases/" target="_blank" rel="external">LuaRocks源码</a>(下一键带Install.bat的)</p>
 <p>执行Install.bat触发编译流程</p>
-<p><img src="./img/Lua/LuaRocksInstallCommand.png" alt="LuaRocksInstallCommand"></p>
+<p><img src="/img/Lua/LuaRocksInstallCommand.png" alt="LuaRocksInstallCommand"></p>
 <p>详细参数介绍参考:</p>
 <p><a href="https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Windows" target="_blank" rel="external">Installation instructions for Windows</a></p>
 <p>最后看到LuaRocks安装成功:</p>
-<p><img src="./img/Lua/LuaRocksInstallSuccess.png" alt="LuaRocksInstallSuccess"></p>
+<p><img src="/img/Lua/LuaRocksInstallSuccess.png" alt="LuaRocksInstallSuccess"></p>
 <p>最后将LuaRocks/systree/bin所在目录添加到环境变量Path里，这样通过LuaRocks安装的第三方库就可以使用了(经测试单独只加到Path里还不行(好像是因为Lua和LuaRocks默认分开安装的)，package.path里默认是不会去LuaRocks/systree/bin下找的)，需要执行以下命令来查看手动设置LUA_PATH所需的位置信息：</p>
 <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">luarocks <span class="built_in">path</span> --bin</span><br></pre></td></tr></table></figure>
-<p><img src="./img/Lua/LuaRocksPathAndCPath.png" alt="LuaRocksPathAndCPath"></p>
+<p><img src="/img/Lua/LuaRocksPathAndCPath.png" alt="LuaRocksPathAndCPath"></p>
 <p>原本的LUA_PATH和LUACPATH信息：</p>
-<p><img src="./img/Lua/OrignalLuaPathAndCPath.png" alt="OrignalLuaPathAndCPath"></p>
+<p><img src="/img/Lua/OrignalLuaPathAndCPath.png" alt="OrignalLuaPathAndCPath"></p>
 <p>把上面两个手动设置到环境变量LUA_PATH和LUA_CPATH里:</p>
-<p><img src="./img/Lua/LuaEnviromentSetting.png" alt="LuaEnviromentSetting"></p>
+<p><img src="/img/Lua/LuaEnviromentSetting.png" alt="LuaEnviromentSetting"></p>
 </li>
 </ul>
 <p>接下来测试LuaRocks的使用：</p>
 <p>我们尝试安装serpent：</p>
 <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">luarocks install serpent</span><br></pre></td></tr></table></figure>
-<p><img src="./img/Lua/InstallSerpent.png" alt="InstallSerpent"></p>
-<p><img src="./img/Lua/SerpentInstallatio.png" alt="SerpentInstallatio"></p>
+<p><img src="/img/Lua/InstallSerpent.png" alt="InstallSerpent"></p>
+<p><img src="/img/Lua/SerpentInstallatio.png" alt="SerpentInstallatio"></p>
 <p>后续会讲到serpent的使用学习，到这里Lua5.3和LuaRocks以及serpent的LuaRocks快速安装就全部结束了。</p>
 <h2 id="serpent">serpent</h2><p><a href="https://github.com/pkulchenko/serpent" target="_blank" rel="external">Lua serializer and pretty printer.</a></p>
 <p>从Git上的介绍可以看出，Serpent是一个支持序列化反序列化以及格式化打印的第三方库。</p>
 <p>比如我们希望把内存里的某个Table序列化到本地，支持下一次反序列化加载：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">"SerpentStudy!"</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">require</span> <span class="string">"DIYLog"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> serpent = <span class="built_in">require</span> <span class="string">"serpent"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> serializeDataTable = &#123;</span><br><span class="line">	[<span class="string">"Name"</span>] = <span class="string">"TonyTang"</span>,</span><br><span class="line">	detailInfo = &#123;</span><br><span class="line">		[<span class="string">"Age"</span>] = <span class="number">18</span>,</span><br><span class="line">		[<span class="string">"BirthDate"</span>] = <span class="string">"2000/01/01"</span>,</span><br><span class="line">		[<span class="string">"Adrress"</span>] = <span class="string">"SiChuan"</span>		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"================="</span>)</span><br><span class="line"><span class="keyword">local</span> serializeString = serpent.dump(serializeDataTable)</span><br><span class="line"><span class="built_in">print</span>(serializeString)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"================="</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> formatSerializeString = serpent.block(serializeDataTable)</span><br><span class="line"><span class="built_in">print</span>(formatSerializeString)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"================="</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> result, deserializeDataTable = serpent.<span class="built_in">load</span>(formatSerializeString)</span><br><span class="line">print_table(deserializeDataTable)</span><br></pre></td></tr></table></figure>
 <p>输出:</p>
-<p><img src="./img/Lua/SerpentOutput.png" alt="SerpentOutput"></p>
+<p><img src="/img/Lua/SerpentOutput.png" alt="SerpentOutput"></p>
 <p>从上面测试用例结果可以看出，通过Serpent我们轻易的做到了Lua序列化反序列化以及格式化输出</p>
 <h2 id="Lpeg">Lpeg</h2><h1 id="Lua_IDE">Lua IDE</h1><p>首先这里决定选一个相对轻量级的Lua IDE，VS因为太重量级了，这里不考虑。<br>其次考虑到跨平台和前端常用的(平时主要会用到C#和Lua)，最初决定选择VSCode作为Lua代码编写的IDE，VSCode丰富的插件库也是选择VSCode很重要的一个原因之一。经过调研发现VSCode第三方插件<a href="https://www.showdoc.cc/luaide?page_id=1832520940259550" target="_blank" rel="external">Luaide在VSCode 1.33.1以上版本有严重的内存暴涨问题</a>，所以最后笔者转向了VSCode + EmmyLua 插件的方式。</p>
 <h2 id="VSCode">VSCode</h2><p><a href="https://zh.wikipedia.org/wiki/Visual_Studio_Code" target="_blank" rel="external">Visual Studio Code（简称VS Code）是一个由微软开发的，同时支持Windows、Linux、和macOS系统且开放源代码的代码编辑器[4]，它支持测试，并内置了Git 版本控制功能，同时也具有开发环境功能，例如代码补全（类似于 IntelliSense）、代码片段、和代码重构等，该编辑器支持用户个性化配置，例如改变主题颜色、键盘快捷方式等各种属性和参数，还在编辑器中内置了扩展程序管理的功能。</a></p>
