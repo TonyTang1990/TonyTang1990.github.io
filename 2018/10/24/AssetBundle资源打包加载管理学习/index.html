@@ -39,21 +39,20 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleTextureStatus.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleGameObjectStatus.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AfterAssetsRecyleTransformStatus.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Unity-Resource-Manager/ModuleDesign.png">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleDepInfoUI.png">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleTestUI.png">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png">
-<meta property="og:image" content="http://tonytang1990.github.io/G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/HotUpdate/HotUpdateFlowChat.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/HotUpdate/HotUpdateToolsUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/HotUpdate/AssetBundleMD5File.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/HotUpdate/HotUpdatePreparationFolder.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/DeleteRemovedAssetBundle.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetDependenciesBrowser.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/BuildInResourceReferenceAnalyze.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/BuildInResourceExtraction.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png">
-<meta property="og:updated_time" content="2021-10-24T06:17:30.061Z">
+<meta property="og:updated_time" content="2022-01-10T11:38:58.061Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AssetBundle资源打包加载管理">
 <meta name="twitter:description" content="前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。
@@ -134,7 +133,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#鸣谢"><span class="toc-number">2.</span> <span class="toc-text">鸣谢</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AssetBundle打包"><span class="toc-number">3.</span> <span class="toc-text">AssetBundle打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#相关工具"><span class="toc-number">3.1.</span> <span class="toc-text">相关工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB打包"><span class="toc-number">3.2.</span> <span class="toc-text">AB打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#资源冗余"><span class="toc-number">3.2.1.</span> <span class="toc-text">资源冗余</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖打包"><span class="toc-number">3.2.1.1.</span> <span class="toc-text">依赖打包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#增量打包(Unity_5以后)"><span class="toc-number">3.2.1.2.</span> <span class="toc-text">增量打包(Unity 5以后)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖Asset信息打包"><span class="toc-number">3.2.1.3.</span> <span class="toc-text">依赖Asset信息打包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打包策略"><span class="toc-number">3.2.2.</span> <span class="toc-text">打包策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB压缩格式"><span class="toc-number">3.2.3.</span> <span class="toc-text">AB压缩格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包相关API"><span class="toc-number">3.2.4.</span> <span class="toc-text">AB打包相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包框架实战"><span class="toc-number">3.2.5.</span> <span class="toc-text">AB打包框架实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AssetBundle加载管理"><span class="toc-number">3.3.</span> <span class="toc-text">AssetBundle加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖加载还原"><span class="toc-number">3.3.1.</span> <span class="toc-text">依赖加载还原</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB加载相关API"><span class="toc-number">3.3.2.</span> <span class="toc-text">AB加载相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB回收相关API"><span class="toc-number">3.3.3.</span> <span class="toc-text">AB回收相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于Asset重用的AB加载"><span class="toc-number">3.3.4.</span> <span class="toc-text">基于Asset重用的AB加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于AB引用计数的AB加载管理"><span class="toc-number">3.3.5.</span> <span class="toc-text">基于AB引用计数的AB加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#AB加载管理框架"><span class="toc-number">3.3.5.1.</span> <span class="toc-text">AB加载管理框架</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#框架设计"><span class="toc-number">3.3.5.1.1.</span> <span class="toc-text">框架设计</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Demo"><span class="toc-number">3.3.5.1.2.</span> <span class="toc-text">Demo</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新版AssetBundle加载管理和打包"><span class="toc-number">3.4.</span> <span class="toc-text">新版AssetBundle加载管理和打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#新版AssetBundle加载管理"><span class="toc-number">3.4.1.</span> <span class="toc-text">新版AssetBundle加载管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新版AssetBundle打包"><span class="toc-number">3.4.2.</span> <span class="toc-text">新版AssetBundle打包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#资源辅助工具"><span class="toc-number">3.5.</span> <span class="toc-text">资源辅助工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB实战总结"><span class="toc-number">3.6.</span> <span class="toc-text">AB实战总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#鸣谢"><span class="toc-number">2.</span> <span class="toc-text">鸣谢</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AssetBundle打包"><span class="toc-number">3.</span> <span class="toc-text">AssetBundle打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#相关工具"><span class="toc-number">3.1.</span> <span class="toc-text">相关工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB打包"><span class="toc-number">3.2.</span> <span class="toc-text">AB打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#资源冗余"><span class="toc-number">3.2.1.</span> <span class="toc-text">资源冗余</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖打包"><span class="toc-number">3.2.1.1.</span> <span class="toc-text">依赖打包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#增量打包(Unity_5以后)"><span class="toc-number">3.2.1.2.</span> <span class="toc-text">增量打包(Unity 5以后)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖Asset信息打包"><span class="toc-number">3.2.1.3.</span> <span class="toc-text">依赖Asset信息打包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打包策略"><span class="toc-number">3.2.2.</span> <span class="toc-text">打包策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB压缩格式"><span class="toc-number">3.2.3.</span> <span class="toc-text">AB压缩格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包相关API"><span class="toc-number">3.2.4.</span> <span class="toc-text">AB打包相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包框架实战"><span class="toc-number">3.2.5.</span> <span class="toc-text">AB打包框架实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AssetBundle加载管理"><span class="toc-number">3.3.</span> <span class="toc-text">AssetBundle加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖加载还原"><span class="toc-number">3.3.1.</span> <span class="toc-text">依赖加载还原</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB加载相关API"><span class="toc-number">3.3.2.</span> <span class="toc-text">AB加载相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB回收相关API"><span class="toc-number">3.3.3.</span> <span class="toc-text">AB回收相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于Asset重用的AB加载"><span class="toc-number">3.3.4.</span> <span class="toc-text">基于Asset重用的AB加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于AB引用计数的AB加载管理"><span class="toc-number">3.3.5.</span> <span class="toc-text">基于AB引用计数的AB加载管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新版AssetBundle加载管理，打包以及热更新"><span class="toc-number">3.4.</span> <span class="toc-text">新版AssetBundle加载管理，打包以及热更新</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#新版AssetBundle加载管理"><span class="toc-number">3.4.1.</span> <span class="toc-text">新版AssetBundle加载管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新版AssetBundle打包"><span class="toc-number">3.4.2.</span> <span class="toc-text">新版AssetBundle打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新版资源热更新流程"><span class="toc-number">3.4.3.</span> <span class="toc-text">新版资源热更新流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#类说明"><span class="toc-number">3.4.3.1.</span> <span class="toc-text">类说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#功能支持"><span class="toc-number">3.4.3.2.</span> <span class="toc-text">功能支持</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#热更测试说明"><span class="toc-number">3.4.3.3.</span> <span class="toc-text">热更测试说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#流程图"><span class="toc-number">3.4.3.4.</span> <span class="toc-text">流程图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#热更新辅助工具"><span class="toc-number">3.4.3.5.</span> <span class="toc-text">热更新辅助工具</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#热更包外目录结构"><span class="toc-number">3.4.3.6.</span> <span class="toc-text">热更包外目录结构</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#资源辅助工具"><span class="toc-number">3.5.</span> <span class="toc-text">资源辅助工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB实战总结"><span class="toc-number">3.6.</span> <span class="toc-text">AB实战总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
 		
 		</div>
 		
@@ -365,111 +364,34 @@
 <li>AB的返还判定跟绑定的Object有关，Object被回收后，AB容易出现重复加载(可以在上层写部分对象池来减少AB的重复加载)</li>
 </ol>
 <p>考虑到希望上层灵活度高一些，个人现在倾向于第二种方案。</p>
-<p>接下来基于第二种方案来实战编写资源AB加载的框架。<br>AB打包这一块打算先使用之前自己写的一套没有增量更新但支持一定打包规则指定的打包方案。</p>
-<h4 id="AB加载管理框架">AB加载管理框架</h4><p>以下实现主要参考了下面两个开源项目：<br><a href="https://github.com/tangzx/ABSystem" target="_blank" rel="external">Unity3D AssetBundle 打包与管理系统</a><br><a href="https://github.com/mr-kelly/KEngine" target="_blank" rel="external">KEngine</a></p>
-<h5 id="框架设计">框架设计</h5><p>支持功能：</p>
-<ol>
-<li>支持AB和AssetDatabase(限编辑器)资源加载(方便快速迭代开发，开发时用AssetDatabase(也支持快速切换AB模式))</li>
-<li>支持AB同步和异步加载(统一采用callback风格)</li>
-<li>支持三种基本的资源加载类型(NormalLoad — 正常加载(可通过Tick检测判定正常卸载) Preload — 预加载(切场景才会卸载) PermanentLoad — 永久加载(常驻内存永不卸载))</li>
-<li>已加载资源允许变更资源加载类型，但只允许从低往高变(NormalLoad -&gt; Preload -&gt; PermanentLoad)，不允许从高往低(PermanentLoad -&gt; Preload -&gt; NormalLoad)</li>
-<li>基于UnityEngine.Object的AB索引生命周期绑定</li>
-<li>底层统一管理AB索引计数，管理资源加载释放</li>
-<li>支持卸载频率，卸载帧率门槛，单次卸载数量等设置。采用Long Time Unused First Unload(越久没用越先卸载)原则卸载。</li>
-<li>上层编写对应资源类型Manager资源加载接口(负责提供各资源类型的加载)</li>
-<li>Manager of Manager架构设计，面向接口设计Manager，通过中介者统一注册获取(ModuleManager.GetManager<t>的形式)</t></li>
-<li>底层模块之间的解耦暂时还没想好如何设计(TODO)</li>
-</ol>
-<p>简单绘制一下类图:<br><img src="/img/Unity/Unity-Resource-Manager/ModuleDesign.png" alt="ModuleDesign"></p>
-<p>更多学习参考:<br><a href="https://www.indienova.com/indie-game-development/hierarchical-design-in-unity/" target="_blank" rel="external">浅谈 Unity 开发中的分层设计</a></p>
-<p>类设计：<br>    中介者解耦Manager的类：<br>    ModuleManager(单例类)<br>    ModuleInterface(模块接口类)<br>    ModuleType(模块枚举类型)</p>
-<p>资源加载类：<br>    ABLoadMethod(资源加载方式枚举类型 — 同步 or 异步)<br>    ABLoadState(资源加载状态 — 错误，加载中，完成之类的)<br>    ABLoadType(资源加载类型 — 正常加载，预加载，永久加载)<br>    ResourceModuleManager(资源加载模块统一管理类)<br>    AssetBundleLoader(AB资源加载任务类)<br>    AssetBundleInfo(AB信息以及加载状态类，AB访问，索引计数以及AB依赖关系抽象都在这一层)<br>    AssetBundlePath(AB资源路径相关 — 处理多平台路径问题)<br>    ABDebugWindow.cs(Editor运行模式下可视化查看AB加载详细信息的辅助工具窗口)</p>
-<p>AssetBundle管理方式是索引计数+检查有效使用对象，然后AssetBundle.Unload(true)的方式。<br>这里的引用计数+检查有效使用对象是指：</p>
-<ol>
-<li>AB被依赖加载的引用计数</li>
-<li>AB被加载后绑定到特定Object上的owner对象有效性检查</li>
-</ol>
-<p>包内AB加载方式：<br>AssetBundle.LoadFromFile()<br>AssetBundle.LoadFromFileAsync()</p>
-<p>加载管理方案：</p>
-<ol>
-<li>加载指定资源</li>
-<li>加载自身AB(自身AB加载完通知资源加载层移除该AB加载任务避免重复的加载任务被创建)，自身AB加载完判定是否有依赖AB</li>
-<li>有则加载依赖AB(增加依赖AB的引用计数)(依赖AB采用和自身AB相同的加载方式(ABLoadMethod),但依赖AB统一采用ABLoadType.NormalLoad加载类型)</li>
-<li>自身AB和所有依赖AB加载完回调通知逻辑层可以开始加载Asset资源(AB绑定对象在这一步)</li>
-<li>判定AB是否满足引用计数为0，绑定对象为空，且为NormalLoad加载方式则卸载该AB(并释放依赖AB的计数减一)(通知资源管理层AB卸载，重用AssetBundleInfo对象)</li>
-<li>切场景，递归判定卸载PreloadLoad加载类型AB资源</li>
-</ol>
-<p>AB加载管理相关概念：</p>
-<ol>
-<li>依赖AB与被依赖者采用同样的加载方式(ABLoadMethod)，但加载方式依赖AB统一采用ABLoadType.NormalLoad</li>
-<li>依赖AB通过索引计数管理，只要原始AB不被卸载，依赖AB就不会被卸载</li>
-<li>已加载的AB资源加载类型只允许从低往高变(NormalLoad -&gt; Preload -&gt; PermanentLoad)，不允许从高往低(PermanentLoad -&gt; Preload -&gt; NormalLoad)</li>
-</ol>
-<p>Note:</p>
-<ol>
-<li>一个AB加载任务对应一个AssetBundleLoader</li>
-<li>一个已加载AB信息对应一个AssetBundleInfo</li>
-</ol>
-<h5 id="Demo">Demo</h5><ol>
-<li><p>AB依赖信息查看界面：<br><img src="/img/Unity/AssetBundle-Framework/AssetBundleDepInfoUI.png" alt="AssetBundleDepInfoUI"></p>
-</li>
-<li><p>AB运行时加载管理详细信息界面:<br><img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png" alt="AssetBundleLoadManagerUI"></p>
-</li>
-<li><p>测试界面：<br><img src="/img/Unity/AssetBundle-Framework/AssetBundleTestUI.png" alt="AssetBundleTestUI"></p>
-</li>
-<li><p>点击加载窗口预制件按钮后:</p>
-</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ModuleManager.Singleton.getModule&lt;ResourceModuleManager&gt;().requstResource(<span class="string">"MainWindow"</span>,</span><br><span class="line">(abi) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    mMainWindow = abi.instantiateAsset(<span class="string">"MainWindow"</span>);</span><br><span class="line">    mMainWindow.transform.SetParent(UIRootCanvas.transform, <span class="keyword">false</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<pre><code>![<span class="link_label">AssetBundleLoadManagerUIAfterLoadWindow</span>](<span class="link_url">/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png</span>)
-可以看到窗口mainwindow依赖于loadingscreen，导致我们加载窗口资源时，loadingscreen作为依赖AB被加载进来了(引用计数为1)，窗口资源被绑定到实例出来的窗口对象上(绑定对象MainWindow)
-</code></pre><ol>
-<li>点击测试异步和同步加载按钮后:</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(mMainWindow == <span class="keyword">null</span>)</span><br><span class="line">&#123;</span><br><span class="line">    onLoadWindowPrefab();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试大批量异步加载资源后立刻同步加载其中一个该源</span></span><br><span class="line"><span class="keyword">var</span> image = mMainWindow.transform.Find(<span class="string">"imgBG"</span>).GetComponent&lt;Image&gt;();</span><br><span class="line">ModuleManager.Singleton.getModule&lt;ResourceModuleManager&gt;().requstResource(<span class="string">"tutorialcellspritesheet"</span>,</span><br><span class="line">(abi) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> sp = abi.getAsset&lt;Sprite&gt;(image, <span class="string">"TextureShader"</span>);</span><br><span class="line">    image.sprite = sp;</span><br><span class="line">&#125;,</span><br><span class="line">ABLoadType.NormalLoad,</span><br><span class="line">ABLoadMethod.Async);</span><br><span class="line"></span><br><span class="line">ModuleManager.Singleton.getModule&lt;ResourceModuleManager&gt;().requstResource(<span class="string">"Ambient"</span>,</span><br><span class="line">(abi) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> sp = abi.getAsset&lt;Sprite&gt;(image, <span class="string">"Ambient"</span>);</span><br><span class="line">    image.sprite = sp;</span><br><span class="line">&#125;,</span><br><span class="line">ABLoadType.NormalLoad,</span><br><span class="line">ABLoadMethod.Async);</span><br><span class="line"></span><br><span class="line">ModuleManager.Singleton.getModule&lt;ResourceModuleManager&gt;().requstResource(<span class="string">"BasicTexture"</span>,</span><br><span class="line">(abi) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> sp = abi.getAsset&lt;Sprite&gt;(image, <span class="string">"BasicTexture"</span>);</span><br><span class="line">    image.sprite = sp;</span><br><span class="line">&#125;,</span><br><span class="line">ABLoadType.NormalLoad,</span><br><span class="line">ABLoadMethod.Async);</span><br><span class="line"></span><br><span class="line">ModuleManager.Singleton.getModule&lt;ResourceModuleManager&gt;().requstResource(<span class="string">"Diffuse"</span>,</span><br><span class="line">(abi) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> sp = abi.getAsset&lt;Sprite&gt;(image, <span class="string">"Diffuse"</span>);</span><br><span class="line">    image.sprite = sp;</span><br><span class="line">&#125;,</span><br><span class="line">ABLoadType.NormalLoad,</span><br><span class="line">ABLoadMethod.Async);</span><br></pre></td></tr></table></figure>
-<pre><code>![<span class="link_label">AssetBundleLoadManagerUIAfterLoadSprites</span>](<span class="link_url">/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadSprites.png</span>)
-可以看到我们切换的所有Sprite资源都被绑定到了imgBG对象上，因为不是作为依赖AB加载进来的所以每一个sprite所在的AB引用计数依然为0.
-</code></pre><ol>
-<li>点击销毁窗口实例对象后:</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GameObject.Destroy(mMainWindow);</span><br></pre></td></tr></table></figure>
-<pre><code>![<span class="link_label">AssetBundleLoadManagerUIAfterDestroyWindow</span>](<span class="link_url">/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png</span>)
-窗口销毁后可以看到之前加载的资源所有绑定对象都为空了，因为被销毁了(MainWindow和imgBG都被销毁了)
-</code></pre><p>o</p>
-<ol>
-<li><p>等待回收检测回收后:<br><img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png" alt="AssetBundleLoadManagerUIAfterUnloadAB"><br>上述资源在窗口销毁后，满足了可回收的三大条件(1. 索引计数为0 2. 绑定对象为空 3. NormalLoad加载方式)，最终被成功回收。</p>
-<p>Note:</p>
-<p>读者可能注意到shaderlist索引计数为0，也没绑定对象，但没有被卸载，这是因为shaderlist是被我预加载以常驻资源的形式加载进来的(PermanentLoad)，所以永远不会被卸载。</p>
-</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ModuleManager.Singleton.getModule&lt;ResourceModuleManager&gt;().requstResource(<span class="string">"shaderlist"</span>,</span><br><span class="line">(abi) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    abi.loadAllAsset&lt;UnityEngine.Object&gt;();</span><br><span class="line">&#125;,</span><br><span class="line">ABLoadType.PermanentLoad);          <span class="comment">// Shader常驻</span></span><br></pre></td></tr></table></figure>
-<p>可以看到上面我们正确的实现了资源加载的管理。详细的内容这里就不再多说，感兴趣的直接去下载源码吧，这里给出Git链接：<br><a href="https://github.com/TonyTang1990/AssetBundleLoadManager" target="_blank" rel="external">TonyTang1990/AssetBundleLoadManager</a></p>
-<p>Note:</p>
-<ol>
-<li>Git上后续实现和更新了更多的内容，这里就不一一介绍了，详情参见上面的Git链接</li>
-</ol>
-<p><strong>—————————————————2021/10/13更新开始———————————-</strong></p>
-<h2 id="新版AssetBundle加载管理和打包">新版AssetBundle加载管理和打包</h2><p>为了弥补以前设计和实现上不足的地方，从而有了新版AssetBundle加载管理和打包的编写。</p>
+<p>接下来基于第二种方案来实战编写资源AB加载的框架。<br>AB打包这一块采用最新的可视化指定打包策略的方式。</p>
+<h2 id="新版AssetBundle加载管理，打包以及热更新">新版AssetBundle加载管理，打包以及热更新</h2><p>为了弥补以前设计和实现上不足的地方，从而有了新版AssetBundle加载管理和打包的编写。</p>
 <h3 id="新版AssetBundle加载管理">新版AssetBundle加载管理</h3><p>老版的资源加载管理缺点：</p>
 <ol>
 <li>面向AssetBundle级别，没有面向Asset级别的加载管理，无法做到Asset级别的加载异步以及Asset级别加载取消的。</li>
 <li>老版AssetDatabase模式要求资源必须在设置AB名字后才能正确使用(因为依赖了AB名字作为加载参数而非资源全路径)，无法做到资源导入即可快速使用的迭代开发</li>
 <li>资源加载类型分类(普通，预加载，常驻)设计过于面向切场景的游戏设计，不通用到所有游戏类型</li>
 <li>老版AssetBundle异步加载采用了开携程的方式，代码流程看起来会比较混乱</li>
+<li>老版异步加载没有考虑设计上支持逻辑层加载打断</li>
+<li>老版代码没有涉及考虑动态AB下载的设计(边玩边下)</li>
 <li>资源加载代码设计还比较混乱，不容易让人看懂看明白</li>
 </ol>
 <p>综合上面4个问题，新版资源加载管理将支持:</p>
 <ol>
 <li>面向Asset级别加载管理，支持Asset和AssetBundle级别的同步异步加载。</li>
 <li>支持资源导入后AssetDatabase模式马上就能配置全路径加载</li>
-<li>资源加载类型只提供普通和常驻两种(切不支持运行时切换相同Asset或AssetBundle的加载类型)，同时提供统一的加载管理策略，细节管理策略由上层自己设计(比如对象池，预加载)</li>
+<li>资源加载类型只提供普通和常驻两种(且不支持运行时切换相同Asset或AssetBundle的加载类型，意味着一旦第一次加载设定了类型，就再也不能改变，同时第一次因为加载Asset而加载某个AssetBundle的加载类型和Asset一致)，同时提供统一的加载管理策略，细节管理策略由上层自己设计(比如对象池，预加载)</li>
 <li>新版异步加载准备采用监听回调的方式来实现，保证流程清晰易懂</li>
+<li>新版设计请求UID的概念来支持加载打断设计(仅逻辑层面的打断，资源加载不会打断，当所有逻辑回调都取消时，加载完成时会返还索引计数确保资源正确卸载)</li>
+<li>设计上支持动态AB下载(未来填坑)</li>
 <li>加载流程重新设计，让代码更清晰</li>
-<li><strong>保留索引计数(Asset和AssetBundle级别)+对象绑定的设计(对象保定是Asset级别)</strong></li>
+<li><strong>保留索引计数(Asset和AssetBundle级别)+对象绑定的设计(Asset和AssetBundle级别)+按AssetBundle级别卸载(依赖还原的Asset无法准确得知所以无法直接卸载Asset)+加载触发就提前计数(避免异步加载或异步加载打断情况下资源管理异常)</strong></li>
 <li><strong>支持非回调式的同步加载返回(通过抽象Loader支持LoadImmediately的方式实现)</strong></li>
 </ol>
-<p>设计主要参考:</p>
-<p><a href="https://github.com/xasset/xasset" target="_blank" rel="external">XAsset</a></p>
+<p>Note:</p>
+<ol>
+<li>一直以来设计上都是加载完成后才添加索引计数和对象绑定，这样对于异步加载以及异步打断的资源管理来说是有漏洞的，<strong>新版资源加载管理准备设计成提前添加索引计数，等加载完成后再考虑是否返还计数的方式确保异步加载以及异步加载打断的正确资源管理</strong></li>
+</ol>
 <h3 id="新版AssetBundle打包">新版AssetBundle打包</h3><p>老版的资源加载管理缺点：</p>
 <ol>
 <li>采用AssetBundleBrowser需要自己一个一个的设置导入资源的AB名字不够灵活，流程过于繁琐只适合个人小项目</li>
@@ -487,20 +409,109 @@
 <p>核心AB打包思想和流程:</p>
 <ol>
 <li>通过抽象纯虚拟的打包策略设置(即AB收集打包策略设置界面—设置指定目录的打包策略)，做到AB打包策略设置完全抽象AB名字设置无关化(这样一来无需设置AB或清除AB名字，自己完全掌控AB打包策略和打包结论)</li>
-<li>打包时分析打包策略设置的所有有效资源信息，统计出所有有效资源的是否参与打包以及依赖相关等信息，然后结合所有的打包策略设置分析出所有有效Asset的AB打包名字(如果Asset满足多个打包策略设置，默认采用最里层的打包策略设置，找不到符合的采用默认收集打包规则)</li>
+<li>打包时分析打包策略设置的所有有效资源信息，统计出所有有效资源的是否参与打包以及依赖相关等信息，然后结合所有的打包策略设置分析出所有有效Asset的AB打包名字(如果Asset满足多个打包策略设置，默认采用最里层的打包策略设置，找不到符合的采用默认收集打包规则)<strong>(这一步是分析关键，下面细说一下详细步骤)</strong><ul>
+<li>通过自定义设置的打包策略得到所有的有效参与打包路径列表</li>
+<li>通过AssetDatabase.FindAssets()结合打包路径列表得出所有需要分析的Asset</li>
+<li>通过AssetDatabase.GetDependencies(<em>*</em>, true)遍历所有需要分析的Asset列表得出所有Asset的使用信息(是否有依赖使用，是否是需要参与打包的灯)</li>
+<li>通过遍历得到的所有Asset使用信息的路径信息分析设置Asset的AB打包变体信息</li>
+<li>通过遍历得到的所有Asset信息列表结合AssetDatabase.GetDependencies(<em>*</em>, false)接口排除依赖未设置参与打包的Asset资源并得出最终的打包信息列表List<assetbundlebuildinfo></assetbundlebuildinfo></li>
+<li>在最后分析得出最后的打包结论之前，这里我个人将AB的依赖信息文件(AssetBuildInfo.asset)的生成和打包信息单独插入在这里，方便AB依赖信息可以跟AB资源一起构建参与热更</li>
+<li>最后根据分析得出的打包信息列表List<assetbundlebuildinfo>构建真真的打包信息List<assetbundlebuild>进行打包</assetbundlebuild></assetbundlebuildinfo></li>
+<li>AB打包完成后进行一些后续的特殊资源处理(比如视频单独打包。AB打包的依赖文件删除(个人采用自定义生成的AssetBuildInfo.Asset作为依赖加载信息文件)。循环依赖检查。创建打包说明文件等。)</li>
+</ul>
+</li>
 <li>不同的打包规则通过反射创建每样一个来实现获取对应打包规则的打包AB名字结论获取(采用全路径AB名的方式，方便快速查看资源打包分布)</li>
 <li>然后根据所有有效Asset的所有AB名字打包结论来分析得出自定义的打包结论(即哪些Asset打包到哪个AB名里)</li>
 <li>接着根据Asset的AB打包结论来生成最新的AssetBuildInfo(Asset打包信息，可以理解成我们自己分析得出的Manifest文件，用于运行时加载作为资源加载的基础信息数来源)(手动将AssetBuildInfo添加到打包信息里打包成AB，方便热更新走统一流程)</li>
 <li>最后采用BuildPipeline.BuildAssetBundles(输出目录, 打包信息列表, ……)的接口来手动指定打包结论的方式触发AB打包。</li>
 </ol>
+<p>AB打包策略支持了如下几种:</p>
+<ol>
+<li>按目录打包(打包策略递归子目录判定)</li>
+<li>按文件打包(打包策略递归子目录判定)</li>
+<li>按固定名字打包(扩展支持固定名字打包—比如所有Shader打包到shaderlist)(打包策略递归子目录判定)</li>
+<li>按文件或子目录打包(打包策略不递归子目录判定，只影响设定目录和下一层目录)</li>
+<li>不参与打包(打包策略递归子目录判定)</li>
+</ol>
 <p>这里先简单的看下新的AB搜集和打包界面:</p>
-<p><img src="G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG" alt="AssetBundleCollectWindow"></p>
-<p><img src="G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG" alt="AssetBundleBuildWindow"></p>
+<p><img src="./img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG" alt="AssetBundleCollectWindow"></p>
+<p><img src="./img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG" alt="AssetBundleBuildWindow"></p>
 <p>关于Asset路径与AB路径关联信息以及AB依赖信息最终都存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbuildinfo的AB里)，通过Asset路径如何加载到对应AB以及依赖AB的关键就在这里。(这里和MotionFramework自定义Manifest文件输出不一样，采用打包AB的方式，为了和热更新AB走一套机制)</p>
 <p>让我们先来看下大致数据信息结构:</p>
-<p><img src="G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG" alt="AssetBundleBuildInfoView1"></p>
-<p><img src="G:/Projects/GitHubProjects/AssetBundleFramework/AssetBundleLoadManager/img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG" alt="AssetBundleBuildInfoView2"></p>
-<p><strong>—————————————————2021/10/13更新结束———————————-</strong></p>
+<p><img src="./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG" alt="AssetBundleBuildInfoView1"></p>
+<p><img src="./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG" alt="AssetBundleBuildInfoView2"></p>
+<h3 id="新版资源热更新流程">新版资源热更新流程</h3><h4 id="类说明">类说明</h4><p>热更类：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- HotUpdateModuleManager.cs(热更新管理模块单例类)</span><br><span class="line">- TWebRequest.cs(资源下载http抽象类)</span><br></pre></td></tr></table></figure>
+<p>版本信息类：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- VersionConfigModuleManager.cs(版本管理模块单例类)</span><br><span class="line">- VersionConfig.cs(版本信息抽象类)</span><br></pre></td></tr></table></figure>
+<h4 id="功能支持">功能支持</h4><ol>
+<li>支持游戏内版本强更(完成 — 暂时限Android，IOS待测试)</li>
+<li>支持游戏内资源热更(完成 — 暂时限Android， IOS待测试)</li>
+<li>支持游戏内代码热更(未做)</li>
+</ol>
+<h4 id="热更测试说明">热更测试说明</h4><p>之前是使用的<a href="http://www.rejetto.com/hfs/" target="_blank" rel="external">HFS</a>快速搭建的一个资源本地资源服务器，后来使用阿里的ISS静态资源服务器做了一个网络端的资源服务器。</p>
+<p>版本强更流程：</p>
+<ol>
+<li>比较包内版本信息和包外版本信息检查是否强更过版本</li>
+<li>如果强更过版本清空包外相关信息目录</li>
+<li>通过资源服务器下载最新服务器版本信息(ServerVersionConfig.json)和本地版本号作对比，决定是否强更版本</li>
+<li>结合最新版本号和资源服务器地址(Json配置)拼接出最终热更版本所在的资源服务器地址</li>
+<li>下载对应版本号下的强更包并安装</li>
+<li>安装完成，退出游戏重进</li>
+</ol>
+<p>资源热更流程：</p>
+<ol>
+<li><p>初始化本地热更过的资源列表信息(暂时存储在:Application.persistentDataPath + “/ResourceUpdateList/ResourceUpdateList.txt”里)</p>
+</li>
+<li><p>通过资源服务器下载最新服务器版本信息(ServerVersionConfig.json)和本地资源版本号作对比，决定是否资源热更</p>
+</li>
+</ol>
+<ol>
+<li><p>结合最新版本号，最新资源版本号和资源服务器地址(Json配置)拼接出最终资源热更所在的资源服务器地址</p>
+</li>
+<li><p>下载对应地址下的AssetBundleMD5.txt(里面包含了对应详细资源MD5信息)</p>
+<p>AssetBundleMD5.txt</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">assetbuildinfo.bundle|ca830d174533e87efad18f1640e5301d</span><br><span class="line">shaderlist.bundle|2ac2d75f7d91fda7880f447e21b2e289</span><br><span class="line">******</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据比较对应地址下的AssetBundleMD5.txt里的资源MD5信息和本地资源MD5信息(包外的MD5信息优先)得出需要更新下载的资源列表</p>
+</li>
+<li><p>根据得出的需要更新的资源列表下载对应资源地址下的资源并存储在包外(Application.persistentDataPath + “/Android/“)，同时写入最新的资源MD5信息文件(本地AssetBundleMD5.txt)到本地</p>
+</li>
+<li><p>直到所有资源热更完成，退出重进游戏</p>
+</li>
+</ol>
+<h4 id="流程图">流程图</h4><p><img src="./img/Unity/HotUpdate/HotUpdateFlowChat.png" alt="HotUpdateFlowChat"></p>
+<h4 id="热更新辅助工具">热更新辅助工具</h4><p>Tools-&gt;HotUpdate-&gt;热更新操作工具</p>
+<p><img src="./img/Unity/HotUpdate/HotUpdateToolsUI.png" alt="HotUpdateToolsUI"></p>
+<p>主要分为以下2个阶段：</p>
+<ul>
+<li><p>热更新准备阶段:</p>
+<ol>
+<li>每次资源打包会在包内Resource目录生成一个AssetBundleMd5.txt文件用于记录和对比哪些资源需要热更</li>
+</ol>
+<p>​    <img src="./img/Unity/HotUpdate/AssetBundleMD5File.png" alt="AssetBundleMD5File"></p>
+<ol>
+<li>执行热更新准备操作，生成热更新所需服务器最新版本信息文件(ServerVersionConfig.json)并将包内对应平台资源拷贝到热更新准备目录</li>
+</ol>
+<p><img src="./img/Unity/HotUpdate/HotUpdatePreparationFolder.png" alt="HotUpdatePreparationFolder"></p>
+</li>
+<li><p>热更新判定阶段</p>
+<ol>
+<li><p>初始化包内(AssetBundleMd5.txt)和包外(AssetBundleMd5.txt)热更新的AssetBundle MD5信息(先读包内后读包外以包外为准)</p>
+</li>
+<li><p>游戏运行拉去服务器版本和资源版本信息进行比较是否需要版本强更或资源热更新</p>
+</li>
+<li>需要资源热更新则拉去对应最新资源版本的资源MD5信息文件(AssetBundleMD5.txt)进行和本地资源MD5信息进行比较判定哪些资源需要热更新</li>
+<li>拉去所有需要热更新的资源，完成后进入游戏</li>
+</ol>
+</li>
+</ul>
+<p>Note:</p>
+<ol>
+<li>每次打包版本时会拷贝一份AssetBundleMD5.txt到打包输出目录(保存一份方便查看每个版本的资源MD5信息)</li>
+</ol>
+<h4 id="热更包外目录结构">热更包外目录结构</h4><p>PersistentAsset -&gt; HotUpdate -&gt; Platform(资源热更新目录)<br>PersistentAsset -&gt; HotUpdate -&gt; AssetBundleMd5.txt(记录热更新的AssetBundle路径和MD5信息—兼顾进游戏前资源热更和动态资源热更)(格式:热更AB路径:热更AB的MD5/n热更AB路径:热更AB的MD5<strong>**</strong>)<br>PersistentAsset -&gt; Config -&gt; VersionConfig.json(包外版本信息—用于进游戏前强更和热更判定)</p>
+<p>PersistentAsset -&gt; HotUpdate -&gt; 版本强更包</p>
 <h2 id="资源辅助工具">资源辅助工具</h2><p>资源辅助工具五件套：</p>
 <ul>
 <li><p>AB删除判定工具</p>
@@ -589,7 +600,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#鸣谢"><span class="toc-number">2.</span> <span class="toc-text">鸣谢</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AssetBundle打包"><span class="toc-number">3.</span> <span class="toc-text">AssetBundle打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#相关工具"><span class="toc-number">3.1.</span> <span class="toc-text">相关工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB打包"><span class="toc-number">3.2.</span> <span class="toc-text">AB打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#资源冗余"><span class="toc-number">3.2.1.</span> <span class="toc-text">资源冗余</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖打包"><span class="toc-number">3.2.1.1.</span> <span class="toc-text">依赖打包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#增量打包(Unity_5以后)"><span class="toc-number">3.2.1.2.</span> <span class="toc-text">增量打包(Unity 5以后)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖Asset信息打包"><span class="toc-number">3.2.1.3.</span> <span class="toc-text">依赖Asset信息打包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打包策略"><span class="toc-number">3.2.2.</span> <span class="toc-text">打包策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB压缩格式"><span class="toc-number">3.2.3.</span> <span class="toc-text">AB压缩格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包相关API"><span class="toc-number">3.2.4.</span> <span class="toc-text">AB打包相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包框架实战"><span class="toc-number">3.2.5.</span> <span class="toc-text">AB打包框架实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AssetBundle加载管理"><span class="toc-number">3.3.</span> <span class="toc-text">AssetBundle加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖加载还原"><span class="toc-number">3.3.1.</span> <span class="toc-text">依赖加载还原</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB加载相关API"><span class="toc-number">3.3.2.</span> <span class="toc-text">AB加载相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB回收相关API"><span class="toc-number">3.3.3.</span> <span class="toc-text">AB回收相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于Asset重用的AB加载"><span class="toc-number">3.3.4.</span> <span class="toc-text">基于Asset重用的AB加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于AB引用计数的AB加载管理"><span class="toc-number">3.3.5.</span> <span class="toc-text">基于AB引用计数的AB加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#AB加载管理框架"><span class="toc-number">3.3.5.1.</span> <span class="toc-text">AB加载管理框架</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#框架设计"><span class="toc-number">3.3.5.1.1.</span> <span class="toc-text">框架设计</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Demo"><span class="toc-number">3.3.5.1.2.</span> <span class="toc-text">Demo</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新版AssetBundle加载管理和打包"><span class="toc-number">3.4.</span> <span class="toc-text">新版AssetBundle加载管理和打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#新版AssetBundle加载管理"><span class="toc-number">3.4.1.</span> <span class="toc-text">新版AssetBundle加载管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新版AssetBundle打包"><span class="toc-number">3.4.2.</span> <span class="toc-text">新版AssetBundle打包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#资源辅助工具"><span class="toc-number">3.5.</span> <span class="toc-text">资源辅助工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB实战总结"><span class="toc-number">3.6.</span> <span class="toc-text">AB实战总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#鸣谢"><span class="toc-number">2.</span> <span class="toc-text">鸣谢</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AssetBundle打包"><span class="toc-number">3.</span> <span class="toc-text">AssetBundle打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#相关工具"><span class="toc-number">3.1.</span> <span class="toc-text">相关工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB打包"><span class="toc-number">3.2.</span> <span class="toc-text">AB打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#资源冗余"><span class="toc-number">3.2.1.</span> <span class="toc-text">资源冗余</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖打包"><span class="toc-number">3.2.1.1.</span> <span class="toc-text">依赖打包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#增量打包(Unity_5以后)"><span class="toc-number">3.2.1.2.</span> <span class="toc-text">增量打包(Unity 5以后)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖Asset信息打包"><span class="toc-number">3.2.1.3.</span> <span class="toc-text">依赖Asset信息打包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打包策略"><span class="toc-number">3.2.2.</span> <span class="toc-text">打包策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB压缩格式"><span class="toc-number">3.2.3.</span> <span class="toc-text">AB压缩格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包相关API"><span class="toc-number">3.2.4.</span> <span class="toc-text">AB打包相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB打包框架实战"><span class="toc-number">3.2.5.</span> <span class="toc-text">AB打包框架实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AssetBundle加载管理"><span class="toc-number">3.3.</span> <span class="toc-text">AssetBundle加载管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖加载还原"><span class="toc-number">3.3.1.</span> <span class="toc-text">依赖加载还原</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB加载相关API"><span class="toc-number">3.3.2.</span> <span class="toc-text">AB加载相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AB回收相关API"><span class="toc-number">3.3.3.</span> <span class="toc-text">AB回收相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于Asset重用的AB加载"><span class="toc-number">3.3.4.</span> <span class="toc-text">基于Asset重用的AB加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于AB引用计数的AB加载管理"><span class="toc-number">3.3.5.</span> <span class="toc-text">基于AB引用计数的AB加载管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新版AssetBundle加载管理，打包以及热更新"><span class="toc-number">3.4.</span> <span class="toc-text">新版AssetBundle加载管理，打包以及热更新</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#新版AssetBundle加载管理"><span class="toc-number">3.4.1.</span> <span class="toc-text">新版AssetBundle加载管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新版AssetBundle打包"><span class="toc-number">3.4.2.</span> <span class="toc-text">新版AssetBundle打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新版资源热更新流程"><span class="toc-number">3.4.3.</span> <span class="toc-text">新版资源热更新流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#类说明"><span class="toc-number">3.4.3.1.</span> <span class="toc-text">类说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#功能支持"><span class="toc-number">3.4.3.2.</span> <span class="toc-text">功能支持</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#热更测试说明"><span class="toc-number">3.4.3.3.</span> <span class="toc-text">热更测试说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#流程图"><span class="toc-number">3.4.3.4.</span> <span class="toc-text">流程图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#热更新辅助工具"><span class="toc-number">3.4.3.5.</span> <span class="toc-text">热更新辅助工具</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#热更包外目录结构"><span class="toc-number">3.4.3.6.</span> <span class="toc-text">热更包外目录结构</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#资源辅助工具"><span class="toc-number">3.5.</span> <span class="toc-text">资源辅助工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AB实战总结"><span class="toc-number">3.6.</span> <span class="toc-text">AB实战总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
  
   </div>
 
@@ -781,7 +792,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2021 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
 		
 		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
 		
