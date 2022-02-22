@@ -1,0 +1,714 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>UnityEditor知识 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="IntroductionUnity游戏开发过程中我会需要通过Editor相关工具来编写一些工具和可视化显示工等，用于辅助完成特定的功能和编辑器开发，本章节用于整理和学习Unity相关的Editor知识，好让自己对于Editor的相关知识有一个系统的学习和整理。
+Editor绘制分类Editor个人接触到的按显示区域来分类的话，个人接触过以下几类：
+
+Scene场景辅助GUI绘制
+Editor纯工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UnityEditor知识">
+<meta property="og:url" content="http://tonytang1990.github.io/2022/02/20/UnityEditor知识/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="IntroductionUnity游戏开发过程中我会需要通过Editor相关工具来编写一些工具和可视化显示工等，用于辅助完成特定的功能和编辑器开发，本章节用于整理和学习Unity相关的Editor知识，好让自己对于Editor的相关知识有一个系统的学习和整理。
+Editor绘制分类Editor个人接触到的按显示区域来分类的话，个人接触过以下几类：
+
+Scene场景辅助GUI绘制
+Editor纯工具">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/EditorUIStudy/DrawCoordinateSystem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/EditorUIStudy/TagAndGUIButtonDraw.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/AI/BehaviourTree/CustomVariableNodes.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/AI/BehaviourTree/CustomVariableInspector.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/AI/BehaviourTree/AllCustomVariableInspector.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/AI/BehaviourTree/GenericMenu.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/AI/BehaviourTree/BTOperationPanel.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/AI/BehaviourTree/GenericMenu.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/AI/BehaviourTree/BTEditorNode.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/AI/BehaviourTree/BTNodeConnectLine.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/AI/BehaviourTree/BTNodeEditor.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/EditorUIStudy/BasicInspectorDraw.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/EditorUIStudy/CustomInspectorDraw.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/EditorUIStudy/AttributeInspectorDraw.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/EditorUIStudy/GUIStyleViewer.PNG">
+<meta property="og:updated_time" content="2022-02-21T11:07:33.883Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UnityEditor知识">
+<meta name="twitter:description" content="IntroductionUnity游戏开发过程中我会需要通过Editor相关工具来编写一些工具和可视化显示工等，用于辅助完成特定的功能和编辑器开发，本章节用于整理和学习Unity相关的Editor知识，好让自己对于Editor的相关知识有一个系统的学习和整理。
+Editor绘制分类Editor个人接触到的按显示区域来分类的话，个人接触过以下几类：
+
+Scene场景辅助GUI绘制
+Editor纯工具">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2022/02/20/UnityEditor知识/" title="UnityEditor知识" itemprop="url">UnityEditor知识</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2022-02-20T14:37:00.000Z" itemprop="datePublished"> 發表於 2022-02-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor绘制分类"><span class="toc-number">2.</span> <span class="toc-text">Editor绘制分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Scene辅助GUI绘制"><span class="toc-number">2.1.</span> <span class="toc-text">Scene辅助GUI绘制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#实战"><span class="toc-number">2.1.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Editor窗口绘制"><span class="toc-number">2.2.</span> <span class="toc-text">Editor窗口绘制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Inspector面板绘制"><span class="toc-number">2.3.</span> <span class="toc-text">Inspector面板绘制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GUI相关知识点"><span class="toc-number">2.4.</span> <span class="toc-text">GUI相关知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IMGUI"><span class="toc-number">2.4.1.</span> <span class="toc-text">IMGUI</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#GUI和EditorGUI"><span class="toc-number">2.4.1.1.</span> <span class="toc-text">GUI和EditorGUI</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GUI排版"><span class="toc-number">2.4.1.2.</span> <span class="toc-text">GUI排版</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GUISkin和GUIStyle"><span class="toc-number">2.4.1.3.</span> <span class="toc-text">GUISkin和GUIStyle</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UI_Toolkit"><span class="toc-number">2.4.2.</span> <span class="toc-text">UI Toolkit</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor工具分类"><span class="toc-number">3.</span> <span class="toc-text">Editor工具分类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor数据存储"><span class="toc-number">4.</span> <span class="toc-text">Editor数据存储</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor常用标签"><span class="toc-number">5.</span> <span class="toc-text">Editor常用标签</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">6.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">7.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">8.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="Introduction">Introduction</h1><p>Unity游戏开发过程中我会需要通过Editor相关工具来编写一些工具和可视化显示工等，用于辅助完成特定的功能和编辑器开发，本章节用于整理和学习Unity相关的Editor知识，好让自己对于Editor的相关知识有一个系统的学习和整理。</p>
+<h1 id="Editor绘制分类">Editor绘制分类</h1><p>Editor个人接触到的按显示区域来分类的话，个人接触过以下几类：</p>
+<ol>
+<li>Scene场景辅助GUI绘制</li>
+<li>Editor纯工具窗口绘制</li>
+<li>Inspector面板绘制</li>
+</ol>
+<h2 id="Scene辅助GUI绘制">Scene辅助GUI绘制</h2><p>Scene的GUI绘制主要分为两种：</p>
+<ol>
+<li>Gizmos</li>
+<li>Handles</li>
+</ol>
+<p>Gizmos</p>
+<p><strong>Gizmos主要用于绘制Scene场景里的可视化调试(比如绘制线，图标，cube等)，不支持交互。</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>Gizmos的代码需要卸载OnDrawGizmos()或OnDrawGizmosSelected()方法内，区别是前者是Scene场景一直显示，后者是只有包含该脚本的指定对象被选中时显示。</strong></li>
+</ol>
+<p>Handles</p>
+<p><strong>Handles主要用于绘制Scene场景里3D可交互UI(比如可拉伸坐标轴，按钮等)。</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>Handles的绘制代码需要卸载OnSceneGUI()方法内</strong></li>
+<li>Handles里依然支持GUI的2D GUI绘制，但需要把代码写在Hanldes.BeginGUI和Handles.EndGUI内。</li>
+</ol>
+<h3 id="实战">实战</h3><ol>
+<li>Gizmos+Handles绘制Scene场景里的坐标系</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             CoordinateSystemDraw.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/02/20</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> CoordinateSystemDraw.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 坐标系Gizmo绘制</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CoordinateSystemDraw</span> : <span class="title">MonoBehaviour</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 坐标系原点</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"坐标系原点"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Vector3 CoordinateCenterPoint = Vector3.zero;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 坐标系长度</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"坐标系长度"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> CoordinateSystemLength = <span class="number">1.0</span>f;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Z轴颜色</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"Z轴颜色"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Color ForwardAxisColor = Color.blue;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> X轴颜色</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"X轴颜色"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Color RightAxisColor = Color.red;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Y轴颜色</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"Y轴颜色"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Color UpAxisColor = Color.green;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> XY平面颜色</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"XY平面颜色"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Color ForwardPlaneColor = <span class="keyword">new</span> Color(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>, <span class="number">48</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> ZY平面颜色</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"ZY平面颜色"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Color RightPlaneColor = <span class="keyword">new</span> Color(<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">48</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> XZ平面颜色</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"XZ平面颜色"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Color UpPlaneColor = <span class="keyword">new</span> Color(<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">48</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> XY轴平面大小</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Vector3 ForwardPlaneSize = <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">1</span>, <span class="number">0.001</span>f);</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> ZY轴平面大小</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Vector3 RightPlaneSize = <span class="keyword">new</span> Vector3(<span class="number">0.001</span>f, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> XZ轴平面大小</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Vector3 UpPlaneSize = <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">0.001</span>f, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 原始颜色</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Color mOriginalColor;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnDrawGizmos</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        DrawForwardPlane();</span><br><span class="line">        DrawRightPlane();</span><br><span class="line">        DrawUpPlane();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 绘制XY平面</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawForwardPlane</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        mOriginalColor = GUI.color;</span><br><span class="line">        Gizmos.color = ForwardPlaneColor;</span><br><span class="line">        ForwardPlaneSize.x = CoordinateSystemLength;</span><br><span class="line">        ForwardPlaneSize.y = CoordinateSystemLength;</span><br><span class="line">        Gizmos.DrawCube(CoordinateCenterPoint, ForwardPlaneSize);</span><br><span class="line">        Gizmos.color = mOriginalColor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 绘制ZY平面</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawRightPlane</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        mOriginalColor = GUI.color;</span><br><span class="line">        Gizmos.color = RightPlaneColor;</span><br><span class="line">        RightPlaneSize.y = CoordinateSystemLength;</span><br><span class="line">        RightPlaneSize.z = CoordinateSystemLength;</span><br><span class="line">        Gizmos.DrawCube(CoordinateCenterPoint, RightPlaneSize);</span><br><span class="line">        Gizmos.color = mOriginalColor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 绘制XZ平面</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawUpPlane</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        mOriginalColor = GUI.color;</span><br><span class="line">        Gizmos.color = UpPlaneColor;</span><br><span class="line">        UpPlaneSize.x = CoordinateSystemLength;</span><br><span class="line">        UpPlaneSize.z = CoordinateSystemLength;</span><br><span class="line">        Gizmos.DrawCube(CoordinateCenterPoint, UpPlaneSize);</span><br><span class="line">        Gizmos.color = mOriginalColor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             CoordinateSystemDrawEditor.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/02/20</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> CoordinateSystemDrawEditor.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> CoordinateSystemDraw的Editor绘制</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[CustomEditor(<span class="keyword">typeof</span>(CoordinateSystemDraw))]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CoordinateSystemDrawEditor</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 坐标系原点属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mCoordinateCenterPointProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 坐标系长度属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mCoordinateSystemLengthProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Z轴颜色属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mForwardAxisColorProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> X轴颜色属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mRightAxisColorProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Y轴颜色</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mUpAxisColorProperty;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">OnEnable</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        mCoordinateCenterPointProperty = serializedObject.FindProperty(<span class="string">"CoordinateCenterPoint"</span>);</span><br><span class="line">        mCoordinateSystemLengthProperty = serializedObject.FindProperty(<span class="string">"CoordinateSystemLength"</span>);</span><br><span class="line">        mForwardAxisColorProperty = serializedObject.FindProperty(<span class="string">"ForwardAxisColor"</span>);</span><br><span class="line">        mRightAxisColorProperty = serializedObject.FindProperty(<span class="string">"RightAxisColor"</span>);</span><br><span class="line">        mUpAxisColorProperty = serializedObject.FindProperty(<span class="string">"UpAxisColor"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnSceneGUI</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(Event.current.type == EventType.Repaint)</span><br><span class="line">        &#123;</span><br><span class="line">            Handles.color = mForwardAxisColorProperty.colorValue;</span><br><span class="line">            Handles.ArrowHandleCap(<span class="number">1</span>, mCoordinateCenterPointProperty.vector3Value,</span><br><span class="line">                                    Quaternion.LookRotation(Vector3.forward),</span><br><span class="line">                                    mCoordinateSystemLengthProperty.floatValue, EventType.Repaint);</span><br><span class="line"></span><br><span class="line">            Handles.color = mRightAxisColorProperty.colorValue;</span><br><span class="line">            Handles.ArrowHandleCap(<span class="number">1</span>, mCoordinateCenterPointProperty.vector3Value,</span><br><span class="line">                                    Quaternion.LookRotation(Vector3.right),</span><br><span class="line">                                    mCoordinateSystemLengthProperty.floatValue, EventType.Repaint);</span><br><span class="line"></span><br><span class="line">            Handles.color = mUpAxisColorProperty.colorValue;</span><br><span class="line">            Handles.ArrowHandleCap(<span class="number">1</span>, mCoordinateCenterPointProperty.vector3Value,</span><br><span class="line">                                    Quaternion.LookRotation(Vector3.up),</span><br><span class="line">                                    mCoordinateSystemLengthProperty.floatValue, EventType.Repaint);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果展示:</p>
+<p><img src="./img/Unity/EditorUIStudy/DrawCoordinateSystem.PNG" alt="DrawCoordinateSystem"></p>
+<ol>
+<li>Gizmos绘制物体的标签和2D可交互按钮显示</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             TagAndButtonDraw.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/02/21</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> TagAndButtonDraw.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 物体标签和交互按钮显示</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TagAndButtonDraw</span> : <span class="title">MonoBehaviour</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 物体名</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"物体名"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Name = <span class="string">"GUI测试物体"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 物体标签名</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"物体标签名"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> TagName = <span class="string">"sv_icon_name3"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnDrawGizmos</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        DrawTag();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 绘制物体标签</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawTag</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Gizmos.DrawIcon(transform.position, TagName, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             TagAndButtonDrawEditor.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/02/21</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> TagAndButtonDrawEditor.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 物体也签和交互按钮显示的Editor绘制</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[CustomEditor(<span class="keyword">typeof</span>(TagAndButtonDraw))]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TagAndButtonDrawEditor</span> : <span class="title">Editor</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 物体名属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mNameProperty;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">OnEnable</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        mNameProperty = serializedObject.FindProperty(<span class="string">"Name"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnSceneGUI</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> tagAndButtonDraw = (TagAndButtonDraw)target;</span><br><span class="line">        <span class="keyword">if</span>(tagAndButtonDraw == <span class="keyword">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Handles.Label(tagAndButtonDraw.transform.position, mNameProperty.stringValue);</span><br><span class="line">        <span class="comment">// Handles里绘制2D GUI需要在Handles.BeginGUI()和Handles.EndGUI()内</span></span><br><span class="line">        Handles.BeginGUI();</span><br><span class="line">        <span class="keyword">if</span>(GUILayout.Button(<span class="string">"测试按钮"</span>, GUILayout.Width(<span class="number">200</span>f), GUILayout.Height(<span class="number">40</span>f)))</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log($<span class="string">"物体按钮被点击!"</span>);</span><br><span class="line">            Selection.activeGameObject = tagAndButtonDraw.gameObject;</span><br><span class="line">        &#125;</span><br><span class="line">        Handles.EndGUI();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果展示:</p>
+<p><img src="./img/Unity/EditorUIStudy/TagAndGUIButtonDraw.PNG" alt="TagAndGUIButtonDraw"></p>
+<p>关于GUI的Icon详细列表可以查询这里:</p>
+<p><a href="https://unitylist.com/p/5c3/Unity-editor-icons" target="_blank" rel="external">Unity Editor Built-in Icons</a></p>
+<h2 id="Editor窗口绘制">Editor窗口绘制</h2><p>Editor的窗口绘制需要继承至<strong>EditorWindow</strong>类，然后在<strong>OnGUI()</strong>方法内利用GUI相关接口编写UI排版代码。</p>
+<p>这一类代码工具代码写的比较多就不详细介绍了，主要是使用<strong>GUILayout</strong>和<strong>EditorGUILayout</strong>以及<strong>GUI</strong>相关的接口编写，使用<strong>MenuItem</strong>定义窗口UI入口，<strong>GenericMenu</strong>编写自定义菜单，<strong>Handles</strong>编写一些可视化线等。然后结合Event模块编写一些自定义的操作控制。</p>
+<p>典型例子1-资源打包工具窗口的编写:</p>
+<p>效果展示:</p>
+<p><img src="./img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG" alt="AssetBundleCollectWindow"></p>
+<p><img src="./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png" alt="AssetBundleLoadManagerUIAfterDestroyWindow"></p>
+<p>详情参见:</p>
+<p><a href="https://github.com/TonyTang1990/AssetBundleLoadManager" target="_blank" rel="external">AssetBundleManager</a></p>
+<p>典型例子2-行为树编辑器编写:</p>
+<p><img src="./img/AI/BehaviourTree/CustomVariableNodes.png" alt="自定义变量节点"><br><img src="./img/AI/BehaviourTree/CustomVariableInspector.png" alt="自定义变量参数面板"><br><img src="./img/AI/BehaviourTree/AllCustomVariableInspector.png" alt="所有自定义变量展示面板"></p>
+<p><img src="./img/AI/BehaviourTree/GenericMenu.png" alt="节点编辑器操作响应"></p>
+<p><img src="./img/AI/BehaviourTree/BTOperationPanel.png" alt="节点编辑器操作面板"></p>
+<p><img src="./img/AI/BehaviourTree/GenericMenu.png" alt="行为树编辑器菜单"></p>
+<p><img src="./img/AI/BehaviourTree/BTEditorNode.png" alt="行为树节点窗口"></p>
+<p><img src="./img/AI/BehaviourTree/BTNodeConnectLine.png" alt="行为树节点连线"></p>
+<p><img src="./img/AI/BehaviourTree/BTNodeEditor.png" alt="行为树节点编辑器效果展示"></p>
+<p>详情参见:</p>
+<p><a href="https://github.com/TonyTang1990/BehaviourTreeForLua" target="_blank" rel="external">BehaviourTreeForLua</a></p>
+<p>Note:</p>
+<ol>
+<li><strong>主要注意GUI和GUILayout或EditorGUILayout在自动排版上有区分，前者通过自定义布局实现排版布局，后者通过自动排版实现排版布局。</strong></li>
+</ol>
+<h2 id="Inspector面板绘制">Inspector面板绘制</h2><p>Inspector的面板绘制跟Unity序列化相关，常规的Inspector默认显示是通过继承<strong>Monobehaviour</strong>或<strong>ScriptableObject</strong>结合标记<strong>Serializable</strong>(标记类或结构体需要序列化),<strong>SerializedFied</strong>(标记成员需要序列化),<strong>NonSerialized</strong>(标记成员不需要序列化)和<strong>HideInInspector</strong>(标记成员不显示在面板上)来实现字段序列化和显示控制。</p>
+<p>详细的序列化支持规则参考:</p>
+<p><a href="https://docs.unity3d.com/Manual/script-Serialization.html" target="_blank" rel="external">Serialization rules</a></p>
+<p>基础版的序列化事例:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             CustomInspectorDraw.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/02/21</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> CustomInspectorDraw.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 自定义Inspector面板绘制</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomInspectorDraw</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 序列化类</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Serializable]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SerilizableClass</span></span><br><span class="line">    &#123;</span><br><span class="line">        [Header(<span class="string">"类的整形数据"</span>)]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> ClassIntValue;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 类隐藏不显示的字符串数据</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        [HideInInspector]</span><br><span class="line">        [Header(<span class="string">"类隐藏不显示的字符串数据"</span>)]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> ClassHideInspectorStringValue;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 类不序列化的布尔数据</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        [NonSerialized]</span><br><span class="line">        [Header(<span class="string">"类不序列化的布尔数据"</span>)]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">bool</span> ClassNonSerializedBoolValue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 字符串数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"字符串数据"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> StringValue;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 布尔数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"布尔数据"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> BoolValue;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> GameObject对象数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"GameObject对象数据"</span>)]</span><br><span class="line">    <span class="keyword">public</span> GameObject GoValue;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 整形数组数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"整形数组数据"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] IntArrayValue;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 序列化类成员</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"序列化类成员"</span>)]</span><br><span class="line">    <span class="keyword">public</span> SerilizableClass SerilizabledClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果展示:</p>
+<p><img src="./img/Unity/EditorUIStudy/BasicInspectorDraw.PNG" alt="BasicInspectorDraw"></p>
+<p>如果我们需要自定义Inspector的面板显示，我们需要<strong>继承Editor</strong>类然后重写<strong>OnInspectorGUI</strong>接口进行自定义UI的代码编写，主要使用GUI，EditorGUI相关接口。</p>
+<p>自定义Inspector事例:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             CustomInspectorDraw.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/02/21</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> CustomInspectorDraw.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 自定义Inspector面板绘制</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomInspectorDraw</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 序列化类</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Serializable]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SerilizableClass</span></span><br><span class="line">    &#123;</span><br><span class="line">        [Header(<span class="string">"类的整形数据"</span>)]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> ClassIntValue;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 类隐藏不显示的字符串数据</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        [HideInInspector]</span><br><span class="line">        [Header(<span class="string">"类隐藏不显示的字符串数据"</span>)]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> ClassHideInspectorStringValue;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 类不序列化的布尔数据</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        [NonSerialized]</span><br><span class="line">        [Header(<span class="string">"类不序列化的布尔数据"</span>)]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">bool</span> ClassNonSerializedBoolValue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 字符串数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"字符串数据"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> StringValue;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 布尔数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"布尔数据"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> BoolValue;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> GameObject对象数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"GameObject对象数据"</span>)]</span><br><span class="line">    <span class="keyword">public</span> GameObject GoValue;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 整形数组数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"整形数组数据"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] IntArrayValue;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 序列化类成员</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"序列化类成员"</span>)]</span><br><span class="line">    <span class="keyword">public</span> SerilizableClass SerilizabledClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             CustomInspectorDrawEditor.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/02/21</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> CustomInspectorDrawEditor.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> CustomInspectorDraw自定义Inspector</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[CustomEditor(<span class="keyword">typeof</span>(CustomInspectorDraw))]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomInspectorDrawEditor</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 字符串数据属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty StringValueProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 布尔数据属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty BoolValueProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> GameObject对象数据属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty GoValueProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 整形数组数据属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty IntArrayValueProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 序列化类成员属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty SerilizabledClassProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 序列化类成员属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty ClassIntValueProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 序列化类成员属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty ClassHideInspectorStringValueProperty;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnEnable</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        StringValueProperty = serializedObject.FindProperty(<span class="string">"StringValue"</span>);</span><br><span class="line">        BoolValueProperty = serializedObject.FindProperty(<span class="string">"BoolValue"</span>);</span><br><span class="line">        GoValueProperty = serializedObject.FindProperty(<span class="string">"GoValue"</span>);</span><br><span class="line">        IntArrayValueProperty = serializedObject.FindProperty(<span class="string">"IntArrayValue"</span>);</span><br><span class="line">        SerilizabledClassProperty = serializedObject.FindProperty(<span class="string">"SerilizabledClass"</span>);</span><br><span class="line">        ClassIntValueProperty = SerilizabledClassProperty.FindPropertyRelative(<span class="string">"ClassIntValue"</span>);</span><br><span class="line">        ClassHideInspectorStringValueProperty = SerilizabledClassProperty.FindPropertyRelative(<span class="string">"ClassHideInspectorStringValue"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnInspectorGUI</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="comment">// 确保对SerializedObject和SerializedProperty的数据修改每帧同步</span></span><br><span class="line">        serializedObject.Update();</span><br><span class="line"></span><br><span class="line">        EditorGUILayout.BeginVertical();</span><br><span class="line">        <span class="keyword">if</span>(GUILayout.Button(<span class="string">"重置所有值"</span>, GUILayout.ExpandWidth(<span class="keyword">true</span>), GUILayout.Height(<span class="number">20</span>f)))</span><br><span class="line">        &#123;</span><br><span class="line">            StringValueProperty.stringValue = <span class="keyword">string</span>.Empty;</span><br><span class="line">            BoolValueProperty.boolValue = <span class="keyword">false</span>;</span><br><span class="line">            GoValueProperty.objectReferenceValue = <span class="keyword">null</span>;</span><br><span class="line">            IntArrayValueProperty.arraySize = <span class="number">0</span>;</span><br><span class="line">            ClassIntValueProperty.intValue = <span class="number">0</span>;</span><br><span class="line">            ClassHideInspectorStringValueProperty.stringValue = <span class="keyword">string</span>.Empty;</span><br><span class="line">        &#125;</span><br><span class="line">        EditorGUILayout.PropertyField(StringValueProperty);</span><br><span class="line">        EditorGUILayout.PropertyField(BoolValueProperty);</span><br><span class="line">        EditorGUILayout.PropertyField(GoValueProperty);</span><br><span class="line">        EditorGUILayout.PropertyField(IntArrayValueProperty);</span><br><span class="line">        EditorGUILayout.PropertyField(SerilizabledClassProperty, <span class="keyword">true</span>);</span><br><span class="line">        EditorGUILayout.EndVertical();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 确保对SerializedObject和SerializedProperty的数据修改写入生效</span></span><br><span class="line">        serializedObject.ApplyModifiedProperties();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果展示:</p>
+<p><img src="./img/Unity/EditorUIStudy/CustomInspectorDraw.PNG" alt="CustomInspectorDraw"></p>
+<p><strong>如果想实现通用的属性重置，可以参考SerializedObject(比如GetIteractor())和SerializedProperty(比如propertyType和propertyPath以及XXXValue等)相关接口实现遍历重置。</strong></p>
+<p>通过重写Editor的OnInspectorGUI()方法确实实现了自定义Inspector显示，但每一个属性的显示都要通过编写自定义UI代码的方式去展示重用率低同时重复劳动多。</p>
+<p>接下来这里要讲的是通过<strong>自定义属性标签实现面向标签的自定义Inspector绘制控制，从而实现高度的可重用属性标签</strong>。</p>
+<p>自定义Inspector属性绘制标签由两部分组成:</p>
+<ol>
+<li><strong>自定义标签继承至PropertyAttribute(控制自定义属性标签的值)</strong></li>
+<li><strong>自定义标签绘制继承至PropertyDrawer(控制自定义属性标签的显示绘制)</strong></li>
+</ol>
+<p>比如我们想实现一个类似Range标签和纹理Preview显示的标签功能:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             TRangeAttribute.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/02/21</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> TRangeAttribute.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 数值范围属性标签</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TRangeAttribute</span> : <span class="title">PropertyAttribute</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 最小值</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="keyword">float</span> MinValue;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 最大值</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="keyword">float</span> MaxValue;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TRangeAttribute</span>(<span class="params"><span class="keyword">float</span> minValue, <span class="keyword">float</span> maxValue</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        MinValue = minValue;</span><br><span class="line">        MaxValue = maxValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             TRangeDrawer.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/02/21</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> IntRangeDrawer.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 数值范围绘制</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[CustomPropertyDrawer(<span class="keyword">typeof</span>(TRangeAttribute))]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TRangeDrawer</span> : <span class="title">PropertyDrawer</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnGUI</span>(<span class="params">Rect position, SerializedProperty property, GUIContent label</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> tRangeAttribute = (TRangeAttribute)attribute;</span><br><span class="line">        <span class="keyword">if</span>(property.propertyType == SerializedPropertyType.Integer)</span><br><span class="line">        &#123;</span><br><span class="line">            EditorGUI.IntSlider(position, property, (<span class="keyword">int</span>)tRangeAttribute.MinValue, (<span class="keyword">int</span>)tRangeAttribute.MaxValue, label);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">else</span> <span class="title">if</span>(<span class="params">property.propertyType == SerializedPropertyType.Float</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            EditorGUI.Slider(position, property, tRangeAttribute.MinValue, tRangeAttribute.MaxValue, label);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            EditorGUILayout.LabelField(label, <span class="string">"请使用TRange到float或int上!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             TPreviewAttribute.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/02/21</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> TPreviewAttribute.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 可预览的标签</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TPreviewAttribute</span> : <span class="title">PropertyAttribute</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TPreviewAttribute</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             TPreviewDrawer.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/02/21</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> TPreviewDrawer.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 预览绘制</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[CustomPropertyDrawer(<span class="keyword">typeof</span>(TPreviewAttribute))]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TPreviewDrawer</span> : <span class="title">PropertyDrawer</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 调整整体高度</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="property"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="label"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">float</span> <span class="title">GetPropertyHeight</span>(<span class="params">SerializedProperty property, GUIContent label</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">base</span>.GetPropertyHeight(property, label) + <span class="number">64</span>f;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnGUI</span>(<span class="params">Rect position, SerializedProperty property, GUIContent label</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        EditorGUI.BeginProperty(position, label, property);</span><br><span class="line">        EditorGUI.PropertyField(position, property, label);</span><br><span class="line"></span><br><span class="line">        Texture2D previewTexture = GetAssetPreview(property);</span><br><span class="line">        <span class="keyword">if</span> (previewTexture != <span class="keyword">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Rect previewRect = <span class="keyword">new</span> Rect()</span><br><span class="line">            &#123;</span><br><span class="line">                x = position.x + GetIndentLength(position),</span><br><span class="line">                y = position.y + EditorGUIUtility.singleLineHeight,</span><br><span class="line">                width = position.width,</span><br><span class="line">                height = <span class="number">64</span></span><br><span class="line">            &#125;;</span><br><span class="line">            GUI.Label(previewRect, previewTexture);</span><br><span class="line">        &#125;</span><br><span class="line">        EditorGUI.EndProperty();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 获取显示缩进间隔</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="sourceRect"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">float</span> <span class="title">GetIndentLength</span>(<span class="params">Rect sourceRect</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Rect indentRect = EditorGUI.IndentedRect(sourceRect);</span><br><span class="line">        <span class="keyword">float</span> indentLength = indentRect.x - sourceRect.x;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> indentLength;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 获取Asset预览显示纹理</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="property"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Texture2D <span class="title">GetAssetPreview</span>(<span class="params">SerializedProperty property</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (property.propertyType == SerializedPropertyType.ObjectReference)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (property.objectReferenceValue != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Texture2D previewTexture = AssetPreview.GetAssetPreview(property.objectReferenceValue);</span><br><span class="line">                <span class="keyword">return</span> previewTexture;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             InspectorPropertyDraw.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/02/21</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> InspectorPropertyDraw.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 自定义属性标签绘制</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">InspectorPropertyDraw</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 整形数值</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [TRange(<span class="number">0</span>, <span class="number">100</span>)]</span><br><span class="line">    [Header(<span class="string">"整形数值"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> IntValue;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> float数值</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [TRange(<span class="number">0</span>, <span class="number">100</span>)]</span><br><span class="line">    [Header(<span class="string">"float数值"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> FloatValue;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 预览的预制件</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [TPreview]</span><br><span class="line">    [Header(<span class="string">"预览的预制件"</span>)]</span><br><span class="line">    <span class="keyword">public</span> GameObject PreviewPrefab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果展示:</p>
+<p><img src="./img/Unity/EditorUIStudy/AttributeInspectorDraw.PNG" alt="AttributeInspectorDraw"></p>
+<p>以上两个自定义属性显示标签主要参考:</p>
+<p><a href="https://docs.unity3d.com/Manual/editor-PropertyDrawers.html" target="_blank" rel="external">Property Drawers</a></p>
+<p><a href="https://indienova.com/indie-game-development/extending-unity-for-beginners/" target="_blank" rel="external">Unity 拓展编辑器入门指南</a></p>
+<p>通过上面的基础学习，我们对于自定义Inspector面板的绘制就有基础的了解了，详细深入的学习在实战中进一步学习了解，这里就不再一一赘述。</p>
+<p>Note:</p>
+<ol>
+<li><strong>Unity默认不支持序列化Dictionary和多维数组等，需要自己通过ISerializationCallbackReceiver接口进行自定义序列化支持</strong></li>
+<li><strong>Unity不支持序列化null以及多态的数据</strong></li>
+<li><strong>尽量使用SerializedObject和SerializedProperty(泛型设计支持)进行Inspector编写，支持Undo系统，不会有嵌套预制件保存问题</strong></li>
+<li><strong>SerializedObject.Update()的调用是为了确保数据修改同步，SerializedObject.ApplyModifiedProperties()是为了对于数据的修改写入生效。总结在OnInspectorGUI()方法最前面调用serializedObject.Update()在最后调用serializedObject.ApplyModifiesdProperties()确保对于SerializedObject和SerializedProperty的修改和读取正确。</strong></li>
+</ol>
+<h2 id="GUI相关知识点">GUI相关知识点</h2><p>Unity里的UI包含多种UI:</p>
+<ol>
+<li>UI Toolkit(最新一代的UI系统框架，高性能跨平台，基础Web技术)</li>
+<li>UGUI(老版的UI系统，2022年为止用的最多的官方UI系统)</li>
+<li>IMGUI(Immediate Mode Graphical User Interface，code-Driven的GUI系统)</li>
+</ol>
+<p>而我们现在主要Editor用到的GUI暂时是指IMGUI，未来更多的学习中心是UI Toolkit(通吃Editor和运行时开发的新一代UI框架)。</p>
+<p>这里UGUI在Editor篇章就不重点讲述，本文重点学习IMGUI和UI Toolkit(TODO)。</p>
+<h3 id="IMGUI">IMGUI</h3><p>IMGUI主要用于绘制我们Editor的自定义UI(比如自定义窗口UI，自定义面板UI，自定义场景UI)</p>
+<h4 id="GUI和EditorGUI">GUI和EditorGUI</h4><p>待添加……</p>
+<p>Note:</p>
+<ol>
+<li><strong>GUI.BeginChange()和GUI.EndChange()的配套使用可以检测指定GUI的值是否变化，做到检测变化响应后做指定的事情</strong></li>
+</ol>
+<h4 id="GUI排版">GUI排版</h4><p>待添加……</p>
+<h4 id="GUISkin和GUIStyle">GUISkin和GUIStyle</h4><p><a href="https://docs.unity3d.com/Manual/gui-Customization.html" target="_blank" rel="external">GUISkins are a collection of GUIStyles. Styles define the appearance of a GUI Control. You do not have to use a Skin if you want to use a Style.</a></p>
+<p>从介绍可以看出GUISkins是GUIStyls的合集，GUIStyles定义了我们GUI的样式。</p>
+<p>但如何得知Unity支持哪些GUIStyle了？</p>
+<p>GUIStyle查看器工具(网上搜索到别人写的):</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EditorStyleViewer</span> : <span class="title">EditorWindow</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> Vector2 scrollPosition = Vector2.zero;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">string</span> search = <span class="keyword">string</span>.Empty;</span><br><span class="line">    [MenuItem(<span class="string">"Tools/GUI样式查看器"</span>)]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Init</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        EditorWindow.GetWindow(<span class="keyword">typeof</span>(EditorStyleViewer));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnGUI</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        GUILayout.BeginHorizontal(<span class="string">"HelpBox"</span>);</span><br><span class="line">        GUILayout.Label(<span class="string">"单击示例将复制其名到剪贴板"</span>, <span class="string">"label"</span>);</span><br><span class="line">        GUILayout.FlexibleSpace();</span><br><span class="line">        GUILayout.Label(<span class="string">"查找:"</span>);</span><br><span class="line">        search = EditorGUILayout.TextField(search);</span><br><span class="line">        GUILayout.EndHorizontal();</span><br><span class="line">        scrollPosition = GUILayout.BeginScrollView(scrollPosition);</span><br><span class="line">        <span class="keyword">foreach</span> (GUIStyle style <span class="keyword">in</span> GUI.skin)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (style.name.ToLower().Contains(search.ToLower()))</span><br><span class="line">            &#123;</span><br><span class="line">                GUILayout.BeginHorizontal(<span class="string">"PopupCurveSwatchBackground"</span>);</span><br><span class="line">                GUILayout.Space(<span class="number">7</span>);</span><br><span class="line">                <span class="keyword">if</span> (GUILayout.Button(style.name, style))</span><br><span class="line">                &#123;</span><br><span class="line">                    EditorGUIUtility.systemCopyBuffer = <span class="string">"\""</span> + style.name + <span class="string">"\""</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                GUILayout.FlexibleSpace();</span><br><span class="line">                EditorGUILayout.SelectableLabel(<span class="string">"\""</span> + style.name + <span class="string">"\""</span>);</span><br><span class="line">                GUILayout.EndHorizontal();</span><br><span class="line">                GUILayout.Space(<span class="number">11</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        GUILayout.EndScrollView();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="./img/Unity/EditorUIStudy/GUIStyleViewer.PNG" alt="GUIStyleViewer"></p>
+<h3 id="UI_Toolkit">UI Toolkit</h3><p>待添加……</p>
+<h1 id="Editor工具分类">Editor工具分类</h1><p>待添加……</p>
+<h1 id="Editor数据存储">Editor数据存储</h1><p>待添加……</p>
+<h1 id="Editor常用标签">Editor常用标签</h1><p>待添加……</p>
+<h1 id="学习总结">学习总结</h1><p>待添加……</p>
+<h1 id="Github">Github</h1><p>参考学习Github:</p>
+<p><a href="https://github.com/seyedmoeinsaadati/ThreeDDrawing" target="_blank" rel="external"> ThreeDDrawing</a></p>
+<p>个人Github:</p>
+<p>待添加……</p>
+<h1 id="Reference">Reference</h1><p><a href="https://indienova.com/indie-game-development/extending-unity-for-beginners/" target="_blank" rel="external">Unity 拓展编辑器入门指南</a></p>
+<p><a href="https://docs.unity3d.com/Manual/UIToolkits.html" target="_blank" rel="external">Creating user interfaces (UI)</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2022/02/20/UnityEditor知识/" data-title="UnityEditor知识 | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2021/05/05/FGUI学习/"  title="FGUI学习">
+ <strong>下一篇：</strong><br/> 
+ <span>FGUI学习
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2022/02/20/UnityEditor知识/" data-title="UnityEditor知识" data-url="http://tonytang1990.github.io/2022/02/20/UnityEditor知识/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor绘制分类"><span class="toc-number">2.</span> <span class="toc-text">Editor绘制分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Scene辅助GUI绘制"><span class="toc-number">2.1.</span> <span class="toc-text">Scene辅助GUI绘制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#实战"><span class="toc-number">2.1.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Editor窗口绘制"><span class="toc-number">2.2.</span> <span class="toc-text">Editor窗口绘制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Inspector面板绘制"><span class="toc-number">2.3.</span> <span class="toc-text">Inspector面板绘制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GUI相关知识点"><span class="toc-number">2.4.</span> <span class="toc-text">GUI相关知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IMGUI"><span class="toc-number">2.4.1.</span> <span class="toc-text">IMGUI</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#GUI和EditorGUI"><span class="toc-number">2.4.1.1.</span> <span class="toc-text">GUI和EditorGUI</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GUI排版"><span class="toc-number">2.4.1.2.</span> <span class="toc-text">GUI排版</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GUISkin和GUIStyle"><span class="toc-number">2.4.1.3.</span> <span class="toc-text">GUISkin和GUIStyle</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UI_Toolkit"><span class="toc-number">2.4.2.</span> <span class="toc-text">UI Toolkit</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor工具分类"><span class="toc-number">3.</span> <span class="toc-text">Editor工具分类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor数据存储"><span class="toc-number">4.</span> <span class="toc-text">Editor数据存储</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor常用标签"><span class="toc-number">5.</span> <span class="toc-text">Editor常用标签</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">6.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">7.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">8.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
