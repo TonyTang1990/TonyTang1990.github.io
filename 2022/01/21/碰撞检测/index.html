@@ -1,0 +1,697 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>碰撞检测 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="Introduction游戏开发过程中，特别是战斗中避免不了要判定各种攻击和技能是否击中，而这些判定都得通过碰撞系统来实现正确的判定。本篇文章正是为了学习了解战斗系统中攻击技能判定是如何实现的而编写的。
+后续大部分理论知识和小部分文字以及截图来源:
+【Unity】图形相交检测
+感谢该博主的无私分享
+所有的代码后续会传到Github上，想查看可视化绘制的完整代码可在Github上下到。
+碰撞检测Wh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="碰撞检测">
+<meta property="og:url" content="http://tonytang1990.github.io/2022/01/21/碰撞检测/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="Introduction游戏开发过程中，特别是战斗中避免不了要判定各种攻击和技能是否击中，而这些判定都得通过碰撞系统来实现正确的判定。本篇文章正是为了学习了解战斗系统中攻击技能判定是如何实现的而编写的。
+后续大部分理论知识和小部分文字以及截图来源:
+【Unity】图形相交检测
+感谢该博主的无私分享
+所有的代码后续会传到Github上，想查看可视化绘制的完整代码可在Github上下到。
+碰撞检测Wh">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CollisionDetection/CIRCLE_AABB_OBB_DES.jpg">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CollisionDetection/SphereDefinition.png">
+<meta property="og:image" content="http://tonytang1990.github.io/./img/CollisionDetection/SAT.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CollisionDetection/PolygonVertexesInfo.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CollisionDetection/PointOutOfPolygon.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CollisionDetection/PointInPolygon.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CollisionDetection/PolygonVertexesInfo2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CollisionDetection/PointOutOfPolygon2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CollisionDetection/PointInPolygon2.PNG">
+<meta property="og:updated_time" content="2022-03-20T16:41:13.138Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="碰撞检测">
+<meta name="twitter:description" content="Introduction游戏开发过程中，特别是战斗中避免不了要判定各种攻击和技能是否击中，而这些判定都得通过碰撞系统来实现正确的判定。本篇文章正是为了学习了解战斗系统中攻击技能判定是如何实现的而编写的。
+后续大部分理论知识和小部分文字以及截图来源:
+【Unity】图形相交检测
+感谢该博主的无私分享
+所有的代码后续会传到Github上，想查看可视化绘制的完整代码可在Github上下到。
+碰撞检测Wh">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2022/01/21/碰撞检测/" title="碰撞检测" itemprop="url">碰撞检测</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2022-01-21T13:37:00.000Z" itemprop="datePublished"> 發表於 2022-01-21</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#碰撞检测"><span class="toc-number">2.</span> <span class="toc-text">碰撞检测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What"><span class="toc-number">2.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-number">2.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How"><span class="toc-number">2.3.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#功能需求"><span class="toc-number">2.3.1.</span> <span class="toc-text">功能需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#理论知识"><span class="toc-number">2.3.2.</span> <span class="toc-text">理论知识</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2D形状"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">2D形状</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#点"><span class="toc-number">2.3.2.1.1.</span> <span class="toc-text">点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#圆形"><span class="toc-number">2.3.2.1.2.</span> <span class="toc-text">圆形</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#矩形(轴对齐包围盒-AABB)"><span class="toc-number">2.3.2.1.3.</span> <span class="toc-text">矩形(轴对齐包围盒-AABB)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#有向包围盒(OBB)"><span class="toc-number">2.3.2.1.4.</span> <span class="toc-text">有向包围盒(OBB)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#胶囊体"><span class="toc-number">2.3.2.1.5.</span> <span class="toc-text">胶囊体</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#扇形"><span class="toc-number">2.3.2.1.6.</span> <span class="toc-text">扇形</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#凸多边形"><span class="toc-number">2.3.2.1.7.</span> <span class="toc-text">凸多边形</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分离轴定理"><span class="toc-number">2.3.3.</span> <span class="toc-text">分离轴定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#形状碰撞检测"><span class="toc-number">2.3.4.</span> <span class="toc-text">形状碰撞检测</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#点与圆形"><span class="toc-number">2.3.4.1.</span> <span class="toc-text">点与圆形</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#点与多边形"><span class="toc-number">2.3.4.2.</span> <span class="toc-text">点与多边形</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#角度和法"><span class="toc-number">2.3.4.2.0.1.</span> <span class="toc-text">角度和法</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#叉积(点线)法"><span class="toc-number">2.3.4.2.0.2.</span> <span class="toc-text">叉积(点线)法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与圆形"><span class="toc-number">2.3.4.3.</span> <span class="toc-text">圆形与圆形</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与胶囊体"><span class="toc-number">2.3.4.4.</span> <span class="toc-text">圆形与胶囊体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与矩形(AABB)"><span class="toc-number">2.3.4.5.</span> <span class="toc-text">圆形与矩形(AABB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与有向包围盒(OBB)"><span class="toc-number">2.3.4.6.</span> <span class="toc-text">圆形与有向包围盒(OBB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与凸多边形"><span class="toc-number">2.3.4.7.</span> <span class="toc-text">圆形与凸多边形</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">3.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">4.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="Introduction">Introduction</h1><p>游戏开发过程中，特别是战斗中避免不了要判定各种攻击和技能是否击中，而这些判定都得通过碰撞系统来实现正确的判定。本篇文章正是为了学习了解战斗系统中攻击技能判定是如何实现的而编写的。</p>
+<p>后续大部分理论知识和小部分文字以及截图来源:</p>
+<p><a href="https://blog.csdn.net/qq_37043683/article/details/80375691?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-1&amp;spm=1001.2101.3001.4242" target="_blank" rel="external">【Unity】图形相交检测</a></p>
+<p>感谢该博主的无私分享</p>
+<p>所有的代码后续会传到Github上，想查看可视化绘制的完整代码可在Github上下到。</p>
+<h1 id="碰撞检测">碰撞检测</h1><h2 id="What">What</h2><p>碰撞检测 — 碰撞检测指判定物体(不论是3D还是2D物体)之间的相交。比如物理系统里碰撞检测指的是物体之间的实体碰撞以及物理效果。战斗系统里碰撞检测指的是技能和攻击的命中判定。</p>
+<h2 id="Why">Why</h2><p>那么为什么需要碰撞检测了？</p>
+<ol>
+<li>物理游戏里要模拟真实的物理效果，碰撞检测是必不可少的。</li>
+<li>战斗系统里，攻击和技能的命中判定都离不开碰撞检测。</li>
+<li>纯数学级别的碰撞检测模拟比Unity自带的Collider准确且高效。</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li>虽然我们可以通过Unity现成的Collider去做碰撞检测，但Collider的碰撞判定顺序是不可控的，并且Collider组件会带来很大的性能开销，所以无论是出于准确性还是性能考虑，战斗力的技能和攻击判定我们都不能直接用Collider(特别是涉及网络同步的时候)。</li>
+</ol>
+<h2 id="How">How</h2><h3 id="功能需求">功能需求</h3><ol>
+<li>支持3D一些简单形状(点,AABB,OBB,球形)的碰撞检测判定</li>
+<li>支持2D一些简单形状(点,矩形，圆形，扇形，胶囊体，OBB)的碰撞检测判定</li>
+</ol>
+<h3 id="理论知识">理论知识</h3><p><strong>碰撞检测从原理上来说就是数学运算，就是图形相交检测。</strong></p>
+<p>所以要实现一套自己的碰撞检测系统，我们要先学习图形相交检测相关的数学知识。</p>
+<p>这里我们以2D的碰撞检测为例来学习实现碰撞检测系统。复杂的3D碰撞检测很多时候可以简化到2D来实现相同的效果并且得到更高效的判定结果。后续只会实现一部分简单的3D形状的碰撞判定。</p>
+<h4 id="2D形状">2D形状</h4><h5 id="点">点</h5><p>点在2D里我们通过X，Y坐标来定义，所以点的定义如下:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Vector2 Point;</span><br></pre></td></tr></table></figure>
+<h5 id="圆形">圆形</h5><p>圆形是由圆心+半径来定义，圆形的定义如下:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 2D圆形定义</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> Circle2D</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 中心点位置</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector2 Center;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 半径</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> Radius;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Circle2D</span>(<span class="params">Vector2 center, <span class="keyword">float</span> radius</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Center = center;</span><br><span class="line">        Radius = radius;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="矩形(轴对齐包围盒-AABB)">矩形(轴对齐包围盒-AABB)</h5><p>矩形(轴对齐包围盒-AABB)是由中心点+长宽来定义，长宽边分别与X/Y轴平行的矩形，矩形(轴对齐包围盒-AABB)定义如下:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 2D AABB定义</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> AABB2D</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 中心点位置</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector2 Center;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 宽和高</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector2 Extents;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AABB2D</span>(<span class="params">Vector2 center, Vector2 extents</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Center = center;</span><br><span class="line">        Extents = extents;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Note:</p>
+<ol>
+<li>矩形(轴对齐包围盒-AABB)的长宽平行于X和Y轴</li>
+</ol>
+<h5 id="有向包围盒(OBB)">有向包围盒(OBB)</h5><p>有向包围盒(OBB)可以理解成一个带旋转角度的矩形(轴对齐包围盒-AABB)，正因为矩形(轴对齐包围盒-AABB)无法表达长宽不平行与X和Y轴的形状，所以才有了有向包围盒(OBB)。</p>
+<p>让我们通过下图来形象的理解圆形，矩形(轴对齐包围盒-AABB)和有向包围盒(OBB)的区别:</p>
+<p><img src="/img/CollisionDetection/CIRCLE_AABB_OBB_DES.jpg" alt="CIRCLE_AABB_OBB_DES"></p>
+<p>向包围盒(OBB)由中心点+长宽+旋转角度来定义，定义如下:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 2D OBB定义</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> OBB2D</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 中心点位置</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector2 Center;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 宽和高</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector2 Extents;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 旋转角度</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> Angle;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OBB2D</span>(<span class="params">Vector2 center, Vector2 extents, <span class="keyword">float</span> angle</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Center = center;</span><br><span class="line">        Extents = extents;</span><br><span class="line">        Angle = angle;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="胶囊体">胶囊体</h5><p>胶囊体是由起点+线段u+胶囊体半径d定义。胶囊体实际上是与线段u的最短距离d的点的集合。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 2D胶囊体定义</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> Capsule2D</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 起点</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector2 StartPoint;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 起点线段</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector2 PointLine;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 胶囊体半径</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> Radius;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Capsule2D</span>(<span class="params">Vector2 startpoint, Vector2 pointline, <span class="keyword">float</span> radius</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        StartPoint = startpoint;</span><br><span class="line">        PointLine = pointline;</span><br><span class="line">        Radius = radius;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/CollisionDetection/SphereDefinition.png" alt="SphereDefinition"></p>
+<p>从上面引申出了点与线段的最短距离算法:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 点与线段的最短距离</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="startpoint"&gt;</span>线段起点<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="line"&gt;</span>线段向量<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="targetpoint"&gt;</span>求解点<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">float</span> <span class="title">SqrDistanceBetweenSegmentAndPoint</span>(<span class="params">Vector2 startpoint, Vector2 line, Vector2 targetpoint</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> t = Vector2.Dot(targetpoint - startpoint, line) / line.sqrMagnitude;</span><br><span class="line">    <span class="keyword">return</span> (targetpoint - (startpoint + Mathf.Clamp01(t) * line)).sqrMagnitude;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要理解上面的公式，需要知道向量里的一些基本概念，参考:</p>
+<p><a href="">向量学习</a></p>
+<p>上面的计算公式理解如下：</p>
+<p> float t = Vector2.Dot(targetpoint - startpoint, line) / line.sqrMagnitude; // 计算求解点映射到线段line上的比例。</p>
+<p>(startpoint + Mathf.Clamp01(t) * line) // 计算的是映射点P点的坐标</p>
+<p>(targetpoint - (startpoint + Mathf.Clamp01(t) * line) ) // 表达的是目标点到线段的那条向量d</p>
+<p>(targetpoint - (startpoint + Mathf.Clamp01(t) <em> line) ) .sqrMagnitude; // 得到目标点到线段的向量的距离平方(<em>*后续用平方比代替开方比，因为平方比在计算机上比开方比更快</em></em>)</p>
+<p><strong>后续计算形状相交很多都会转化成点与线的距离来比较实现碰撞检测</strong></p>
+<p>Note:</p>
+<ol>
+<li><a href="https://blog.csdn.net/qq_37043683/article/details/80375691?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-1&amp;spm=1001.2101.3001.4242" target="_blank" rel="external"><strong>判定一个点处于胶囊体内部，就是判断点与线段的距离</strong></a></li>
+<li><strong>计算机开方计算比平方计算慢，所以我们采用平方比较来代替开方值比较</strong></li>
+</ol>
+<h5 id="扇形">扇形</h5><p>扇形是由起点+扇形半径+扇形朝向+扇形角度定义，扇形定义如下:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 2D扇形定义</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> Sector2D</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 扇形起点</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector2 StartPoint;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 扇形半径</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> Radius;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 扇形朝向</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector2 Direction;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 扇形角度</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> Angle;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Sector2D</span>(<span class="params">Vector2 startpoint, <span class="keyword">float</span> radius, Vector2 direction, <span class="keyword">float</span> angle</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        StartPoint = startpoint;</span><br><span class="line">        Radius = radius;</span><br><span class="line">        Direction = direction;</span><br><span class="line">        Angle = angle;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="凸多边形">凸多边形</h5><p>多边形的定义是否多个顶点位置定义的，多边形定义如下:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             Polygon2D.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/03/20</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">TH.Module.Collision2D</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Polygon2D.cs</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 多边形定义</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">struct</span> Polygon2D</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 多边形顶点(注意保持统一顺时针或者逆时针定义)</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> Vector2[] Vertexes;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Polygon2D</span>(<span class="params">Vector2[] vertexes</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            Vertexes = vertexes;</span><br><span class="line">            IsValide();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> 是否是有效多边形</span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">IsValide</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (Vertexes == <span class="keyword">null</span> || Vertexes.Length &lt; <span class="number">3</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                Debug.LogError(<span class="string">"多边形顶点数不应该小于3个!"</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Note:</p>
+<ol>
+<li><strong>上述定义并不能保证一定是凸多边形</strong></li>
+</ol>
+<h3 id="分离轴定理">分离轴定理</h3><p>了解了各种形状的定义后，在了解真正的碰撞检测判定前，为了更好的理解后面的碰撞检测计算，我们先来了解一个概念<strong>分离轴定理</strong></p>
+<p><a href="https://blog.csdn.net/qq_37043683/article/details/80375691" target="_blank" rel="external">分离轴定理（separating axis theorem, SAT）分离轴定理是指，两个不相交的凸集必然存在一个分离轴，使两个凸集在该轴上的投影是分离的。</a></p>
+<p><a href="https://blog.csdn.net/qq_37043683/article/details/80375691" target="_blank" rel="external">判断两个形状是否相交，实际上是判断分离轴是否能把两个形状分离。若存在分离轴能使两个图形分离，则这两个图形是分离的。</a></p>
+<p><a href="https://blog.csdn.net/qq_37043683/article/details/80375691" target="_blank" rel="external">基于以上理论，寻找分离轴是我们要做的工作，重新考虑两个圆形的相交检测，实际上我们做的是把圆心连线的方向作为分离轴：</a></p>
+<p><img src="./img/CollisionDetection/SAT.png" alt="SAT"></p>
+<p><strong>通过分离轴定理的定义可以看出，通过找到两个凸集形状的分离轴，我们可以实现两个形状相交的判定，这个会成为我们后面判定碰撞检测的重要理论知识</strong></p>
+<p>接下来让我们真正进入碰撞检测实战。</p>
+<h3 id="形状碰撞检测">形状碰撞检测</h3><h4 id="点与圆形">点与圆形</h4><p><strong>点与圆形的相交判定实际上就是判定点与圆心的距离是否大于半径。</strong></p>
+<p>这里理论很简单，就不上效果图了，直接看代码:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 判断圆形与点之间的交叉检测</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="circle1"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="point"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">CircleAndPointIntersection2D</span>(<span class="params">Circle2D circle1, Vector2 point</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (circle1.Center - point).sqrMagnitude &lt; circle1.Radius * circle1.Radius;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="点与多边形">点与多边形</h4><p><strong>判定一个点是否在多边形内</strong>，本文使用的是<strong>角度和</strong>和<strong>叉积(点线)</strong>判定法，更多的解题思路参考:</p>
+<p><a href="https://blog.csdn.net/WilliamSun0122/article/details/77994526" target="_blank" rel="external">详谈判断点在多边形内的七种方法（最全面）</a></p>
+<p>上文中提到<strong>射线法</strong>比较优，但考虑到理解难易度，还是<strong>角度和</strong>和<strong>叉积(点线)</strong>法更易理解，本文主要以这两种解法为例。</p>
+<h6 id="角度和法">角度和法</h6><p>学过平面几何的同学都知道，<strong>如果一个点在凸多边形内，那么这个点和凸多边形各顶点连线构成的夹角和应该为360度</strong>。</p>
+<p>角度和法正是利用了这一个定义来实现一个点是否在凸多边形内的。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 点是否在多边形内(内角和法)</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="polygon"&gt;</span>多边形<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="point"&gt;</span>点<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">PointInPolygon2D</span>(<span class="params">Polygon2D polygon, Vector2 point</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!polygon.IsValide())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Vector2[] polygonVertexes = polygon.Vertexes;</span><br><span class="line">    <span class="keyword">int</span> polygonVertexsNumber = polygonVertexes.Length;</span><br><span class="line">	<span class="comment">// 点与所有多边形顶点的连线向量</span></span><br><span class="line">    Vector2[] pointLines = <span class="keyword">new</span> Vector2[polygonVertexsNumber];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>, length = polygonVertexsNumber; i &lt; length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pointLines[i] = polygonVertexes[i] - point;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 计算所有多边形顶点连线之间的夹角总和</span></span><br><span class="line">    <span class="keyword">float</span> totalAngle = Vector2.SignedAngle(pointLines[polygonVertexsNumber - <span class="number">1</span>], pointLines[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>, length = polygonVertexsNumber - <span class="number">1</span>; i &lt; length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        totalAngle += Vector2.SignedAngle(pointLines[i], pointLines[i + <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (Mathf.Abs(Mathf.Abs(totalAngle) - <span class="number">360</span>f) &lt; <span class="number">0.1</span>f)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/CollisionDetection/PolygonVertexesInfo.PNG" alt="PolygonVertexesInfo"></p>
+<p><img src="/img/CollisionDetection/PointOutOfPolygon.PNG" alt="PointOutOfPolygon"></p>
+<p><img src="/img/CollisionDetection/PointInPolygon.PNG" alt="PointInPolygon"></p>
+<p>从上面可以看到我们通过累加点到多边形所有顶点构成的线段的夹角总和判定除了点是否在多边形内。</p>
+<p>Note:</p>
+<ol>
+<li><strong>此方法适用于凸多边形和凹多边形</strong></li>
+</ol>
+<h6 id="叉积(点线)法">叉积(点线)法</h6><p><strong>叉积(点线)法的核心思想是判定点到多边形所有顶点构成的边是否都在相邻多边形边的一侧(顺时针的话需要都在左侧，逆时针的话需要都在右侧)</strong></p>
+<p>这里我们利用叉乘(叉乘结果&gt;0还是&lt;0能区分)来实现两个向量的左右关系判定。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 点是否在凸边形内(叉积(点线)法)</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> Note:</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 1. 确保是凸多边形</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 2. 确保凸多边形顶点是顺时针</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="polygon"&gt;</span>凸多边形<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="point"&gt;</span>点<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">PointInConvexPolygon2D</span>(<span class="params">Polygon2D polygon, Vector2 point</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!polygon.IsValide())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Vector2[] polygonVertexes = polygon.Vertexes;</span><br><span class="line">    <span class="keyword">int</span> polygonVertexsNumber = polygonVertexes.Length;</span><br><span class="line">    <span class="comment">// 点与所有多边形顶点的连线向量</span></span><br><span class="line">    Vector3[] pointLines = <span class="keyword">new</span> Vector3[polygonVertexsNumber];</span><br><span class="line">    <span class="comment">// 多边形边</span></span><br><span class="line">    Vector3[] polygonEdges = <span class="keyword">new</span> Vector3[polygonVertexsNumber];</span><br><span class="line">    <span class="comment">// 这里采用顶点顺时针判定</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, length = polygonVertexsNumber; i &lt; length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pointLines[i] = <span class="keyword">new</span> Vector3(point.x - polygonVertexes[i].x, <span class="number">0</span>, point.y - polygonVertexes[i].y);</span><br><span class="line">        <span class="keyword">var</span> index = (i + <span class="number">1</span>) % polygonVertexsNumber;</span><br><span class="line">        polygonEdges[i] = <span class="keyword">new</span> Vector3(polygonVertexes[index].x - polygonVertexes[i].x, <span class="number">0</span>, polygonVertexes[index].y - polygonVertexes[i].y);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 计算所有多边形顶点的连线向量和边的左右关系</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, length = polygonVertexsNumber; i &lt; length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Vector3.Cross(A, B).y &gt; 0 表示A在B的左侧</span></span><br><span class="line">        <span class="comment">// Vector3.Cross(A, B).y &lt; 0 表示A在B的右侧</span></span><br><span class="line">        <span class="comment">// Vector3.Cross(A, B).y == 0 表示A和B平行</span></span><br><span class="line">        <span class="keyword">if</span> (Vector3.Cross(pointLines[i], polygonEdges[i]).y &gt;= <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/CollisionDetection/PolygonVertexesInfo2.PNG" alt="PolygonVertexesInfo2"></p>
+<p><img src="/img/CollisionDetection/PointOutOfPolygon2.PNG" alt="PointOutOfPolygon2"></p>
+<p><img src="/img/CollisionDetection/PointInPolygon2.PNG" alt="PointInPolygon2"></p>
+<p>从上面的效果图可以看出我们通过叉积法也成功判定出了点是否在<strong>凸多边形</strong>内。</p>
+<p>Note:</p>
+<ol>
+<li><strong>此方法适用于凸多边形</strong></li>
+<li><strong>注意叉积判定对于多边形顶点的顺序要求</strong></li>
+<li><strong>1维和2维没有叉乘概念，叉乘是&gt;=3维才有的概念，所以上面在计算边之间的叉乘时转换到了Vector3</strong></li>
+</ol>
+<h4 id="圆形与圆形">圆形与圆形</h4><p>待添加……</p>
+<h4 id="圆形与胶囊体">圆形与胶囊体</h4><p>待添加……</p>
+<h4 id="圆形与矩形(AABB)">圆形与矩形(AABB)</h4><p>待添加……</p>
+<h4 id="圆形与有向包围盒(OBB)">圆形与有向包围盒(OBB)</h4><p>待添加……</p>
+<h4 id="圆形与凸多边形">圆形与凸多边形</h4><p>待添加……</p>
+<p>Note:</p>
+<ol>
+<li><strong>复杂的3D碰撞检测我们可以映射到2D来简化运算量实现相同的效果</strong></li>
+<li><strong>能够用简单的形状实现效果尽量用简单的形状来实现避免过于复杂的碰撞检测判定</strong></li>
+</ol>
+<h1 id="Github">Github</h1><h1 id="学习总结">学习总结</h1><h1 id="Reference">Reference</h1><p><a href="https://blog.csdn.net/qq_37043683/article/details/80375691?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-1&amp;spm=1001.2101.3001.4242" target="_blank" rel="external">【Unity】图形相交检测</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Games/Techniques/3D_collision_detection" target="_blank" rel="external">3D 碰撞检测</a></p>
+<p><a href="https://www.gameres.com/803677.html" target="_blank" rel="external">Unity3D-游戏中的技能碰撞检测</a></p>
+<p><a href="https://www.cnblogs.com/lyggqm/p/5386174.html" target="_blank" rel="external">[包围盒]球，AABB，OBB</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2022/01/21/碰撞检测/" data-title="碰撞检测 | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2022/02/20/UnityEditor知识/" title="UnityEditor知识">
+  <strong>上一篇：</strong><br/>
+  <span>
+  UnityEditor知识</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2021/05/05/FGUI学习/"  title="FGUI学习">
+ <strong>下一篇：</strong><br/> 
+ <span>FGUI学习
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2022/01/21/碰撞检测/" data-title="碰撞检测" data-url="http://tonytang1990.github.io/2022/01/21/碰撞检测/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#碰撞检测"><span class="toc-number">2.</span> <span class="toc-text">碰撞检测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What"><span class="toc-number">2.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-number">2.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How"><span class="toc-number">2.3.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#功能需求"><span class="toc-number">2.3.1.</span> <span class="toc-text">功能需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#理论知识"><span class="toc-number">2.3.2.</span> <span class="toc-text">理论知识</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2D形状"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">2D形状</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#点"><span class="toc-number">2.3.2.1.1.</span> <span class="toc-text">点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#圆形"><span class="toc-number">2.3.2.1.2.</span> <span class="toc-text">圆形</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#矩形(轴对齐包围盒-AABB)"><span class="toc-number">2.3.2.1.3.</span> <span class="toc-text">矩形(轴对齐包围盒-AABB)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#有向包围盒(OBB)"><span class="toc-number">2.3.2.1.4.</span> <span class="toc-text">有向包围盒(OBB)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#胶囊体"><span class="toc-number">2.3.2.1.5.</span> <span class="toc-text">胶囊体</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#扇形"><span class="toc-number">2.3.2.1.6.</span> <span class="toc-text">扇形</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#凸多边形"><span class="toc-number">2.3.2.1.7.</span> <span class="toc-text">凸多边形</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分离轴定理"><span class="toc-number">2.3.3.</span> <span class="toc-text">分离轴定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#形状碰撞检测"><span class="toc-number">2.3.4.</span> <span class="toc-text">形状碰撞检测</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#点与圆形"><span class="toc-number">2.3.4.1.</span> <span class="toc-text">点与圆形</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#点与多边形"><span class="toc-number">2.3.4.2.</span> <span class="toc-text">点与多边形</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#角度和法"><span class="toc-number">2.3.4.2.0.1.</span> <span class="toc-text">角度和法</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#叉积(点线)法"><span class="toc-number">2.3.4.2.0.2.</span> <span class="toc-text">叉积(点线)法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与圆形"><span class="toc-number">2.3.4.3.</span> <span class="toc-text">圆形与圆形</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与胶囊体"><span class="toc-number">2.3.4.4.</span> <span class="toc-text">圆形与胶囊体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与矩形(AABB)"><span class="toc-number">2.3.4.5.</span> <span class="toc-text">圆形与矩形(AABB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与有向包围盒(OBB)"><span class="toc-number">2.3.4.6.</span> <span class="toc-text">圆形与有向包围盒(OBB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与凸多边形"><span class="toc-number">2.3.4.7.</span> <span class="toc-text">圆形与凸多边形</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">3.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">4.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

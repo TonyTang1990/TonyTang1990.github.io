@@ -1,0 +1,752 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>数学知识 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="IntroductionUnity游戏开发过程中我需要掌握一些常规的数学知识(比如线性代数)，游戏开发接触的比较多的就是向量和矩阵，本章节用于记录和学习数学相关的知识，好让自己对于平时用到的数学知识有一个归纳和深入的学习总结，避免每次都是久了不用就忘。
+推荐书籍:
+《3D数学基础:图形与游戏开发》
+此书记讲到了游戏开发中需要用到的大部分数学基础知识，以前看这个书的时候是为了学习而学习，没有深入实战">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数学知识">
+<meta property="og:url" content="http://tonytang1990.github.io/2022/02/21/数学知识/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="IntroductionUnity游戏开发过程中我需要掌握一些常规的数学知识(比如线性代数)，游戏开发接触的比较多的就是向量和矩阵，本章节用于记录和学习数学相关的知识，好让自己对于平时用到的数学知识有一个归纳和深入的学习总结，避免每次都是久了不用就忘。
+推荐书籍:
+《3D数学基础:图形与游戏开发》
+此书记讲到了游戏开发中需要用到的大部分数学基础知识，以前看这个书的时候是为了学习而学习，没有深入实战">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Math/3DCartesian.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Math/WorldCoordinateSystem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Math/LocalCoordinateSystem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Math/Cube2LocalCoordinateSystem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Math/WorldAndLocalCoordinateCaculate.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Math/ObjectConnectVectorAndCoordinateSystem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Math/VectorDotGeometric.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Math/VectorDot.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Math/VectorCrossVisilization.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Math/VectorCross.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Math/RotationCaculation1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Math/RotationCaculation2.PNG">
+<meta property="og:updated_time" content="2022-03-20T16:33:28.194Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数学知识">
+<meta name="twitter:description" content="IntroductionUnity游戏开发过程中我需要掌握一些常规的数学知识(比如线性代数)，游戏开发接触的比较多的就是向量和矩阵，本章节用于记录和学习数学相关的知识，好让自己对于平时用到的数学知识有一个归纳和深入的学习总结，避免每次都是久了不用就忘。
+推荐书籍:
+《3D数学基础:图形与游戏开发》
+此书记讲到了游戏开发中需要用到的大部分数学基础知识，以前看这个书的时候是为了学习而学习，没有深入实战">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2022/02/21/数学知识/" title="数学知识" itemprop="url">数学知识</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2022-02-21T12:51:00.000Z" itemprop="datePublished"> 發表於 2022-02-21</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3D数学"><span class="toc-number">2.</span> <span class="toc-text">3D数学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#坐标系"><span class="toc-number">3.</span> <span class="toc-text">坐标系</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#多坐标系"><span class="toc-number">3.1.</span> <span class="toc-text">多坐标系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战"><span class="toc-number">3.2.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#向量"><span class="toc-number">4.</span> <span class="toc-text">向量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数学定义"><span class="toc-number">4.1.</span> <span class="toc-text">数学定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#几何定义"><span class="toc-number">4.2.</span> <span class="toc-text">几何定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#点乘"><span class="toc-number">4.2.1.</span> <span class="toc-text">点乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#叉乘"><span class="toc-number">4.2.2.</span> <span class="toc-text">叉乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运用"><span class="toc-number">4.2.3.</span> <span class="toc-text">运用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#矩阵"><span class="toc-number">5.</span> <span class="toc-text">矩阵</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#欧拉角与四元数"><span class="toc-number">6.</span> <span class="toc-text">欧拉角与四元数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#几何检测"><span class="toc-number">7.</span> <span class="toc-text">几何检测</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#可见性检测"><span class="toc-number">8.</span> <span class="toc-text">可见性检测</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数学概念"><span class="toc-number">9.</span> <span class="toc-text">数学概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">10.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">11.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">12.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="Introduction">Introduction</h1><p>Unity游戏开发过程中我需要掌握一些常规的数学知识(比如线性代数)，游戏开发接触的比较多的就是向量和矩阵，本章节用于记录和学习数学相关的知识，好让自己对于平时用到的数学知识有一个归纳和深入的学习总结，避免每次都是久了不用就忘。</p>
+<p>推荐书籍:</p>
+<p>《3D数学基础:图形与游戏开发》</p>
+<p>此书记讲到了游戏开发中需要用到的大部分数学基础知识，以前看这个书的时候是为了学习而学习，没有深入实战，而今天重拾此书，一边实战(结合Unity)一边记录的方式，深入学习游戏开发的数学基础知识，避免出现久了不用就忘的情况，也方便以后温故而知新。</p>
+<p>Note:</p>
+<ol>
+<li>为了减少重复的代码展示，后续相同代码展示会采用<em>*</em>代替</li>
+</ol>
+<h1 id="3D数学">3D数学</h1><p>什么是3D数学？</p>
+<p><a href="http://cn-library.rukomos.ru/3dshu_xue_ji_chu_tu_xing_yu_you_xi_kai_fa__106961-pdf-read_online.html" target="_blank" rel="external">3D数学是一门和计算几何相关的学科，计算几何则是研究用数值方法解决几何问题的学科</a></p>
+<h1 id="坐标系">坐标系</h1><p><a href="https://zh.wikipedia.org/wiki/%E7%AC%9B%E5%8D%A1%E5%B0%94%E5%9D%90%E6%A0%87%E7%B3%BB" target="_blank" rel="external">笛卡尔坐标系在数学中是一种正交坐标系，由法国数学家勒内·笛卡尔引入而得名。二维的直角坐标系是由两条相互垂直、相交于原点的数线构成的。在平面内，任何一点的坐标是根据数轴上对应的点的坐标设定的。在平面内，任何一点与坐标的对应关系，类似于数轴上点与坐标的对应关系。</a></p>
+<p><img src="/img/Math/3DCartesian.png" alt="3DCartesian"></p>
+<p>笛卡尔坐标系就是我们以前学习平面几何时学习的坐标系，通过笛卡尔坐标系，我们可以通过x,y,z定义1D,2D或3D等空间的点。</p>
+<p>坐标系从大的类型上来分分为两类:</p>
+<ol>
+<li><strong>左手坐标系</strong></li>
+<li><strong>右手坐标系</strong></li>
+</ol>
+<p>如何区分左手还是右手坐标系了？</p>
+<p><strong>通过将大拇指指向Z轴正方向，如果其余四指握起是从X轴往Y轴那么就是左手坐标系，反之则是右手坐标系</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>大拇指指向X轴，食指指向Y轴，中指指向Z轴</strong></li>
+<li><strong>Unity是左手坐标系</strong></li>
+<li><strong>OpenGL是右手坐标系</strong></li>
+</ol>
+<h2 id="多坐标系">多坐标系</h2><p>坐标系不止一种，<a href="http://cn-library.rukomos.ru/3dshu_xue_ji_chu_tu_xing_yu_you_xi_kai_fa__106961-pdf-read_online.html" target="_blank" rel="external">使用多种坐标系的原因是某些信息只能在特定的上下文环境中获得</a></p>
+<p>比如以前学习OpenGL的时候，就了解到一个三角形要想渲染到屏幕上，需要经历<strong>MVP</strong>的矩阵变换。</p>
+<p><strong>M</strong> — Model -&gt; World(模型坐标系到世界坐标系)</p>
+<p><a href="https://zhuanlan.zhihu.com/p/261097735" target="_blank" rel="external"><strong>变换目的:3D模型是基于自身的坐标系存储的。计算模型各顶点在世界空间的位置，以便将模型摆放到世界空间中。</strong></a></p>
+<p>这里的世界坐标系，就是Unity里我们访问Transform.position时访问到的世界坐标所处的坐标系。</p>
+<p><img src="/img/Math/WorldCoordinateSystem.PNG" alt="WorldCoordinateSystem"></p>
+<p>而物体坐标系是相对物体自身而言的坐标系，通过勾选Local，我们可以看到物体自身的坐标系:</p>
+<p><img src="/img/Math/LocalCoordinateSystem.PNG" alt="LocalCoordinateSystem"></p>
+<p>通过Model -&gt; World我们就得到了物体在世界坐标系里的位置表达信息。</p>
+<p><strong>V</strong> — World -&gt; View(世界坐标系到相机坐标系)</p>
+<p><a href="https://zhuanlan.zhihu.com/p/261097735" target="_blank" rel="external"><strong>变换目的:计算物体对相机的相对位置，以便进行后续变换</strong></a></p>
+<p><strong>P</strong> — View -&gt; Projection(摄像机坐标系到投影坐标系)</p>
+<p>因为摄像机的投影方式有多种(比如透视投影和正交投影)，所以从摄像机坐标系到投影坐标系也存在着不同的计算方式。</p>
+<p>详情参考以前的学习记录:</p>
+<p><a href="http://tonytang1990.github.io/2015/08/26/OpenGL%E5%AD%A6%E4%B9%A0/#Coordinate_Transformations_&amp;_Perspective_Projection">Coordinate Transformations &amp; Perspective Projection</a></p>
+<p>后续我们学习矩阵概念的时候再深入理解，核心就是通过矩阵执行坐标系转换。</p>
+<p>Note:</p>
+<ol>
+<li><strong>矩阵变换是由M = S(scale) × R(rotation) × T(translation)组成，且不满足交换律，因为S和R都是针对坐标系原点进行的，一旦先执行T，那么相对于坐标系原点的位置就会有所变化，这之后再做S和R就会出现不一样的表现。</strong></li>
+</ol>
+<h2 id="实战">实战</h2><p>接下来通过使用Unity来更深入的理解坐标系变化:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             CoordinateStudy.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/03/11</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> CoordinateStudy.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 坐标系学习</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CoordinateStudy</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 提示文本</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"提示文本"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Text TipTxt;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Cube1</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"Cube1"</span>)]</span><br><span class="line">    <span class="keyword">public</span> GameObject Cube1;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Cube2</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"Cube2"</span>)]</span><br><span class="line">    <span class="keyword">public</span> GameObject Cube2;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> cube1RelativeCube2Pos = Cube2.transform.InverseTransformPoint(Cube1.transform.position);</span><br><span class="line">        <span class="keyword">var</span> cube2RelativeCube1Pos = Cube1.transform.InverseTransformPoint(Cube2.transform.position);</span><br><span class="line">        TipTxt.text = $<span class="string">"红色表示Cube1,绿色表示Cube2\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1世界坐标:&#123;Cube1.transform.position.ToString()&#125; 旋转角度:&#123;Cube1.transform.eulerAngles.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube2世界坐标系:&#123;Cube2.transform.position.ToString()&#125; 旋转角度:&#123;Cube2.transform.eulerAngles.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1相对Cube2的坐标为:&#123;cube1RelativeCube2Pos.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube2相对Cube1的坐标为:&#123;cube2RelativeCube1Pos.ToString()&#125;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Math/Cube2LocalCoordinateSystem.PNG" alt="Cube2LocalCoordinateSystem"></p>
+<p><img src="/img/Math/WorldAndLocalCoordinateCaculate.PNG" alt="WorldAndLocalCoordinateCaculate"></p>
+<p>可以看到我通过调用<strong>transform.InverseTransformPoint()</strong>接口实现了将物体世界坐标转换到另一个物体的局部坐标的转换。因为Cube1在坐标原点且没有旋转，所以Cube2在Cube1物体坐标系里的位置也就是Cube2的世界坐标系位置。而Cube2因为有旋转，所以Cube1在Cube2物体坐标系的位置就需要根据Cube2的本地坐标系来计算了。</p>
+<p>考虑到世界坐标系到视口坐标系转换后平时用不上，所以这里就不可视化结果了，通过<strong>Camera.WorldToViewportPoint()</strong>接口可以把<strong>世界坐标转换到摄像机视口坐标</strong>。同理<strong>Camera.WorldToScreenPoint()</strong>可以把<strong>世界坐标转换到屏幕坐标</strong>，这个接口相对而言更常用些(比如3D映射2D UI显示的时候)。</p>
+<p>Note:</p>
+<ol>
+<li><strong>如果想查看物体本地坐标系和世界坐标系的转换矩阵，Unity里可以通过Transform.localToWorldMatrix()和Transform.worldToLocalMatrix()接口拿到变换的矩阵</strong></li>
+</ol>
+<h1 id="向量">向量</h1><p><strong>向量有两种不同但相关相关的意义，一种是纯抽象的数学意义，另一种是几何意义。</strong></p>
+<h2 id="数学定义">数学定义</h2><p><strong>向量就是一个数字列表，对程序员而言则是另一种类似的概念—数组</strong></p>
+<p>行向量(1行3列):</p>
+<p>[1, 2, 3]</p>
+<p>列向量(一列三行):</p>
+<p>[ 1 ]</p>
+<p>[ 2 ]</p>
+<p>[ 3 ]</p>
+<p><strong>向量中的数表达了每个维度上的有向位移。比如上面的向量在坐标系里表达的是相对[0,0,0]原点的X,Y,Z轴分别位移1,2,3</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>注意区分向量和标量，标量是平时用的数字的技术称谓</strong></li>
+</ol>
+<h2 id="几何定义">几何定义</h2><p><strong>向量是有大小和方向的线段。</strong></p>
+<p><strong>向量的大小就是向量的长度(模)。向量有非负的长度。</strong></p>
+<p><strong>向量的方向描述了空间中向量的指向。</strong></p>
+<p><strong>向量模 = Sqrt(VX <em> VX + VY </em> VY + VZ * VZ)</strong></p>
+<p>向量里有一个比较重要的定义:</p>
+<p><strong>单位向量，单位向量可以用来表示方式，但单位向量的大小(模)为1</strong></p>
+<p><strong>单位向量 = 向量 / 向量的模</strong></p>
+<p>这里简单说一下向量加法的概念：</p>
+<p>A + B = C</p>
+<p><strong>几何解释是向量A通过向量B的平移得到向量C(A向量头连接B向量尾的向量)</strong></p>
+<p>接下来让我通过可视化绘制世界坐标系和可视化绘制两个Cube的连线来看看向量是如何表达出两个物体之间的方向和大小的。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             HandlesUtilities.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/03/17</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> HandlesUtilities.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> Handles辅助工具</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HandlesUtilities</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 绘制有颜色的文本</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="pos"&gt;</span>坐标<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="text"&gt;</span>文本<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="color"&gt;</span>颜色<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DrawColorLable</span>(<span class="params">Vector3 pos, <span class="keyword">string</span> text, Color color</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Color preColor = GUI.color;</span><br><span class="line">        GUI.color = color;</span><br><span class="line">        Handles.Label(pos, text);</span><br><span class="line">        GUI.color = preColor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             VectorStudy.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/03/17</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> VectorStudy.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 向量学习</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VectorStudy</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> cube1ToCube2Vector = Cube2.transform.position - Cube1.transform.position;</span><br><span class="line">        <span class="keyword">var</span> cube2ToCube3Vector = Cube3.transform.position - Cube2.transform.position;</span><br><span class="line">        <span class="keyword">var</span> vectorAdd = cube1ToCube2Vector + cube2ToCube3Vector;</span><br><span class="line">        TipTxt.text = $<span class="string">"红色表示Cube1,绿色表示Cube2,蓝色表示Cube3\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1世界坐标:&#123;Cube1.transform.position.ToString()&#125; 朝向:&#123;Cube1.transform.forward.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube2世界坐标系:&#123;Cube2.transform.position.ToString()&#125; 朝向:&#123;Cube2.transform.forward.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube3世界坐标系:&#123;Cube3.transform.position.ToString()&#125; 朝向:&#123;Cube3.transform.forward.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1到Cube2的向量:&#123;cube1ToCube2Vector.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1到Cube2的向量长度:&#123;cube1ToCube2Vector.magnitude&#125;\n"</span>+</span><br><span class="line">                        $<span class="string">"Cube2到Cube3的向量:&#123;cube1ToCube2Vector.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"1-&gt;2 + 2-&gt;3 = &#123;vectorAdd.ToString()&#125;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             VectorStudyEditor.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/03/17</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> VectorStudyEditor.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> VectorStudy的Editor绘制</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[CustomEditor(<span class="keyword">typeof</span>(VectorStudy))]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VectorStudyEditor</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Cube1属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mCube1Property;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Cube2属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mCube2Property;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Cube3属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mCube3Property;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 坐标系长度属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mCoordinateSystemLengthProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Z轴颜色属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mForwardAxisColorProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> X轴颜色属性</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mRightAxisColorProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Y轴颜色</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mUpAxisColorProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 向量颜色</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    SerializedProperty mVectorColorProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Cube1</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> GameObject mCube1;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Cube2</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> GameObject mCube2;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Cube3</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> GameObject mCube3;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">OnEnable</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        mCube1Property = serializedObject.FindProperty(<span class="string">"Cube1"</span>);</span><br><span class="line">        mCube2Property = serializedObject.FindProperty(<span class="string">"Cube2"</span>);</span><br><span class="line">        mCube3Property = serializedObject.FindProperty(<span class="string">"Cube3"</span>);</span><br><span class="line">        mCoordinateSystemLengthProperty = serializedObject.FindProperty(<span class="string">"CoordinateSystemLength"</span>);</span><br><span class="line">        mForwardAxisColorProperty = serializedObject.FindProperty(<span class="string">"ForwardAxisColor"</span>);</span><br><span class="line">        mRightAxisColorProperty = serializedObject.FindProperty(<span class="string">"RightAxisColor"</span>);</span><br><span class="line">        mUpAxisColorProperty = serializedObject.FindProperty(<span class="string">"UpAxisColor"</span>);</span><br><span class="line">        mVectorColorProperty = serializedObject.FindProperty(<span class="string">"VectorColor"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnSceneGUI</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        InitData();</span><br><span class="line">        DrawCubeInfo();</span><br><span class="line">        DrawWorldCoordinateSystem();</span><br><span class="line">        DrawVectorInfo();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 初始化数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">InitData</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        mCube1 = mCube1Property?.objectReferenceValue != <span class="keyword">null</span> ? mCube1Property.objectReferenceValue <span class="keyword">as</span> GameObject : <span class="keyword">null</span>;</span><br><span class="line">        mCube2 = mCube2Property?.objectReferenceValue != <span class="keyword">null</span> ? mCube2Property.objectReferenceValue <span class="keyword">as</span> GameObject : <span class="keyword">null</span>;</span><br><span class="line">        mCube3 = mCube3Property?.objectReferenceValue != <span class="keyword">null</span> ? mCube3Property.objectReferenceValue <span class="keyword">as</span> GameObject : <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 绘制Cube信息</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawCubeInfo</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        HandlesUtilities.DrawColorLable(mCube1.transform.position, <span class="string">"Cube1"</span>, Color.red);</span><br><span class="line">        HandlesUtilities.DrawColorLable(mCube2.transform.position, <span class="string">"Cube2"</span>, Color.red);</span><br><span class="line">        HandlesUtilities.DrawColorLable(mCube3.transform.position, <span class="string">"Cube3"</span>, Color.red);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 绘制世界坐标系</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawWorldCoordinateSystem</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        HandlesUtilities.DrawColorLable(Vector3.zero, <span class="string">"世界坐标系"</span>, Color.red);</span><br><span class="line">        <span class="keyword">if</span> (Event.current.type == EventType.Repaint)</span><br><span class="line">        &#123;</span><br><span class="line">            Handles.color = mForwardAxisColorProperty.colorValue;</span><br><span class="line">            Handles.ArrowHandleCap(<span class="number">1</span>, Vector3.zero,</span><br><span class="line">                                    Quaternion.LookRotation(Vector3.forward),</span><br><span class="line">                                    mCoordinateSystemLengthProperty.floatValue, EventType.Repaint);</span><br><span class="line"></span><br><span class="line">            Handles.color = mRightAxisColorProperty.colorValue;</span><br><span class="line">            Handles.ArrowHandleCap(<span class="number">1</span>, Vector3.zero,</span><br><span class="line">                                    Quaternion.LookRotation(Vector3.right),</span><br><span class="line">                                    mCoordinateSystemLengthProperty.floatValue, EventType.Repaint);</span><br><span class="line"></span><br><span class="line">            Handles.color = mUpAxisColorProperty.colorValue;</span><br><span class="line">            Handles.ArrowHandleCap(<span class="number">1</span>, Vector3.zero,</span><br><span class="line">                                    Quaternion.LookRotation(Vector3.up),</span><br><span class="line">                                    mCoordinateSystemLengthProperty.floatValue, EventType.Repaint);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 绘制相关向量</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawVectorInfo</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (Event.current.type == EventType.Repaint)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (mCube1 != <span class="keyword">null</span> &amp;&amp; mCube2 != <span class="keyword">null</span> &amp;&amp; mCube3 != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> cube1ToCube2Vector = mCube2.transform.position - mCube1.transform.position;</span><br><span class="line">                <span class="keyword">var</span> cube2ToCube3Vector = mCube3.transform.position - mCube2.transform.position;</span><br><span class="line">                <span class="keyword">var</span> vectorAdd = cube1ToCube2Vector + cube2ToCube3Vector;</span><br><span class="line">                Handles.color = mVectorColorProperty.colorValue;</span><br><span class="line">                Handles.ArrowHandleCap(<span class="number">1</span>, mCube1.transform.position,</span><br><span class="line">                                        Quaternion.LookRotation(cube1ToCube2Vector),</span><br><span class="line">                                        cube1ToCube2Vector.magnitude, EventType.Repaint);</span><br><span class="line">                Handles.ArrowHandleCap(<span class="number">1</span>, mCube2.transform.position,</span><br><span class="line">                                        Quaternion.LookRotation(cube2ToCube3Vector),</span><br><span class="line">                                        cube2ToCube3Vector.magnitude, EventType.Repaint);</span><br><span class="line">                Handles.ArrowHandleCap(<span class="number">1</span>, mCube1.transform.position,</span><br><span class="line">                                        Quaternion.LookRotation(vectorAdd),</span><br><span class="line">                                        vectorAdd.magnitude, EventType.Repaint);</span><br><span class="line">                Handles.Label(mCube1.transform.position + cube1ToCube2Vector / <span class="number">2</span>, <span class="string">"1-&gt;2"</span>);</span><br><span class="line">                Handles.Label(mCube2.transform.position + cube2ToCube3Vector / <span class="number">2</span>, <span class="string">"2-&gt;3"</span>);</span><br><span class="line">                Handles.Label(mCube1.transform.position + vectorAdd / <span class="number">2</span>, <span class="string">"1-&gt;2 + 2-&gt;3"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Math/ObjectConnectVectorAndCoordinateSystem.PNG" alt="ObjectConnectVectorAndCoordinateSystem"></p>
+<p>通过Handles相关接口，我们成功绘制出了以下东西:</p>
+<ol>
+<li>世界坐标系</li>
+<li>Cube1到Cube2的向量</li>
+<li>Cube2到Cube3的向量</li>
+<li>1-&gt;2 + 2-&gt;3的向量</li>
+</ol>
+<p>可以看到Cube2坐标-Cube1坐标=从Cube1位置指向Cube2位置的向量，也就是说<strong>B - A = A-&gt;B</strong></p>
+<p>同时上面的可视化也显示了，<strong>A-&gt;B + B-&gt;C = A-&gt;C</strong>的向量加法规则，减法反向理解即可。</p>
+<p>接下来我们要学习了解向量里比较重要的两个运算概念:</p>
+<ol>
+<li><strong>点乘</strong></li>
+<li><strong>叉乘</strong></li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>方向并不完全和方位相同</strong></li>
+<li><strong>数学中专门研究向量的分支称作线性代数</strong></li>
+<li><strong>向量加法满足交换律，但向量减法不满足交换律。因为得到的向量方向相反。</strong></li>
+</ol>
+<h3 id="点乘">点乘</h3><p><strong>点乘(也称为内积)，记做a.b</strong></p>
+<p><strong>a.b = a1 <em> b1 + a2 </em> b2 + a3 <em> b3 … + an </em> bn</strong></p>
+<p>几何解释:</p>
+<p><strong>点乘等于向量大小与向量夹角的cosθ值的积。点乘结果描述了两个向量的”相似”程度，点乘结果越大，两向量越相近。</strong></p>
+<p><strong>a.b = |a| <em> |b| </em> cosθ</strong></p>
+<p><img src="/img/Math/VectorDotGeometric.png" alt="VectorDotGeometric"></p>
+<p>根据上面的公式和图我们可以看出，点乘在几何里的可以理解成<strong>a向量在b向量上的投影乘以b向量的模</strong></p>
+<p>通过上面的公式我们反向推到夹角的计算公式如下:</p>
+<p><strong>θ = arccor(a.b / |a| * |b|)</strong></p>
+<p>如果我们不关心点乘的大小，那么从点乘的值我们可以判定两个向量之间的夹角情况:</p>
+<ol>
+<li><strong>a.b &gt; 0 —&gt; 方向基本相同，夹角在0到90度之间</strong></li>
+<li><strong>a.b = 0 —&gt; 正交，两向量垂直</strong></li>
+<li><strong>a.b &lt; 0 —&gt; 方向基本相反，夹角在90-180度之间</strong></li>
+</ol>
+<p>接下来让我们通过Unity实战可视化辅助我们学习向量点乘:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             VectorStudyEditor.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/03/17</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> VectorStudyEditor.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> VectorStudy的Editor绘制</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[CustomEditor(<span class="keyword">typeof</span>(VectorDotStudy))]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VectorDotStudyEditor</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 绘制相关向量</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawVectorInfo</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (Event.current.type == EventType.Repaint)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (mCube1 != <span class="keyword">null</span> &amp;&amp; mCube2 != <span class="keyword">null</span> &amp;&amp; mCube3 != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> cube1ToCube2Vector = mCube2.transform.position - mCube1.transform.position;</span><br><span class="line">                <span class="keyword">var</span> cube1ToCube3Vector = mCube3.transform.position - mCube1.transform.position;</span><br><span class="line">                <span class="keyword">var</span> vectorDot = Vector3.Dot(cube1ToCube2Vector, cube1ToCube3Vector);</span><br><span class="line">                <span class="keyword">var</span> radians = Mathf.Acos(vectorDot / (cube1ToCube2Vector.magnitude * cube1ToCube3Vector.magnitude));</span><br><span class="line">                <span class="keyword">var</span> angle = Mathf.Rad2Deg * radians;</span><br><span class="line">                Handles.color = mVectorColorProperty.colorValue;</span><br><span class="line">                Handles.ArrowHandleCap(<span class="number">1</span>, mCube1.transform.position,</span><br><span class="line">                                        Quaternion.LookRotation(cube1ToCube2Vector),</span><br><span class="line">                                        cube1ToCube2Vector.magnitude, EventType.Repaint);</span><br><span class="line">                Handles.ArrowHandleCap(<span class="number">1</span>, mCube1.transform.position,</span><br><span class="line">                                        Quaternion.LookRotation(cube1ToCube3Vector),</span><br><span class="line">                                        cube1ToCube3Vector.magnitude, EventType.Repaint);</span><br><span class="line">                Handles.Label(mCube1.transform.position + cube1ToCube2Vector / <span class="number">2</span>, <span class="string">"1-&gt;2"</span>);</span><br><span class="line">                Handles.Label(mCube1.transform.position + cube1ToCube3Vector / <span class="number">2</span>, <span class="string">"1-&gt;3"</span>);</span><br><span class="line">                HandlesUtilities.DrawColorLable(mCube1.transform.position, $<span class="string">"夹角:&#123;angle&#125;"</span>, Color.green);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             VectorDotStudy.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/03/17</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> VectorDotStudy.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 向量点乘学习</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VectorDotStudy</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> cube1ToCube2Vector = Cube2.transform.position - Cube1.transform.position;</span><br><span class="line">        <span class="keyword">var</span> cube1ToCube3Vector = Cube3.transform.position - Cube1.transform.position;</span><br><span class="line">        <span class="keyword">var</span> vectorDot = Vector3.Dot(cube1ToCube2Vector, cube1ToCube3Vector);</span><br><span class="line">        <span class="keyword">var</span> radians = Mathf.Acos(vectorDot / (cube1ToCube2Vector.magnitude * cube1ToCube3Vector.magnitude));</span><br><span class="line">        <span class="keyword">var</span> angle = Mathf.Rad2Deg * radians;</span><br><span class="line">        TipTxt.text = $<span class="string">"红色表示Cube1,绿色表示Cube2,蓝色表示Cube3\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1世界坐标:&#123;Cube1.transform.position.ToString()&#125; 朝向:&#123;Cube1.transform.forward.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube2世界坐标系:&#123;Cube2.transform.position.ToString()&#125; 朝向:&#123;Cube2.transform.forward.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube3世界坐标系:&#123;Cube3.transform.position.ToString()&#125; 朝向:&#123;Cube3.transform.forward.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1到Cube2的向量:&#123;cube1ToCube2Vector.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1到Cube3的向量:&#123;cube1ToCube3Vector.magnitude&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"1-&gt;2 点乘 2-&gt;3 = &#123;vectorDot&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"1-&gt;2和2-&gt;3的夹角:&#123;angle&#125;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Math/VectorDot.PNG" alt="VectorDot"></p>
+<p>通过上面的计算和可视化，可以看到我们通过Mathf.Acos(a.b / (|a| <em> |b|)) </em> Mathf.Rad2Deg实现了点乘角度的逆推。</p>
+<p>并且因为点乘是a.b = |a| <em> |b| </em> cos(θ)，所以从点乘的结果我们可以分析出两个向量的角度情况:</p>
+<p><strong>a.b &gt; 0表示a和b向量夹角为0度到90度</strong></p>
+<p><strong>a.b==0表示a和b向量垂直</strong></p>
+<p><strong>a.b&lt;0表示a和b向量夹角为90度到180度</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>点乘满足交换律</strong></li>
+<li><strong>点乘对零向量的解释是，零向量和任意其他向量垂直</strong></li>
+<li><strong>Unity Mathf.Acos()返回的是弧度而非角度，需要通过乘以Mathf.Rad2Deg进行角度转换</strong></li>
+</ol>
+<h3 id="叉乘">叉乘</h3><p><strong>叉乘又称叉积，和点乘不一样，点乘得到一个标量并满足交换律，向量叉乘得到一个向量并且不满足交换律</strong></p>
+<p>​                 [x1] <em> [x2]     [y1 </em> z2 - z1 * y1 ] </p>
+<p>​    a X b = [y1] <em> [y2] =  [ z1 </em> x2 - x1 * z2 ]</p>
+<p>​                 [z1] <em> [y3]      [ x1 </em> y2 - y1 * x2 ]</p>
+<p>几何解释：</p>
+<p><strong>叉乘得到的向量垂直于原来的两个向量</strong></p>
+<p><img src="/img/Math/VectorCrossVisilization.png" alt="VectorCrossVisilization"></p>
+<p><strong>|aXb|=|a|<em>|b|</em>sinθ</strong></p>
+<p><strong>从2维平面几何来说，a向量和b向量的叉乘长度等于以a向量和b向量为边的平行四边形面积。</strong></p>
+<p>我们知道了a向量叉乘b向量得到的是一个垂直于a和b平面的向量，那么这个向量是朝上还是朝下是如何决定的了？</p>
+<p><strong>通过把a向量和b向量首尾相连，在左手坐标系里如果a和b成顺时针，那么aXb的结果向量向外，反之向里。右手坐标系中则恰好相反。</strong></p>
+<p>接下来让我们结合实战，看下我们是如何利用叉乘计算出垂直a和b向量的c向量的:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             VectorCrossStudyEditor.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/03/17</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> VectorCrossStudyEditor.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> VectorCrossStudy的Editor绘制</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[CustomEditor(<span class="keyword">typeof</span>(VectorCrossStudy))]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VectorCrossStudyEditor</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 绘制相关向量</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawVectorInfo</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (Event.current.type == EventType.Repaint)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (mCube1 != <span class="keyword">null</span> &amp;&amp; mCube2 != <span class="keyword">null</span> &amp;&amp; mCube3 != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> cube1Forward = mCube1.transform.forward;</span><br><span class="line">                <span class="keyword">var</span> cube1ToCube2 = mCube2.transform.position - mCube1.transform.position;</span><br><span class="line">                <span class="keyword">var</span> vectorDot = Vector3.Dot(cube1Forward, cube1ToCube2);</span><br><span class="line">                <span class="keyword">var</span> radians = Mathf.Acos(vectorDot / (cube1Forward.magnitude * cube1ToCube2.magnitude));</span><br><span class="line">                <span class="keyword">var</span> angle = Mathf.Rad2Deg * radians;</span><br><span class="line">                <span class="keyword">var</span> vectorCross = Vector3.Cross(cube1Forward, cube1ToCube2);</span><br><span class="line">                vectorCross = (angle &lt;= Mathf.Epsilon &amp;&amp; angle &gt;= -Mathf.Epsilon) ? cube1Forward : vectorCross;</span><br><span class="line">                Handles.color = mVectorColorProperty.colorValue;</span><br><span class="line">                Handles.ArrowHandleCap(<span class="number">1</span>, mCube1.transform.position,</span><br><span class="line">                                        Quaternion.LookRotation(cube1Forward),</span><br><span class="line">                                        mCoordinateSystemLengthProperty.floatValue, EventType.Repaint);</span><br><span class="line">                Handles.ArrowHandleCap(<span class="number">1</span>, mCube1.transform.position,</span><br><span class="line">                                        Quaternion.LookRotation(cube1ToCube2),</span><br><span class="line">                                        mCoordinateSystemLengthProperty.floatValue, EventType.Repaint);</span><br><span class="line">                Handles.ArrowHandleCap(<span class="number">1</span>, mCube1.transform.position,</span><br><span class="line">                                        Quaternion.LookRotation(vectorCross),</span><br><span class="line">                                        mCoordinateSystemLengthProperty.floatValue, EventType.Repaint);</span><br><span class="line">                HandlesUtilities.DrawColorLable(mCube1.transform.position, $<span class="string">"夹角:&#123;angle&#125;"</span>, Color.green);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             VectorCrossStudy.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/03/17</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> VectorCrossStudy.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 向量叉乘学习</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VectorCrossStudy</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 旋转角度</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> mAngle;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 旋转轴</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Vector3 mRotateAxis;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        RotateBtn.onClick.AddListener(OnRotateBtnClick);</span><br><span class="line">        <span class="keyword">var</span> cube1Forward = Cube1.transform.forward;</span><br><span class="line">        <span class="keyword">var</span> cube1ToCube2 = Cube2.transform.position - Cube1.transform.position;</span><br><span class="line">        <span class="keyword">var</span> vectorDot = Vector3.Dot(cube1Forward, cube1ToCube2);</span><br><span class="line">        <span class="keyword">var</span> radians = Mathf.Acos(vectorDot / (cube1Forward.magnitude * cube1ToCube2.magnitude));</span><br><span class="line">        mAngle = Mathf.Rad2Deg * radians;</span><br><span class="line">        mRotateAxis = Vector3.Cross(cube1Forward, cube1ToCube2);</span><br><span class="line">        <span class="keyword">var</span> rotationDirection = mRotateAxis.y &gt; <span class="number">0</span> ? <span class="string">"顺时针"</span> : <span class="string">"逆时针"</span>;</span><br><span class="line">        TipTxt.text = $<span class="string">"红色表示Cube1,绿色表示Cube2\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1世界坐标:&#123;Cube1.transform.position.ToString()&#125; 朝向:&#123;Cube1.transform.forward.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube2世界坐标系:&#123;Cube2.transform.position.ToString()&#125; 朝向:&#123;Cube2.transform.forward.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1朝向:&#123;cube1Forward.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1到Cube2向量:&#123;cube1ToCube2.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1朝向 点乘 Cube1到Cube2向量 = &#123;vectorDot&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1朝向 叉乘 Cube1到Cube2向量 = &#123;mRotateAxis.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1看向Cube2旋转方向:&#123;rotationDirection&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1看向Cube2旋转角度:&#123;mAngle&#125;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 点击旋转Cube1看向Cube2</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnRotateBtnClick</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Cube1.transform.Rotate(mRotateAxis, mAngle);</span><br><span class="line">        Debug.Log($<span class="string">"Cube1看向Cube2旋转方向:&#123;mRotateAxis&#125; 旋转角度:&#123;mAngle&#125;"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Math/VectorCross.PNG" alt="VectorCross"></p>
+<p>从上面的绘制可以看出，向量2-1叉乘向量1-3的结果是(0, 33.6, 0)，即结果向量是向上的，这和Unity左手坐标系，a和b头尾相连顺时针则向外(即向上)是符合的。</p>
+<p>Note:</p>
+<ol>
+<li><strong>点乘和叉乘一起时，叉乘优先计算</strong></li>
+<li><strong>叉乘不满足交换律和结合律</strong></li>
+</ol>
+<h3 id="运用">运用</h3><p><strong>点乘和叉乘最典型的运用就是通过点乘计算两个向量的夹角，通过叉乘计算两个向量的角度方向。</strong></p>
+<p><strong>典型的问题就是已知玩家A和B的位置和朝向，如何让玩家A看向玩家B。</strong></p>
+<p>要解决上述问题，我们需要通过玩家A到玩家B位置的向量和玩家A的朝向向量来计算出他们的夹角和旋转方向。</p>
+<p>接下来结合Unity实战，让我们看看，我们是如何通过点乘和叉乘计算出两个向量的旋转角度和方向的:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             VectorUsingStudyEditor.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/03/17</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> VectorUsingStudyEditor.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> VectorUsingStudy的Editor绘制</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[CustomEditor(<span class="keyword">typeof</span>(VectorUsingStudy))]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VectorUsingStudyEditor</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 绘制相关向量</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawVectorInfo</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (Event.current.type == EventType.Repaint)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (mCube1 != <span class="keyword">null</span> &amp;&amp; mCube2 != <span class="keyword">null</span> &amp;&amp; mCube3 != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> cube1Forward = mCube1.transform.forward;</span><br><span class="line">                <span class="keyword">var</span> cube1ToCube2 = mCube2.transform.position - mCube1.transform.position;</span><br><span class="line">                <span class="keyword">var</span> vectorDot = Vector3.Dot(cube1Forward, cube1ToCube2);</span><br><span class="line">                <span class="keyword">var</span> radians = Mathf.Acos(vectorDot / (cube1Forward.magnitude * cube1ToCube2.magnitude));</span><br><span class="line">                <span class="keyword">var</span> angle = Mathf.Rad2Deg * radians;</span><br><span class="line">                <span class="keyword">var</span> vectorCross = Vector3.Cross(cube1Forward, cube1ToCube2);</span><br><span class="line">                vectorCross = (angle &lt;= Mathf.Epsilon &amp;&amp; angle &gt;= -Mathf.Epsilon) ? cube1Forward : vectorCross;</span><br><span class="line">                Handles.color = mVectorColorProperty.colorValue;</span><br><span class="line">                Handles.ArrowHandleCap(<span class="number">1</span>, mCube1.transform.position,</span><br><span class="line">                                        Quaternion.LookRotation(cube1Forward),</span><br><span class="line">                                        mCoordinateSystemLengthProperty.floatValue, EventType.Repaint);</span><br><span class="line">                Handles.ArrowHandleCap(<span class="number">1</span>, mCube1.transform.position,</span><br><span class="line">                                        Quaternion.LookRotation(cube1ToCube2),</span><br><span class="line">                                        mCoordinateSystemLengthProperty.floatValue, EventType.Repaint);</span><br><span class="line">                Handles.ArrowHandleCap(<span class="number">1</span>, mCube1.transform.position,</span><br><span class="line">                                        Quaternion.LookRotation(vectorCross),</span><br><span class="line">                                        mCoordinateSystemLengthProperty.floatValue, EventType.Repaint);</span><br><span class="line">                HandlesUtilities.DrawColorLable(mCube1.transform.position, $<span class="string">"夹角:&#123;angle&#125;"</span>, Color.green);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             VectorUsingStudy.cs</span><br><span class="line"> * Author:                  TONYTANG</span><br><span class="line"> * Create Date:             2022/03/17</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> VectorUsingStudy.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 向量点乘和叉乘实战学习</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VectorUsingStudy</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 旋转角度</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> mAngle;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 旋转轴</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Vector3 mRotateAxis;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        RotateBtn.onClick.AddListener(OnRotateBtnClick);</span><br><span class="line">        <span class="keyword">var</span> cube1Forward = Cube1.transform.forward;</span><br><span class="line">        <span class="keyword">var</span> cube1ToCube2 = Cube2.transform.position - Cube1.transform.position;</span><br><span class="line">        <span class="keyword">var</span> vectorDot = Vector3.Dot(cube1Forward, cube1ToCube2);</span><br><span class="line">        <span class="keyword">var</span> radians = Mathf.Acos(vectorDot / (cube1Forward.magnitude * cube1ToCube2.magnitude));</span><br><span class="line">        mAngle = Mathf.Rad2Deg * radians;</span><br><span class="line">        mRotateAxis = Vector3.Cross(cube1Forward, cube1ToCube2);</span><br><span class="line">        <span class="keyword">var</span> rotationDirection = mRotateAxis.y &gt; <span class="number">0</span> ? <span class="string">"顺时针"</span> : <span class="string">"逆时针"</span>;</span><br><span class="line">        TipTxt.text = $<span class="string">"红色表示Cube1,绿色表示Cube2\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1世界坐标:&#123;Cube1.transform.position.ToString()&#125; 朝向:&#123;Cube1.transform.forward.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube2世界坐标系:&#123;Cube2.transform.position.ToString()&#125; 朝向:&#123;Cube2.transform.forward.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1朝向:&#123;cube1Forward.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1到Cube2向量:&#123;cube1ToCube2.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1朝向 点乘 Cube1到Cube2向量 = &#123;vectorDot&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1朝向 叉乘 Cube1到Cube2向量 = &#123;mRotateAxis.ToString()&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1看向Cube2旋转方向:&#123;rotationDirection&#125;\n"</span> +</span><br><span class="line">                        $<span class="string">"Cube1看向Cube2旋转角度:&#123;mAngle&#125;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 点击旋转Cube1看向Cube2</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnRotateBtnClick</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        Cube1.transform.Rotate(mRotateAxis, mAngle);</span><br><span class="line">        Debug.Log($<span class="string">"Cube1看向Cube2旋转方向:&#123;mRotateAxis&#125; 旋转角度:&#123;mAngle&#125;"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Math/RotationCaculation1.PNG" alt="RotationCaculation1"></p>
+<p>从上面的效果图可以看出，当Cube2在不同的位置时，我们通过点乘和叉乘成功算出了Cube1朝向向量到Cube1到Cube2位置向量的旋转角度和选择方向。</p>
+<p><img src="/img/Math/RotationCaculation2.PNG" alt="RotationCaculation2"></p>
+<p>通过点击Cube1看向Cube2，我们调用transform.Rotate(叉乘的向量, 点乘逆推的角度)我们可以看到，Cube1实现通过绕(0, -1.8, 0)选择158度实现了看向Cube2。</p>
+<p>如果只是单纯的让玩家B看向玩家A，实战中我们并不会向上面一样根据公式的逆推实现旋转轴和旋转角度，而是直接使用Unity提供的API，比如transform.LookAt(玩家ATransform)即可实现玩家B看向玩家A的需求。但了解底层的实现原理以及叉乘点乘的实际用处还是很有必要的。</p>
+<p><strong>上面有一个细节要注意的是，Quaternion.LookRotation()不支持看向一个零向量，所以通过判定点旋转角度是否为0来判定是否Cube1朝向和Cube1连接Cube2的向量方向一致</strong></p>
+<p>更多关于向量的运算参考Vector3相关的接口使用，在后续实战中更多的学习运用，这里就不一一提及了。</p>
+<p>Note:</p>
+<ol>
+<li><strong>|aXb|为0表示两个向量平行</strong></li>
+<li><strong>利用叉乘结果大于0还是小于0区分方向的同时，我们还能用于推断向量A在向量B的左侧还是右侧</strong></li>
+</ol>
+<h1 id="矩阵">矩阵</h1><p>待添加……</p>
+<h1 id="欧拉角与四元数">欧拉角与四元数</h1><h1 id="几何检测">几何检测</h1><h1 id="可见性检测">可见性检测</h1><h1 id="数学概念">数学概念</h1><h1 id="学习总结">学习总结</h1><p>待添加……</p>
+<h1 id="Github">Github</h1><p>参考学习Github:</p>
+<p>个人Github:</p>
+<p>详细的Editor绘制学习参考:</p>
+<p><a href=""></a></p>
+<h1 id="Reference">Reference</h1><p><a href="https://zhuanlan.zhihu.com/p/261097735" target="_blank" rel="external">计算机图形学 5：齐次坐标与 MVP 矩阵变换</a></p>
+<p><a href="https://my.oschina.net/u/4324682/blog/3457254" target="_blank" rel="external">向量内积（点乘）和外积（叉乘）概念及几何意义</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2022/02/21/数学知识/" data-title="数学知识 | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2022/02/20/UnityEditor知识/"  title="UnityEditor知识">
+ <strong>下一篇：</strong><br/> 
+ <span>UnityEditor知识
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2022/02/21/数学知识/" data-title="数学知识" data-url="http://tonytang1990.github.io/2022/02/21/数学知识/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3D数学"><span class="toc-number">2.</span> <span class="toc-text">3D数学</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#坐标系"><span class="toc-number">3.</span> <span class="toc-text">坐标系</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#多坐标系"><span class="toc-number">3.1.</span> <span class="toc-text">多坐标系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战"><span class="toc-number">3.2.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#向量"><span class="toc-number">4.</span> <span class="toc-text">向量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数学定义"><span class="toc-number">4.1.</span> <span class="toc-text">数学定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#几何定义"><span class="toc-number">4.2.</span> <span class="toc-text">几何定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#点乘"><span class="toc-number">4.2.1.</span> <span class="toc-text">点乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#叉乘"><span class="toc-number">4.2.2.</span> <span class="toc-text">叉乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运用"><span class="toc-number">4.2.3.</span> <span class="toc-text">运用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#矩阵"><span class="toc-number">5.</span> <span class="toc-text">矩阵</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#欧拉角与四元数"><span class="toc-number">6.</span> <span class="toc-text">欧拉角与四元数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#几何检测"><span class="toc-number">7.</span> <span class="toc-text">几何检测</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#可见性检测"><span class="toc-number">8.</span> <span class="toc-text">可见性检测</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数学概念"><span class="toc-number">9.</span> <span class="toc-text">数学概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">10.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">11.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">12.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game-Engine/" title="Game_Engine">Game_Engine<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
