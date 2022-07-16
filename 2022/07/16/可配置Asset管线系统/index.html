@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetPipeline/MixFolderLocalPreProcessorConfig.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetPipeline/MixFolderAssetPipelineLog.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetPipeline/MixFolderTextureSettingAfterImport.PNG">
-<meta property="og:updated_time" content="2022-07-16T04:36:56.188Z">
+<meta property="og:updated_time" content="2022-07-16T12:39:31.418Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="可配置Asset管线系统">
 <meta name="twitter:description" content="前言日常项目中，我们对于Unity资源导入会做一些自动化的设置和检查，确保导入到项目里的资源是正确符合要求的，确保游戏资源最优化。而这些自动化检查和处理离不开AssetPostProcess接口，常规的方式是通过重写AssetPostProcess相关接口进行硬编码的方式实现资源导入自动化检查和设置。但这样的实现方式显得不灵活，当我们需要改变或新增一些资源时，我们需要硬编码去实现需求。
@@ -148,7 +148,6 @@
 <ul>
 <li>AssetType — Asset类型定义</li>
 <li>AssetProcessType — Asset管线处理类型定义</li>
-<li>LocaDetailWindow — Asset管线局部数据详情配置窗口(用于配置局部数据黑名单路径配置)</li>
 <li>AssetPipeline — Asset管线入口(负责接入Asset后处理流程以及Asset管线系统初始化)</li>
 <li>AssetPipelineSystem — Asset管线系统(负责初始化Asset管线里各系统以及各系统调用)</li>
 <li>AssetProcessorSystem — Asset处理系统(负责Asset自动化后处理相关配置)</li>
@@ -170,6 +169,7 @@
 <li>AssetPipelinePanel — Asset管线面板</li>
 <li>AssetProcessorPanel — Asset处理器面板</li>
 <li>AssetCheckPanel — Asset检查器面板</li>
+<li>LocaDetailWindow — Asset管线局部数据详情配置窗口(用于配置局部数据黑名单路径配置)</li>
 </ul>
 <p>其他部分:</p>
 <ul>
