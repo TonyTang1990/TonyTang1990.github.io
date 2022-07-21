@@ -18,10 +18,11 @@
 <meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content="前言游戏开发过程中经常会设计到时间的运算判定，比如开服时间，触发时间，倒计时时间等，所有的这些时间都要基于和服务器或网络对时后的网络时间为基准来计算。单纯采用本地客户端时间的话会导致通过修改本地客户端时间就能达到加速和调时间的目的。本章节通过深入学习网络对时，实现一套没有服务器也能正确网络对时的对时框架(如果有后端的话以后端时间对时为准即可,本人是出于不懂服务器开发所以才采用网络对时的方案)，为未">
 <meta property="og:image" content="http://tonytang1990.github.io/img/SyncTime/NTPTimeCaculation.jpg">
+<meta property="og:image" content="http://tonytang1990.github.io/img/SyncTime/NTPDataContent.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/SyncTime/BeforeSyncTime.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/SyncTime/AfterSyncTime.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Sync/AfterSyncAddRealtime.PNG">
-<meta property="og:updated_time" content="2022-07-21T17:00:49.721Z">
+<meta property="og:updated_time" content="2022-07-21T17:07:43.062Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络对时">
 <meta name="twitter:description" content="前言游戏开发过程中经常会设计到时间的运算判定，比如开服时间，触发时间，倒计时时间等，所有的这些时间都要基于和服务器或网络对时后的网络时间为基准来计算。单纯采用本地客户端时间的话会导致通过修改本地客户端时间就能达到加速和调时间的目的。本章节通过深入学习网络对时，实现一套没有服务器也能正确网络对时的对时框架(如果有后端的话以后端时间对时为准即可,本人是出于不懂服务器开发所以才采用网络对时的方案)，为未">
@@ -52,7 +53,7 @@
 				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
 				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -68,7 +69,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:tonytang1990.github.io">
 					</form>
 					
@@ -91,14 +92,14 @@
 		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
 		
   <p class="article-time">
-    <time datetime="2022-07-16T12:50:00.000Z" itemprop="datePublished"> Published 2022-07-16</time>
+    <time datetime="2022-07-16T12:50:00.000Z" itemprop="datePublished"> 發表於 2022-07-16</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">Contents</strong>
+			<strong class="toc-title">文章目錄</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">2.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间"><span class="toc-number">3.</span> <span class="toc-text">时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络对时"><span class="toc-number">4.</span> <span class="toc-text">网络对时</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#网络对时实战"><span class="toc-number">4.1.</span> <span class="toc-text">网络对时实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重点知识"><span class="toc-number">5.</span> <span class="toc-text">重点知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">6.</span> <span class="toc-text">引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Github"><span class="toc-number">7.</span> <span class="toc-text">Github</span></a></li></ol>
 		
@@ -139,7 +140,7 @@
 </ol>
 <p>在了解了NTP的对时原理后，接下来让我们通过实战Socket网络请求利用NTP实现网络对时功能。</p>
 <h3 id="网络对时实战">网络对时实战</h3><p>在实现通过Socket访问网络请求时，先让我们了解一下NTP的报文格式:</p>
-<p><a href="/img/SyncTime/NTPDataContent.png">NTP报文格式</a></p>
+<p><img src="/img/SyncTime/NTPDataContent.png" alt="NTP报文格式"></p>
 <p>了解了NTP的报文格式我们就能编写Socket代码请求访问获取对时相关信息:</p>
 <p>对时NTP网址，我采用的是阿里云提供的地址:</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Description:             NTPHostConfig.cs</span><br><span class="line"> * Author:                  TonyTang</span><br><span class="line"> * Create Date:             2022/07/21</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> NTPHostConfig.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> NTP网址配置</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">NTPHostConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> NTP网址列表</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> List&lt;<span class="keyword">string</span>&gt; NTPHostList = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"ntp2.aliyun.com"</span>,</span><br><span class="line">        <span class="string">"ntp3.aliyun.com"</span>,</span><br><span class="line">        <span class="string">"ntp4.aliyun.com"</span>,</span><br><span class="line">        <span class="string">"ntp5.aliyun.com"</span>,</span><br><span class="line">        <span class="string">"ntp6.aliyun.com"</span>,</span><br><span class="line">        <span class="string">"ntp7.aliyun.com"</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -224,22 +225,22 @@
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">Contents</strong>
+  <strong class="toc-title">文章目錄</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">2.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间"><span class="toc-number">3.</span> <span class="toc-text">时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络对时"><span class="toc-number">4.</span> <span class="toc-text">网络对时</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#网络对时实战"><span class="toc-number">4.1.</span> <span class="toc-text">网络对时实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重点知识"><span class="toc-number">5.</span> <span class="toc-text">重点知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">6.</span> <span class="toc-text">引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Github"><span class="toc-number">7.</span> <span class="toc-text">Github</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">Categories</p>
+	<p class="asidetitle">分類</p>
 		<ul>
 		
 		  
@@ -276,7 +277,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">標簽</p>
 		<ul class="clearfix">
 		
 			
@@ -304,15 +305,15 @@
 			
 		
 			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Time/" title="Time">Time<sup>1</sup></a></li>
 			
 		
 			
@@ -340,7 +341,7 @@
 			
 		
 			
-				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+				<li><a href="/tags/Time/" title="Time">Time<sup>1</sup></a></li>
 			
 		
 			
@@ -364,7 +365,7 @@
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情鏈接</p>
     <ul>
         
           <li>
@@ -386,7 +387,7 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
 </div>
 
 </aside>
@@ -611,7 +612,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

@@ -110,7 +110,7 @@ Unity自动化打包过程中的相关工具
 				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
 				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -126,7 +126,7 @@ Unity自动化打包过程中的相关工具
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:tonytang1990.github.io">
 					</form>
 					
@@ -149,14 +149,14 @@ Unity自动化打包过程中的相关工具
 		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
 		
   <p class="article-time">
-    <time datetime="2017-04-29T07:17:56.000Z" itemprop="datePublished"> Published 2017-04-29</time>
+    <time datetime="2017-04-29T07:17:56.000Z" itemprop="datePublished"> 發表於 2017-04-29</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">Contents</strong>
+			<strong class="toc-title">文章目錄</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity自动化打包"><span class="toc-number">1.</span> <span class="toc-text">Unity自动化打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#版本控制"><span class="toc-number">1.1.</span> <span class="toc-text">版本控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打包"><span class="toc-number">1.2.</span> <span class="toc-text">打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多平台"><span class="toc-number">1.2.1.</span> <span class="toc-text">多平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自动化"><span class="toc-number">1.2.2.</span> <span class="toc-text">自动化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Jenkins"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">Jenkins</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Jenkins实战"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">Jenkins实战</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#自由风格构建系统"><span class="toc-number">1.2.2.2.1.</span> <span class="toc-text">自由风格构建系统</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Pipeline"><span class="toc-number">1.2.2.2.2.</span> <span class="toc-text">Pipeline</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#What"><span class="toc-number">1.2.2.2.2.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Why"><span class="toc-number">1.2.2.2.2.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#How"><span class="toc-number">1.2.2.2.2.3.</span> <span class="toc-text">How</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Jenkinsfile"><span class="toc-number">1.2.2.2.2.4.</span> <span class="toc-text">Jenkinsfile</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Problems"><span class="toc-number">1.2.2.2.2.5.</span> <span class="toc-text">Problems</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Tools"><span class="toc-number">1.2.2.2.3.</span> <span class="toc-text">　Tools</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Pipeline_Tools"><span class="toc-number">1.2.2.2.3.1.</span> <span class="toc-text">Pipeline Tools</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Email_Plugin"><span class="toc-number">1.2.2.2.3.2.</span> <span class="toc-text">Email Plugin</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Unity3D_Plugin"><span class="toc-number">1.2.2.2.3.3.</span> <span class="toc-text">Unity3D Plugin</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Jenkins从零搭建"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">Jenkins从零搭建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#脚本语言"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">脚本语言</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#bat"><span class="toc-number">1.2.2.4.1.</span> <span class="toc-text">bat</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Shell"><span class="toc-number">1.2.2.4.2.</span> <span class="toc-text">Shell</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#bash"><span class="toc-number">1.2.2.4.2.1.</span> <span class="toc-text">bash</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Python(严格意义上不算脚本语言)"><span class="toc-number">1.2.2.4.3.</span> <span class="toc-text">Python(严格意义上不算脚本语言)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IOS自动化打包"><span class="toc-number">1.2.2.5.</span> <span class="toc-text">IOS自动化打包</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#IOS打包准备"><span class="toc-number">1.2.2.5.1.</span> <span class="toc-text">IOS打包准备</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#XUPorter_or_Unity_API(PBXFroject)"><span class="toc-number">1.2.2.5.2.</span> <span class="toc-text">XUPorter or Unity API(PBXFroject)</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#XUPoter"><span class="toc-number">1.2.2.5.2.1.</span> <span class="toc-text">XUPoter</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#PBXProject"><span class="toc-number">1.2.2.5.2.2.</span> <span class="toc-text">PBXProject</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IOS自动化签包"><span class="toc-number">1.2.2.6.</span> <span class="toc-text">IOS自动化签包</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#References"><span class="toc-number">2.</span> <span class="toc-text">References</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Jenkins_Part"><span class="toc-number">2.1.</span> <span class="toc-text">Jenkins Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shell_Part"><span class="toc-number">2.2.</span> <span class="toc-text">Shell Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Xcodebuild_Part"><span class="toc-number">2.3.</span> <span class="toc-text">Xcodebuild Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other_Part"><span class="toc-number">2.4.</span> <span class="toc-text">Other Part</span></a></li></ol></li></ol>
 		
@@ -607,22 +607,22 @@ Unity自动化打包过程中的相关工具
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">Contents</strong>
+  <strong class="toc-title">文章目錄</strong>
  
  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity自动化打包"><span class="toc-number">1.</span> <span class="toc-text">Unity自动化打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#版本控制"><span class="toc-number">1.1.</span> <span class="toc-text">版本控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打包"><span class="toc-number">1.2.</span> <span class="toc-text">打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多平台"><span class="toc-number">1.2.1.</span> <span class="toc-text">多平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自动化"><span class="toc-number">1.2.2.</span> <span class="toc-text">自动化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Jenkins"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">Jenkins</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Jenkins实战"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">Jenkins实战</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#自由风格构建系统"><span class="toc-number">1.2.2.2.1.</span> <span class="toc-text">自由风格构建系统</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Pipeline"><span class="toc-number">1.2.2.2.2.</span> <span class="toc-text">Pipeline</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#What"><span class="toc-number">1.2.2.2.2.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Why"><span class="toc-number">1.2.2.2.2.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#How"><span class="toc-number">1.2.2.2.2.3.</span> <span class="toc-text">How</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Jenkinsfile"><span class="toc-number">1.2.2.2.2.4.</span> <span class="toc-text">Jenkinsfile</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Problems"><span class="toc-number">1.2.2.2.2.5.</span> <span class="toc-text">Problems</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Tools"><span class="toc-number">1.2.2.2.3.</span> <span class="toc-text">　Tools</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Pipeline_Tools"><span class="toc-number">1.2.2.2.3.1.</span> <span class="toc-text">Pipeline Tools</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Email_Plugin"><span class="toc-number">1.2.2.2.3.2.</span> <span class="toc-text">Email Plugin</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Unity3D_Plugin"><span class="toc-number">1.2.2.2.3.3.</span> <span class="toc-text">Unity3D Plugin</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Jenkins从零搭建"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">Jenkins从零搭建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#脚本语言"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">脚本语言</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#bat"><span class="toc-number">1.2.2.4.1.</span> <span class="toc-text">bat</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Shell"><span class="toc-number">1.2.2.4.2.</span> <span class="toc-text">Shell</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#bash"><span class="toc-number">1.2.2.4.2.1.</span> <span class="toc-text">bash</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Python(严格意义上不算脚本语言)"><span class="toc-number">1.2.2.4.3.</span> <span class="toc-text">Python(严格意义上不算脚本语言)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IOS自动化打包"><span class="toc-number">1.2.2.5.</span> <span class="toc-text">IOS自动化打包</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#IOS打包准备"><span class="toc-number">1.2.2.5.1.</span> <span class="toc-text">IOS打包准备</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#XUPorter_or_Unity_API(PBXFroject)"><span class="toc-number">1.2.2.5.2.</span> <span class="toc-text">XUPorter or Unity API(PBXFroject)</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#XUPoter"><span class="toc-number">1.2.2.5.2.1.</span> <span class="toc-text">XUPoter</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#PBXProject"><span class="toc-number">1.2.2.5.2.2.</span> <span class="toc-text">PBXProject</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IOS自动化签包"><span class="toc-number">1.2.2.6.</span> <span class="toc-text">IOS自动化签包</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#References"><span class="toc-number">2.</span> <span class="toc-text">References</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Jenkins_Part"><span class="toc-number">2.1.</span> <span class="toc-text">Jenkins Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shell_Part"><span class="toc-number">2.2.</span> <span class="toc-text">Shell Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Xcodebuild_Part"><span class="toc-number">2.3.</span> <span class="toc-text">Xcodebuild Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other_Part"><span class="toc-number">2.4.</span> <span class="toc-text">Other Part</span></a></li></ol></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">Categories</p>
+	<p class="asidetitle">分類</p>
 		<ul>
 		
 		  
@@ -659,7 +659,7 @@ Unity自动化打包过程中的相关工具
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">標簽</p>
 		<ul class="clearfix">
 		
 			
@@ -687,15 +687,15 @@ Unity自动化打包过程中的相关工具
 			
 		
 			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Time/" title="Time">Time<sup>1</sup></a></li>
 			
 		
 			
@@ -723,7 +723,7 @@ Unity自动化打包过程中的相关工具
 			
 		
 			
-				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+				<li><a href="/tags/Time/" title="Time">Time<sup>1</sup></a></li>
 			
 		
 			
@@ -747,7 +747,7 @@ Unity自动化打包过程中的相关工具
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情鏈接</p>
     <ul>
         
           <li>
@@ -769,7 +769,7 @@ Unity自动化打包过程中的相关工具
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
 </div>
 
 </aside>
@@ -994,7 +994,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

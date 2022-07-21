@@ -68,7 +68,7 @@ IntroductionWhenAndroid requires that all APKs be digitally signe">
 				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
 				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -84,7 +84,7 @@ IntroductionWhenAndroid requires that all APKs be digitally signe">
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:tonytang1990.github.io">
 					</form>
 					
@@ -107,14 +107,14 @@ IntroductionWhenAndroid requires that all APKs be digitally signe">
 		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
 		
   <p class="article-time">
-    <time datetime="2017-06-14T02:12:01.000Z" itemprop="datePublished"> Published 2017-06-14</time>
+    <time datetime="2017-06-14T02:12:01.000Z" itemprop="datePublished"> 發表於 2017-06-14</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">Contents</strong>
+			<strong class="toc-title">文章目錄</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Android_Sign_Study"><span class="toc-number">1.</span> <span class="toc-text">Android Sign Study</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">2.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#When"><span class="toc-number">2.1.</span> <span class="toc-text">When</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#What"><span class="toc-number">2.2.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-number">2.3.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conceptions"><span class="toc-number">2.4.</span> <span class="toc-text">Conceptions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据摘要(Message_Digest)"><span class="toc-number">2.4.1.</span> <span class="toc-text">数据摘要(Message Digest)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数字签名(Signature)"><span class="toc-number">2.4.2.</span> <span class="toc-text">数字签名(Signature)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CA机构(Certification_Authority)"><span class="toc-number">2.4.3.</span> <span class="toc-text">CA机构(Certification Authority)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#根证书"><span class="toc-number">2.4.4.</span> <span class="toc-text">根证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数字证书(Certification)"><span class="toc-number">2.4.5.</span> <span class="toc-text">数字证书(Certification)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#keystores"><span class="toc-number">2.4.6.</span> <span class="toc-text">keystores</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How"><span class="toc-number">2.5.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#apktool"><span class="toc-number">2.5.1.</span> <span class="toc-text">apktool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zipalign"><span class="toc-number">2.5.2.</span> <span class="toc-text">zipalign</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#keytool"><span class="toc-number">2.5.3.</span> <span class="toc-text">keytool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#apksigner"><span class="toc-number">2.5.4.</span> <span class="toc-text">apksigner</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deep"><span class="toc-number">2.6.</span> <span class="toc-text">Deep</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Android_Stuido_and_Gradle"><span class="toc-number">3.</span> <span class="toc-text">Android Stuido and Gradle</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#APK重签实战"><span class="toc-number">4.</span> <span class="toc-text">APK重签实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity实战"><span class="toc-number">5.</span> <span class="toc-text">Unity实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Conception_Part"><span class="toc-number">6.1.</span> <span class="toc-text">Conception Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Knowledge_Part"><span class="toc-number">6.2.</span> <span class="toc-text">Knowledge Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other_Part"><span class="toc-number">6.3.</span> <span class="toc-text">Other Part</span></a></li></ol></li></ol>
 		
@@ -262,22 +262,22 @@ IntroductionWhenAndroid requires that all APKs be digitally signe">
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">Contents</strong>
+  <strong class="toc-title">文章目錄</strong>
  
  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Android_Sign_Study"><span class="toc-number">1.</span> <span class="toc-text">Android Sign Study</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">2.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#When"><span class="toc-number">2.1.</span> <span class="toc-text">When</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#What"><span class="toc-number">2.2.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-number">2.3.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conceptions"><span class="toc-number">2.4.</span> <span class="toc-text">Conceptions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据摘要(Message_Digest)"><span class="toc-number">2.4.1.</span> <span class="toc-text">数据摘要(Message Digest)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数字签名(Signature)"><span class="toc-number">2.4.2.</span> <span class="toc-text">数字签名(Signature)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CA机构(Certification_Authority)"><span class="toc-number">2.4.3.</span> <span class="toc-text">CA机构(Certification Authority)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#根证书"><span class="toc-number">2.4.4.</span> <span class="toc-text">根证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数字证书(Certification)"><span class="toc-number">2.4.5.</span> <span class="toc-text">数字证书(Certification)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#keystores"><span class="toc-number">2.4.6.</span> <span class="toc-text">keystores</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How"><span class="toc-number">2.5.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#apktool"><span class="toc-number">2.5.1.</span> <span class="toc-text">apktool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zipalign"><span class="toc-number">2.5.2.</span> <span class="toc-text">zipalign</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#keytool"><span class="toc-number">2.5.3.</span> <span class="toc-text">keytool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#apksigner"><span class="toc-number">2.5.4.</span> <span class="toc-text">apksigner</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deep"><span class="toc-number">2.6.</span> <span class="toc-text">Deep</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Android_Stuido_and_Gradle"><span class="toc-number">3.</span> <span class="toc-text">Android Stuido and Gradle</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#APK重签实战"><span class="toc-number">4.</span> <span class="toc-text">APK重签实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity实战"><span class="toc-number">5.</span> <span class="toc-text">Unity实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Conception_Part"><span class="toc-number">6.1.</span> <span class="toc-text">Conception Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Knowledge_Part"><span class="toc-number">6.2.</span> <span class="toc-text">Knowledge Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other_Part"><span class="toc-number">6.3.</span> <span class="toc-text">Other Part</span></a></li></ol></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">Categories</p>
+	<p class="asidetitle">分類</p>
 		<ul>
 		
 		  
@@ -314,7 +314,7 @@ IntroductionWhenAndroid requires that all APKs be digitally signe">
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">標簽</p>
 		<ul class="clearfix">
 		
 			
@@ -342,15 +342,15 @@ IntroductionWhenAndroid requires that all APKs be digitally signe">
 			
 		
 			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Time/" title="Time">Time<sup>1</sup></a></li>
 			
 		
 			
@@ -378,7 +378,7 @@ IntroductionWhenAndroid requires that all APKs be digitally signe">
 			
 		
 			
-				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+				<li><a href="/tags/Time/" title="Time">Time<sup>1</sup></a></li>
 			
 		
 			
@@ -402,7 +402,7 @@ IntroductionWhenAndroid requires that all APKs be digitally signe">
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情鏈接</p>
     <ul>
         
           <li>
@@ -424,7 +424,7 @@ IntroductionWhenAndroid requires that all APKs be digitally signe">
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
 </div>
 
 </aside>
@@ -649,7 +649,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
