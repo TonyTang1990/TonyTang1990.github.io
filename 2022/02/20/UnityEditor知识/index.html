@@ -88,7 +88,7 @@ UG">
 				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
 				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -104,7 +104,7 @@ UG">
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:tonytang1990.github.io">
 					</form>
 					
@@ -127,14 +127,14 @@ UG">
 		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
 		
   <p class="article-time">
-    <time datetime="2022-02-20T14:37:00.000Z" itemprop="datePublished"> 發表於 2022-02-20</time>
+    <time datetime="2022-02-20T14:37:00.000Z" itemprop="datePublished"> Published 2022-02-20</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目錄</strong>
+			<strong class="toc-title">Contents</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor绘制分类"><span class="toc-number">2.</span> <span class="toc-text">Editor绘制分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IMGUI"><span class="toc-number">2.1.</span> <span class="toc-text">IMGUI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GUI"><span class="toc-number">2.1.1.</span> <span class="toc-text">GUI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GUI_Layout"><span class="toc-number">2.1.2.</span> <span class="toc-text">GUI Layout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GUISkin和GUIStyle"><span class="toc-number">2.1.3.</span> <span class="toc-text">GUISkin和GUIStyle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UIEvent"><span class="toc-number">2.1.4.</span> <span class="toc-text">UIEvent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IMGUI实战"><span class="toc-number">2.1.5.</span> <span class="toc-text">IMGUI实战</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Scene辅助GUI绘制"><span class="toc-number">2.1.5.1.</span> <span class="toc-text">Scene辅助GUI绘制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#实战"><span class="toc-number">2.1.5.1.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Editor窗口绘制"><span class="toc-number">2.1.5.2.</span> <span class="toc-text">Editor窗口绘制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#实战-1"><span class="toc-number">2.1.5.2.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Inspector面板绘制"><span class="toc-number">2.1.5.3.</span> <span class="toc-text">Inspector面板绘制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#实战-2"><span class="toc-number">2.1.5.3.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TreeView绘制"><span class="toc-number">2.1.5.4.</span> <span class="toc-text">TreeView绘制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#基础知识"><span class="toc-number">2.1.5.4.1.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#深入学习"><span class="toc-number">2.1.5.4.2.</span> <span class="toc-text">深入学习</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#实战实现"><span class="toc-number">2.1.5.4.3.</span> <span class="toc-text">实战实现</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UI_Toolkit"><span class="toc-number">2.2.</span> <span class="toc-text">UI Toolkit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UGUI"><span class="toc-number">2.3.</span> <span class="toc-text">UGUI</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor工具分类"><span class="toc-number">3.</span> <span class="toc-text">Editor工具分类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor数据存储"><span class="toc-number">4.</span> <span class="toc-text">Editor数据存储</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor常用标签"><span class="toc-number">5.</span> <span class="toc-text">Editor常用标签</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">6.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">7.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">8.</span> <span class="toc-text">Reference</span></a></li></ol>
 		
@@ -492,22 +492,22 @@ UG">
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目錄</strong>
+  <strong class="toc-title">Contents</strong>
  
  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor绘制分类"><span class="toc-number">2.</span> <span class="toc-text">Editor绘制分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IMGUI"><span class="toc-number">2.1.</span> <span class="toc-text">IMGUI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GUI"><span class="toc-number">2.1.1.</span> <span class="toc-text">GUI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GUI_Layout"><span class="toc-number">2.1.2.</span> <span class="toc-text">GUI Layout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GUISkin和GUIStyle"><span class="toc-number">2.1.3.</span> <span class="toc-text">GUISkin和GUIStyle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UIEvent"><span class="toc-number">2.1.4.</span> <span class="toc-text">UIEvent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IMGUI实战"><span class="toc-number">2.1.5.</span> <span class="toc-text">IMGUI实战</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Scene辅助GUI绘制"><span class="toc-number">2.1.5.1.</span> <span class="toc-text">Scene辅助GUI绘制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#实战"><span class="toc-number">2.1.5.1.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Editor窗口绘制"><span class="toc-number">2.1.5.2.</span> <span class="toc-text">Editor窗口绘制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#实战-1"><span class="toc-number">2.1.5.2.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Inspector面板绘制"><span class="toc-number">2.1.5.3.</span> <span class="toc-text">Inspector面板绘制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#实战-2"><span class="toc-number">2.1.5.3.1.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TreeView绘制"><span class="toc-number">2.1.5.4.</span> <span class="toc-text">TreeView绘制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#基础知识"><span class="toc-number">2.1.5.4.1.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#深入学习"><span class="toc-number">2.1.5.4.2.</span> <span class="toc-text">深入学习</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#实战实现"><span class="toc-number">2.1.5.4.3.</span> <span class="toc-text">实战实现</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UI_Toolkit"><span class="toc-number">2.2.</span> <span class="toc-text">UI Toolkit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UGUI"><span class="toc-number">2.3.</span> <span class="toc-text">UGUI</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor工具分类"><span class="toc-number">3.</span> <span class="toc-text">Editor工具分类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor数据存储"><span class="toc-number">4.</span> <span class="toc-text">Editor数据存储</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Editor常用标签"><span class="toc-number">5.</span> <span class="toc-text">Editor常用标签</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">6.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">7.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">8.</span> <span class="toc-text">Reference</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分類</p>
+	<p class="asidetitle">Categories</p>
 		<ul>
 		
 		  
@@ -544,7 +544,7 @@ UG">
 
   
 <div class="tagslist">
-	<p class="asidetitle">標簽</p>
+	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
@@ -632,7 +632,7 @@ UG">
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情鏈接</p>
+  <p class="asidetitle">Links</p>
     <ul>
         
           <li>
@@ -654,7 +654,7 @@ UG">
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
 
 </aside>
@@ -879,7 +879,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

@@ -95,7 +95,7 @@
 				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
 				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -111,7 +111,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:tonytang1990.github.io">
 					</form>
 					
@@ -134,14 +134,14 @@
 		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
 		
   <p class="article-time">
-    <time datetime="2022-01-21T13:37:00.000Z" itemprop="datePublished"> 發表於 2022-01-21</time>
+    <time datetime="2022-01-21T13:37:00.000Z" itemprop="datePublished"> Published 2022-01-21</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目錄</strong>
+			<strong class="toc-title">Contents</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#碰撞检测"><span class="toc-number">2.</span> <span class="toc-text">碰撞检测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What"><span class="toc-number">2.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-number">2.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How"><span class="toc-number">2.3.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#功能需求"><span class="toc-number">2.3.1.</span> <span class="toc-text">功能需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#理论知识"><span class="toc-number">2.3.2.</span> <span class="toc-text">理论知识</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2D形状"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">2D形状</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#点"><span class="toc-number">2.3.2.1.1.</span> <span class="toc-text">点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#圆形"><span class="toc-number">2.3.2.1.2.</span> <span class="toc-text">圆形</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#矩形(轴对齐包围盒-AABB)"><span class="toc-number">2.3.2.1.3.</span> <span class="toc-text">矩形(轴对齐包围盒-AABB)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#有向包围盒(OBB)"><span class="toc-number">2.3.2.1.4.</span> <span class="toc-text">有向包围盒(OBB)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#胶囊体"><span class="toc-number">2.3.2.1.5.</span> <span class="toc-text">胶囊体</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#扇形"><span class="toc-number">2.3.2.1.6.</span> <span class="toc-text">扇形</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#凸多边形"><span class="toc-number">2.3.2.1.7.</span> <span class="toc-text">凸多边形</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分离轴定理"><span class="toc-number">2.3.3.</span> <span class="toc-text">分离轴定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#形状碰撞检测"><span class="toc-number">2.3.4.</span> <span class="toc-text">形状碰撞检测</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#点与圆形"><span class="toc-number">2.3.4.1.</span> <span class="toc-text">点与圆形</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#点与矩形(AABB)"><span class="toc-number">2.3.4.2.</span> <span class="toc-text">点与矩形(AABB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#点与多边形"><span class="toc-number">2.3.4.3.</span> <span class="toc-text">点与多边形</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#角度和法"><span class="toc-number">2.3.4.3.0.1.</span> <span class="toc-text">角度和法</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#叉积(点线)法"><span class="toc-number">2.3.4.3.0.2.</span> <span class="toc-text">叉积(点线)法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与圆形"><span class="toc-number">2.3.4.4.</span> <span class="toc-text">圆形与圆形</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与胶囊体"><span class="toc-number">2.3.4.5.</span> <span class="toc-text">圆形与胶囊体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与矩形(AABB)"><span class="toc-number">2.3.4.6.</span> <span class="toc-text">圆形与矩形(AABB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与有向包围盒(OBB)"><span class="toc-number">2.3.4.7.</span> <span class="toc-text">圆形与有向包围盒(OBB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与凸多边形"><span class="toc-number">2.3.4.8.</span> <span class="toc-text">圆形与凸多边形</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与扇形"><span class="toc-number">2.3.4.9.</span> <span class="toc-text">圆形与扇形</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#矩形(AABB)与矩形(AABB)"><span class="toc-number">2.3.4.10.</span> <span class="toc-text">矩形(AABB)与矩形(AABB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#进阶学习"><span class="toc-number">2.3.4.11.</span> <span class="toc-text">进阶学习</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线段相交"><span class="toc-number">2.3.5.</span> <span class="toc-text">线段相交</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实战"><span class="toc-number">3.</span> <span class="toc-text">实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注意事项"><span class="toc-number">4.</span> <span class="toc-text">注意事项</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">5.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">6.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a></li></ol>
 		
@@ -423,22 +423,22 @@
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目錄</strong>
+  <strong class="toc-title">Contents</strong>
  
  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#碰撞检测"><span class="toc-number">2.</span> <span class="toc-text">碰撞检测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What"><span class="toc-number">2.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-number">2.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How"><span class="toc-number">2.3.</span> <span class="toc-text">How</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#功能需求"><span class="toc-number">2.3.1.</span> <span class="toc-text">功能需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#理论知识"><span class="toc-number">2.3.2.</span> <span class="toc-text">理论知识</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2D形状"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">2D形状</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#点"><span class="toc-number">2.3.2.1.1.</span> <span class="toc-text">点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#圆形"><span class="toc-number">2.3.2.1.2.</span> <span class="toc-text">圆形</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#矩形(轴对齐包围盒-AABB)"><span class="toc-number">2.3.2.1.3.</span> <span class="toc-text">矩形(轴对齐包围盒-AABB)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#有向包围盒(OBB)"><span class="toc-number">2.3.2.1.4.</span> <span class="toc-text">有向包围盒(OBB)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#胶囊体"><span class="toc-number">2.3.2.1.5.</span> <span class="toc-text">胶囊体</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#扇形"><span class="toc-number">2.3.2.1.6.</span> <span class="toc-text">扇形</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#凸多边形"><span class="toc-number">2.3.2.1.7.</span> <span class="toc-text">凸多边形</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分离轴定理"><span class="toc-number">2.3.3.</span> <span class="toc-text">分离轴定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#形状碰撞检测"><span class="toc-number">2.3.4.</span> <span class="toc-text">形状碰撞检测</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#点与圆形"><span class="toc-number">2.3.4.1.</span> <span class="toc-text">点与圆形</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#点与矩形(AABB)"><span class="toc-number">2.3.4.2.</span> <span class="toc-text">点与矩形(AABB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#点与多边形"><span class="toc-number">2.3.4.3.</span> <span class="toc-text">点与多边形</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#角度和法"><span class="toc-number">2.3.4.3.0.1.</span> <span class="toc-text">角度和法</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#叉积(点线)法"><span class="toc-number">2.3.4.3.0.2.</span> <span class="toc-text">叉积(点线)法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与圆形"><span class="toc-number">2.3.4.4.</span> <span class="toc-text">圆形与圆形</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与胶囊体"><span class="toc-number">2.3.4.5.</span> <span class="toc-text">圆形与胶囊体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与矩形(AABB)"><span class="toc-number">2.3.4.6.</span> <span class="toc-text">圆形与矩形(AABB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与有向包围盒(OBB)"><span class="toc-number">2.3.4.7.</span> <span class="toc-text">圆形与有向包围盒(OBB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与凸多边形"><span class="toc-number">2.3.4.8.</span> <span class="toc-text">圆形与凸多边形</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#圆形与扇形"><span class="toc-number">2.3.4.9.</span> <span class="toc-text">圆形与扇形</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#矩形(AABB)与矩形(AABB)"><span class="toc-number">2.3.4.10.</span> <span class="toc-text">矩形(AABB)与矩形(AABB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#进阶学习"><span class="toc-number">2.3.4.11.</span> <span class="toc-text">进阶学习</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线段相交"><span class="toc-number">2.3.5.</span> <span class="toc-text">线段相交</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实战"><span class="toc-number">3.</span> <span class="toc-text">实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注意事项"><span class="toc-number">4.</span> <span class="toc-text">注意事项</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">5.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">6.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分類</p>
+	<p class="asidetitle">Categories</p>
 		<ul>
 		
 		  
@@ -475,7 +475,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">標簽</p>
+	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
@@ -563,7 +563,7 @@
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情鏈接</p>
+  <p class="asidetitle">Links</p>
     <ul>
         
           <li>
@@ -585,7 +585,7 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
 
 </aside>
@@ -810,7 +810,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
