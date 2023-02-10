@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Network/ByteBufferOutput.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Network/ServerOutput.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Network/ClientOutput.png">
-<meta property="og:updated_time" content="2022-07-31T13:17:28.702Z">
+<meta property="og:updated_time" content="2022-09-08T10:47:03.449Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络通信和服务器学习">
 <meta name="twitter:description" content="前言本章节是为了记录学习游戏开发过程中的服务器搭建以及前后端网络通信相关的知识点，游戏开发中联网是必不可少的，无论是从游戏热更新(服务器通知版本以及热更相关信息)，还是游戏社交(微信分享，联机组队)，还是防破解(服务器校验)都离不开网络通信和服务器。
@@ -55,7 +55,7 @@
 				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
 				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -94,14 +94,14 @@
 		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
 		
   <p class="article-time">
-    <time datetime="2019-05-20T15:29:25.000Z" itemprop="datePublished"> 发表于 2019-05-20</time>
+    <time datetime="2019-05-20T15:29:25.000Z" itemprop="datePublished"> 發表於 2019-05-20</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
+			<strong class="toc-title">文章目錄</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#服务器"><span class="toc-number">2.</span> <span class="toc-text">服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据存储"><span class="toc-number">2.1.</span> <span class="toc-text">数据存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关系型数据库"><span class="toc-number">2.1.1.</span> <span class="toc-text">关系型数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SQLite"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">SQLite</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非关系型数据库"><span class="toc-number">2.1.2.</span> <span class="toc-text">非关系型数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据库选择"><span class="toc-number">2.1.3.</span> <span class="toc-text">数据库选择</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#消息通信"><span class="toc-number">2.2.</span> <span class="toc-text">消息通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网方式"><span class="toc-number">2.2.1.</span> <span class="toc-text">联网方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据格式定义"><span class="toc-number">2.2.2.</span> <span class="toc-text">数据格式定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据收发"><span class="toc-number">2.2.3.</span> <span class="toc-text">数据收发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据解析"><span class="toc-number">2.2.4.</span> <span class="toc-text">数据解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器验证"><span class="toc-number">2.3.</span> <span class="toc-text">服务器验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#服务器从零开发"><span class="toc-number">3.</span> <span class="toc-text">服务器从零开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器语言选择"><span class="toc-number">3.1.</span> <span class="toc-text">服务器语言选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器开源框架"><span class="toc-number">3.2.</span> <span class="toc-text">服务器开源框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络通信"><span class="toc-number">3.3.</span> <span class="toc-text">网络通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网通信实现"><span class="toc-number">3.3.1.</span> <span class="toc-text">联网通信实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#二进制抽象类"><span class="toc-number">3.3.1.1.</span> <span class="toc-text">二进制抽象类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#网络通信-1"><span class="toc-number">3.3.1.2.</span> <span class="toc-text">网络通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据格式解析"><span class="toc-number">3.3.1.3.</span> <span class="toc-text">数据格式解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务器-1"><span class="toc-number">3.3.1.4.</span> <span class="toc-text">服务器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库Redis"><span class="toc-number">3.4.</span> <span class="toc-text">数据库Redis</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶"><span class="toc-number">4.1.</span> <span class="toc-text">进阶</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">4.2.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#相关资料"><span class="toc-number">4.3.</span> <span class="toc-text">相关资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战讲解"><span class="toc-number">4.4.</span> <span class="toc-text">实战讲解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">4.5.</span> <span class="toc-text">其他</span></a></li></ol></li></ol>
 		
@@ -114,7 +114,6 @@
 </ul>
 <ol>
 <li>理解游戏服务器工作原理</li>
-<li>理解帧同步和状态同步的区别和优劣以及运用场景</li>
 <li>理解不同服务器框架的优劣，选择合适的服务器框架</li>
 <li><strong>学会搭建基础的游戏服务器，具备基础的数据存储功能(本文重点)</strong></li>
 <li><strong>掌握网络通信知识，搭建前后端通信框架，支持前后端通信(本文重点)</strong></li>
@@ -356,22 +355,22 @@
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
+  <strong class="toc-title">文章目錄</strong>
  
  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#服务器"><span class="toc-number">2.</span> <span class="toc-text">服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据存储"><span class="toc-number">2.1.</span> <span class="toc-text">数据存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关系型数据库"><span class="toc-number">2.1.1.</span> <span class="toc-text">关系型数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SQLite"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">SQLite</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非关系型数据库"><span class="toc-number">2.1.2.</span> <span class="toc-text">非关系型数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据库选择"><span class="toc-number">2.1.3.</span> <span class="toc-text">数据库选择</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#消息通信"><span class="toc-number">2.2.</span> <span class="toc-text">消息通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网方式"><span class="toc-number">2.2.1.</span> <span class="toc-text">联网方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据格式定义"><span class="toc-number">2.2.2.</span> <span class="toc-text">数据格式定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据收发"><span class="toc-number">2.2.3.</span> <span class="toc-text">数据收发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据解析"><span class="toc-number">2.2.4.</span> <span class="toc-text">数据解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器验证"><span class="toc-number">2.3.</span> <span class="toc-text">服务器验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#服务器从零开发"><span class="toc-number">3.</span> <span class="toc-text">服务器从零开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器语言选择"><span class="toc-number">3.1.</span> <span class="toc-text">服务器语言选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器开源框架"><span class="toc-number">3.2.</span> <span class="toc-text">服务器开源框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网络通信"><span class="toc-number">3.3.</span> <span class="toc-text">网络通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#联网通信实现"><span class="toc-number">3.3.1.</span> <span class="toc-text">联网通信实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#二进制抽象类"><span class="toc-number">3.3.1.1.</span> <span class="toc-text">二进制抽象类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#网络通信-1"><span class="toc-number">3.3.1.2.</span> <span class="toc-text">网络通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据格式解析"><span class="toc-number">3.3.1.3.</span> <span class="toc-text">数据格式解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务器-1"><span class="toc-number">3.3.1.4.</span> <span class="toc-text">服务器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库Redis"><span class="toc-number">3.4.</span> <span class="toc-text">数据库Redis</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶"><span class="toc-number">4.1.</span> <span class="toc-text">进阶</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">4.2.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#相关资料"><span class="toc-number">4.3.</span> <span class="toc-text">相关资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战讲解"><span class="toc-number">4.4.</span> <span class="toc-text">实战讲解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">4.5.</span> <span class="toc-text">其他</span></a></li></ol></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分类</p>
+	<p class="asidetitle">分類</p>
 		<ul>
 		
 		  
@@ -460,7 +459,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">标签</p>
+	<p class="asidetitle">標簽</p>
 		<ul class="clearfix">
 		
 			
@@ -548,7 +547,7 @@
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
+  <p class="asidetitle">友情鏈接</p>
     <ul>
         
     </ul>
@@ -558,7 +557,7 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
 </div>
 
 </aside>
@@ -593,7 +592,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2023 
 		
 		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
 		
@@ -783,7 +782,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
