@@ -25,7 +25,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/EmmyLuaGenerator/EmmyLuaGeneratorPreview.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/EmmyLuaGenerator/CodeExportSetting.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Lua/EmmyLuaGenerator/GenerateEmmyLuaAnnotation.PNG">
-<meta property="og:updated_time" content="2023-03-09T16:48:57.808Z">
+<meta property="og:updated_time" content="2023-03-09T17:07:11.719Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EmmyLua注释生成工具">
 <meta name="twitter:description" content="前言本章节是为了记录Lua开发过程中，关于EmmyLua插件的CSharp注释生成工具的编写和使用介绍。
@@ -139,7 +139,7 @@
 <li><strong>不支持泛型成员，泛型属性，泛型方法，泛型*</strong></li>
 </ol>
 <h2 id="设计">设计</h2><p><strong>基于项目CS代码，通过反射获取访问所有Assemble以及相关类型信息数据统计读取，结合Unity Editor窗口工具实现可视化自定义勾选类型注释导出的高度可配置工具。</strong></p>
-<p>知识点只要是反射和简单的EditorGUI编写。</p>
+<p>知识点主要是反射和简单的EditorGUI编写。</p>
 <p>设计代码就不详细讲解了，源代码链接:</p>
 <p><a href="https://github.com/TonyTang1990/EmmyLuaGenerator" target="_blank" rel="external">EmmyLuaGenerator</a></p>
 <p>这里主要提一下在判定哪些类型需要参与导出时的一些核心类型判定代码：</p>
@@ -206,8 +206,7 @@
 <li><strong>为了GUI显示效率，这里最大Assemble分析数量限制了75，大部分项目Assemble数量会远超75，但真正需要导出的Assemble数量一般不会超过75，也就是说设置完Assemble黑名单后，75最大Assemble显示数量是满足使用需求的，不足的话自行修改。</strong></li>
 <li><strong>想触发CS脚本代码分析可保存配置后重新打开EmmyLua代码生成窗口即可。</strong></li>
 </ol>
-<h1 id="Reference">Reference</h1><p>EmmyLua注释编写规范:</p>
-<p><a href="https://emmylua.github.io/annotation.html" target="_blank" rel="external">EmmyLua Annotations</a></p>
+<h1 id="Reference">Reference</h1><p><a href="https://emmylua.github.io/annotation.html" target="_blank" rel="external">EmmyLua注释编写规范</a></p>
 <h2 id="GitHub">GitHub</h2><p><a href="https://github.com/EmmyLua" target="_blank" rel="external">EmmyLua</a></p>
 <p><a href="https://github.com/TonyTang1990/EmmyLuaGenerator" target="_blank" rel="external">EmmyLuaGenerator</a></p>
   
