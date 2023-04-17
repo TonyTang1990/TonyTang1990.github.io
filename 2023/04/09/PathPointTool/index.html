@@ -1,0 +1,760 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>路点编辑器 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="Introduction游戏开发过程中，我们希望角色物体按固定路线移动，我们一般需要通过路点编辑器工具去预先编辑好所有路点，然后导出路点数据通过数学运算去移动角色物体。
+结合以前学习的数学缓动和UnityEditor知识
+本章节通过编写纯Editor的路点编辑器，从实战角度去利用数学缓动和UnityEditor知识实现我们需要的路点编辑器工具。
+路点编辑器实现一个工具，首先第一步，我们还是需要理清">
+<meta property="og:type" content="article">
+<meta property="og:title" content="路点编辑器">
+<meta property="og:url" content="http://tonytang1990.github.io/2023/04/09/PathPointTool/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="Introduction游戏开发过程中，我们希望角色物体按固定路线移动，我们一般需要通过路点编辑器工具去预先编辑好所有路点，然后导出路点数据通过数学运算去移动角色物体。
+结合以前学习的数学缓动和UnityEditor知识
+本章节通过编写纯Editor的路点编辑器，从实战角度去利用数学缓动和UnityEditor知识实现我们需要的路点编辑器工具。
+路点编辑器实现一个工具，首先第一步，我们还是需要理清">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/LineBezierIntroduction.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/BezierAnimation.gif">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/BezierAnimation2.gif">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/BezierAnimation3.gif">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/NBezierFormular.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/CustomPathDataInspector.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/CustomTileInspector.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/CubicBezierDraw.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/CustomPathDataExport.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Math/EaseLerpFunction.png">
+<meta property="og:updated_time" content="2023-04-17T17:45:04.884Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="路点编辑器">
+<meta name="twitter:description" content="Introduction游戏开发过程中，我们希望角色物体按固定路线移动，我们一般需要通过路点编辑器工具去预先编辑好所有路点，然后导出路点数据通过数学运算去移动角色物体。
+结合以前学习的数学缓动和UnityEditor知识
+本章节通过编写纯Editor的路点编辑器，从实战角度去利用数学缓动和UnityEditor知识实现我们需要的路点编辑器工具。
+路点编辑器实现一个工具，首先第一步，我们还是需要理清">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2023/04/09/PathPointTool/" title="路点编辑器" itemprop="url">路点编辑器</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2023-04-09T13:17:00.000Z" itemprop="datePublished"> 發表於 2023-04-09</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#路点编辑器"><span class="toc-number">2.</span> <span class="toc-text">路点编辑器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Bezier曲线"><span class="toc-number">2.1.</span> <span class="toc-text">Bezier曲线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#线性Bezier曲线"><span class="toc-number">2.1.1.</span> <span class="toc-text">线性Bezier曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二阶Bezier曲线"><span class="toc-number">2.1.2.</span> <span class="toc-text">二阶Bezier曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三阶Bezier曲线"><span class="toc-number">2.1.3.</span> <span class="toc-text">三阶Bezier曲线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战"><span class="toc-number">2.2.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">3.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">4.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="Introduction">Introduction</h1><p>游戏开发过程中，我们希望角色物体按固定路线移动，我们一般需要通过路点编辑器工具去预先编辑好所有路点，然后导出路点数据通过数学运算去移动角色物体。</p>
+<p>结合以前学习的<a href="http://tonytang1990.github.io/2020/05/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%BC%93%E5%8A%A8/">数学缓动</a>和<a href="http://tonytang1990.github.io/2022/02/20/UnityEditor知识/">UnityEditor知识</a></p>
+<p>本章节通过编写纯Editor的路点编辑器，从实战角度去利用数学缓动和UnityEditor知识实现我们需要的<strong>路点编辑器工具</strong>。</p>
+<h1 id="路点编辑器">路点编辑器</h1><p>实现一个工具，首先第一步，我们还是需要理清需求：</p>
+<ol>
+<li>纯Editor非运行时路点编辑器。</li>
+<li>路点编辑器需要生成可视化编辑对象和路点路线展示。</li>
+<li>路点编辑器要支持指定起始位置和固定位置偏移的路点编辑自动矫正(方便固定单位间隔的路点配置)。</li>
+<li>路点编辑器要支持指定路线移动时长，是否循环和是否自动更新朝向等路线缓动模拟设置。</li>
+<li>路点编辑器要支持自定义数据导出自定义格式数据。</li>
+<li>路点编辑器要支持多种路线类型(e.g. 直线，Bezier，CubicBezier等)。</li>
+<li>路线移动支持缓动曲线配置。</li>
+<li>路点编辑器要支持纯Editor模拟运行路点移动效果。</li>
+<li>路点编辑器编辑完成后的数据要支持运行时使用并模拟路线缓动，同时路线缓动要支持纯运行时构建使用。</li>
+<li>实现一个纯Editor的Tile可视化绘制脚本(方便路点编辑位置参考)。</li>
+</ol>
+<h2 id="Bezier曲线">Bezier曲线</h2><p>我们路点编辑器要支持直线和曲线运动，说到曲线运动，这里就不得不提Bezier曲线。</p>
+<p><a href="https://zh.wikipedia.org/zh-sg/%E8%B2%9D%E8%8C%B2%E6%9B%B2%E7%B7%9A" target="_blank" rel="external"><strong>贝塞尔曲线</strong>是电脑图形学中相当重要的参数曲线。</a></p>
+<p><strong>个人理解Bezier曲线的核心原理就是多个点(N阶)之间的同时递归插值0-1比例值得出的一系列最终插值位置</strong></p>
+<h3 id="线性Bezier曲线">线性Bezier曲线</h3><p>线性Bezier曲线其实就是我们2个点位置的线性插值，公式如下(<strong>P0第一个点，P1第二个点</strong>)：</p>
+<p>B(t) = P0 + (P1 - P0) * t，t∈[0, 1]</p>
+<p>一阶Bezier曲线公式简化后:</p>
+<p><strong>B(t) = (1 - t) <em> P0 - t </em> P1，t∈[0, 1]</strong></p>
+<p>从公式可以看出，线性Bezier就是2个点位置通过0-1的比例值插值的过程。</p>
+<p><img src="/img/Unity/PathPointTool/LineBezierIntroduction.PNG" alt="LineBezierIntroduction"></p>
+<h3 id="二阶Bezier曲线">二阶Bezier曲线</h3><p>同理二阶Beizer曲线是由3个顶点位置递归插值而来的，公式如下(<strong>P0第一个点，P1第二个点，P2第三个点</strong>)：</p>
+<p>首先我们先我们先插值P0和P1：</p>
+<p>P0P1 = (1 - t) <em> P0 + t </em> P1，t∈[0, 1]</p>
+<p>接下来插值P1和P2：</p>
+<p>P1P2 = (1 - t) <em> P1 + t </em> P2，t∈[0, 1]</p>
+<p>三个点之间的插值完成后，接下来我们还要递归插值三个点插值后的两个点(<strong>P0P1和P1P2</strong>)：</p>
+<p>p0p1p2 = (1 - t) <em> p0p1 + t </em> p1p2，t∈[0, 1]</p>
+<p>二阶Bezier曲线公式简化后:</p>
+<p><strong>B(t) = (1 - t)² <em> P0 + 2 </em> (1 - t) <em> t </em> P1 + t² * P2，t∈[0, 1]</strong></p>
+<h3 id="三阶Bezier曲线">三阶Bezier曲线</h3><p>同理三阶Beizer曲线是由3个顶点位置递归插值而来的，公式如下(<strong>P0第一个点，P1第二个点，P2第三个点，P3第四个点</strong>)：</p>
+<p>首先我们先我们先插值P0和P1：</p>
+<p>P0P1 = (1 - t) <em> P0 + t </em> P1，t∈[0, 1]</p>
+<p>接下来插值P1和P2：</p>
+<p>P1P2 = (1 - t) <em> P1 + t </em> P2，t∈[0, 1]</p>
+<p>接下来插值P2和P3：</p>
+<p>P2P3 = (1 - t) <em> P2 + t </em> P3，t∈[0, 1]</p>
+<p>以上插值位置动画如下:</p>
+<p><img src="/img/Unity/PathPointTool/BezierAnimation.gif" alt="BezierAnimation"></p>
+<p><strong>P0P1,P1P2,P2P3分别对应动画中的a,b,c三个插值点</strong></p>
+<p>四个点之间的插值完成后，接下来我们还要递归插值四个点插值后的三个点(<strong>P0P1，P1P2和P2P3</strong>)：</p>
+<p>插值P0P1和P1P2：</p>
+<p>P0P1P2 = (1 - t) <em> P0P1 + t </em> P1P2，t∈[0, 1]</p>
+<p>插值P1P2和P2P3：</p>
+<p>P1P2P3 = (1 - t) <em> P1P2 + t </em> P2P3，t∈[0, 1]</p>
+<p>以上插值位置动画如下:</p>
+<p><img src="/img/Unity/PathPointTool/BezierAnimation2.gif" alt="BezierAnimation2"></p>
+<p><strong>P0P1P2和P1P2P3分别对应动画中的d和e两个插值点</strong></p>
+<p>最后一步，我们接着把P0P1P2和P1P2P3进行插值就能得到3阶Bezier曲线的最终插值位置了:</p>
+<p>插值P0P1P2和P1P2P3：</p>
+<p>P0P1P2P3 = (1 - t) <em> P0P1P2 + t </em> P1P2P3，t∈[0, 1]</p>
+<p>三阶Bezier曲线公式简化后:</p>
+<p><strong>B(t) = (1 - t)³ <em> P0 + 3 </em> (1 - t)² <em> t </em> P1 + 3 <em> t² </em> (1 - t) <em> P2 + t³ </em> P3，t∈[0, 1]</strong></p>
+<p>以上插值位置动画如下:</p>
+<p><img src="/img/Unity/PathPointTool/BezierAnimation3.gif" alt="BezierAnimation3"></p>
+<p>N阶Bezier曲线公式参考:</p>
+<p><img src="/img/Unity/PathPointTool/NBezierFormular.PNG" alt="NBezierFormular"></p>
+<p>N阶Bezier的代码实现请参考:</p>
+<p><a href="https://blog.csdn.net/QO_GQ/article/details/116711205" target="_blank" rel="external">unity利用高阶贝塞尔曲线进行的轨道移动</a></p>
+<p><strong>由于N阶Bezier的计算复杂度过高，一般来说，路点过多的情况下，我们不会直接采用N阶Bezier曲线进行插值计算，而是采用N个3阶Bezier曲线进行拼接组装成一个N阶Bezier曲线</strong></p>
+<p>理解了Bezier曲线原理，接下来让我们进入路点编辑器实战。</p>
+<h2 id="实战">实战</h2><p>接下来针对前面提到的需求，我们一一分析我们应该用什么方案和技术来实现。</p>
+<p>需求：</p>
+<ol>
+<li>纯Editor非运行时路点编辑器。</li>
+<li>路点编辑器需要生成可视化编辑对象和路点路线展示。</li>
+<li>路点编辑器要支持指定起始位置和固定位置偏移的路点编辑自动矫正(方便固定单位间隔的路点配置)。</li>
+<li>路点编辑器要支持指定路线移动时长，是否循环和是否自动更新朝向等路线缓动模拟设置。</li>
+<li>路点编辑器要支持自定义数据导出自定义格式数据。</li>
+<li>路点编辑器要支持多种路线类型(e.g. 直线，Bezier，CubicBezier等)。</li>
+<li>路点编辑器要支持纯Editor模拟运行路点移动效果。</li>
+<li>路线移动支持缓动曲线配置。</li>
+<li>路点编辑器编辑完成后的数据要支持运行时使用并模拟路线缓动，同时路线缓动要支持纯运行时构建使用。</li>
+<li>路线移动支持缓动曲线配置。</li>
+<li>实现一个纯Editor的Tile可视化绘制脚本(方便路点编辑位置参考)。</li>
+</ol>
+<p>技术方案：</p>
+<ol>
+<li>结合自定义Inspector面板(继承Editor)定义的方式实现纯Editor配置和操作</li>
+<li>利用Gizmos(Monobehaviour:OnDrawGizmos())，Handles(Editor.OnSceneGUI())和自定义Inspector(Editor)面板编辑操作实现可视化编辑对象生成和展示。</li>
+<li>利用自定义Inspector面板支持起始位置和路点间隔配置，然后通过配置数据进行路点位置矫正操作。</li>
+<li>自定义Inspecotr面板支持配置即可。</li>
+<li>同上，自定义Inspector面板支持操作分析路点数据进行导出即可。</li>
+<li>利用Bezier曲线知识，实现不同路线类型(e.g. 直线，Bezier，CubicBezier等)。</li>
+<li>利用InitializeOnLoad，ExecuteInEditMode和InitializeOnLoadMethod标签加EditorApplication.update实现纯Editor初始化和注入Update更新实现纯Editor模拟路点移动效果。</li>
+<li>利用缓动曲线去重新计算插值t(0-1)的值作为插值比例即可。</li>
+<li>实现一套超级简陋版DoTween支持运行时路线缓动模拟即可(见TPathTweener和TPathTweenerManager)。</li>
+<li>利用Gizmos的自定义Mesh绘制+自定义Inspector面板实现Tile网格自定义配置绘制。</li>
+</ol>
+<p>核心思路和技术实现方案都在上面介绍了，这里就不一一介绍代码实现了，这里只放关于Bezier曲线插值相关的代码，让我们直接实战看效果，需要源码的直接在文章末尾Github链接去取即可。</p>
+<p>BezierUtilities.cs(Bezier曲线插值相关)</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> BezierUtilities.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> Bezier静态工具类</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">BezierUtilities</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Note：</span></span><br><span class="line">    <span class="comment">// 1. 高阶Bezier曲线计算复杂，推荐用N个3阶Bezier曲线模拟</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 根据t(0-1)计算二阶贝塞尔曲线上面对应的点</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p0"&gt;</span>第一个点<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p1"&gt;</span>第二个点<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p2"&gt;</span>第三个点<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="t"&gt;</span>插值(0-1)<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">CaculateBezierPoint</span>(<span class="params">Vector3 p0, Vector3 p1, Vector3 p2, <span class="keyword">float</span> t</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="comment">// 原始公式:</span></span><br><span class="line">        <span class="comment">/*</span><br><span class="line">        var p0p1 = (1 - t) * p0 + t * p1;</span><br><span class="line">        var p1p2 = (1 - t) * p1 + t * p2;</span><br><span class="line">        return (1 - t) * p0p1 + t * p1p2;</span><br><span class="line">        */</span></span><br><span class="line">        <span class="comment">// 简化运算:</span></span><br><span class="line">        <span class="keyword">var</span> u = <span class="number">1</span> - t;</span><br><span class="line">        <span class="keyword">var</span> tt = t * t;</span><br><span class="line">        <span class="keyword">var</span> uu = u * u;</span><br><span class="line">        <span class="keyword">return</span> uu * p0 + <span class="number">2</span> * u * t * p1 + tt * p2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 根据t(0-1)计算三阶贝塞尔曲线上面对应的点</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p0"&gt;</span>第一个点<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p1"&gt;</span>第二个点<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p2"&gt;</span>第三个点<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p3"&gt;</span>第四个点<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="t"&gt;</span>插值(0-1)<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">CaculateCubicBezierPoint</span>(<span class="params">Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, <span class="keyword">float</span> t</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="comment">// 原始公式:</span></span><br><span class="line">        <span class="comment">/*</span><br><span class="line">        var p0p1 = (1 - t) * p0 + t * p1;</span><br><span class="line">        var p1p2 = (1 - t) * p1 + t * p2;</span><br><span class="line">        var p2p3 = (1 - t) * p2 + t * p3;</span><br><span class="line">        var p0p1p2 = (1 - t) * p0p1 + t * p1p2;</span><br><span class="line">        var p1p2p3 = (1 - t) * p1p2 + t * p2p3;</span><br><span class="line">        return (1 - t) * p0p1p2 + t * p1p2p3;</span><br><span class="line">        */</span></span><br><span class="line">        <span class="comment">// 简化运算:</span></span><br><span class="line">        <span class="keyword">var</span> u = <span class="number">1</span> - t;</span><br><span class="line">        <span class="keyword">var</span> tt = t * t;</span><br><span class="line">        <span class="keyword">var</span> uu = u * u;</span><br><span class="line">        <span class="keyword">var</span> ttt = tt * t;</span><br><span class="line">        <span class="keyword">var</span> uuu = uu * u;</span><br><span class="line">        <span class="keyword">return</span> uuu * p0 + <span class="number">3</span> * uu * t * p1 + <span class="number">3</span> * tt * u * p2 + ttt * p3;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 获取存储的二次贝塞尔曲线点的数组</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p0"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span>起始点</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p1"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span>控制点</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p2"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span>目标点</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="segmentNum"&gt;</span>细分段数<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span>存储贝塞尔曲线点的数组<span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Vector3[] GetBeizerList(Vector3 p0, Vector3 p1, Vector3 p2, <span class="keyword">int</span> segmentNum)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> pathPointNum = segmentNum + <span class="number">1</span>;</span><br><span class="line">        Vector3[] path = <span class="keyword">new</span> Vector3[pathPointNum];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pathPointNum; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">float</span> t = i / (<span class="keyword">float</span>)segmentNum;</span><br><span class="line">            Vector3 pathPoint = CaculateBezierPoint(p0, p1, p2, t);</span><br><span class="line">            path[i] = pathPoint;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> path;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 获取存储的三次贝塞尔曲线点的数组</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p0"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span>起始点</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p1"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span>控制点1</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p2"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span>控制点2</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="p3"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span>目标点</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="segmentNum"&gt;</span>细分段数<span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span>存储贝塞尔曲线点的数组<span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Vector3[] GetCubicBeizerList(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, <span class="keyword">int</span> segmentNum)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> pathPointNum = segmentNum + <span class="number">1</span>;</span><br><span class="line">        Vector3[] path = <span class="keyword">new</span> Vector3[pathPointNum];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pathPointNum; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">float</span> t = i / (<span class="keyword">float</span>)segmentNum;</span><br><span class="line">            Vector3 pathPoint = CaculateCubicBezierPoint(p0, p1, p2, p3, t);</span><br><span class="line">            path[i] = pathPoint;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> path;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>TPath.cs(M个点换算成P个N阶Bezier曲线插值)</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 获取线性路线指定比例路点位置</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="t"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Vector3 <span class="title">GetLinePoinAt</span>(<span class="params"><span class="keyword">float</span> t</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> pointNum = PathPointList.Count;</span><br><span class="line">    <span class="keyword">var</span> maxPointIndex = pointNum - <span class="number">1</span>;</span><br><span class="line">    TSegment currentUnderSegment;</span><br><span class="line">    <span class="keyword">float</span> currentUnderSegmentPercent;</span><br><span class="line">    GetRadioSegmentAndPercent(t, <span class="keyword">out</span> currentUnderSegment, <span class="keyword">out</span> currentUnderSegmentPercent);</span><br><span class="line">    <span class="keyword">if</span>(currentUnderSegment == <span class="keyword">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> Vector3.zero;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> firstPointIndex = currentUnderSegment.PointStartIndex;</span><br><span class="line">    <span class="keyword">var</span> secondPointIndex = Mathf.Clamp(currentUnderSegment.PointStartIndex + <span class="number">1</span>, <span class="number">0</span>, maxPointIndex);</span><br><span class="line">    <span class="keyword">return</span> Vector3.Lerp(PathPointList[firstPointIndex], PathPointList[secondPointIndex], currentUnderSegmentPercent);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 获取二阶贝塞尔路线指定比例路点位置</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="t"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Vector3 <span class="title">GetBezierPointAt</span>(<span class="params"><span class="keyword">float</span> t</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> pointNum = PathPointList.Count;</span><br><span class="line">    <span class="keyword">var</span> maxPointIndex = pointNum - <span class="number">1</span>;</span><br><span class="line">    TSegment currentUnderSegment;</span><br><span class="line">    <span class="keyword">float</span> currentUnderSegmentPercent;</span><br><span class="line">    GetRadioSegmentAndPercent(t, <span class="keyword">out</span> currentUnderSegment, <span class="keyword">out</span> currentUnderSegmentPercent);</span><br><span class="line">    <span class="keyword">if</span> (currentUnderSegment == <span class="keyword">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> Vector3.zero;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> firstPointIndex = currentUnderSegment.PointStartIndex;</span><br><span class="line">    <span class="keyword">var</span> secondPointIndex = Mathf.Clamp(currentUnderSegment.PointStartIndex + <span class="number">1</span>, <span class="number">0</span>, maxPointIndex);</span><br><span class="line">    <span class="keyword">var</span> thirdPointIndex = Mathf.Clamp(currentUnderSegment.PointStartIndex + <span class="number">2</span>, <span class="number">0</span>, maxPointIndex);</span><br><span class="line">    <span class="keyword">return</span> BezierUtilities.CaculateBezierPoint(PathPointList[firstPointIndex], </span><br><span class="line">                                               PathPointList[secondPointIndex],</span><br><span class="line">                                               PathPointList[thirdPointIndex],</span><br><span class="line">                                               currentUnderSegmentPercent);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 获取三阶贝塞尔路线指定比例路点位置</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="t"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Vector3 <span class="title">GetCubicBezierPointAt</span>(<span class="params"><span class="keyword">float</span> t</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> pointNum = PathPointList.Count;</span><br><span class="line">    <span class="keyword">var</span> maxPointIndex = pointNum - <span class="number">1</span>;</span><br><span class="line">    TSegment currentUnderSegment;</span><br><span class="line">    <span class="keyword">float</span> currentUnderSegmentPercent;</span><br><span class="line">    GetRadioSegmentAndPercent(t, <span class="keyword">out</span> currentUnderSegment, <span class="keyword">out</span> currentUnderSegmentPercent);</span><br><span class="line">    <span class="keyword">if</span> (currentUnderSegment == <span class="keyword">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> Vector3.zero;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> firstPointIndex = currentUnderSegment.PointStartIndex;</span><br><span class="line">    <span class="keyword">var</span> secondPointIndex = Mathf.Clamp(currentUnderSegment.PointStartIndex + <span class="number">1</span>, <span class="number">0</span>, maxPointIndex);</span><br><span class="line">    <span class="keyword">var</span> thirdPointIndex = Mathf.Clamp(currentUnderSegment.PointStartIndex + <span class="number">2</span>, <span class="number">0</span>, maxPointIndex);</span><br><span class="line">    <span class="keyword">var</span> fourthPointIndex = Mathf.Clamp(currentUnderSegment.PointStartIndex + <span class="number">3</span>, <span class="number">0</span>, maxPointIndex);</span><br><span class="line">    <span class="keyword">return</span> BezierUtilities.CaculateCubicBezierPoint(PathPointList[firstPointIndex],</span><br><span class="line">                                                    PathPointList[secondPointIndex],</span><br><span class="line">                                                    PathPointList[thirdPointIndex],</span><br><span class="line">                                                    PathPointList[fourthPointIndex],</span><br><span class="line">                                                    currentUnderSegmentPercent);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 获取指定比例路点所处分段和分段所占比例</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="t"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="segment"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="segmentPercent"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">GetRadioSegmentAndPercent</span>(<span class="params"><span class="keyword">float</span> t, <span class="keyword">out</span> TSegment segment, <span class="keyword">out</span> <span class="keyword">float</span> segmentPercent</span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> pointNum = PathPointList.Count;</span><br><span class="line">    <span class="keyword">if</span> (pointNum == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        segment = <span class="keyword">null</span>;</span><br><span class="line">        segmentPercent = <span class="number">0</span>f;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">else</span> <span class="title">if</span> (<span class="params">pointNum == <span class="number">1</span></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        segment = SegmentList[<span class="number">0</span>];</span><br><span class="line">        segmentPercent = <span class="number">1</span>f;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    t = Mathf.Clamp01(t);</span><br><span class="line">    <span class="comment">// 缓动公式对路线插值的影响</span></span><br><span class="line">    <span class="keyword">var</span> easeFunc = EasingFunction.GetEasingFunction(Ease);</span><br><span class="line">    t = easeFunc(<span class="number">0</span>, <span class="number">1</span>, t);</span><br><span class="line">    <span class="keyword">var</span> distance = t * Length;</span><br><span class="line">    segment = SegmentList[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, length = SegmentList.Count - <span class="number">1</span>; i &lt; length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        distance -= SegmentList[i].Length;</span><br><span class="line">        segment = SegmentList[i];</span><br><span class="line">        <span class="keyword">if</span> (distance &lt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    segmentPercent = (segment.Length + distance) / segment.Length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>自定义路点数据编辑面板：</p>
+<p><img src="/img/Unity/PathPointTool/CustomPathDataInspector.PNG" alt="CustomPathDataInspector"></p>
+<p>自定义Tile绘制配置面板:</p>
+<p><img src="/img/Unity/PathPointTool/CustomTileInspector.PNG" alt="CustomTileInspector"></p>
+<p>可视化路点路线展示:</p>
+<p><img src="/img/Unity/PathPointTool/CubicBezierDraw.PNG" alt="CubicBezierDraw"></p>
+<p>自定义路线数据导出：</p>
+<p><img src="/img/Unity/PathPointTool/CustomPathDataExport.PNG" alt="CustomPathDataExport"></p>
+<p>Ease插值类型：</p>
+<p><img src="/img/Unity/Math/EaseLerpFunction.png" alt="EaseLerpFunction"></p>
+<p>M个点的N个3阶Bezier插值计算思路如下：</p>
+<ol>
+<li><strong>N个3阶Bezier曲线的组合插值是通过将M个点分成N段3阶Bezier，计算出总长度且每段Bezier存储起始点索引和Bezier类型(影响当前Bezier的采样点数)和路段长度</strong></li>
+<li><strong>当我们要计算一个插值比例t(0-1)进度插值计算时，首先根据总距离和进度映射计算出在哪一段Bezier路段</strong></li>
+<li><strong>映射计算到对应3阶Bezier段后，再进行单个3阶Bezier曲线比例插值从而得到我们M个点的插值比例t(0-1)的最终插值位置</strong></li>
+</ol>
+<p>TODO:</p>
+<ol>
+<li><strong>将运行时使用TPathTweenerManager运动的曲线支持可配置化可视化绘制</strong></li>
+</ol>
+<h1 id="学习总结">学习总结</h1><ol>
+<li><strong>Bezier曲线是一个N个点之间递归插值计算的过程</strong></li>
+<li><strong>复杂的很多点路线插值一般不会采用N阶Bezier曲线插值而是采用换算成N个3阶Bezier曲线插值的方式降低计算复杂度</strong></li>
+<li><strong>缓动结合Bezier曲线的使用主要体现在最后一步插值时对t值的运算替换上</strong></li>
+<li><strong>纯Editor模拟更新驱动需要InitializeOnLoad，ExecuteInEditMode和InitializeOnLoadMethod标签加EditorApplication.update实现即使代码编译后也能正确注入和取消EditorApplication.update的流程</strong></li>
+</ol>
+<h1 id="Github">Github</h1><p>个人Github:</p>
+<p><a href="http://tonytang1990.github.io/2020/05/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%BC%93%E5%8A%A8/">数学缓动</a></p>
+<p><a href="http://tonytang1990.github.io/2022/02/20/UnityEditor知识/">UnityEditor知识</a></p>
+<h1 id="Reference">Reference</h1><p><a href="https://developer.aliyun.com/article/803862" target="_blank" rel="external">Unity 之 贝塞尔曲线介绍和实际使用</a></p>
+<p><a href="https://blog.csdn.net/QO_GQ/article/details/116711205" target="_blank" rel="external">unity利用高阶贝塞尔曲线进行的轨道移动</a></p>
+<p><a href="https://blog.csdn.net/qq_42139931/article/details/129867962" target="_blank" rel="external">Bezier Curve 贝塞尔曲线 - 在Unity中实现路径编辑</a></p>
+<p><a href="https://denisrizov.com/2016/06/02/bezier-curves-unity-package-included/" target="_blank" rel="external">bezier-curves-unity-package-included</a></p>
+<p><a href="https://zh.wikipedia.org/zh-sg/%E8%B2%9D%E8%8C%B2%E6%9B%B2%E7%B7%9A" target="_blank" rel="external">贝塞尔曲线</a></p>
+<p><a href="https://denisrizov.com/2016/06/02/bezier-curves-unity-package-included/" target="_blank" rel="external">Bezier Curves</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Editor/">Editor</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Editor/">Editor</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2023/04/09/PathPointTool/" data-title="路点编辑器 | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2023/03/10/EmmyLua注释生成工具/"  title="EmmyLua注释生成工具">
+ <strong>下一篇：</strong><br/> 
+ <span>EmmyLua注释生成工具
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2023/04/09/PathPointTool/" data-title="路点编辑器" data-url="http://tonytang1990.github.io/2023/04/09/PathPointTool/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#路点编辑器"><span class="toc-number">2.</span> <span class="toc-text">路点编辑器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Bezier曲线"><span class="toc-number">2.1.</span> <span class="toc-text">Bezier曲线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#线性Bezier曲线"><span class="toc-number">2.1.1.</span> <span class="toc-text">线性Bezier曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二阶Bezier曲线"><span class="toc-number">2.1.2.</span> <span class="toc-text">二阶Bezier曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三阶Bezier曲线"><span class="toc-number">2.1.3.</span> <span class="toc-text">三阶Bezier曲线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战"><span class="toc-number">2.2.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">3.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">4.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Game/" title="Game">Game<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Time/" title="Time">Time<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2023 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
