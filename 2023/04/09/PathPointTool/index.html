@@ -34,9 +34,9 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/CustomTileInspector.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/CubicBezierDraw.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/CustomPathDataExport.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Math/EaseLerpFunction.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/CutmullRomSplineDraw.PNG">
-<meta property="og:updated_time" content="2023-04-30T09:35:55.666Z">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Math/EaseLerpFunction.png">
+<meta property="og:updated_time" content="2023-04-30T16:56:33.002Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="路点编辑和缓动">
 <meta name="twitter:description" content="Introduction游戏开发过程中，我们希望角色物体按固定路线移动，我们一般需要通过路点编辑器工具去预先编辑好所有路点，然后导出路点数据通过数学运算去移动角色物体。
@@ -244,15 +244,19 @@
 <p><img src="/img/Unity/PathPointTool/CubicBezierDraw.PNG" alt="CubicBezierDraw"></p>
 <p>自定义路线数据导出：</p>
 <p><img src="/img/Unity/PathPointTool/CustomPathDataExport.PNG" alt="CustomPathDataExport"></p>
-<p>Ease插值类型：</p>
-<p><img src="/img/Unity/Math/EaseLerpFunction.png" alt="EaseLerpFunction"></p>
 <p>LineRenderer可视化展示：</p>
 <p><img src="/img/Unity/PathPointTool/CutmullRomSplineDraw.PNG" alt="CutmullRomSplineDraw"></p>
+<p>Ease插值类型：</p>
+<p><img src="/img/Unity/Math/EaseLerpFunction.png" alt="EaseLerpFunction"></p>
 <p>M个点的N个3阶Bezier插值计算思路如下：</p>
 <ol>
 <li><strong>N个3阶Bezier曲线的组合插值是通过将M个点分成N段3阶Bezier，计算出总长度且每段Bezier存储起始点索引和Bezier类型(影响当前Bezier的采样点数)和路段长度</strong></li>
 <li><strong>当我们要计算一个插值比例t(0-1)进度插值计算时，首先根据总距离和进度映射计算出在哪一段Bezier路段</strong></li>
 <li><strong>映射计算到对应3阶Bezier段后，再进行单个3阶Bezier曲线比例插值从而得到我们M个点的插值比例t(0-1)的最终插值位置</strong></li>
+</ol>
+<p>Cutmull-Rom Spline曲线经过首尾两个控制点思路：</p>
+<ol>
+<li><strong>利用Catmull-Rom Spline曲线会通过中间两个控制点且中间两个点经过时的切线与前后两个控制点连线平行，那么我可以可以通过模拟构造一个P(-1)=2P0-P1(确保P(-1)P1和P0切线平行从而确保从P0处切线平行)，利用P(-1)P0P1P2构造一个CatmullRomSpline曲线即可画出P0开始的P0P1的曲线。最后一段曲线同理，构造一个P(N+1)=2P(N)-P(N-1)，然后绘制P(N-2)P(N-1)P(N)P(N+1)即可绘制出P(N-1)P(N)的曲线。</strong></li>
 </ol>
 <p>TODO:</p>
 <ol>
@@ -261,6 +265,7 @@
 <h1 id="学习总结">学习总结</h1><ol>
 <li><strong>Bezier曲线是一个N个点之间递归插值计算的过程</strong></li>
 <li><strong>复杂的很多点路线插值一般不会采用N阶Bezier曲线插值而是采用换算成N个3阶Bezier曲线插值的方式降低计算复杂度</strong></li>
+<li><strong>Catmull-Rom Spline确保通过首尾控制点是通过插入头尾两个虚拟点的方式实现的。</strong></li>
 <li><strong>缓动结合Bezier曲线的使用主要体现在最后一步插值时对t值的运算替换上</strong></li>
 <li><strong>纯Editor模拟更新驱动需要InitializeOnLoad，ExecuteInEditMode和InitializeOnLoadMethod标签加EditorApplication.update实现即使代码编译后也能正确注入和取消EditorApplication.update的流程</strong></li>
 <li><strong>LineRenerer默认useWorldSpace为true，表示设置的SetPositions是世界坐标。</strong></li>
