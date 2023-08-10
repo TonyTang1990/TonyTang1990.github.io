@@ -45,15 +45,15 @@
 <meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/LoaderDebugUI.png">
 <meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleTestUI.png">
 <meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/AssetBundle-Framework/PostFixBlackListAndAssetNameBlackList.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/HotUpdate/HotUpdateFlowChat.png">
-<meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/HotUpdate/HotUpdateToolsUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/PostFixBlackListAndAssetNameBlackList.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/HotUpdate/HotUpdateFlowChat.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/HotUpdate/HotUpdateToolsUI.png">
 <meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/HotUpdate/AssetBundleMD5File.png">
 <meta property="og:image" content="http://tonytang1990.github.io/./img/Unity/HotUpdate/HotUpdatePreparationFolder.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/DeleteRemovedAssetBundle.png">
@@ -61,7 +61,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/BuildInResourceReferenceAnalyze.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/BuildInResourceExtraction.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png">
-<meta property="og:updated_time" content="2023-02-10T14:25:45.558Z">
+<meta property="og:updated_time" content="2023-08-10T12:26:04.802Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AssetBundle资源打包加载管理">
 <meta name="twitter:description" content="前言本篇文章是为了记录学习了Unity资源加载(Resource &amp;amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。
@@ -425,9 +425,9 @@
 <li>点击销毁窗口实例对象后</li>
 </ol>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 销毁窗口实例对象</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroyWindowInstance</span>(<span class="params"></span>)</span><br><span class="line"></span>&#123;</span><br><span class="line">    DIYLog.Log(<span class="string">"onDestroyWindowInstance()"</span>);</span><br><span class="line">    GameObject.Destroy(mMainWindow);</span><br><span class="line">&#125;</span><br><span class="line">窗口销毁后可以看到之前加载的资源所有绑定对象都为空了，因为被销毁了(MainWindow被销毁了)</span><br></pre></td></tr></table></figure>
-<p>​        <img src="./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png" alt="AssetBundleLoadManagerUIAfterDestroyWindow"></p>
+<p>​        <img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png" alt="AssetBundleLoadManagerUIAfterDestroyWindow"></p>
 <ol>
-<li>等待回收检测回收后<br><img src="./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png" alt="AssetBundleLoadManagerUIAfterUnloadAB"><br>上述资源在窗口销毁后，满足了可回收的三大条件(1. 索引计数为0 2. 绑定对象为空 3. NormalLoad加载方式)，最终被成功回收。</li>
+<li>等待回收检测回收后<br><img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png" alt="AssetBundleLoadManagerUIAfterUnloadAB"><br>上述资源在窗口销毁后，满足了可回收的三大条件(1. 索引计数为0 2. 绑定对象为空 3. NormalLoad加载方式)，最终被成功回收。</li>
 </ol>
 <p>Note:</p>
 <p>读者可能注意到shaderlist索引计数为0，也没绑定对象，但没有被卸载，这是因为shaderlist是被我预加载以常驻资源的形式加载进来的(PermanentLoad)，所以永远不会被卸载。</p>
@@ -473,14 +473,14 @@
 <li>不参与打包(打包策略递归子目录判定)</li>
 </ol>
 <p>这里先简单的看下新的AB搜集和打包界面:</p>
-<p><img src="./img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG" alt="AssetBundleCollectWindow"></p>
-<p><img src="./img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG" alt="AssetBundleBuildWindow"></p>
+<p><img src="/img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG" alt="AssetBundleCollectWindow"></p>
+<p><img src="/img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG" alt="AssetBundleBuildWindow"></p>
 <p>关于Asset路径与AB路径关联信息存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbuildinfo的AB里)，通过Asset路径如何加载到对应AB的关键就在这里。这里和MotionFramework自定义Manifest文件输出不一样，assetbundlebuildinfo.asset只记录AssetPath和AB相关信息映射，不记录AB依赖信息，依赖信息依然采用AB打包生成的*Manifest文件，同时assetbundlebuildinfo.asset采用打包AB的方式（方便和热更新AB走一套机制）</p>
 <p>让我们先来看下大致数据信息结构:</p>
-<p><img src="./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG" alt="AssetBundleBuildInfoView1"></p>
-<p><img src="./img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG" alt="AssetBundleBuildInfoView2"></p>
+<p><img src="/img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG" alt="AssetBundleBuildInfoView1"></p>
+<p><img src="/img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG" alt="AssetBundleBuildInfoView2"></p>
 <p><strong>2022/1/26支持了资源打包后缀名黑名单可视化配置+资源名黑名单可视化配置</strong></p>
-<p><img src="./img/Unity/AssetBundle-Framework/PostFixBlackListAndAssetNameBlackList.PNG" alt="PostFixBlackListAndAssetNameBlackList"></p>
+<p><img src="/img/Unity/AssetBundle-Framework/PostFixBlackListAndAssetNameBlackList.PNG" alt="PostFixBlackListAndAssetNameBlackList"></p>
 <p><strong>2023/2/8底层支持了新版ScriptableBuildPipeline打包工具打包，加快打包速度(需添加SCRIPTABLE_ASSET_BUILD_PIPELINE宏)</strong></p>
 <h4 id="Scriptable_Build_Pipeline">Scriptable Build Pipeline</h4><p><a href="https://docs.unity3d.com/Packages/com.unity.scriptablebuildpipeline@1.20/manual/index.html" target="_blank" rel="external">The Scriptable Build Pipeline (SBP) package allows you to control how Unity builds content. The package moves the previously C++-only build pipeline code to a public C# package with a pre-defined build flow for building AssetBundles. The pre-defined AssetBundle build flow reduces build time, improves incremental build processing, and provides greater flexibility than before.</a></p>
 <p>从介绍可以看出Scriptable Build Pipeline是官方推出的新一代Asset Bundle自定义打包管线系统，主要是为了<strong>增加AB打包自由度和减少AB打包时间</strong>。</p>
@@ -546,9 +546,9 @@
 <li><p>直到所有资源热更完成，退出重进游戏</p>
 </li>
 </ol>
-<h4 id="流程图">流程图</h4><p><img src="./img/Unity/HotUpdate/HotUpdateFlowChat.png" alt="HotUpdateFlowChat"></p>
+<h4 id="流程图">流程图</h4><p><img src="/img/Unity/HotUpdate/HotUpdateFlowChat.png" alt="HotUpdateFlowChat"></p>
 <h4 id="热更新辅助工具">热更新辅助工具</h4><p>Tools-&gt;HotUpdate-&gt;热更新操作工具</p>
-<p><img src="./img/Unity/HotUpdate/HotUpdateToolsUI.png" alt="HotUpdateToolsUI"></p>
+<p><img src="/img/Unity/HotUpdate/HotUpdateToolsUI.png" alt="HotUpdateToolsUI"></p>
 <p>主要分为以下2个阶段：</p>
 <ul>
 <li><p>热更新准备阶段:</p>
@@ -838,7 +838,7 @@
 			
 		
 			
-				<li><a href="/tags/Network/" title="Network">Network<sup>1</sup></a></li>
+				<li><a href="/tags/Computer/" title="Computer">Computer<sup>1</sup></a></li>
 			
 		
 			
@@ -854,11 +854,11 @@
 			
 		
 			
-				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+				<li><a href="/tags/Network/" title="Network">Network<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Time/" title="Time">Time<sup>1</sup></a></li>
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
 			
 		
 		</ul>
