@@ -1,0 +1,838 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>地图编辑器 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="Introduction游戏开发过程中，我们搭建关卡时需要一个工具去支持摆放场景物件和数据埋点编辑，从而支持快速搭建关卡和策划数据埋点。这一工具正是本章节需要实现的地图编辑器。
+地图编辑器需求实现一个工具，首先第一步，我们还是需要理清需求：
+
+纯Editor地图编辑器，用于场景编辑和数据埋点。
+支持自定义场景对象数据和自由摆放场景对象进行场景编辑，场景对象支持静态摆放和动态创建两种。
+支持自定义埋">
+<meta property="og:type" content="article">
+<meta property="og:title" content="地图编辑器">
+<meta property="og:url" content="http://tonytang1990.github.io/2024/04/23/地图编辑器/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="Introduction游戏开发过程中，我们搭建关卡时需要一个工具去支持摆放场景物件和数据埋点编辑，从而支持快速搭建关卡和策划数据埋点。这一工具正是本章节需要实现的地图编辑器。
+地图编辑器需求实现一个工具，首先第一步，我们还是需要理清需求：
+
+纯Editor地图编辑器，用于场景编辑和数据埋点。
+支持自定义场景对象数据和自由摆放场景对象进行场景编辑，场景对象支持静态摆放和动态创建两种。
+支持自定义埋">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/ShortcutOperationArea.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/CustomDataSettingArea.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/MapObjectConfigArea.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/MapDataConfigArea.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/BasicDataConfigInspectorArea.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/ShortcutOperationInspectorArea.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/MapObjectConfigInspectorArea.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/MapDataConfigInspectorArea.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/NavigationBakePreview.PNG">
+<meta property="og:updated_time" content="2024-05-14T16:31:51.101Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="地图编辑器">
+<meta name="twitter:description" content="Introduction游戏开发过程中，我们搭建关卡时需要一个工具去支持摆放场景物件和数据埋点编辑，从而支持快速搭建关卡和策划数据埋点。这一工具正是本章节需要实现的地图编辑器。
+地图编辑器需求实现一个工具，首先第一步，我们还是需要理清需求：
+
+纯Editor地图编辑器，用于场景编辑和数据埋点。
+支持自定义场景对象数据和自由摆放场景对象进行场景编辑，场景对象支持静态摆放和动态创建两种。
+支持自定义埋">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2024/04/23/地图编辑器/" title="地图编辑器" itemprop="url">地图编辑器</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2024-04-23T10:27:00.000Z" itemprop="datePublished"> Published 2024-04-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#地图编辑器"><span class="toc-number">2.</span> <span class="toc-text">地图编辑器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">2.1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设计实现"><span class="toc-number">2.2.</span> <span class="toc-text">设计实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置窗口"><span class="toc-number">2.3.</span> <span class="toc-text">配置窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置定义"><span class="toc-number">2.3.1.</span> <span class="toc-text">配置定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置窗口-1"><span class="toc-number">2.3.2.</span> <span class="toc-text">配置窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#快捷按钮区域"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">快捷按钮区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自定义地图数据区域"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">自定义地图数据区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#地图对象配置区域"><span class="toc-number">2.3.2.3.</span> <span class="toc-text">地图对象配置区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#地图埋点配置区域"><span class="toc-number">2.3.2.4.</span> <span class="toc-text">地图埋点配置区域</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作编辑Inspector"><span class="toc-number">2.4.</span> <span class="toc-text">操作编辑Inspector</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础数据配置区域"><span class="toc-number">2.4.1.</span> <span class="toc-text">基础数据配置区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#快捷操作按钮区域"><span class="toc-number">2.4.2.</span> <span class="toc-text">快捷操作按钮区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#地图对象编辑区域"><span class="toc-number">2.4.3.</span> <span class="toc-text">地图对象编辑区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#地图埋点编辑区域"><span class="toc-number">2.4.4.</span> <span class="toc-text">地图埋点编辑区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#寻路烘培"><span class="toc-number">2.4.5.</span> <span class="toc-text">寻路烘培</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据导出"><span class="toc-number">2.4.6.</span> <span class="toc-text">数据导出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战"><span class="toc-number">2.5.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">3.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">4.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="Introduction">Introduction</h1><p>游戏开发过程中，我们搭建关卡时需要一个工具去支持摆放场景物件和数据埋点编辑，从而支持快速搭建关卡和策划数据埋点。这一工具正是本章节需要实现的地图编辑器。</p>
+<h1 id="地图编辑器">地图编辑器</h1><h2 id="需求">需求</h2><p>实现一个工具，首先第一步，我们还是需要理清需求：</p>
+<ol>
+<li>纯Editor地图编辑器，用于场景编辑和数据埋点。</li>
+<li>支持自定义场景对象数据和自由摆放场景对象进行场景编辑，场景对象支持静态摆放和动态创建两种。</li>
+<li>支持自定义埋点数据和自由摆放埋点数据进行数据埋点编辑。</li>
+<li>支持自定义调整场景大小以及场景地形指定和大小自动适配。</li>
+<li>场景数据和埋点数据支持导出自定义数据格式(比如Lua,Json等)。</li>
+<li>同一个场景支持编辑多个场景编辑和数据埋点。</li>
+</ol>
+<h2 id="设计实现">设计实现</h2><p>接下来针对前面提到的需求，我们一一分析我们应该用什么方案和技术来实现。</p>
+<p>需求：</p>
+<ol>
+<li>纯Editor地图编辑器，用于<strong>场景编辑</strong>和<strong>数据埋点</strong>。</li>
+<li>支持自定义场景对象数据和自由摆放场景对象进行场景编辑，场景对象支持<strong>静态摆放</strong>和<strong>动态创建</strong>两种。</li>
+<li>支持自定义<strong>埋点数据</strong>和<strong>自由摆放埋点数据</strong>进行数据埋点编辑。</li>
+<li>支持自定义调整场景大小以及场景地形指定和大小自动适配。</li>
+<li>场景数据和埋点数据支持导出自定义数据格式(比如Lua,Json等)。</li>
+<li>同一个场景支持编辑多个场景编辑和数据埋点。</li>
+</ol>
+<p>实现思路：</p>
+<ol>
+<li>地图编辑器主要由<strong>地图编辑器配置窗口</strong>和<strong>地图编辑器挂在操作脚本</strong>Inspector组成。</li>
+<li>地图编辑器编辑数据分为两大类(1. <strong>地图编辑</strong> 2. <strong>数据埋点</strong>)。</li>
+<li>继承EditorWindow实现场景编辑和数据埋点的基础数据配置编辑。</li>
+<li>继承Editor自定义Inspector面板实现纯单个场景编辑和数据埋点操作。</li>
+<li>地图编辑操作通过挂在脚本(<strong>Map.cs</strong>)的方式作为单个场景编辑和数据埋点单位，从而实现单个场景多个场景编辑和数据埋点支持。</li>
+<li>场景对象编辑采用直接创建实体GameObject的方式，从而实现场景编辑完成后的场景可直接用于作为场景使用。</li>
+<li>场景对象编辑通过自定义Inspector面板实现快速删除和还原动态场景对象GameObject实现静态和动态场景对象的编辑和数据导出。</li>
+<li>数据埋点采用Gizmos(Monobehaviour:OnDrawGizmos())，Handles(Editor.OnSceneGUI())实现可视化编辑对象和相关数据显示，自定义场景大小配置网格显示也是用Gizmos实现。</li>
+<li>地图编辑器配置窗口用于配置基础的场景数据和埋点数据配置，<strong>Map.cs</strong>的挂在脚本通过自定义数据结构和自定义面板显示实现自定义数据配置。</li>
+<li><strong>场景静态对象</strong>相关数据通过挂在<strong>MapObjectDataMono</strong>脚本存储相关对象数据。</li>
+<li><strong>场景动态对象</strong>通过导出时<strong>导出自定义配置数据</strong>实现自定义数据导出。</li>
+<li>导出前通过<strong>Map.cs</strong>存储的数据构建自定义数据(<strong>MapExport.cs</strong>)实现自定义数据导出</li>
+<li>大地图暂定通过分块品抽的方式组装按需加载。</li>
+</ol>
+<p>核心思路和技术实现方案都在上面介绍了，这里就不一一介绍代码实现了，这里只放部分关键代码，让我们直接实战看效果，需要源码的直接在文章末尾Github链接去取即可。</p>
+<h2 id="配置窗口">配置窗口</h2><p>配置窗口主要负责实现对地图编辑对象，地图编辑埋点的基础数据定义，一些相关操作按钮和全局配置。</p>
+<h3 id="配置定义">配置定义</h3><p>地图配置数据结构定义:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> MapSetting.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MapSetting</span> : <span class="title">ScriptableObject</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="preprocessor">#<span class="keyword">if</span> UNITY_EDITOR</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> Editor下的地图配置单例对象</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> MapSetting EditorSingleton;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 获取Editor地图配置单例对象</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;returns&gt;</span><span class="xmlDocTag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> MapSetting <span class="title">GetEditorInstance</span>(<span class="params"></span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(EditorSingleton == <span class="keyword">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            EditorSingleton = MapUtilities.LoadOrCreateGameMapSetting();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> EditorSingleton;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="preprocessor">#<span class="keyword">endif</span></span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 默认地图横向大小</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"默认地图横向大小"</span>)]</span><br><span class="line">    [Range(<span class="number">1</span>, <span class="number">1000</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> DefaultMapWidth = MapConst.DefaultMapWidth;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 默认地图纵向大小</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"默认地图纵向大小"</span>)]</span><br><span class="line">    [Range(<span class="number">1</span>, <span class="number">1000</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> DefaultMapHeight = MapConst.DefaultMapHeight;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 地图对象配置数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"地图对象配置数据"</span>)]</span><br><span class="line">    <span class="keyword">public</span> MapObjectSetting ObjectSetting = <span class="keyword">new</span> MapObjectSetting();</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 地图埋点配置数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"地图埋点配置数据"</span>)]</span><br><span class="line">    <span class="keyword">public</span> MapDataSetting DataSetting = <span class="keyword">new</span> MapDataSetting();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>地图对象配置定义:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> MapObjectType.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 地图对象类型枚举</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> MapObjectType</span><br><span class="line">&#123;</span><br><span class="line">    TREASURE_BOX = <span class="number">0</span>,           <span class="comment">// 宝箱</span></span><br><span class="line">    TRAP = <span class="number">1</span>,                   <span class="comment">// 陷阱</span></span><br><span class="line">    DOOR = <span class="number">2</span>,                   <span class="comment">// 门</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> MapObjectSetting.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 地图对象设置数据</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MapObjectSetting</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 所有地图对象配置数据</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"所有地图对象配置数据"</span>)]</span><br><span class="line">    [SerializeReference]</span><br><span class="line">    <span class="keyword">public</span> List&lt;MapObjectConfig&gt; AllMapObjectConfigs = <span class="keyword">new</span> List&lt;MapObjectConfig&gt;();</span><br><span class="line">    </span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> MapObjectConfig.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 地图对象数据配置</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MapObjectConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 唯一ID(用于标识地图对象配置唯一)</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"唯一ID"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> UID;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 地图对象类型</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"地图对象类型"</span>)]</span><br><span class="line">    <span class="keyword">public</span> MapObjectType ObjectType;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 是否是动态地图对象</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"是否是动态地图对象"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> IsDynamic;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 关联Id</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"关联Id"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> ConfId;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 资源Asset</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"资源Asset"</span>)]</span><br><span class="line">    <span class="keyword">public</span> GameObject Asset;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 描述</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"描述"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Des;</span><br><span class="line">    </span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>地图埋点配置定义:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> MapDataType.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 地图数据埋点类型枚举</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> MapDataType</span><br><span class="line">&#123;</span><br><span class="line">    PLAYER_SPAWN = <span class="number">0</span>,           <span class="comment">// 玩家出生点位置数据</span></span><br><span class="line">    MONSTER = <span class="number">1</span>,                <span class="comment">// 怪物数据</span></span><br><span class="line">    MONSTER_GROUP = <span class="number">2</span>,          <span class="comment">// 怪物组数据</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> MapDataSetting.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 地图数据配置数据</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MapDataSetting</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 所有地图埋点数据配置</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"所有地图埋点数据配置"</span>)]</span><br><span class="line">    [SerializeReference]</span><br><span class="line">    <span class="keyword">public</span> List&lt;MapDataConfig&gt; AlllMapDataConfigs = <span class="keyword">new</span> List&lt;MapDataConfig&gt;();</span><br><span class="line"></span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> MapDataConfig.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 地图埋点数据配置</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MapDataConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 唯一ID(用于标识地图埋点配置唯一)</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"唯一ID"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> UID;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 地图数据类型</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"地图数据类型"</span>)]</span><br><span class="line">    <span class="keyword">public</span> MapDataType DataType;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 关联Id</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"关联Id"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> ConfId;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 场景球体颜色</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"场景球体颜色"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Color SceneSphereColor = Color.red;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 描述</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"描述"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Des;</span><br><span class="line">    </span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置定义设计如下:</p>
+<ol>
+<li><strong>MapSetting是地图编辑器配置数据结构定义，继承至ScriptableObject，保存到Editor</strong></li>
+<li><strong>MapObjectSetting是地图对象的所有编辑器配置结构定义。MapObjectConfig是地图对象编辑器单条配置结构定义。MapObjectType是地图对象类型定义。</strong></li>
+<li><strong>MapDataSetting是地图埋点的所有编辑器配置结构定义。MapDataConfig是地图埋点编辑器单条配置结构定义。MapDataType是地图埋点类型定义。</strong></li>
+</ol>
+<h3 id="配置窗口-1">配置窗口</h3><p>可以看到在地图编辑器窗口主要分为4个区域：</p>
+<ol>
+<li><strong>快捷按钮区域</strong></li>
+<li><strong>自定义地图基础数据区域(e.g. 默认地图宽高)</strong></li>
+<li><strong>地图对象配置区域</strong></li>
+<li><strong>地图埋点配置区域</strong></li>
+</ol>
+<p>以上配置数据会成为我们后面操作编辑Inspector里用户可以添加操作的基础数据来源。</p>
+<h4 id="快捷按钮区域">快捷按钮区域</h4><p>效果图：</p>
+<p><img src="img/Unity/MapEditor/ShortcutOperationArea.PNG" alt="ShortcutOperationArea"></p>
+<p>可以看到目前提供了三个快捷按钮：</p>
+<ol>
+<li><strong>保存地图配置数据</strong> — 用于确保我们在配置窗口的数据配置修改保存到本地ScriptableObject Asset</li>
+<li><strong>打开地图编辑场景</strong> — 用于帮助我们快速打开辅助地图编辑的场景</li>
+<li><strong>快速选中地图地编对象</strong> — 用于帮助我们快速选中当前场景里第一个带Map.cs脚本的对象，方便快速进入Map.cs的Inspector操作面板操作</li>
+</ol>
+<h4 id="自定义地图数据区域">自定义地图数据区域</h4><p>效果图：</p>
+<p><img src="/img/Unity/MapEditor/CustomDataSettingArea.PNG" alt="CustomDataSettingArea"></p>
+<p>自定义数据目前只支持了默认创建地图编辑宽高配置(挂在Map.cs脚本时默认创建的地图横向竖向大小数据来源)。</p>
+<p>未来扩展更多基础配置数据在这里添加。</p>
+<h4 id="地图对象配置区域">地图对象配置区域</h4><p>效果图：</p>
+<p><img src="/img/Unity/MapEditor/MapObjectConfigArea.PNG" alt="MapObjectConfigArea"></p>
+<p>地图对象配置设计如下:</p>
+<ol>
+<li><p><strong>以UID作为唯一配置Id标识(不允许重复)，此Id会作为我们编辑器地图对象配置数据读取的依据。</strong></p>
+</li>
+<li><p><strong>通过MapObjectType指定地图对象类型。</strong></p>
+</li>
+<li><p><strong>通过定义ConfId(关联配置Id)实现关联游戏内动态对象Id的功能。</strong></p>
+</li>
+<li><p><strong>地图对象编辑通过定义Asset实现指定自定义预制件Asset作为实体对象的资源对象。</strong></p>
+</li>
+<li><strong>地图对象的是否动态是用于标识地图对象是静态摆放在场景里还是后续由程序动态创建的标识符。</strong></li>
+<li><strong>描述用于方便用户自定义取名，方便识别不同的地图对象配置。</strong></li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>需要参与导出的地图基础配置数据如果修改了(比如是否动态，关联配置Id)，对应用到此基础配置数据的关卡都需要重新导出。</strong></li>
+<li><strong>MapObjectType需要代码自定义扩展后，编辑器才有更多选项</strong></li>
+</ol>
+<h4 id="地图埋点配置区域">地图埋点配置区域</h4><p>效果图：</p>
+<p><img src="/img/Unity/MapEditor/MapDataConfigArea.PNG" alt="MapDataConfigArea"></p>
+<p>地图埋点配置设计如下:</p>
+<ol>
+<li><strong>以UID作为唯一配置Id标识(不允许重复)，此Id会作为我们编辑器地图埋点配置数据读取的依据。</strong></li>
+<li><strong>通过MapDataType指定地图埋点类型。</strong></li>
+<li><strong>通过定义ConfId(关联配置Id)实现关联游戏内动态对象Id的功能。</strong></li>
+<li><strong>场景球体颜色用于配置地图埋点的GUI球体绘制颜色配置。</strong></li>
+<li><strong>初始选择用于配置地图埋点添加时的初始旋转配置(方便自定义大部分用到的初始宣旋转数据)</strong></li>
+<li><strong>描述用于方便用户自定义取名，方便识别不同的地图埋点配置。</strong></li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>MapDataType需要代码自定义扩展后，编辑器才有更多选项</strong></li>
+</ol>
+<h2 id="操作编辑Inspector">操作编辑Inspector</h2><p>操作编辑Inspector主要负责实现对地图编辑对象和地图编辑埋点的一些相关操作面板，可视化GUI数据绘制，地图编辑自定义基础数据配置以及一些快捷操作按钮。</p>
+<h3 id="基础数据配置区域">基础数据配置区域</h3><p>基础数据配置区域用于GUI开关，地图大小，地图起始位置，自定义地形等配置。</p>
+<p>效果图:</p>
+<p><img src="/img/Unity/MapEditor/BasicDataConfigInspectorArea.PNG" alt="BasicDataConfigInspectorArea"></p>
+<p>自定义配置区域介绍：</p>
+<ol>
+<li><strong>地图横向大小和地图纵向大小</strong> — 顾名思义用于控制我们需要编辑的关卡地图的大小，会影响默认地图或自定义地图的大小和平铺</li>
+<li><strong>游戏地图起始位置</strong> — 用于控制关卡的起始位置偏移，方便支持自定义不同起始位置的关卡设置</li>
+<li><strong>自定义地形Asset</strong> — 用于支持用户设置使用不同的地形资源</li>
+</ol>
+<h3 id="快捷操作按钮区域">快捷操作按钮区域</h3><p>快捷操作按钮区域用于支持自定义功能。</p>
+<p>效果图:</p>
+<p><img src="/img/Unity/MapEditor/ShortcutOperationInspectorArea.PNG" alt="ShortcutOperationInspectorArea"></p>
+<p>快捷按钮功能介绍：</p>
+<ol>
+<li><strong>清除动态对象显示按钮</strong> — 用于关卡编辑烘焙完成后，销毁需要程序动态创建的对象，制作只剩关卡静态对象的关卡预制件</li>
+<li><strong>恢复动态对象显示按钮</strong> — 用于关卡烘焙时，还原所有需要参与烘焙的对象，从而烘焙出正确的寻路数据</li>
+<li><strong>拷贝NavMesh Asset按钮</strong> — NavMeshSurface默认烘焙Asset保存在对应场景同层目录，此按钮用于快速拷贝对应Asset到对应关卡预制件同层目录</li>
+<li><strong>一键重创地图对象按钮</strong> — 用于我们更新了某些已经创建好的静态地图对象(脱离预制件关联)相关资源后一键确保使用最新资源创建</li>
+<li><strong>导出地图数据按钮</strong> — 用于完成我们的关卡数据序列化导出</li>
+<li><strong>一键烘焙拷贝导出</strong> — 用于一键完成恢复动态对象+烘培寻路+拷贝寻路+清除动态对象+导出地图数据操作</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>烘焙寻路时所有动态对象必须显示着参与烘焙，生成关卡预制件时不需清除动态对象显示后应用到关卡预制件上</strong></li>
+<li><strong>场景对象是否参与寻路烘培，通过修改预制件Layer和NavMeshSurface的寻路烘培的Layer决定</strong></li>
+<li><strong>大部分操作在实体对象做成预制件后需要进入预制件编辑模式，所以部分操作会根据脚本所在实体对象情况决定是否自动进入预制件编辑模式</strong></li>
+</ol>
+<h3 id="地图对象编辑区域">地图对象编辑区域</h3><p>效果图:</p>
+<p><img src="/img/Unity/MapEditor/MapObjectConfigInspectorArea.PNG" alt="MapObjectConfigInspectorArea"></p>
+<p>地图对象数据定义：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> MapObjectData.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 地图对象数据</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MapObjectData</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 唯一Id(用于标识地图对象配置唯一)</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"唯一Id"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> UID;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 实体对象</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"实体对象"</span>)]</span><br><span class="line">    <span class="keyword">public</span> GameObject Go;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 埋点位置(地图对象可能删除还原，所以需要逻辑层面记录位置)</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"埋点位置"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Vector3 Position;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 旋转(地图对象可能删除还原，所以需要逻辑层面记录旋转)</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"旋转"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Vector3 Rotation = Vector3.zero;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 本地缩放(地图对象可能删除还原，所以需要逻辑层面记录缩放)</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"缩放"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Vector3 LocalScale = Vector3.one;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 碰撞器中心点</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"碰撞器中心点"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Vector3 ColliderCenter = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 碰撞器大小</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"碰撞器大小"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Vector3 ColliderSize = <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 碰撞体半径</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"碰撞体半径"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> ColliderRadius = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 带参构造函数</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="uid"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;param name="go"&gt;</span><span class="xmlDocTag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MapObjectData</span>(<span class="params"><span class="keyword">int</span> uid, GameObject go</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        UID = uid;</span><br><span class="line">        Go = go;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>地图对象编辑通过选择<strong>地图对象类型</strong>和<strong>地图对象选择</strong>决定要添加的地图对象配置。</p>
+<p>地图对象编辑和地图对象选择后面的<strong>+</strong>默认是<strong>添加到地图对象数据列表尾部</strong>。</p>
+<p>地图对象数据列表后的操作可以对已经配置的地图对象数据进行相关操作，此处的<strong>+</strong>号是将选择的地图对象类型和地图对象选择<strong>插入的当前数据位置</strong>。</p>
+<p>Note:</p>
+<ol>
+<li><strong>动态对象最终由程序运行时创建，所以做成预制件时一定要记着清楚动态对象的显示</strong></li>
+<li><strong>动态对象通过地图对象配置面板配置的关联id导出给程序实现动态对象的配置关联</strong></li>
+<li><strong>静态对象的数据关联是通过挂在MapObjectDataMono.cs脚本实现</strong></li>
+</ol>
+<h3 id="地图埋点编辑区域">地图埋点编辑区域</h3><p>效果图:</p>
+<p><img src="/img/Unity/MapEditor/MapDataConfigInspectorArea.PNG" alt="MapDataConfigInspectorArea"></p>
+<p>地图埋点数据定义：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> MapData.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 地图数据买点数据</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MapData</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 唯一Id(用于标识地图对象配置唯一)</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"唯一Id"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> UID;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 埋点位置</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"埋点位置"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Vector3 Position;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 埋点旋转</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"埋点旋转"</span>)]</span><br><span class="line">    <span class="keyword">public</span> Vector3 Rotation;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 批量操作开关</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    [Header(<span class="string">"批量操作开关"</span>)]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> BatchOperationSwitch;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MapData</span>(<span class="params"><span class="keyword">int</span> uid</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        UID = uid;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MapData</span>(<span class="params"><span class="keyword">int</span> uid, Vector3 position, Vector3 rotation</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        UID = uid;</span><br><span class="line">        Position = position;</span><br><span class="line">        Rotation = rotation;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>地图埋点编辑通过选择<strong>地图埋点类型</strong>和<strong>地图埋点选择</strong>决定要添加的地图埋点配置。</p>
+<p>地图埋点编辑和地图埋点选择后面的<strong>+</strong>默认是<strong>添加到地图埋点数据列表尾部</strong>。</p>
+<p>地图埋点数据列表后的操作可以对已经配置的地图埋点数据进行相关操作，此处的<strong>+</strong>号是将选择的地图埋点类型和地图对象选择<strong>插入的当前数据位置</strong>。</p>
+<p><strong>地图埋点支持批量操作位置</strong>，通过勾选批量选项决定哪些地图埋点数据要一起操作位置，然后操作(拖拽或者输入坐标)勾选了批量的地图埋点对象的位置，可以实现一起修改勾选了批量操作的地图埋点位置。</p>
+<p><strong>一键清除批量勾选按钮</strong> — 用于快速取消所有已勾选批量的地图埋点数据</p>
+<p>Note:</p>
+<ol>
+<li><strong>地图数据的编辑和导出是按MapEditor脚本为单位。</strong></li>
+<li><strong>地图埋点数据时通过Editor GUI(e.g. Handles和Gimoz)绘制的</strong></li>
+<li><strong>地图埋点的位置调整需要按住W按键，旋转调整需要按住E按键</strong></li>
+<li><strong>地图埋点支持配置自定义数据，这部分可以参考Monster和MonsterGroup埋点的自定义数据配置</strong></li>
+<li><strong>地图埋点通过地图埋点配置面板配置的关联id导出给程序实现地图埋点的配置关联</strong></li>
+<li><strong>自定义数据埋点可视化可以通过扩展MapEditor.cs实现自定义绘制</strong></li>
+</ol>
+<h3 id="寻路烘培">寻路烘培</h3><p>目前<strong>场景编辑</strong>是以<strong>Map.cs</strong>为单位。所以<strong>寻路烘培</strong>目前也是按<strong>Map.cs所在预制件为单位</strong>。</p>
+<p>通过每个Map.cs所在GameObject挂在<strong>NavMeshSurface</strong>组件实现对当前GameObject的寻路烘培。</p>
+<p>效果图:</p>
+<p><img src="/img/Unity/MapEditor/NavigationBakePreview.PNG" alt="NavigationBakePreview"></p>
+<p>Note:</p>
+<ol>
+<li><strong>NavMeshSurface设置Collect Objects为Children(只有子节点参与烘培)，参与烘培的Include Layers设置成自定义的实现是否参与烘培的Layer规则。</strong></li>
+</ol>
+<h3 id="数据导出">数据导出</h3><p>数据导出是通过点击<strong>导出地图数据按钮</strong>或者<strong>一键烘培拷贝导出按钮</strong>实现的。</p>
+<p><strong>为了支持多种不同数据格式的导出，在数据导出之前我进行导出数据的定义和抽象。</strong></p>
+<p><strong>地图导出数据结构</strong>定义:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> MapExport.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 地图导出数据结构定义(统一导出结构定义，方便支持导出不同的数据格式)</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MapExport</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 地图导出数据成员</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> MapDataExport MapData;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 所有只包含基础数据的动态物体导出数据成员</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> List&lt;BaseMapDynamicExport&gt; AllBaseMapObjectExportDatas = <span class="keyword">new</span> List&lt;BaseMapDynamicExport&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 所有包含碰撞数据的动态物体导出数据成员</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> List&lt;ColliderMapDynamicExport&gt; AllColliderMapDynamicExportDatas = <span class="keyword">new</span> List&lt;ColliderMapDynamicExport&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 所有怪物组的怪物组导出数据列表</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> List&lt;MonsterGroupMapDataExport&gt; AllMonsterGroupMapDatas = <span class="keyword">new</span> List&lt;MonsterGroupMapDataExport&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 所有没有怪物组的怪物导出数据列表</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> List&lt;MonsterMapDataExport&gt; ALlNoGroupMonsterMapDatas = <span class="keyword">new</span> List&lt;MonsterMapDataExport&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 剩余其他(不含怪物和怪物组和出生点)地图埋点导出数据成员</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> List&lt;BaseMapDataExport&gt; AllOtherMapDatas = <span class="keyword">new</span> List&lt;BaseMapDataExport&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>地图对象导出数据基类</strong>定义:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> BaseMapDynamicExport.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 地图动态物体数据基类导出定义</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BaseMapDynamicExport</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 地图对象类型</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> MapObjectType MapObjectType;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 关联配置Id</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> ConfId;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 位置信息</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector3 Position;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 旋转信息</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector3 Rotation;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BaseMapDynamicExport</span>(<span class="params">MapObjectType mapObjectType, <span class="keyword">int</span> confId, Vector3 position, Vector3 rotation</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        MapObjectType = mapObjectType;</span><br><span class="line">        ConfId = confId;</span><br><span class="line">        Position = position;</span><br><span class="line">        Rotation = rotation;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>碰撞体场景动态物体数据</strong>导出定义:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> ColliderMapDynamicExport.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 碰撞体场景动态物体数据导出</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ColliderMapDynamicExport</span> : <span class="title">BaseMapDynamicExport</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 碰撞体中心</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector3 ColliderCenter;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 碰撞体大小</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector3 ColliderSize;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 碰撞体半径</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> ColliderRiduis;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ColliderMapDynamicExport</span>(<span class="params">MapObjectType mapObjectType, <span class="keyword">int</span> confId, Vector3 position, Vector3 rotation,</span><br><span class="line">                                    Vector3 colliderCenter, Vector3 colliderSize, <span class="keyword">float</span> colliderRiduis</span>)</span><br><span class="line">        : <span class="title">base</span>(<span class="params">mapObjectType, confId, position, rotation</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            ColliderCenter = colliderCenter;</span><br><span class="line">            ColliderSize = colliderSize;</span><br><span class="line">            ColliderRiduis = colliderRiduis;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>地图埋点导出数据基类</strong>定义:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> BaseMapDataExport.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 地图埋点数据基类导出定义</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BaseMapDataExport</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 埋点类型</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> MapDataType MapDataType;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 关联Id</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> ConfId;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 位置信息</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector3 Position;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 旋转信息</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector3 Roation;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BaseMapDataExport</span>(<span class="params">MapDataType mapDataType, <span class="keyword">int</span> confId, Vector3 position, Vector3 rotation</span>)</span><br><span class="line">    </span>&#123;</span><br><span class="line">        MapDataType = mapDataType;</span><br><span class="line">        ConfId = confId;</span><br><span class="line">        Position = position;</span><br><span class="line">        Roation = rotation;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>怪物埋点数据导出</strong>定义：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> MonsterMapDataExport.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 怪物地图埋点数据导出</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MonsterMapDataExport</span> : <span class="title">BaseMapDataExport</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 怪物组Id</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> GroupId;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MonsterMapDataExport</span>(<span class="params">MapDataType mapDataType, <span class="keyword">int</span> confId, Vector3 position,  Vector3 rotation, <span class="keyword">int</span> groupId</span>)</span><br><span class="line">        : <span class="title">base</span>(<span class="params">mapDataType, confId, position, rotation</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            GroupId = groupId;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>怪物组数据导出</strong>定义:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> MonsterGroupMapDataExport.cs</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> 怪物组数据导出定义</span></span><br><span class="line"><span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">[Serializable]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MonsterGroupMapDataExport</span> : <span class="title">BaseMapDataExport</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 怪物组Id</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> GroupId;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 怪物创建半径</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> MonsterCreateRadius;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 怪物警戒半径</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> MonsterActiveRadius;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> 所有归属当前怪物组的怪物导出数据列表</span></span><br><span class="line">    <span class="comment"><span class="xmlDocTag">///</span> <span class="xmlDocTag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> List&lt;MonsterMapDataExport&gt; AllMonsterMapExportDatas = <span class="keyword">new</span> List&lt;MonsterMapDataExport&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MonsterGroupMapDataExport</span>(<span class="params">MapDataType mapDataType, <span class="keyword">int</span> confId, Vector3 position, Vector3 rotation, <span class="keyword">int</span> groupId, <span class="keyword">float</span> monsterCreateRadius, <span class="keyword">float</span> monsterActiveRadius</span>)</span><br><span class="line">        : <span class="title">base</span>(<span class="params">mapDataType, confId, position, rotation</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            GroupId = groupId;</span><br><span class="line">            MonsterCreateRadius = monsterCreateRadius;</span><br><span class="line">            MonsterActiveRadius = monsterActiveRadius;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>地图导出数据预览Level1.json:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "<span class="attribute">MapData</span>": <span class="value">&#123;</span><br><span class="line">        "<span class="attribute">Width</span>": <span class="value"><span class="number">8</span></span>,</span><br><span class="line">        "<span class="attribute">Height</span>": <span class="value"><span class="number">30</span></span>,</span><br><span class="line">        "<span class="attribute">StartPos</span>": <span class="value">&#123;</span><br><span class="line">            "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">            "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">            "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">        </span>&#125;</span>,</span><br><span class="line">        "<span class="attribute">BirthPos</span>": <span class="value">[</span><br><span class="line">            &#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">4.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">2.0</span></span><br><span class="line">            </span>&#125;</span><br><span class="line">        ]</span><br><span class="line">    </span>&#125;</span>,</span><br><span class="line">    "<span class="attribute">AllBaseMapObjectExportDatas</span>": <span class="value">[</span><br><span class="line">        &#123;</span><br><span class="line">            "<span class="attribute">MapObjectType</span>": <span class="value"><span class="number">2</span></span>,</span><br><span class="line">            "<span class="attribute">ConfId</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">            "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">4.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">1.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">3.7200000286102297</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">Rotation</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">            </span>&#125;</span><br><span class="line">        </span>&#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            "<span class="attribute">MapObjectType</span>": <span class="value"><span class="number">2</span></span>,</span><br><span class="line">            "<span class="attribute">ConfId</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">            "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">4.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">1.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">11.600000381469727</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">Rotation</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">            </span>&#125;</span><br><span class="line">        </span>&#125;</span><br><span class="line">    ]</span>,</span><br><span class="line">    "<span class="attribute">AllColliderMapDynamicExportDatas</span>": <span class="value">[</span><br><span class="line">        &#123;</span><br><span class="line">            "<span class="attribute">MapObjectType</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">            "<span class="attribute">ConfId</span>": <span class="value"><span class="number">2</span></span>,</span><br><span class="line">            "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">4.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.25</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">8.149999618530274</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">Rotation</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">ColliderCenter</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">ColliderSize</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">ColliderRiduis</span>": <span class="value"><span class="number">0.5</span></span><br><span class="line">        </span>&#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            "<span class="attribute">MapObjectType</span>": <span class="value"><span class="number">0</span></span>,</span><br><span class="line">            "<span class="attribute">ConfId</span>": <span class="value"><span class="number">3</span></span>,</span><br><span class="line">            "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">4.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.5</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">18.809999465942384</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">Rotation</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">ColliderCenter</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">ColliderSize</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">1.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">1.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">1.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">ColliderRiduis</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">        </span>&#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            "<span class="attribute">MapObjectType</span>": <span class="value"><span class="number">0</span></span>,</span><br><span class="line">            "<span class="attribute">ConfId</span>": <span class="value"><span class="number">3</span></span>,</span><br><span class="line">            "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">4.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.5</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">14.899999618530274</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">Rotation</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">ColliderCenter</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">ColliderSize</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">1.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">1.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">1.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">ColliderRiduis</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">        </span>&#125;</span><br><span class="line">    ]</span>,</span><br><span class="line">    "<span class="attribute">AllMonsterGroupMapDatas</span>": <span class="value">[</span><br><span class="line">        &#123;</span><br><span class="line">            "<span class="attribute">MapDataType</span>": <span class="value"><span class="number">2</span></span>,</span><br><span class="line">            "<span class="attribute">ConfId</span>": <span class="value"><span class="number">0</span></span>,</span><br><span class="line">            "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">4.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">8.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">Roation</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">GroupId</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">            "<span class="attribute">MonsterCreateRadius</span>": <span class="value"><span class="number">4.0</span></span>,</span><br><span class="line">            "<span class="attribute">MonsterActiveRadius</span>": <span class="value"><span class="number">3.0</span></span>,</span><br><span class="line">            "<span class="attribute">AllMonsterMapExportDatas</span>": <span class="value">[</span><br><span class="line">                &#123;</span><br><span class="line">                    "<span class="attribute">MapDataType</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">ConfId</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">4.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">7.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">Roation</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">90.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">GroupId</span>": <span class="value"><span class="number">1</span></span><br><span class="line">                </span>&#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    "<span class="attribute">MapDataType</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">ConfId</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">5.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">9.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">Roation</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">90.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">GroupId</span>": <span class="value"><span class="number">1</span></span><br><span class="line">                </span>&#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    "<span class="attribute">MapDataType</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">ConfId</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">6.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">8.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">Roation</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">90.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">GroupId</span>": <span class="value"><span class="number">1</span></span><br><span class="line">                </span>&#125;</span><br><span class="line">            ]</span><br><span class="line">        </span>&#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            "<span class="attribute">MapDataType</span>": <span class="value"><span class="number">2</span></span>,</span><br><span class="line">            "<span class="attribute">ConfId</span>": <span class="value"><span class="number">0</span></span>,</span><br><span class="line">            "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">4.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">25.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">Roation</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">GroupId</span>": <span class="value"><span class="number">2</span></span>,</span><br><span class="line">            "<span class="attribute">MonsterCreateRadius</span>": <span class="value"><span class="number">6.0</span></span>,</span><br><span class="line">            "<span class="attribute">MonsterActiveRadius</span>": <span class="value"><span class="number">4.0</span></span>,</span><br><span class="line">            "<span class="attribute">AllMonsterMapExportDatas</span>": <span class="value">[</span><br><span class="line">                &#123;</span><br><span class="line">                    "<span class="attribute">MapDataType</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">ConfId</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">4.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">26.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">Roation</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">90.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">GroupId</span>": <span class="value"><span class="number">2</span></span><br><span class="line">                </span>&#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    "<span class="attribute">MapDataType</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">ConfId</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">5.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">26.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">Roation</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">90.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">GroupId</span>": <span class="value"><span class="number">2</span></span><br><span class="line">                </span>&#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    "<span class="attribute">MapDataType</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">ConfId</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">3.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">25.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">Roation</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">90.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">GroupId</span>": <span class="value"><span class="number">2</span></span><br><span class="line">                </span>&#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    "<span class="attribute">MapDataType</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">ConfId</span>": <span class="value"><span class="number">1</span></span>,</span><br><span class="line">                    "<span class="attribute">Position</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">5.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">23.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">Roation</span>": <span class="value">&#123;</span><br><span class="line">                        "<span class="attribute">x</span>": <span class="value"><span class="number">0.0</span></span>,</span><br><span class="line">                        "<span class="attribute">y</span>": <span class="value"><span class="number">90.0</span></span>,</span><br><span class="line">                        "<span class="attribute">z</span>": <span class="value"><span class="number">0.0</span></span><br><span class="line">                    </span>&#125;</span>,</span><br><span class="line">                    "<span class="attribute">GroupId</span>": <span class="value"><span class="number">2</span></span><br><span class="line">                </span>&#125;</span><br><span class="line">            ]</span><br><span class="line">        </span>&#125;</span><br><span class="line">    ]</span>,</span><br><span class="line">    "<span class="attribute">ALlNoGroupMonsterMapDatas</span>": <span class="value">[]</span>,</span><br><span class="line">    "<span class="attribute">AllOtherMapDatas</span>": <span class="value">[]</span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的数据正对应我们导出填充的<strong>MapExport</strong>数据结构。</p>
+<p><strong>MapExport导出数据构建是通过GameMapEditorUtilities.GetMapExport()通过Map脚本获取所有相关数据去构建MapExport实现导出数据填充构建的。</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>因为静态地图对象是跟随预制件一起加载的，所以导出的地图对象数据只包含动态地图对象相关的</strong></li>
+<li><strong>扩展自定义配置数据需要自行扩展或继承MapObjectData或MapData和MapEditor.cs面板显示</strong></li>
+<li><strong>扩展自定义导出数据需要自行扩展或继承BaseMapDynamicExpor或BaseMapDataExportt定义</strong></li>
+<li><strong>自定义更多的动态对象数据导出通过继承BaseMapDynamicExport定义。</strong></li>
+<li><strong>自定义地图埋点数据导出通过继承BaseMapDataExport定义</strong></li>
+</ol>
+<h2 id="实战">实战</h2><p>实战地图导出数据加载还原待添加</p>
+<h1 id="学习总结">学习总结</h1><ol>
+<li><strong>EditorWindow配置编辑器基础可配置数据，Inspector面板提供地图编辑器操作入口和数据序列化存储</strong></li>
+<li><strong>地图对象通过序列化位置+旋转+碰撞等数据可以实现场景编辑后一键更新所有场景对象效果</strong></li>
+<li><strong>地图对象数据存储可以挂在Mono脚本或自定义数据导出实现场景对象相关配置数据存储和导出</strong></li>
+<li><strong>数据埋点显示和操作通过Gizmo和Handles可以实现自己设计的操作交互和显示</strong></li>
+</ol>
+<h1 id="Github">Github</h1><p><a href="https://github.com/TonyTang1990/MapEditor" target="_blank" rel="external">MapEditor</a></p>
+<h1 id="Reference">Reference</h1>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Editor/">Editor</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Editor/">Editor</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2024/04/23/地图编辑器/" data-title="地图编辑器 | 走停人生路" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2023/05/20/UIToolkit学习/"  title="UIToolkit">
+ <strong>下一篇：</strong><br/> 
+ <span>UIToolkit
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2024/04/23/地图编辑器/" data-title="地图编辑器" data-url="http://tonytang1990.github.io/2024/04/23/地图编辑器/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#地图编辑器"><span class="toc-number">2.</span> <span class="toc-text">地图编辑器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">2.1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设计实现"><span class="toc-number">2.2.</span> <span class="toc-text">设计实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置窗口"><span class="toc-number">2.3.</span> <span class="toc-text">配置窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置定义"><span class="toc-number">2.3.1.</span> <span class="toc-text">配置定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置窗口-1"><span class="toc-number">2.3.2.</span> <span class="toc-text">配置窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#快捷按钮区域"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">快捷按钮区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自定义地图数据区域"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">自定义地图数据区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#地图对象配置区域"><span class="toc-number">2.3.2.3.</span> <span class="toc-text">地图对象配置区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#地图埋点配置区域"><span class="toc-number">2.3.2.4.</span> <span class="toc-text">地图埋点配置区域</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作编辑Inspector"><span class="toc-number">2.4.</span> <span class="toc-text">操作编辑Inspector</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础数据配置区域"><span class="toc-number">2.4.1.</span> <span class="toc-text">基础数据配置区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#快捷操作按钮区域"><span class="toc-number">2.4.2.</span> <span class="toc-text">快捷操作按钮区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#地图对象编辑区域"><span class="toc-number">2.4.3.</span> <span class="toc-text">地图对象编辑区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#地图埋点编辑区域"><span class="toc-number">2.4.4.</span> <span class="toc-text">地图埋点编辑区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#寻路烘培"><span class="toc-number">2.4.5.</span> <span class="toc-text">寻路烘培</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据导出"><span class="toc-number">2.4.6.</span> <span class="toc-text">数据导出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战"><span class="toc-number">2.5.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">3.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">4.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Game/" title="Game">Game<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/VersionControl/" title="VersionControl">VersionControl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Algorithm/" title="Algorithm">Algorithm<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Computer/" title="Computer">Computer<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Sort/" title="Sort">Sort<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GameDesignPattern/" title="GameDesignPattern">GameDesignPattern<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Tony Tang. <br/>
+			This is my new blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2024 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"TonyTang1990"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
