@@ -36,7 +36,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/MapObjectConfigInspectorArea.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/MapDataConfigInspectorArea.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/NavigationBakePreview.PNG">
-<meta property="og:updated_time" content="2024-05-14T16:31:51.101Z">
+<meta property="og:updated_time" content="2024-05-14T16:42:15.503Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="地图编辑器">
 <meta name="twitter:description" content="Introduction游戏开发过程中，我们搭建关卡时需要一个工具去支持摆放场景物件和数据埋点编辑，从而支持快速搭建关卡和策划数据埋点。这一工具正是本章节需要实现的地图编辑器。
@@ -72,7 +72,7 @@
 				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
 				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -88,7 +88,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:tonytang1990.github.io">
 					</form>
 					
@@ -111,14 +111,14 @@
 		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
 		
   <p class="article-time">
-    <time datetime="2024-04-23T10:27:00.000Z" itemprop="datePublished"> Published 2024-04-23</time>
+    <time datetime="2024-04-23T10:27:00.000Z" itemprop="datePublished"> 發表於 2024-04-23</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">Contents</strong>
+			<strong class="toc-title">文章目錄</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#地图编辑器"><span class="toc-number">2.</span> <span class="toc-text">地图编辑器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">2.1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设计实现"><span class="toc-number">2.2.</span> <span class="toc-text">设计实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置窗口"><span class="toc-number">2.3.</span> <span class="toc-text">配置窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置定义"><span class="toc-number">2.3.1.</span> <span class="toc-text">配置定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置窗口-1"><span class="toc-number">2.3.2.</span> <span class="toc-text">配置窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#快捷按钮区域"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">快捷按钮区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自定义地图数据区域"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">自定义地图数据区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#地图对象配置区域"><span class="toc-number">2.3.2.3.</span> <span class="toc-text">地图对象配置区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#地图埋点配置区域"><span class="toc-number">2.3.2.4.</span> <span class="toc-text">地图埋点配置区域</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作编辑Inspector"><span class="toc-number">2.4.</span> <span class="toc-text">操作编辑Inspector</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础数据配置区域"><span class="toc-number">2.4.1.</span> <span class="toc-text">基础数据配置区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#快捷操作按钮区域"><span class="toc-number">2.4.2.</span> <span class="toc-text">快捷操作按钮区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#地图对象编辑区域"><span class="toc-number">2.4.3.</span> <span class="toc-text">地图对象编辑区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#地图埋点编辑区域"><span class="toc-number">2.4.4.</span> <span class="toc-text">地图埋点编辑区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#寻路烘培"><span class="toc-number">2.4.5.</span> <span class="toc-text">寻路烘培</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据导出"><span class="toc-number">2.4.6.</span> <span class="toc-text">数据导出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战"><span class="toc-number">2.5.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">3.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">4.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
 		
@@ -127,16 +127,6 @@
 		<h1 id="Introduction">Introduction</h1><p>游戏开发过程中，我们搭建关卡时需要一个工具去支持摆放场景物件和数据埋点编辑，从而支持快速搭建关卡和策划数据埋点。这一工具正是本章节需要实现的地图编辑器。</p>
 <h1 id="地图编辑器">地图编辑器</h1><h2 id="需求">需求</h2><p>实现一个工具，首先第一步，我们还是需要理清需求：</p>
 <ol>
-<li>纯Editor地图编辑器，用于场景编辑和数据埋点。</li>
-<li>支持自定义场景对象数据和自由摆放场景对象进行场景编辑，场景对象支持静态摆放和动态创建两种。</li>
-<li>支持自定义埋点数据和自由摆放埋点数据进行数据埋点编辑。</li>
-<li>支持自定义调整场景大小以及场景地形指定和大小自动适配。</li>
-<li>场景数据和埋点数据支持导出自定义数据格式(比如Lua,Json等)。</li>
-<li>同一个场景支持编辑多个场景编辑和数据埋点。</li>
-</ol>
-<h2 id="设计实现">设计实现</h2><p>接下来针对前面提到的需求，我们一一分析我们应该用什么方案和技术来实现。</p>
-<p>需求：</p>
-<ol>
 <li>纯Editor地图编辑器，用于<strong>场景编辑</strong>和<strong>数据埋点</strong>。</li>
 <li>支持自定义场景对象数据和自由摆放场景对象进行场景编辑，场景对象支持<strong>静态摆放</strong>和<strong>动态创建</strong>两种。</li>
 <li>支持自定义<strong>埋点数据</strong>和<strong>自由摆放埋点数据</strong>进行数据埋点编辑。</li>
@@ -144,6 +134,7 @@
 <li>场景数据和埋点数据支持导出自定义数据格式(比如Lua,Json等)。</li>
 <li>同一个场景支持编辑多个场景编辑和数据埋点。</li>
 </ol>
+<h2 id="设计实现">设计实现</h2><p>接下来针对前面提到的需求，我们一一分析我们应该用什么方案和技术来实现。</p>
 <p>实现思路：</p>
 <ol>
 <li>地图编辑器主要由<strong>地图编辑器配置窗口</strong>和<strong>地图编辑器挂在操作脚本</strong>Inspector组成。</li>
@@ -383,22 +374,22 @@
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">Contents</strong>
+  <strong class="toc-title">文章目錄</strong>
  
  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#地图编辑器"><span class="toc-number">2.</span> <span class="toc-text">地图编辑器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">2.1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设计实现"><span class="toc-number">2.2.</span> <span class="toc-text">设计实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置窗口"><span class="toc-number">2.3.</span> <span class="toc-text">配置窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置定义"><span class="toc-number">2.3.1.</span> <span class="toc-text">配置定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置窗口-1"><span class="toc-number">2.3.2.</span> <span class="toc-text">配置窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#快捷按钮区域"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">快捷按钮区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自定义地图数据区域"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">自定义地图数据区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#地图对象配置区域"><span class="toc-number">2.3.2.3.</span> <span class="toc-text">地图对象配置区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#地图埋点配置区域"><span class="toc-number">2.3.2.4.</span> <span class="toc-text">地图埋点配置区域</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作编辑Inspector"><span class="toc-number">2.4.</span> <span class="toc-text">操作编辑Inspector</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础数据配置区域"><span class="toc-number">2.4.1.</span> <span class="toc-text">基础数据配置区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#快捷操作按钮区域"><span class="toc-number">2.4.2.</span> <span class="toc-text">快捷操作按钮区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#地图对象编辑区域"><span class="toc-number">2.4.3.</span> <span class="toc-text">地图对象编辑区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#地图埋点编辑区域"><span class="toc-number">2.4.4.</span> <span class="toc-text">地图埋点编辑区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#寻路烘培"><span class="toc-number">2.4.5.</span> <span class="toc-text">寻路烘培</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据导出"><span class="toc-number">2.4.6.</span> <span class="toc-text">数据导出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战"><span class="toc-number">2.5.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#学习总结"><span class="toc-number">3.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">4.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">Categories</p>
+	<p class="asidetitle">分類</p>
 		<ul>
 		
 		  
@@ -495,7 +486,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">標簽</p>
 		<ul class="clearfix">
 		
 			
@@ -583,7 +574,7 @@
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情鏈接</p>
     <ul>
         
     </ul>
@@ -593,7 +584,7 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
 </div>
 
 </aside>
@@ -818,7 +809,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
