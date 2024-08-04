@@ -36,7 +36,8 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Math/EasingFuncLerpPos.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Math/DotweenSequenceUsing.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Math/TAnimationUML.png">
-<meta property="og:updated_time" content="2022-07-31T07:29:04.849Z">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Math/InspectorSimulation.png">
+<meta property="og:updated_time" content="2024-08-04T16:02:22.843Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数学与缓动">
 <meta name="twitter:description" content="前言本章节博客是在使用一段时间Dotween后，对于Dotween是如何实现各种不同的缓动类型效果比较好奇。从本片博客会了解线性方程与线性代数之间的关系，以及数学(线性方程)在缓动中的实际应用和数学公式是如何输出显示的。本博客着重于学习数学在插值动画上的运用学习，博客末尾会给出实战的Git地址。
@@ -245,16 +246,21 @@
 <p><img src="/img/Unity/Math/DotweenSequenceUsing.png" alt="DotweenSequenceUsing"></p>
 <p>接下来参考Dotween的设计，我将动画组件UML设计如下:</p>
 <p><img src="/img/Unity/Math/TAnimationUML.png" alt="TAnimationUML"></p>
+<p>编辑器面板扩展模拟播放:</p>
+<p><img src="/img/Unity/Math/InspectorSimulation.png" alt="InspectorSimulation"></p>
 <p>可以把上面的设计理解成组件版的简陋Dotween:</p>
 <ul>
 <li><p>TBaseAnimation.cs</p>
-<p>所有插值动画的基类(抽象网络插值动画的流程以及基础支持),支持是否Awake时自动播放，插值类型，延迟时间，持续时间，是否翻转插值效果等基础设置</p>
+<p>所有插值动画的基类(抽象网络插值动画的流程以及基础支持),支持是否Awake时自动播放，插值类型，延迟时间，持续时间，循环类型设置等基础设置</p>
+</li>
+<li><p>TBaseAnimationEditor.cs</p>
+<p>插值动画自定义面板，核心扩展支持了Editor快速模拟播放，暂停，继续，停止按钮功能。</p>
 </li>
 <li><p>TSequenceAnimation.cs</p>
-<p>序列动画抽象,负责像Dotween的Sequence一样管理一系列TBaseAnimation的整体播放效果(比如线性播放和并发播放)</p>
+<p>序列动画抽象,负责像Dotween的Sequence一样管理一系列TBaseAnimation的整体播放效果(比如线性播放和并发播放，目前仅支持单次或无限循环播放两种方式)</p>
 </li>
-<li><p>TSequenceAnimationInspector.cs</p>
-<p>序列动画的自定义面板，核心是通过SerializeObject和SerializeProperty编写支持Undo的自定义序列动画面板</p>
+<li><p>TSequenceAnimationEditor.cs</p>
+<p>序列动画的自定义面板，核心是通过SerializeObject和SerializeProperty编写支持Undo的自定义序列动画面板，同时支持了Editor快速模拟播放，暂停，继续，停止按钮功能。</p>
 </li>
 <li><p>EasingFunctions.cs</p>
 <p>Git上找的关于不同插值动画类型的核心函数方程定义,把时间插值比列通过不同的函数方程计算出不同的插值系数，从而实现不同的插值方程式的插值动画效果</p>
