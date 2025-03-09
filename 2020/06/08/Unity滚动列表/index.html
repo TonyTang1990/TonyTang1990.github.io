@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。 列表什么是列表了？可以滚动，支持创建多个基于特定模板显示的单元格容器。 列表的功能需求(**(√)**表示本人已经实现的部分)？  滚动显示(支持滚动到指定位置)(√) 动态添加(支持任何位置添加元素)(√) 循">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity滚动列表">
+<meta property="og:url" content="http://example.com/2020/06/08/Unity%E6%BB%9A%E5%8A%A8%E5%88%97%E8%A1%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。 列表什么是列表了？可以滚动，支持创建多个基于特定模板显示的单元格容器。 列表的功能需求(**(√)**表示本人已经实现的部分)？  滚动显示(支持滚动到指定位置)(√) 动态添加(支持任何位置添加元素)(√) 循">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/FancyScrollViewExhibition.png">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/SuperScrollViewExhibition.png">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/LeftToRightScene.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/TopToBottomScene.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/HorizontalGalleryDemoScene.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/ChatMessageListScene.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/ChangeItemSizeScene.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/ClickAndLoadMoreScene.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/GridViewScene.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/PageViewScene.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/SpinDatePickerScene.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/SelectAndDeleteOrMoveScene.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/DepthScrollExhibition.png">
+<meta property="og:image" content="http://example.com/img/Unity/CellContainer/CellContainerUML.png">
+<meta property="article:published_time" content="2020-06-08T14:37:17.000Z">
+<meta property="article:modified_time" content="2024-05-14T16:48:39.306Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Unity/CellContainer/FancyScrollViewExhibition.png">
+
+
+<link rel="canonical" href="http://example.com/2020/06/08/Unity%E6%BB%9A%E5%8A%A8%E5%88%97%E8%A1%A8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2020/06/08/Unity%E6%BB%9A%E5%8A%A8%E5%88%97%E8%A1%A8/","path":"2020/06/08/Unity滚动列表/","title":"Unity滚动列表"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Unity滚动列表 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E8%A1%A8"><span class="nav-number">1.1.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%B9%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">单元格容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%9E%E7%8E%B0%E5%88%86%E6%9E%90"><span class="nav-number">1.2.1.</span> <span class="nav-text">单元格实现分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LoopScrollRect"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">LoopScrollRect</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FancyScrollView"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">FancyScrollView</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#super-scrollview"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">super-scrollview</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E6%88%98%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%B9%E5%99%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">实战单元格容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5%E8%AE%B2%E8%A7%A3"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">深入讲解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AA%E6%9D%A5%E4%BC%98%E5%8C%96"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">未来优化</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Github%E5%9C%B0%E5%9D%80"><span class="nav-number">2.</span> <span class="nav-text">Github地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/06/08/Unity%E6%BB%9A%E5%8A%A8%E5%88%97%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Unity滚动列表 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity滚动列表
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-06-08 22:37:17" itemprop="dateCreated datePublished" datetime="2020-06-08T22:37:17+08:00">2020-06-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-05-15 00:48:39" itemprop="dateModified" datetime="2024-05-15T00:48:39+08:00">2024-05-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。</p>
+<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><p>什么是列表了？<br>可以滚动，支持创建多个基于特定模板显示的单元格容器。</p>
+<p>列表的功能需求(**(√)**表示本人已经实现的部分)？</p>
+<ol>
+<li>滚动显示(支持滚动到指定位置)<strong>(√)</strong></li>
+<li>动态添加(支持任何位置添加元素)<strong>(√)</strong></li>
+<li>循环列表(支持从头滚到尾再接着滚动到头的循环方式)</li>
+<li>不同大小单元格显示(支持自适应大小或者自定义传单元格大小)<strong>(√)</strong></li>
+<li>多种列表类型显示(e.g. 横向,竖向，横向网格，竖向网格等)<strong>(√)</strong></li>
+<li>单元格构造自定义传参**(√)**</li>
+<li>自定义滚动动画**(√)**</li>
+<li>不同单元格朝向(e.g. 从左往右或从右往左。从上往下或者从下往上。)<strong>(√)</strong></li>
+<li>单元格矫正(最终单元格会滚动到某个最近的单元格位置)<strong>(√)</strong></li>
+<li>单元格对象池(e.g. 单元格逻辑对象(Object)对象池。单元格实体对象(GameObject)对象池。)<strong>(√)</strong></li>
+<li>单元格嵌套滚动(e.g. 嵌套不同方向的单元格容器滚动支持)<strong>(√)</strong></li>
+<li>本地单元格模拟创建查看效果(e.g. Inspector支持快速模拟查看排版等)<strong>(√)</strong></li>
+</ol>
+<h2 id="单元格容器"><a href="#单元格容器" class="headerlink" title="单元格容器"></a>单元格容器</h2><p>这里关于单元格容器，这里主要实现了两套:</p>
+<ol>
+<li>支持不同滚动方向不同初始化朝向支持不同大小(手动传Size或者自动计算Size)嵌套滚动单元格的一套通用单元格容器。</li>
+<li>支持两侧深度滚动显示的单元格容器(这一套实现的效果比较特别所以单独实现的)<br><strong>其中本人主要以第一套(以前在公司学习到的一套实现方案，后来在此基础上扩展支持了很多功能)为重点来学习实战。</strong></li>
+</ol>
+<h3 id="单元格实现分析"><a href="#单元格实现分析" class="headerlink" title="单元格实现分析"></a>单元格实现分析</h3><p>这里通过学习了解市面上常见的单元格实现来了解常见的单元格实现方案：</p>
+<h4 id="LoopScrollRect"><a href="#LoopScrollRect" class="headerlink" title="LoopScrollRect"></a>LoopScrollRect</h4><p><a target="_blank" rel="noopener" href="https://github.com/qiankanglai/LoopScrollRect">LoopScrollRect</a><br>这一套是<a target="_blank" rel="noopener" href="http://qiankanglai.me/2015/08/15/LoopScrollRect/">钱康来</a>大佬编写分享的一套支持循环列表的实现方案。<br>通过查看源码，可以了解到，这一套实现核心是基于ContentSizeFitter，LayoutGroup和LayoutElement相关组件来实现动态计算单元格位置显示循环滚动以及不同大小等效果的。<br><strong>亮点分析:</strong></p>
+<ol>
+<li>使用了原生Scroller，但并不依赖原生ScrolRect那套来计算滚动，这样为<strong>支持循环列表</strong>打下了基础。</li>
+<li><strong>单元格位置数据与单元格逻辑对象分离</strong>，可以做到动态计算单元格显示时<strong>只有需要显示的才有逻辑单元格对象(避免New大量的单元格)</strong>。</li>
+</ol>
+<p><strong>缺点分析:</strong></p>
+<ol>
+<li>虽然基于LayoutGroup和LayoutElement，但并非正向通过他们的排版功能得到不同单元格大小显示，而是反向设置LayoutElement来通过LayoutUtility.GetPreferredHeight()等接口方法来实现正确的计算滚动排版。<strong>这儿也就意味着做不到自动计算单元格大小的功能。</strong></li>
+<li>单元格显示是通过SendMessage的形式触发，感觉这种方式效率可能不如直接调用接口方法来的快(个人感觉)。<br>核心获取单元格大小的代码：</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">float</span> <span class="title">GetSize</span>(<span class="params">RectTransform item</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">float</span> size = contentSpacing;</span><br><span class="line">    <span class="keyword">if</span> (m_GridLayout != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        size += m_GridLayout.cellSize.y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        size += LayoutUtility.GetPreferredHeight(item);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>单元格初始化显示触发代码:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">ProvideData</span>(<span class="params">Transform transform, <span class="built_in">int</span> idx</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    transform.SendMessage(<span class="string">&quot;ScrollCellIndex&quot;</span>, idx);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="FancyScrollView"><a href="#FancyScrollView" class="headerlink" title="FancyScrollView"></a>FancyScrollView</h4><p><a target="_blank" rel="noopener" href="https://github.com/setchi/FancyScrollView">FancyScrollView</a><br><img src="/img/Unity/CellContainer/FancyScrollViewExhibition.png" alt="FancyScrollViewExhibition"><br>这一套是在UWA上看到的，貌似是日本开发者开发的。<br>通过上面的效果图可以看到，这一套实现了很强大的结合自定义动画或者Shader的单元格容器框架。<br>通过查看源代码可以发现，这一套非常强大的一点是通过自定义实现Scroller强大的滚动单元格容器需要的滚动相关的计算和回调支持。<br>上次代码只需要通过ScrollView和Scroller接口设置显示数据以及单元格模板等就能做到很好的单元格容器滚动效果。<br><strong>亮点分析:</strong></p>
+<ol>
+<li>没有依赖原生Scroller，自定义实现了Scroller，可以更加容易的支持循环列表。</li>
+<li>动态计算显示与否是通过当前滚动到的位置来判定，而单元格位置信息并没有耦合到单元格对象里，这样可以做到逻辑对象数量等于最大可显示的数量。</li>
+<li>更新显示回调(UpdatePosition)里有传入位置数据，可以基于位置数据做<strong>动画(Animator)或者Shader相关的表现展示</strong>。</li>
+<li>不依赖于Scroller，LayoutGroup等组件，开销更低</li>
+</ol>
+<p><strong>缺点分析:</strong></p>
+<ol>
+<li><strong>单元格不支持不同大小</strong>，都是按预制件统一大小来计算</li>
+</ol>
+<h4 id="super-scrollview"><a href="#super-scrollview" class="headerlink" title="super-scrollview"></a>super-scrollview</h4><p><a target="_blank" rel="noopener" href="https://github.com/baba-s/ugui-super-scrollview-example">ugui-super-scrollview-example</a><br>这一套是Unity Asset Store里出售的一套滚动单元格插件。<br>让我们先来一张效果图展示：<br><img src="/img/Unity/CellContainer/SuperScrollViewExhibition.png" alt="SuperScrollViewExhibition"><br>从上面可以看到，SuperScrollView可以做到很多效果(e.g. 翻页，动态加载，动态大小变化，滚动到指定位置，动态增删单元格，不同朝向单元格容器显示……)<br>基本上能想到的单元格容器效果，这个插件都支持。<br>接下来让我们结合源码和实例来分析下这一套单元格容器的好坏:<br><strong>亮点分析:</strong></p>
+<ol>
+<li>单元格位置数据与逻辑对象分离，可以<strong>有效的减少逻辑单元格对象数量</strong>。</li>
+<li>自定义的单元格大小抽象，可以<strong>方便的自定义传入不同大小的单元格并显示</strong>。</li>
+<li>支持不同朝向的单元格容器显示(核心是反向初始化和计算单元格位置显示)</li>
+</ol>
+<p><strong>缺点分析:</strong></p>
+<ol>
+<li>使用了ScrollRect部分功能(特别是容器滚动部分)，这一点导致要做循环列表就很困难</li>
+</ol>
+<p><strong>后续本人的单元格容器很大程度上跟SuperScrollView更相近(指功能设计上而非代码设计)。</strong></p>
+<h3 id="实战单元格容器"><a href="#实战单元格容器" class="headerlink" title="实战单元格容器"></a>实战单元格容器</h3><p>通过学习了解市面上的单元格容器实现，可以看到有几个比较重要的点：</p>
+<ol>
+<li><strong>不依赖于ScrollRect滚动，自定义分离单元格位置数据和单元格逻辑对象，是实现循环列表和减少逻辑单元格对象数量的关键。</strong></li>
+<li><strong>大部分都不支持自动计算大小，需要手动计算传递单元格大小，相对来说没那么方便，但开销会小。</strong></li>
+</ol>
+<p>接下来让我们看看博主实战最终实现的效果(主要讲解第一套单元格):<br><img src="/img/Unity/CellContainer/LeftToRightScene.PNG" alt="LeftToRightScene"></p>
+<p><img src="/img/Unity/CellContainer/TopToBottomScene.PNG" alt="TopToBottomScene"></p>
+<p><img src="/img/Unity/CellContainer/HorizontalGalleryDemoScene.PNG" alt="HorizontalGalleryDemoScene"></p>
+<p><img src="/img/Unity/CellContainer/ChatMessageListScene.PNG" alt="ChatMessageListScene"></p>
+<p><img src="/img/Unity/CellContainer/ChangeItemSizeScene.PNG" alt="ChangeItemSizeScene"></p>
+<p><img src="/img/Unity/CellContainer/ClickAndLoadMoreScene.PNG" alt="ClickAndLoadMoreScene"></p>
+<p><img src="/img/Unity/CellContainer/GridViewScene.PNG" alt="GridViewScene"></p>
+<p><img src="/img/Unity/CellContainer/PageViewScene.PNG" alt="PageViewScene"></p>
+<p><img src="/img/Unity/CellContainer/SpinDatePickerScene.PNG" alt="SpinDatePickerScene"></p>
+<p><img src="/img/Unity/CellContainer/SelectAndDeleteOrMoveScene.PNG" alt="SelectAndDeleteOrMoveScene"></p>
+<p>上面展示了我支持的各类单元格容器，比如横向单元格容器，竖向单元格容器，横向网格单元格容器，竖向网格单元格容器，动态大小等各种用法。<br><img src="/img/Unity/CellContainer/DepthScrollExhibition.png" alt="DepthScrollExhibition"><br>第三章图主要展示的是另一套单元格容器，支持左右两侧指定深度滚动的单元格容器。</p>
+<p>Note:</p>
+<p>基于ContentSizeFitter和LayoutGroup的自动计算大小测试性能开销比较大最后决定不予支持了。</p>
+<h4 id="深入讲解"><a href="#深入讲解" class="headerlink" title="深入讲解"></a>深入讲解</h4><p>让我们通过横向单元格的面板来大致了解下单元格都支持哪些功能：<br>!(HorizontalContainerInspector)(&#x2F;img&#x2F;Unity&#x2F;CellContainer&#x2F;HorizontalContainerInspector.png)<br>从面板上可以看出，博主的单元格容器主要支持了以下几个功能：</p>
+<ol>
+<li>单元格滚动自动矫正以及相关速度设置(最终确保滚动到单元格正中心位置)</li>
+<li>支持不同朝向的单元格创建显示</li>
+<li>支持嵌套单元格容器(不同朝向的单元格容器可以嵌套滚动)</li>
+<li>支持单元格的间距和初始位置排版设置</li>
+<li>支持设置多预制件用于绑定不同逻辑单元格对象显示在同一个单元格容器下</li>
+<li>支持编辑器下快速模拟创建单元格查看排版</li>
+</ol>
+<p>单元格容器核心实现原理：</p>
+<ol>
+<li>通过手动传单元格大小或者自动计算单元格大小来得到每个单元格的大小数据</li>
+<li>通过累加计算出总的可滚动Content大小，同时计算出单元格的抽象单元格位置</li>
+<li>结合IBeginDragHandler, IDragHandler, IEndDragHandler接口来判定拖拽状态(比如是否开始或结束拖拽，拖拽方向等)，以及实现嵌套单元格的拖拽事件判定以及分发</li>
+<li>Content结合ScrollRect来实现滚动回调(OnValueChanged)触发滚动计算判定，结合单元格的抽象位置来判定每个单元格的显隐状态。同时判定是否满足单元格矫正条件</li>
+<li>通过IEndDragHandler响应结束拖拽时判定是否需要执行单元格矫正</li>
+<li>向上层暴露OnShow,OnVisibleScroll,MoveTOIndex,OnHide等接口来实现单元格逻辑流程显示回收(BaseScrollContainer:bindContainerCallBack()接口传递)</li>
+</ol>
+<p>结合UML类图来理解下单元格容器的设计:<br><img src="/img/Unity/CellContainer/CellContainerUML.png" alt="CellContainerUML"></p>
+<p>首先先放一段完整的创建单元格显示的事例代码，后续会一一讲解具体实现细节流程:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">RightToLeftContainer.bindContainerCallBack(onCellShow);</span><br><span class="line">  RightToLeftContainer.setCellDatasByCellCount(<span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">  <span class="comment"><span class="doctag">///</span> 单元格显示回调</span></span><br><span class="line">  <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">  <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cellindex&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">  <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cellinstance&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onCellShow</span>(<span class="params"><span class="built_in">int</span> cellindex, GameObject cellinstance</span>)</span></span><br><span class="line">  &#123;</span><br><span class="line">      <span class="keyword">var</span> toptobottomcell = cellinstance.GetComponent&lt;ShowCellIndexCell&gt;();</span><br><span class="line">      <span class="keyword">if</span> (toptobottomcell == <span class="literal">null</span>)</span><br><span class="line">      &#123;</span><br><span class="line">          toptobottomcell = cellinstance.AddComponent&lt;ShowCellIndexCell&gt;();</span><br><span class="line">      &#125;</span><br><span class="line">      toptobottomcell.<span class="keyword">init</span>(cellindex);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来让我们看看单元格容器的细节实现：<br>CellData.cs（<strong>单元格相关抽象</strong>）</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CellData</span> : <span class="title">IRecycle</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 当前Cell索引</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> CellIndex</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 拥有者单元格</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">protected</span> BaseScrollContainer mOwnerContainer;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Cell实例对象</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> GameObject CellGO</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Cell实例对象的RectTransform</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> RectTransform CellGORectTransform</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 单元格大小(宽和高)</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Vector2 mCellSize;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 单元格预制件索引</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> CellPrefabIndex</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ......</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//Debug.Log(&quot;NewCellData:onCreate()&quot;);</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDispose</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//Debug.Log(&quot;NewCellData:onDispose()&quot;);</span></span><br><span class="line">        CellIndex = <span class="number">-1</span>;</span><br><span class="line">        mOwnerContainer = <span class="literal">null</span>;</span><br><span class="line">        CellGO = <span class="literal">null</span>;</span><br><span class="line">        CellGORectTransform = <span class="literal">null</span>;</span><br><span class="line">        CellPrefabIndex = <span class="number">-1</span>;</span><br><span class="line">        mCellSize = Vector2.zero;</span><br><span class="line">        mRectPos = Vector2.zero;</span><br><span class="line">        mRectAbsPos = Vector2.zero;</span><br><span class="line">        CellRect.Set(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CellData</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        CellIndex = <span class="number">-1</span>;</span><br><span class="line">        mOwnerContainer = <span class="literal">null</span>;</span><br><span class="line">        CellGO = <span class="literal">null</span>;</span><br><span class="line">        CellGORectTransform = <span class="literal">null</span>;</span><br><span class="line">        CellPrefabIndex = <span class="number">-1</span>;</span><br><span class="line">        mCellSize = Vector2.zero;</span><br><span class="line">        mRectPos = Vector2.zero;</span><br><span class="line">        mRectAbsPos = Vector2.zero;</span><br><span class="line">        CellRect.Set(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 初始化单元格实例对象</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cellinstance&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span>(<span class="params">GameObject cellinstance</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(cellinstance != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            CellGO = cellinstance;</span><br><span class="line">            <span class="comment">// 不同单元格容器公用同一个模板对象可能会出现锚点不一致问题，所以每次强制设置</span></span><br><span class="line">            CellGORectTransform = CellGO.transform <span class="keyword">as</span> RectTransform;</span><br><span class="line">            CellGORectTransform.anchorMax = AnchorMax;</span><br><span class="line">            CellGORectTransform.anchorMin = AnchorMin;</span><br><span class="line">            CellGORectTransform.pivot = Pivot;</span><br><span class="line">            updateCellSizeAndPosition();</span><br><span class="line">            <span class="keyword">if</span> (!CellGO.activeSelf)</span><br><span class="line">            &#123;</span><br><span class="line">                CellGO.SetActive(<span class="literal">true</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            CellGO = <span class="literal">null</span>;</span><br><span class="line">            CellGORectTransform = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Cell数据清除</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        mOwnerContainer = <span class="literal">null</span>;</span><br><span class="line">        CellGO = <span class="literal">null</span>;</span><br><span class="line">        CellGORectTransform = <span class="literal">null</span>;</span><br><span class="line">        mCellSize = Vector2.zero;</span><br><span class="line">        mRectPos = Vector2.zero;</span><br><span class="line">        CellRect = Rect.zero;</span><br><span class="line">        ObjectPool.Singleton.push&lt;CellData&gt;(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面列举了单元格参与容器显示判定计算比较重要的成员变量以及生命周期函数，可以看出单元格的大小和位置以及显示区域信息会用作单元格容器滚动时的判定数据，从而判定是否需要显示特定单元格。</p>
+<p>从前面的事例代码可以看到单元格的创建可以手动指定单元格大小，不传会用默认预制件大小</p>
+<p>设定单元格容器回调后触发setCellDatasByCellCount()等设置容器数量相关接口后，触发单元格以及单元格容器相关数据的初始化和判定以及滚动判定监听:<br>BaseScrollContainer.cs(单元格容器基类)</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Use this for initialization</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    ScrollRect.onValueChanged.AddListener(onScrollChanged);</span><br><span class="line">    TryCorrectData();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 滚动回调刷新Cell显示</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;scrollpos&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">onScrollChanged</span>(<span class="params">Vector2 scrollpos</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCellDatas != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        updateScrollValue();</span><br><span class="line">        mMaskRect.x = mAvalibleScrollDistance * ScrollRect.horizontalNormalizedPosition;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; mCellDatas.Count; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            onCellDisplay(i);</span><br><span class="line">        &#125;</span><br><span class="line">        checkCellPostionCorrect(mCurrentScrollDir);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Set container celldatas by pass data</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 设置Container的cell数据通过列表数据</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;prefabindexlist&quot;&gt;</span>预制件索引列表<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param width=&quot;cellsizelist&quot;&gt;</span>单元格大小列表(为空表示采用预制件默认大小)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;scrollnormalizedposition&quot;&gt;</span>单元格初始滚动位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCellDatasByDataList</span>(<span class="params">List&lt;<span class="built_in">int</span>&gt; prefabindexlist, List&lt;Vector2&gt; cellsizelist = <span class="literal">null</span>, Vector2? scrollnormalizedposition = <span class="literal">null</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> celldatalist = createNormalCellDataList(prefabindexlist, cellsizelist);</span><br><span class="line">    setCellDatas(celldatalist, scrollnormalizedposition);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Set container celldatas by pass cell count</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 设置Container的cell数据通过单元格数量</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;prefabindexlist&quot;&gt;</span>预制件索引列表<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param width=&quot;cellsizelist&quot;&gt;</span>单元格大小列表(为空表示采用预制件默认大小)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;scrollnormalizedposition&quot;&gt;</span>单元格初始滚动位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCellDatasByCellCount</span>(<span class="params"><span class="built_in">int</span> cellcount, Vector2? scrollnormalizedposition = <span class="literal">null</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> celldatalist = createNormalCellDataListWithCount(cellcount);</span><br><span class="line">    setCellDatas(celldatalist, scrollnormalizedposition);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Set container celldatas by pass celldata list</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 设置Container的cell数据</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;celldatas&quot;&gt;</span>所有的Cell数据<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;scrollnormalizedposition&quot;&gt;</span>单元格初始滚动位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCellDatas</span>(<span class="params">List&lt;CellData&gt; celldatas, Vector2? scrollnormalizedposition = <span class="literal">null</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Update container relative datas</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 更新容器数据</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;scrollnormalizaedposition&quot;&gt;</span>单元格初始滚动位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;keeprectcontentpos&quot;&gt;</span>是否保持rect content的相对位置(优先于scrollnormalizaedposition)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">updateContainerData</span>(<span class="params">Vector2? scrollnormalizaedposition = <span class="literal">null</span>, <span class="built_in">bool</span> keeprectcontentpos = <span class="literal">false</span></span>)</span>;</span><br><span class="line"></span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+<p>因为单元格的流程和细节还是比较多，这里讲解的不太全面，很多地方没有说到，但考虑到项目还在用这两套单元格滚动，所以展示不打算放出源码，等未来实际成熟再分享源码。</p>
+<p><strong>亮点分析:</strong></p>
+<ol>
+<li><strong>支持嵌套单元格滚动(通过判定滚动方向手动向上传递滚动事件实现)</strong></li>
+<li><strong>支持手动传Size</strong></li>
+<li><strong>支持不同单元格模板以及不同单元格逻辑对象的显示</strong></li>
+</ol>
+<p><strong>缺点分析:</strong></p>
+<ol start="2">
+<li><strong>滚动单元格依赖于ScrollRect的滚动机制需要一开始就计算出总的单元格大小之和，导致很难支持循环列表。</strong></li>
+<li><strong>滚动列表要一开始就知道单元格的大小，导致一开始如果有过多的动态大小会导致单元格初始化前的计算开销过大。</strong></li>
+</ol>
+<h4 id="未来优化"><a href="#未来优化" class="headerlink" title="未来优化"></a>未来优化</h4><ol>
+<li>设计成支持纯虚拟的滚动列表，可以在滚动时再请求单元格大小信息做到动态更新ScrollRect滚动容器大小，动态单元格大小在初始化时的开销过大。</li>
+<li>设计成不基于ScrollRect的滚动机制，为实现循环列表做准备</li>
+</ol>
+<p>—————————-2021&#x2F;4&#x2F;20更新开始——————————-</p>
+<p>开始着手分离单元格位置和单元格逻辑对象优化单元格逻辑对象过多问题，确保只需创建可见的单元格逻辑对象，减少不必要的逻辑对象创建开销。(<strong>已设计成回调似方式来优化逻辑对象问题</strong>)</p>
+<p>—————————-2021&#x2F;4&#x2F;20更新结束——————————-</p>
+<p>Note:</p>
+<ol>
+<li>源代码里默认带了一套组件绑定(结合代码生成)的方案，感兴趣的朋友可以自己了解下</li>
+<li>源代码里也默认带了ObjectPool和GameObjectPool两种对象池的实现，感兴趣的朋友可以自己了解下</li>
+</ol>
+<h1 id="Github地址"><a href="#Github地址" class="headerlink" title="Github地址"></a>Github地址</h1><p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/ScrollContainer">ScrollContainer</a></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://github.com/qiankanglai/LoopScrollRect">LoopScrollRect</a><br><a target="_blank" rel="noopener" href="https://github.com/setchi/FancyScrollView">FancyScrollView</a><br><a target="_blank" rel="noopener" href="https://github.com/baba-s/ugui-super-scrollview-example">ugui-super-scrollview-example</a><br><a target="_blank" rel="noopener" href="http://www.xuanyusong.com/archives/4234">Unity3D研究院之ContentSizeFitter同步立即响应回调</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/05/29/Unity%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A/" rel="prev" title="Unity组件绑定">
+                  <i class="fa fa-angle-left"></i> Unity组件绑定
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/12/%E8%A1%8C%E4%B8%BA%E6%A0%91-Unity/" rel="next" title="行为树-Unity">
+                  行为树-Unity <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

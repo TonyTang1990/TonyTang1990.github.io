@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言本篇文章是为了记录学习游戏开发过程中，版本强更和资源热更相关知识。 关于资源AssetBundle加载模块相关学习参考:Unity Resource ManagerAssetBundle资源打包加载管理 热更新首先还是让我们从What，Why，How三个点来学习理解热更新。 What什么是热更新？从前端的角度来说，我个人理解热更新是指无需通过商店审核上传最新版本就能通过游戏内热更下载最新资源和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="热更新">
+<meta property="og:url" content="http://example.com/2019/05/03/%E7%83%AD%E6%9B%B4%E6%96%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本篇文章是为了记录学习游戏开发过程中，版本强更和资源热更相关知识。 关于资源AssetBundle加载模块相关学习参考:Unity Resource ManagerAssetBundle资源打包加载管理 热更新首先还是让我们从What，Why，How三个点来学习理解热更新。 What什么是热更新？从前端的角度来说，我个人理解热更新是指无需通过商店审核上传最新版本就能通过游戏内热更下载最新资源和">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Unity/HotUpdate/HotUpdateFlowChat.png">
+<meta property="og:image" content="http://example.com/img/Unity/HotUpdate/AndroidHotUpdateFilePath.png">
+<meta property="og:image" content="http://example.com/img/Unity/HotUpdate/HotUpdateUIInterface.png">
+<meta property="og:image" content="http://example.com/img/Unity/HotUpdate/DownloadAPK.png">
+<meta property="og:image" content="http://example.com/img/Unity/HotUpdate/InstallAPK.png">
+<meta property="og:image" content="http://example.com/img/Unity/HotUpdate/HotUpdateFlowChat.png">
+<meta property="og:image" content="http://example.com/img/Unity/HotUpdate/HotUpdateToolsUI.png">
+<meta property="og:image" content="http://example.com/img/Unity/HotUpdate/AssetBundleMD5Caculation.png">
+<meta property="article:published_time" content="2019-05-03T05:30:16.000Z">
+<meta property="article:modified_time" content="2022-07-31T07:30:37.789Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="HotUpdate">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Unity/HotUpdate/HotUpdateFlowChat.png">
+
+
+<link rel="canonical" href="http://example.com/2019/05/03/%E7%83%AD%E6%9B%B4%E6%96%B0/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2019/05/03/%E7%83%AD%E6%9B%B4%E6%96%B0/","path":"2019/05/03/热更新/","title":"热更新"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>热更新 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="nav-number">2.</span> <span class="nav-text">热更新</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#What"><span class="nav-number">2.1.</span> <span class="nav-text">What</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why"><span class="nav-number">2.2.</span> <span class="nav-text">Why</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How"><span class="nav-number">2.3.</span> <span class="nav-text">How</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E5%BC%BA%E6%9B%B4"><span class="nav-number">2.3.1.</span> <span class="nav-text">版本强更</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E6%88%98"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">实战</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E7%83%AD%E6%9B%B4"><span class="nav-number">2.3.2.</span> <span class="nav-text">资源热更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%83%AD%E6%9B%B4%E6%96%B0%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7"><span class="nav-number">2.3.3.</span> <span class="nav-text">热更新辅助工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%83%AD%E6%9B%B4"><span class="nav-number">2.3.4.</span> <span class="nav-text">代码热更</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#XLua"><span class="nav-number">2.3.4.1.</span> <span class="nav-text">XLua</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">2.3.5.</span> <span class="nav-text">资源服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E6%88%98-1"><span class="nav-number">2.3.5.1.</span> <span class="nav-text">实战</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Git"><span class="nav-number">4.</span> <span class="nav-text">Git</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/05/03/%E7%83%AD%E6%9B%B4%E6%96%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="热更新 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          热更新
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-05-03 13:30:16" itemprop="dateCreated datePublished" datetime="2019-05-03T13:30:16+08:00">2019-05-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 15:30:37" itemprop="dateModified" datetime="2022-07-31T15:30:37+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/HotUpdate/" itemprop="url" rel="index"><span itemprop="name">HotUpdate</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇文章是为了记录学习游戏开发过程中，版本强更和资源热更相关知识。</p>
+<p>关于资源AssetBundle加载模块相关学习参考:<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2016/10/13/Unity-Resource-Manager">Unity Resource Manager</a><br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2018/10/24/AssetBundle%E8%B5%84%E6%BA%90%E6%89%93%E5%8C%85%E5%8A%A0%E8%BD%BD%E7%AE%A1%E7%90%86%E5%AD%A6%E4%B9%A0/">AssetBundle资源打包加载管理</a></p>
+<h1 id="热更新"><a href="#热更新" class="headerlink" title="热更新"></a>热更新</h1><p>首先还是让我们从What，Why，How三个点来学习理解热更新。</p>
+<h2 id="What"><a href="#What" class="headerlink" title="What"></a>What</h2><p>什么是热更新？<br>从前端的角度来说，我个人理解热更新是指无需通过商店审核上传最新版本就能通过游戏内热更下载最新资源和代码的形式更新最新功能。</p>
+<p>从服务器的角度来说，可能是无需关闭服务器，不停机状态下修复漏洞，更新资源等，重点是更新逻辑代码。</p>
+<p>本人是前端程序，所以侧重点是前端热更这一块，而非服务器热更新。<br>接下来主要以以下三点来深入学习：</p>
+<ol>
+<li>版本强更(类似于商店下载最新版本的完整包安装更新)</li>
+<li>资源热更(游戏内资源热更新下载替换本地游戏内容)</li>
+<li>代码热更(游戏内代码热更新下载替换本地游戏代码内容)</li>
+</ol>
+<h2 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h2><p>为什么需要热更新？</p>
+<ol>
+<li>商店审核时间不可控(紧急bug严重修复时会造成阻碍)</li>
+<li>手机游戏更新频繁，改善用户更新体验(不必每次都走商店版本强更)</li>
+<li>快速修复bug和更新功能</li>
+</ol>
+<h2 id="How"><a href="#How" class="headerlink" title="How"></a>How</h2><p>接下来会针对前面提到的三点来分别讨论：<br>针对版本强更和资源热更，先来看一下我整理的流程图：<br><img src="/img/Unity/HotUpdate/HotUpdateFlowChat.png" alt="HotUpdateFlowChat"></p>
+<h3 id="版本强更"><a href="#版本强更" class="headerlink" title="版本强更"></a>版本强更</h3><p>版本强更主要是游戏内通过服务器获取最新版本号判定当前游戏版本是否需要更新，然后引导用户更新(可以是引导到对应商店下载，也可以是直接游戏内直接下载安装包)最新的包。</p>
+<ol>
+<li>引导到对应商店下载<br>问题：<br>需要判断出用户当前下载的安装包是从哪个应用商店下载的，然后跳转到对应商店，如果玩家不是从应用商店下载或者说玩家本地没有对应应用商店，那么就会出现无法成功跳转对应应用商店的情况。<br>方案：<br>考虑到Android应用商店繁多，基于上述问题，这里我们采用第二种方案，直接引导游戏内CDN下载最新包的形式强更版本(这里指的Android，IOS官方AppStore只有一个本地肯定有AppStore，直接跳转AppStore即可)</li>
+<li>游戏内直接下载(cdn下载)<br>游戏内直接下载可以通过下载对应CDN(不同渠道分不同CDN地址即可划分渠道)上的安装包覆盖安装即可。</li>
+</ol>
+<h4 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h4><p>Android:<br>通过查询相关资料，了解到Android APK安装在Android N(7)之前主要是通过Itent结合File的形式。<br>Android N(7)之后主要是通过FileProvider组件</p>
+<p>CS层热更下载APK代码:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> testresourceurl = <span class="string">&quot;*/HotUpdate.apk&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> webrequest = UnityWebRequest.Get(testresourceurl);</span><br><span class="line"><span class="keyword">yield</span> <span class="keyword">return</span> webrequest.SendWebRequest();</span><br><span class="line"><span class="keyword">if</span> (webrequest.isNetworkError)</span><br><span class="line">&#123;</span><br><span class="line">    Debug.LogError(<span class="built_in">string</span>.Format(<span class="string">&quot;&#123;0&#125;安装包下载出错!&quot;</span>, testresourceurl));</span><br><span class="line">    Debug.LogError(webrequest.error);</span><br><span class="line">    <span class="keyword">if</span> (webrequest.isHttpError)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(<span class="built_in">string</span>.Format(<span class="string">&quot;responseCode : &quot;</span>, webrequest.responseCode));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="built_in">string</span>.Format(<span class="string">&quot;&#123;0&#125; webrequest.isDone:&#123;1&#125;!&quot;</span>, testresourceurl, webrequest.isDone));</span><br><span class="line">    Debug.Log(<span class="built_in">string</span>.Format(<span class="string">&quot;&#123;0&#125;安装包下载完成!&quot;</span>, testresourceurl));</span><br><span class="line">    <span class="keyword">var</span> downloadfilefolderpath = Application.persistentDataPath + <span class="string">&quot;/download/&quot;</span>;</span><br><span class="line">    <span class="keyword">var</span> downloadfilesavepath = downloadfilefolderpath + <span class="string">&quot;app.apk&quot;</span>;</span><br><span class="line">    Debug.Log(<span class="string">&quot;downloadfilefolderpath = &quot;</span> + downloadfilefolderpath);</span><br><span class="line">    Debug.Log(<span class="string">&quot;downloadfilesavepath = &quot;</span> + downloadfilesavepath);</span><br><span class="line">    <span class="keyword">if</span>(!Directory.Exists(downloadfilefolderpath))</span><br><span class="line">    &#123;</span><br><span class="line">        Directory.CreateDirectory(downloadfilefolderpath);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (File.Exists(downloadfilesavepath))</span><br><span class="line">    &#123;</span><br><span class="line">        File.Delete(downloadfilesavepath);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">using</span> (<span class="keyword">var</span> fs = File.Create(downloadfilesavepath))</span><br><span class="line">    &#123;</span><br><span class="line">        fs.Write(webrequest.downloadHandler.data, <span class="number">0</span>, webrequest.downloadHandler.data.Length);</span><br><span class="line">        fs.Flush();</span><br><span class="line">        fs.Close();</span><br><span class="line">        Debug.Log(downloadfilesavepath + <span class="string">&quot;文件写入完成!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原生APK安装代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Intent</span> <span class="variable">install</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>(Intent.ACTION_VIEW);</span><br><span class="line">install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line"><span class="type">File</span> <span class="variable">apkFile</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(mContext.getExternalFilesDir(<span class="literal">null</span>).getPath() + <span class="string">&quot;/download/&quot;</span> + <span class="string">&quot;app.apk&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">Uri</span> <span class="variable">uri</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.N) &#123;</span><br><span class="line">    install.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span><br><span class="line">    install.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);</span><br><span class="line">    install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span><br><span class="line">    uri = FileProvider.getUriForFile(mContext, mPackagename + <span class="string">&quot;.fileprovider&quot;</span>, apkFile);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    uri = Uri.fromFile(apkFile);</span><br><span class="line">&#125;</span><br><span class="line">install.setDataAndType(uri, <span class="string">&quot;application/vnd.android.package-archive&quot;</span>);</span><br><span class="line">startActivity(install);</span><br></pre></td></tr></table></figure>
+
+<p>AndroidMainifest.xml定义相关FileProvider：<br>res下新建xml目录以及file_paths.xml文件<br><img src="/img/Unity/HotUpdate/AndroidHotUpdateFilePath.png" alt="AndroidHotUpdateFilePath"></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//强更部分</span><br><span class="line"><span class="tag">&lt;<span class="name">provider</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;android.support.v4.content.FileProvider&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:authorities</span>=<span class="string">&quot;应用包名.fileprovider&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:grantUriPermissions</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:name</span>=<span class="string">&quot;android.support.FILE_PROVIDER_PATHS&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:resource</span>=<span class="string">&quot;@xml/file_paths&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">provider</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置file_paths.xml:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">    //下载安装包目录</span><br><span class="line">    <span class="tag">&lt;<span class="name">paths</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">external-path</span></span></span><br><span class="line"><span class="tag">            <span class="attr">name</span>=<span class="string">&quot;download&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">path</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">external-files-path</span></span></span><br><span class="line"><span class="tag">            <span class="attr">name</span>=<span class="string">&quot;download&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">path</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">paths</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>AndroidManifest.xml权限相关设置:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.READ_EXTERNAL_STORAGE&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.REQUEST_INSTALL_PACKAGES&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Android相关路径定义知识:<br>以下内容来源：<br><a target="_blank" rel="noopener" href="http://yifeng.studio/2017/05/03/android-7-0-compat-fileprovider/">关于 Android 7.0 适配中 FileProvider 部分的总结</a><br><files-path>：内部存储空间应用私有目录下的 files&#x2F; 目录，等同于 Context.getFilesDir() 所获取的目录路径；</p>
+<p><cache-path>：内部存储空间应用私有目录下的 cache&#x2F; 目录，等同于 Context.getCacheDir() 所获取的目录路径；</p>
+<p><external-path>：外部存储空间根目录，等同于 Environment.getExternalStorageDirectory() 所获取的目录路径；</p>
+<p><external-files-path>：外部存储空间应用私有目录下的 files&#x2F; 目录，等同于 Context.getExternalFilesDir(null) 所获取的目录路径；</p>
+<p><external-cache-path>：外部存储空间应用私有目录下的 cache&#x2F; 目录，等同于 Context.getExternalCacheDir()；</p>
+<p>最后让我们来看下运行效果：<br><img src="/img/Unity/HotUpdate/HotUpdateUIInterface.png" alt="运行界面"><br><img src="/img/Unity/HotUpdate/DownloadAPK.png" alt="下载安装包"><br><img src="/img/Unity/HotUpdate/InstallAPK.png" alt="版本强更安装"></p>
+<p>注意事项：</p>
+<ol>
+<li>下载保存APK时需要android.permission.WRITE_EXTERNAL_STORAGE权限</li>
+<li>安装APK时需要android.permission.REQUEST_INSTALL_PACKAGES和android.permission.READ_EXTERNAL_STORAGE权限</li>
+<li>Android 6.0以后敏感权限需要主动请求</li>
+<li><a target="_blank" rel="noopener" href="http://lazybios.com/2016/12/install-apk-by-intent-compatible-adnroid-n/">从Android 7.0开始，系统修改了安全机制: 限定应用在默认情况下只能访问自身应用数据。所以当我们想通过File对象访问其它package数据时，就需要借助于ContentProvider、FileProvider这些组件，否则会报FileUriExposedException异常。</a></li>
+<li>Android下载和读取安装APK的目录需要是有可读写权限的外部存储目录(e.g. Application.persistentDataPath || Application.temporaryCachePath)</li>
+</ol>
+<p>IOS:<br>IOS正版只有AppStore(暂时不考虑越狱渠道)，所以IOS直接打开应用商店跳转即可。<br>IOS跳转AppStore商店的代码就简单很多了：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Application.OpenURL(<span class="string">&quot;itms-apps://itunes.apple.com/app/id&quot;</span> + appID);</span><br></pre></td></tr></table></figure>
+<p>Android打开商店的代码和IOS类似:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Application.OpenURL(<span class="string">&quot;market://details?id=&quot;</span> + appID);</span><br></pre></td></tr></table></figure>
+<p>Note:<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/hackmind/article/details/78113511">IOS appID可以通过itunes的链接获取到，比如我们的游戏链接为:https://itunes.apple.com/app/id1238589899，1238589899 为IOS的appID</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/hackmind/article/details/78113511">google play 的ID通过商店链接获取到，比如我们的游戏链接为:https://play.google.com/store/apps/details?id=com.oasis.movten.android， com.oasis.movten.android 为 Android的appID</a></p>
+<h3 id="资源热更"><a href="#资源热更" class="headerlink" title="资源热更"></a>资源热更</h3><p>资源热更是指在游戏内直接下载最新资源，然后本地游戏通过使用最新下载的资源更新到最新的游戏资源并使用。</p>
+<p>资源热更下载老版本Unity提供了WWW接口，但这个接口官方已经不推荐使用了，取而代之的是UnityWebRequest(http访问资源服务器的形式)。</p>
+<p>资源下载跟前面提到的版本强更APK下载是一个意思，只不过需要通过比较本地更新的资源数据和服务器上的资源数据对比出需要更新的资源列表。这里不厌其烦的再放一次版本强更和资源热更的流程图加深印象：<br><img src="/img/Unity/HotUpdate/HotUpdateFlowChat.png" alt="HotUpdateFlowChat"><br>代码这里就不贴了，感兴趣的可以直接上Git下载了解：<br><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/AssetBundleLoadManager">AssetBundleLoadManager</a></p>
+<h3 id="热更新辅助工具"><a href="#热更新辅助工具" class="headerlink" title="热更新辅助工具"></a>热更新辅助工具</h3><p>Tools-&gt;HotUpdate-&gt;热更新操作工具</p>
+<p><img src="/img/Unity/HotUpdate/HotUpdateToolsUI.png" alt="HotUpdateToolsUI"></p>
+<p>主要分为以下4个步骤：</p>
+<ol>
+<li><p>版本资源文件MD5计算(文件名格式:MD5+版本号+资源版本号+平台+时间戳+.txt)</p>
+<p><img src="/img/Unity/HotUpdate/AssetBundleMD5Caculation.png" alt="AssetBundleMD5Caculation"></p>
+</li>
+<li><p>对比两个版本的MD5文件信息得出需要热更新的AB文件信息</p>
+</li>
+<li><p>执行热更新AB准备操作自动复制需要热更新的AB到热更新准备目录(然后手动拷贝需要强更或热更的资源到真正的热更新目录)</p>
+</li>
+<li><p>执行热更新准备操作，生成热更新所需的最新资源热更新信息文件(ResourceUpdateList.txt)和服务器最新版本信息文件(ServerVersionConfig.json)</p>
+</li>
+</ol>
+<h3 id="代码热更"><a href="#代码热更" class="headerlink" title="代码热更"></a>代码热更</h3><p>代码热更和版本强更不一样，版本强更一般来说是通过更新下载完整的包来实现整个游戏功能版本更新，而代码热更是指我们通过技术手段(e.g. XLua, ILRuntime, ToLua ……)，通过热更代码的形式实现热更功能代码。</p>
+<p>主流的方式有两种：</p>
+<ol>
+<li>Lua(Lua方案)<br> Lua是解析执行，有自己的虚拟机，对于代码热更有天然的优势，我们完全可以以资源热更(AssetBundle)的形式热更Lua代码。</li>
+<li>ILRuntime(CS方案)<br> 这里不是非常了解ILRuntime底层原理，想了解详情的可以参考官网：<a target="_blank" rel="noopener" href="https://ourpalm.github.io/ILRuntime/public/v1/guide/index.html">ILRuntime项目为基于C#的平台（例如Unity）提供了一个纯C#实现，快速、方便且可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码的热更新</a><br> 但ILRuntime有一点很大的优势就是开发期也是用CS语言，不用写Lua。</li>
+</ol>
+<p>这里因为项目主要用到了XLua，所以后续都是以XLua作为代码热更来学习。<br>选XLua的原因主要有以下几点：</p>
+<ol>
+<li>腾讯开源，有大公司支持，稳定</li>
+<li>除了支持纯Lua开发，还支持CS通过改写Lua的形式热修复Bug</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://gameinstitute.qq.com/community/detail/119660">苹果禁止了C#的部分反射操作，禁止JIT（即时编译，程序运行时创建并运行新代码），不允许逻辑热更新，只允许使用AssetBundle进行资源热更新。</a></li>
+</ol>
+<h4 id="XLua"><a href="#XLua" class="headerlink" title="XLua"></a>XLua</h4><p>官网：<br><a target="_blank" rel="noopener" href="https://github.com/Tencent/xLua">XLua</a></p>
+<p>待续……</p>
+<h3 id="资源服务器"><a href="#资源服务器" class="headerlink" title="资源服务器"></a>资源服务器</h3><p>前面提到的版本强更和资源热更都离不开资源服务器，这里说的资源服务器是指静态资源服务器，接下来通过实战学习了解静态资源服务器相关的概念以及静态资源服务器选择和使用。</p>
+<p>静态资源服务器:</p>
+<p>我们把资源放到指定静态资源服务器上，静态资源服务器开启Http或者其他的连接服务，允许用户通过对应方式(Http或者其他)去访问拉取服务器资源。(个人理解，如果有误欢迎指出)</p>
+<p>静态资源服务器是资源热更的一个前提。</p>
+<p>CND:</p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%85%A7%E5%AE%B9%E5%82%B3%E9%81%9E%E7%B6%B2%E8%B7%AF"><strong>内容分发网络</strong>（英语：<strong>C</strong>ontent <strong>d</strong>elivery <strong>n</strong>etwork或<strong>C</strong>ontent <strong>d</strong>istribution <strong>n</strong>etwork，<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%B8%AE%E5%AF%AB">缩写</a>：<strong>CDN</strong>）是指一种透过<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BA%92%E8%81%AF%E7%B6%B2">互联网</a>互相连接的计算机网络系统，利用最靠近每位用户的服务器，更快、更可靠地将音乐、图片、影片、应用程序及其他文件发送给用户，来提供高性能、可扩展性及低成本的网络内容传递给用户。</a></p>
+<p>从上面可以看出CDN是独立于静态资源服务器，网络传输层的一个概念，主要目的是为了加快和提供高性能的资源传输。</p>
+<h4 id="实战-1"><a href="#实战-1" class="headerlink" title="实战"></a>实战</h4><p>这里我选择了阿里云的<a href="">OSS</a>作为静态资源服务器。</p>
+<p>OSS详情:</p>
+<p><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/31883.html?spm=5176.208357.1107607.14.5404390fXITEiK">阿里云对象存储服务（Object Storage Service，简称 OSS）为您提供基于网络的数据存取服务。使用 OSS，您可以通过网络随时存储和调用包括文本、图片、音频和视频等在内的各种非结构化数据文件。</a></p>
+<p>OSS静态资源服务器搭建：</p>
+<ol>
+<li>注册阿里云账号</li>
+<li>账号实名认证</li>
+<li>开通OSS服务</li>
+<li>创建Bucket</li>
+<li>上传文件</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/31883.html?spm=a2c4g.11174283.3.1.1b5a7da2pQvh8V">OSS详细使用说明</a></p>
+<p>待续……</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/janeky/article/details/17666409">Unity手游之路手游资源热更新策略探讨</a><br><a target="_blank" rel="noopener" href="http://copyfuture.com/blogs-details/cd4f28bd6dfae0a2ece7cd43a6f90e62">Unity 大版本更新之APK的下载与覆盖安装</a><br><a target="_blank" rel="noopener" href="https://gameinstitute.qq.com/community/detail/119660">Unity3D热更新方案总结</a><br><a target="_blank" rel="noopener" href="http://lazybios.com/2016/12/install-apk-by-intent-compatible-adnroid-n/">使用Intent安装APK方法(兼容Android N)</a><br><a target="_blank" rel="noopener" href="http://yifeng.studio/2017/05/03/android-7-0-compat-fileprovider/">关于 Android 7.0 适配中 FileProvider 部分的总结</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/hackmind/article/details/78113511">Unity app 如何打开商店</a></p>
+<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/AssetBundleLoadManager">AssetBundleLoadManager</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/HotUpdate/" rel="tag"># HotUpdate</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/25/%E4%BC%98%E5%8C%96/" rel="prev" title="优化篇">
+                  <i class="fa fa-angle-left"></i> 优化篇
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/05/15/Odin%E6%8F%92%E4%BB%B6/" rel="next" title="Odin插件">
+                  Odin插件 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

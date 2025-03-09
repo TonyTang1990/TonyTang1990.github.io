@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Shader Toy Introduction之前就听别人提起过这个网站，上面有各式各样只通过Pixel Shader编写绚丽的效果(里面包含了很多数学和算法)。而且作者编写的代码在网站上一目了然，让你知道这个效果是如何计算得出的。看一下下面这一张效果：第一眼看到的时候，我很难相信这是通过简单纹理贴图输入加上数学运算得出的图案。 那么我们首先要知道什么是Pixel Shader？Pixel Sha">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shader Toy">
+<meta property="og:url" content="http://example.com/2016/07/25/Shader-Toy/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Shader Toy Introduction之前就听别人提起过这个网站，上面有各式各样只通过Pixel Shader编写绚丽的效果(里面包含了很多数学和算法)。而且作者编写的代码在网站上一目了然，让你知道这个效果是如何计算得出的。看一下下面这一张效果：第一眼看到的时候，我很难相信这是通过简单纹理贴图输入加上数学运算得出的图案。 那么我们首先要知道什么是Pixel Shader？Pixel Sha">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/OpenGL/ShaderToyExmaple.PNG">
+<meta property="og:image" content="http://example.com/img/OpenGL/ShaderToyfragColor.PNG">
+<meta property="og:image" content="http://example.com/img/OpenGL/ShaderToyfragCoord.PNG">
+<meta property="og:image" content="http://example.com/img/OpenGL/ShaderToyOwnCoordinateSystem.PNG">
+<meta property="og:image" content="http://example.com/img/OpenGL/ShaderToyCircleDemo.PNG">
+<meta property="og:image" content="http://example.com/img/OpenGL/ShaderToyPlasmaEffect.PNG">
+<meta property="og:image" content="http://example.com/img/OpenGL/ShaderToyTextureAndVideoInput.PNG">
+<meta property="og:image" content="http://example.com/img/OpenGL/ShaderToyTextureAndVideoInput2.PNG">
+<meta property="og:image" content="http://example.com/img/OpenGL/ShaderToyMouseInput1.PNG">
+<meta property="og:image" content="http://example.com/img/OpenGL/ShaderToyMouseInput2.PNG">
+<meta property="og:image" content="http://example.com/img/OpenGL/ShaderToyRandomNumber.PNG">
+<meta property="og:image" content="http://example.com/img/OpenGL/ShaderToyInputs.PNG">
+<meta property="article:published_time" content="2016-07-25T07:36:19.000Z">
+<meta property="article:modified_time" content="2016-07-31T09:50:50.354Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Shader">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/OpenGL/ShaderToyExmaple.PNG">
+
+
+<link rel="canonical" href="http://example.com/2016/07/25/Shader-Toy/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2016/07/25/Shader-Toy/","path":"2016/07/25/Shader-Toy/","title":"Shader Toy"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Shader Toy | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Shader-Toy-Introduction"><span class="nav-number">1.</span> <span class="nav-text">Shader Toy Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Shader-Toy-Study"><span class="nav-number">2.</span> <span class="nav-text">Shader Toy Study</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#fragColor"><span class="nav-number">2.1.</span> <span class="nav-text">fragColor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fragCoord"><span class="nav-number">2.2.</span> <span class="nav-text">fragCoord</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Own-Coordinate-System"><span class="nav-number">2.3.</span> <span class="nav-text">Own Coordinate System</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cicle-Demo"><span class="nav-number">2.4.</span> <span class="nav-text">Cicle Demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plasma-Effect"><span class="nav-number">2.5.</span> <span class="nav-text">Plasma Effect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Texture-Video-as-Input"><span class="nav-number">2.6.</span> <span class="nav-text">Texture &amp; Video as Input</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mouse-Input"><span class="nav-number">2.7.</span> <span class="nav-text">Mouse Input</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Random-Noise"><span class="nav-number">2.8.</span> <span class="nav-text">Random Noise</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E5%AD%A6%E4%B9%A0%E5%BE%85%E6%9B%B4%E6%96%B0"><span class="nav-number">2.9.</span> <span class="nav-text">更多学习待更新</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Shader-Toy-Relative-Knowledge"><span class="nav-number">3.</span> <span class="nav-text">Shader Toy Relative Knowledge</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Shader-Toy-Inputs"><span class="nav-number">3.1.</span> <span class="nav-text">Shader Toy Inputs</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/07/25/Shader-Toy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Shader Toy | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Shader Toy
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2016-07-25 15:36:19" itemprop="dateCreated datePublished" datetime="2016-07-25T15:36:19+08:00">2016-07-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2016-07-31 17:50:50" itemprop="dateModified" datetime="2016-07-31T17:50:50+08:00">2016-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Rendering/" itemprop="url" rel="index"><span itemprop="name">Rendering</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="Shader-Toy-Introduction"><a href="#Shader-Toy-Introduction" class="headerlink" title="Shader Toy Introduction"></a>Shader Toy Introduction</h1><p>之前就听别人提起过这个网站，上面有各式各样只通过Pixel Shader编写绚丽的效果(里面包含了很多数学和算法)。<br>而且作者编写的代码在网站上一目了然，让你知道这个效果是如何计算得出的。<br>看一下下面这一张效果：<br><img src="/img/OpenGL/ShaderToyExmaple.PNG" alt="ShaderToyExmaple"><br>第一眼看到的时候，我很难相信这是通过简单纹理贴图输入加上数学运算得出的图案。</p>
+<p>那么我们首先要知道什么是Pixel Shader？<br>Pixel Shader在OpenGL里也叫做Fragment Shader,可以简单的理解成针对每一个pixel做处理的Shader。</p>
+<p>在这个网站上编写Pixel Shader还有一个好处就是快速方便的看到效果，当你要去测试一些数学算式算法的时候，很容易可视化的在上面编写并测试。</p>
+<h1 id="Shader-Toy-Study"><a href="#Shader-Toy-Study" class="headerlink" title="Shader Toy Study"></a>Shader Toy Study</h1><p>接下来是基于ShaderToy上”GLSL 2D Tutorials”教程学习的一些事例。</p>
+<h2 id="fragColor"><a href="#fragColor" class="headerlink" title="fragColor"></a>fragColor</h2><p>fragColor就是我们在GLSL的fragment shader里最后代表像素颜色的最后输出变量，他控制着我每一个像素最终的颜色值</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">mainImage</span><span class="params">( out vec4 fragColor, in vec2 fragCoord )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fragColor = <span class="built_in">vec4</span>(<span class="number">0.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>mainImage(…)是我们的Pixel Shader的函数路口，每一帧都会对每一像素进行调用。<br>Final Effect：<br><img src="/img/OpenGL/ShaderToyfragColor.PNG" alt="ShaderToyfragColor"></p>
+<h2 id="fragCoord"><a href="#fragCoord" class="headerlink" title="fragCoord"></a>fragCoord</h2><p>fragCoord是针对像素坐标而言的，因为mainImage会针对每一个像素执行一次，而fragCoord就给出了像素的坐标位置(左下角为原点)。<br>iResolution是ShaderToy里给出的关于frame的宽高像素信息（主要用于适应屏幕的大小变化，做到按比例而非特定像素值）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">mainImage</span><span class="params">( out vec4 fragColor, in vec2 fragCoord )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// fragcoord通过使用像素的fragCoord位置除以iResolution的宽高像素信息，</span></span><br><span class="line">	<span class="comment">// 成功将像素位置的width和heigth都映射到了[0.0,1.0]</span></span><br><span class="line">    vec2 fragcoord = <span class="built_in">vec2</span>(fragCoord.xy / iResolution.xy);</span><br><span class="line">    vec3 backgroundcolor = <span class="built_in">vec3</span>(<span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>);</span><br><span class="line">    vec3 pixelcolor = backgroundcolor;</span><br><span class="line">    vec3 gridcolor = <span class="built_in">vec3</span>(<span class="number">0.5</span>,<span class="number">0.5</span>,<span class="number">0.5</span>);</span><br><span class="line">    vec3 axescolor = <span class="built_in">vec3</span>(<span class="number">0.0</span>,<span class="number">0.0</span>,<span class="number">1.0</span>);</span><br><span class="line">    <span class="type">const</span> <span class="type">float</span> thickwidth = <span class="number">0.1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">float</span> i = <span class="number">0.0</span>; i &lt; <span class="number">1.0</span>; i+=thickwidth)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">mod</span>(fragcoord.x, thickwidth) &lt; <span class="number">0.008</span> || <span class="built_in">mod</span>(fragcoord.y, thickwidth) &lt; <span class="number">0.008</span>)</span><br><span class="line">        &#123;</span><br><span class="line">           pixelcolor = gridcolor;  </span><br><span class="line">        &#125;       </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">abs</span>(fragcoord.x ) &lt; <span class="number">0.006</span> || <span class="built_in">abs</span>(fragcoord.y) &lt; <span class="number">0.006</span>)</span><br><span class="line">    &#123;</span><br><span class="line">       pixelcolor = axescolor;   </span><br><span class="line">    &#125;</span><br><span class="line">    fragColor = <span class="built_in">vec4</span>(pixelcolor,<span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Final Effect:<br><img src="/img/OpenGL/ShaderToyfragCoord.PNG" alt="ShaderToyfragCoord"></p>
+<h2 id="Own-Coordinate-System"><a href="#Own-Coordinate-System" class="headerlink" title="Own Coordinate System"></a>Own Coordinate System</h2><p>前一节讲到的把像素坐标映射到了[0.0,1.0]，那么如果我们想把坐标信息映射到[-1.0,1.0]并且把屏幕中点作为(0.0,0.0)改如何映射了<br>而且前一节有一个问题需要注意，我们绘制出的grid是长方形而不是正方形（这主要是由于我们屏幕宽高是不一样，但我们都把x，y映射到了[0.0,1.0]并且用相同的interval即thickwidth去做等分导致的）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">mainImage</span><span class="params">( out vec4 fragColor, in vec2 fragCoord )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 这里值得注意一下，因为一般情况都是屏幕宽大于高，</span></span><br><span class="line">	<span class="comment">// 所以我们在映射宽高的时候，只需把高映射到[-1.0,1.0]，</span></span><br><span class="line">	<span class="comment">// 宽保持和高的比例差即可，即映射到[-width/height, width/height]</span></span><br><span class="line">	<span class="comment">// 这样一来，同一个interval对于宽和高来说就一样了</span></span><br><span class="line">    vec2 r = <span class="built_in">vec2</span>( fragCoord.xy - <span class="number">0.5</span>*iResolution.xy );</span><br><span class="line">	r = <span class="number">2.0</span> * r.xy / iResolution.y;</span><br><span class="line">    vec3 backgroundcolor = <span class="built_in">vec3</span>(<span class="number">1.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>);</span><br><span class="line">    vec3 pixelcolor = backgroundcolor;</span><br><span class="line">    vec3 gridcolor = <span class="built_in">vec3</span>(<span class="number">0.5</span>,<span class="number">0.5</span>,<span class="number">0.5</span>);</span><br><span class="line">    vec3 axescolor = <span class="built_in">vec3</span>(<span class="number">0.0</span>,<span class="number">0.0</span>,<span class="number">1.0</span>);</span><br><span class="line">    <span class="type">const</span> <span class="type">float</span> thickwidth = <span class="number">0.1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">float</span> i = <span class="number">0.0</span>; i &lt; <span class="number">1.0</span>; i+=thickwidth)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">mod</span>(r.x, thickwidth) &lt; <span class="number">0.008</span> || <span class="built_in">mod</span>(r.y, thickwidth) &lt; <span class="number">0.008</span>)</span><br><span class="line">        &#123;</span><br><span class="line">           pixelcolor = gridcolor;  </span><br><span class="line">        &#125;       </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">abs</span>(r.x ) &lt; <span class="number">0.006</span> || <span class="built_in">abs</span>(r.y) &lt; <span class="number">0.006</span>)</span><br><span class="line">    &#123;</span><br><span class="line">       pixelcolor = axescolor;   </span><br><span class="line">    &#125;</span><br><span class="line">    fragColor = <span class="built_in">vec4</span>(pixelcolor,<span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Final Effect:<br><img src="/img/OpenGL/ShaderToyOwnCoordinateSystem.PNG" alt="ShaderToyOwnCoordinateSystem"></p>
+<h2 id="Cicle-Demo"><a href="#Cicle-Demo" class="headerlink" title="Cicle Demo"></a>Cicle Demo</h2><p>接下来我们即将看实现以下功能：</p>
+<ol>
+<li>绘制圆<br>针对绘制圆，我们主要是通过判断像素到圆心的位置的距离来决定是否处于圆内。</li>
+<li>让圆之间的颜色实现叠加计算<br>针对叠加运算的判断，我们主要是通过一个smoothstep的函数去得出像素在圆内和圆外所参与颜色计算的比例(这里是院内1.0,圆外0.0)<br>这里要介绍一下<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Smoothstep">smoothstep</a>函数。<br>函数原型：<br>float smoothstep(float edge0, float edge1, float x)<br>如果我们传递x&lt;edge0则返回0.0，x&gt;edge1则返回1.0，如果在中间则返回edge0-edge1的interpolation值(这里我们主要用来实现判断像素是在圆内还是圆外来决定是否参与叠加运算)</li>
+<li>使圆做周期性运动。<br>圆做周期性运动主要是通过iGlobalTime(Pixel Shader运行后的一个动态时间)来计算得出圆心的位置来实现的。</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PI 3.14159265359</span></span><br><span class="line"><span class="comment">// 绘制圆并返回是否改圆的该像素是否应该参与像素叠加计算</span></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">disk</span><span class="params">(vec2 r, vec2 center, <span class="type">float</span> radius, vec3 color, inout vec3 pixel)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="type">float</span> rtoclength = <span class="built_in">length</span>(r - center);</span><br><span class="line">   <span class="type">float</span> inside = <span class="number">0.0</span>; </span><br><span class="line">   <span class="keyword">if</span>(rtoclength &lt; radius)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="comment">//pixel = vec3(clamp(rtoclength, radius / 4.0,radius / 2.0));   </span></span><br><span class="line">      inside = <span class="number">1.0</span> - <span class="built_in">smoothstep</span>(radius - <span class="number">0.005</span>,radius + <span class="number">0.005</span>, rtoclength);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> inside;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mainImage</span><span class="params">( out vec4 fragColor, in vec2 fragCoord )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    vec2 p = <span class="built_in">vec2</span>(fragCoord.xy / iResolution.xy);</span><br><span class="line">  	vec2 r = <span class="built_in">vec2</span>( fragCoord.xy - <span class="number">0.5</span>*iResolution.xy );</span><br><span class="line">	r = <span class="number">2.0</span> * r.xy / iResolution.y;</span><br><span class="line">    vec3 backgroundcolor = <span class="built_in">vec3</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>);</span><br><span class="line">    vec3 color1 = <span class="built_in">vec3</span>(<span class="number">1.0</span>, <span class="number">0.0</span>,<span class="number">0.0</span>);</span><br><span class="line">    vec3 color2 = <span class="built_in">vec3</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>);</span><br><span class="line">    vec3 color3 = <span class="built_in">vec3</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">    vec2 circle1center1 = <span class="built_in">vec2</span>(<span class="built_in">sin</span>(iGlobalTime / <span class="number">1.0</span>), <span class="built_in">cos</span>(iGlobalTime / <span class="number">1.0</span>));</span><br><span class="line">    vec2 circle1center2 = <span class="built_in">vec2</span>(<span class="built_in">cos</span>(iGlobalTime / <span class="number">2.0</span>), <span class="built_in">sin</span>(iGlobalTime / <span class="number">2.0</span>));</span><br><span class="line">    vec2 circle1center3 = <span class="built_in">vec2</span>(-<span class="built_in">sin</span>(iGlobalTime / <span class="number">3.0</span>), -<span class="built_in">cos</span>(iGlobalTime / <span class="number">3.0</span>));  </span><br><span class="line">    </span><br><span class="line">    vec3 resultcolor = <span class="built_in">vec3</span>(<span class="number">0.0</span>,<span class="number">0.0</span>,<span class="number">0.0</span>);</span><br><span class="line">    </span><br><span class="line">    vec3 pixel = backgroundcolor;</span><br><span class="line">    </span><br><span class="line">    resultcolor += <span class="built_in">disk</span>(r, circle1center1, <span class="number">0.6</span>, color1, pixel) * color1;</span><br><span class="line">    </span><br><span class="line">    resultcolor += <span class="built_in">disk</span>(r, circle1center2, <span class="number">0.6</span>, color2, pixel) * color2;</span><br><span class="line">    </span><br><span class="line">    resultcolor += <span class="built_in">disk</span>(r, circle1center3, <span class="number">0.6</span>, color3, pixel) * color3;  </span><br><span class="line">    </span><br><span class="line">    fragColor = <span class="built_in">vec4</span>(resultcolor, <span class="number">1.0</span>);</span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
+<p>Final Effect:<br><img src="/img/OpenGL/ShaderToyCircleDemo.PNG" alt="ShaderToyCircleDemo"></p>
+<h2 id="Plasma-Effect"><a href="#Plasma-Effect" class="headerlink" title="Plasma Effect"></a>Plasma Effect</h2><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Plasma_effect">Plasma Effect</a><br>关于这一节还有很多相关知识需要学习理解，暂时只贴代码和效果，后续会进一步深入了解。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">mainImage</span><span class="params">( out vec4 fragColor, in vec2 fragCoord )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    vec2 p = <span class="built_in">vec2</span>(fragCoord.xy / iResolution.xy);</span><br><span class="line">  	vec2 r = <span class="built_in">vec2</span>( fragCoord.xy - <span class="number">0.5</span>*iResolution.xy );</span><br><span class="line">	r = <span class="number">2.0</span> * r.xy / iResolution.y;</span><br><span class="line">    vec3 ret = <span class="built_in">vec3</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);</span><br><span class="line">    <span class="type">float</span> t = iGlobalTime;</span><br><span class="line">    r = r * <span class="number">8.0</span>;</span><br><span class="line">    <span class="type">float</span> v1 = <span class="built_in">sin</span>(r.x + t);</span><br><span class="line">    <span class="type">float</span> v2 = <span class="built_in">sin</span>(r.y + t);</span><br><span class="line">    <span class="type">float</span> v3 = <span class="built_in">sin</span>(r.x + r.y + t);</span><br><span class="line">    <span class="type">float</span> v4 = <span class="built_in">sin</span>(<span class="built_in">sqrt</span>(r.x * r.x + r.y * r.y) + t);</span><br><span class="line">    <span class="type">float</span> v5 = v1 + v2 + v3 + v4;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>( p.x &lt; <span class="number">1.0</span> / <span class="number">10.0</span> )</span><br><span class="line">    &#123;</span><br><span class="line">       ret = <span class="built_in">vec3</span>(v1);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>( p.x &lt; <span class="number">2.0</span> / <span class="number">10.0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">       ret = <span class="built_in">vec3</span>(v2);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>( p.x &lt; <span class="number">3.0</span> / <span class="number">10.0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">       ret = <span class="built_in">vec3</span>(v3); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>( p.x &lt; <span class="number">4.0</span> / <span class="number">10.0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">       ret = <span class="built_in">vec3</span>(v4); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>( p.x &lt; <span class="number">5.0</span> / <span class="number">10.0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">       ret = <span class="built_in">vec3</span>(v5);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>( p.x &lt; <span class="number">6.0</span> / <span class="number">10.0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        ret = <span class="built_in">vec3</span>(<span class="built_in">sin</span>(v5));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">       ret *= <span class="built_in">vec3</span>(<span class="built_in">sin</span>(v5), <span class="built_in">cos</span>(v5), <span class="built_in">tan</span>(v5));         </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    fragColor = <span class="built_in">vec4</span>(ret, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Final Effect:<br><img src="/img/OpenGL/ShaderToyPlasmaEffect.PNG" alt="ShaderToyPlasmaEffect"></p>
+<h2 id="Texture-Video-as-Input"><a href="#Texture-Video-as-Input" class="headerlink" title="Texture &amp; Video as Input"></a>Texture &amp; Video as Input</h2><p>下面这个效果比较有趣，是通过把两个视频作为输入，通过把其中一个视频作为背景，把另一个含绿色背景的颜色出掉后合二为一实现的效果。<br>在Shader Toy里，我们可以设置几个Texture到iChannel<em>上，然后通过texture2D(iChannel</em>,*)去访问纹理值。<br>参考至<a target="_blank" rel="noopener" href="http://gamedevelopment.tutsplus.com/tutorials/a-beginners-guide-to-coding-graphics-shaders--cms-23313">A Beginner’s Guide to Coding Graphics Shaders</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">mainImage</span><span class="params">( out vec4 fragColor, in vec2 fragCoord )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    vec4 backgroundtexture = <span class="built_in">texture2D</span>(iChannel0, p);</span><br><span class="line">    vec4 fronttexture = <span class="built_in">texture2D</span>(iChannel2, p);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(fronttexture.r + fronttexture.b &gt; fronttexture.g)</span><br><span class="line">    &#123;</span><br><span class="line">       fragColor = fronttexture;   </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">       fragColor = backgroundtexture;  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Final Effect:<br><img src="/img/OpenGL/ShaderToyTextureAndVideoInput.PNG" alt="ShaderToyTextureAndVideoInput"><br><img src="/img/OpenGL/ShaderToyTextureAndVideoInput2.PNG" alt="ShaderToyTextureAndVideoInput2"></p>
+<h2 id="Mouse-Input"><a href="#Mouse-Input" class="headerlink" title="Mouse Input"></a>Mouse Input</h2><p>这一节讲到ShaderToy里关于如何响应Mouse Input。<br>ShaderToy里给了一个iMouse变量，用于得到Mouse输入的信息，我们可以通过iMouse变量的值去做出对应的响应效果。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">float</span> <span class="title">disk</span><span class="params">(vec2 r, vec2 center, <span class="type">float</span> radius, vec3 color, inout vec3 pixel)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="type">float</span> rtoclength = <span class="built_in">length</span>(r - center);</span><br><span class="line">   <span class="type">float</span> inside = <span class="number">0.0</span>; </span><br><span class="line">   <span class="keyword">if</span>(rtoclength &lt; radius)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="comment">//pixel = vec3(clamp(rtoclength, radius / 4.0,radius / 2.0));   </span></span><br><span class="line">      inside = <span class="number">1.0</span> - <span class="built_in">smoothstep</span>(radius - <span class="number">0.005</span>,radius + <span class="number">0.005</span>, rtoclength);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> inside;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mainImage</span><span class="params">( out vec4 fragColor, in vec2 fragCoord )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  	vec2 r = <span class="built_in">vec2</span>( fragCoord.xy - <span class="number">0.5</span>*iResolution.xy );</span><br><span class="line">	r = <span class="number">2.0</span> * r.xy / iResolution.y;</span><br><span class="line">	vec3 backgroundcolor = <span class="built_in">vec3</span>(iMouse.x / iResolution.x);</span><br><span class="line">    vec3 resultcolor = backgroundcolor;</span><br><span class="line">    <span class="comment">// 这里值得注意的一点是，因为我们把高映射到[-1.0,1.0]，但宽是[-aspect, aspect]</span></span><br><span class="line">    <span class="comment">// 我们必须把mouse的x也映射到一样的比例才能正确显示在以r为坐标系的位置</span></span><br><span class="line">    vec2 center = <span class="number">2.0</span> * <span class="built_in">vec2</span>(iMouse.xy - <span class="number">0.5</span> * iResolution.xy) / iResolution.y;</span><br><span class="line">    resultcolor += <span class="built_in">disk</span>(r, center, <span class="number">0.3</span>, <span class="built_in">vec3</span>(<span class="number">1.0</span>,<span class="number">0.0</span>,<span class="number">0.0</span>), resultcolor) * <span class="built_in">vec3</span>(<span class="number">1.0</span>,<span class="number">0.0</span>,<span class="number">0.0</span>);</span><br><span class="line">    fragColor = <span class="built_in">vec4</span>(resultcolor, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Final Effect:<br><img src="/img/OpenGL/ShaderToyMouseInput1.PNG" alt="ShaderToyMouseInput1"><br><img src="/img/OpenGL/ShaderToyMouseInput2.PNG" alt="ShaderToyMouseInput2"></p>
+<h2 id="Random-Noise"><a href="#Random-Noise" class="headerlink" title="Random Noise"></a>Random Noise</h2><p>这一章讲关于OpenGL Shader里随机数的生成，这里还了解的不清晰，暂时只贴出代码和效果，后续会进一步学习修改。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">float</span> <span class="title">disk</span><span class="params">(vec2 r, vec2 center, <span class="type">float</span> radius, vec3 color, inout vec3 pixel)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="type">float</span> rtoclength = <span class="built_in">length</span>(r - center);</span><br><span class="line">   <span class="type">float</span> inside = <span class="number">0.0</span>; </span><br><span class="line">   <span class="keyword">if</span>(rtoclength &lt; radius)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="comment">//pixel = vec3(clamp(rtoclength, radius / 4.0,radius / 2.0));   </span></span><br><span class="line">      inside = <span class="number">1.0</span> - <span class="built_in">smoothstep</span>(radius - <span class="number">0.005</span>,radius + <span class="number">0.005</span>, rtoclength);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> inside;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mainImage</span><span class="params">( out vec4 fragColor, in vec2 fragCoord )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    vec2 p = <span class="built_in">vec2</span>(fragCoord.xy / iResolution.xy);</span><br><span class="line">  	vec2 r = <span class="built_in">vec2</span>( fragCoord.xy - <span class="number">0.5</span>*iResolution.xy );</span><br><span class="line">	r = <span class="number">2.0</span> * r.xy / iResolution.y;</span><br><span class="line">    vec3 backgroundcolor = <span class="built_in">vec3</span>(<span class="number">0.0</span>,<span class="number">0.0</span>,<span class="number">0.0</span>);</span><br><span class="line">    vec3 resultcolor = backgroundcolor;</span><br><span class="line">    <span class="type">float</span> widthratio = iResolution.x / iResolution.y;</span><br><span class="line">    vec2 center;</span><br><span class="line">    vec2 pos;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">float</span> i = <span class="number">0.0</span>; i &lt; <span class="number">6.0</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 这里有一点要注意，</span></span><br><span class="line">        <span class="comment">// 我们需要将随机数映射到正确的宽高映射值才能正确随机显示在整个屏幕上</span></span><br><span class="line">        pos = <span class="built_in">vec2</span>(<span class="number">2.0</span> * widthratio * <span class="built_in">hash</span>(i) - widthratio, <span class="number">2.0</span> * <span class="built_in">hash</span>(i + <span class="number">0.5</span>) - <span class="number">1.0</span>);</span><br><span class="line">    	center = pos;</span><br><span class="line">    	resultcolor += <span class="built_in">disk</span>(r, center, <span class="built_in">hash</span>(i * <span class="number">5.0</span> + <span class="number">10.0</span>) / <span class="number">5.0</span>, <span class="built_in">vec3</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>), resultcolor) * <span class="built_in">vec3</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    fragColor = <span class="built_in">vec4</span>(resultcolor, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Final Effect:<br><img src="/img/OpenGL/ShaderToyRandomNumber.PNG" alt="ShaderToyRandomNumber"></p>
+<h2 id="更多学习待更新"><a href="#更多学习待更新" class="headerlink" title="更多学习待更新"></a>更多学习待更新</h2><p>……</p>
+<h1 id="Shader-Toy-Relative-Knowledge"><a href="#Shader-Toy-Relative-Knowledge" class="headerlink" title="Shader Toy Relative Knowledge"></a>Shader Toy Relative Knowledge</h1><h2 id="Shader-Toy-Inputs"><a href="#Shader-Toy-Inputs" class="headerlink" title="Shader Toy Inputs"></a>Shader Toy Inputs</h2><p><img src="/img/OpenGL/ShaderToyInputs.PNG" alt="ShaderToyInputs"></p>
+<p>总的来说ShaderToy是一个很好的Shader学习网站，让我们可以在上面方便可视化的测试一些数学算式和算法效果。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Shader/" rel="tag"># Shader</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/03/13/Unity%E4%BB%BFCOC/" rel="prev" title="Unity仿COC">
+                  <i class="fa fa-angle-left"></i> Unity仿COC
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/08/21/%E7%BB%8F%E5%85%B82D%E5%B0%8F%E6%B8%B8%E6%88%8F/" rel="next" title="经典2D小游戏">
+                  经典2D小游戏 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

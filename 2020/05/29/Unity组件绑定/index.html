@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言游戏开发过程中我们经常会需要访问一些指定节点，组件和脚本。 常规方式会通过编写GetChild(?)和GetComponent()代码的方式去获取节点和组件，但这样对于开发来说并不高效同时运行时的GetChild(?)和GetComponent()也是有运行开销的。 为了寻求更高效，高性能和便捷的方式，这里引出组件绑定的工具方案。 实现一套通用的组件绑定方案，为未来游戏快速开发打下基础。 组件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity组件绑定">
+<meta property="og:url" content="http://example.com/2020/05/29/Unity%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言游戏开发过程中我们经常会需要访问一些指定节点，组件和脚本。 常规方式会通过编写GetChild(?)和GetComponent()代码的方式去获取节点和组件，但这样对于开发来说并不高效同时运行时的GetChild(?)和GetComponent()也是有运行开销的。 为了寻求更高效，高性能和便捷的方式，这里引出组件绑定的工具方案。 实现一套通用的组件绑定方案，为未来游戏快速开发打下基础。 组件">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Unity/ComponentBinder/ComponentBinderSettingUI.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/ComponentBinder/ComponentBindChosenUI.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/ComponentBinder/CustomScriptNotation.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/ComponentBinder/WindowTemplateBindUsing.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/ComponentBinder/GameObjectBinderUI.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/ComponentBinder/CellBinderUI.PNG">
+<meta property="article:published_time" content="2020-05-29T15:35:00.000Z">
+<meta property="article:modified_time" content="2022-08-10T15:11:29.781Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Unity/ComponentBinder/ComponentBinderSettingUI.PNG">
+
+
+<link rel="canonical" href="http://example.com/2020/05/29/Unity%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2020/05/29/Unity%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A/","path":"2020/05/29/Unity组件绑定/","title":"Unity组件绑定"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Unity组件绑定 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">组件绑定原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">功能实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%88%98%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">实战实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A%E8%84%9A%E6%9C%AC"><span class="nav-number">4.1.</span> <span class="nav-text">组件绑定脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E9%9D%A2%E6%9D%BF"><span class="nav-number">4.2.</span> <span class="nav-text">组件绑定自定义面板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A%E6%A8%A1%E6%9D%BF%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90"><span class="nav-number">4.3.</span> <span class="nav-text">组件绑定模板代码生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A%E8%AE%BE%E7%BD%AE"><span class="nav-number">4.4.</span> <span class="nav-text">组件绑定设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E6%88%98%E4%BD%BF%E7%94%A8"><span class="nav-number">4.5.</span> <span class="nav-text">实战使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E7%82%B9%E7%9F%A5%E8%AF%86"><span class="nav-number">5.</span> <span class="nav-text">重点知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Github"><span class="nav-number">6.</span> <span class="nav-text">Github</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/05/29/Unity%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Unity组件绑定 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity组件绑定
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-05-29 23:35:00" itemprop="dateCreated datePublished" datetime="2020-05-29T23:35:00+08:00">2020-05-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-08-10 23:11:29" itemprop="dateModified" datetime="2022-08-10T23:11:29+08:00">2022-08-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>游戏开发过程中我们经常会需要访问一些指定节点，组件和脚本。</p>
+<p>常规方式会通过编写GetChild(?)和GetComponent<?>()代码的方式去获取节点和组件，但这样对于开发来说并不高效同时运行时的GetChild(?)和GetComponent<?>()也是有运行开销的。</p>
+<p>为了寻求更高效，高性能和便捷的方式，这里引出组件绑定的工具方案。</p>
+<p><strong>实现一套通用的组件绑定方案</strong>，为未来游戏快速开发打下基础。</p>
+<h2 id="组件绑定原理"><a href="#组件绑定原理" class="headerlink" title="组件绑定原理"></a>组件绑定原理</h2><ol>
+<li>通过Object数组实现通用类型的组件绑定存储</li>
+<li>通过自定义Inspector实现绑定对象，绑定对象组件绑定选择以及模板类型选择，代码生成等UI操作界面</li>
+<li>通过模板+代码生成实现组件绑定的自定义快速代码生成(通过生成partial代码不入侵原始逻辑代码)</li>
+<li>结合自定义ScriptableObject自定义不同模板类型的不同代码输出目录实现自定义代码目录输出设置</li>
+</ol>
+<h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><ol>
+<li><strong>支持通节点不同组件的绑定</strong></li>
+<li><strong>支持节点自定义变量名和注释定义</strong></li>
+<li><strong>支持自定义代码模板的选择生成</strong></li>
+<li><strong>支持组件绑定代码不入侵功能代码(利用partial class)功能生成代码</strong></li>
+<li><strong>支持不同模板类型代码生成输出目录设置</strong></li>
+</ol>
+<h2 id="实战实现"><a href="#实战实现" class="headerlink" title="实战实现"></a>实战实现</h2><h3 id="组件绑定脚本"><a href="#组件绑定脚本" class="headerlink" title="组件绑定脚本"></a>组件绑定脚本</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 节点绑定类</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">DisallowMultipleComponent</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ComponentBinder</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 绑定类型索引值</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> BindCodeTypeIndex;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> UI节点数据</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> List&lt;ComponentBindData&gt; NodeDatas = <span class="keyword">new</span> List&lt;ComponentBindData&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 组件绑定节点信息</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">Serializable</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ComponentBindData</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 节点对象</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">SerializeField</span>]</span><br><span class="line">    <span class="keyword">public</span> UnityEngine.Object NodeTarget;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 变量别名(用于生成代码)</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">SerializeField</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> VariableAlias;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 节点描述</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">SerializeField</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> NodeDes;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ComponentBindData</span>(<span class="params">UnityEngine.Object target</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        NodeTarget = target;</span><br><span class="line">        NodeDes = <span class="built_in">string</span>.Empty;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面的可以看出节点组件和脚本的数据绑定<strong>核心是通过脚本序列化Object[]数组以及相关数据的方式实现绑定节点数据存储的。</strong></p>
+<h3 id="组件绑定自定义面板"><a href="#组件绑定自定义面板" class="headerlink" title="组件绑定自定义面板"></a>组件绑定自定义面板</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 组件绑定自定义Editor</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">CustomEditor(typeof(ComponentBinder))</span>]</span><br><span class="line">[<span class="meta">CanEditMultipleObjects</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ComponentBinderEditor</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这部分代码主要是实现ComponentBinder的Inspector自定义GUI显示，从而实现我们想要的自定义UI操作。</p>
+<h3 id="组件绑定模板代码生成"><a href="#组件绑定模板代码生成" class="headerlink" title="组件绑定模板代码生成"></a>组件绑定模板代码生成</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CompoenntBinder代码生成工具</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">ComponentBinderCodeGenerator</span></span><br><span class="line">&#123;</span><br><span class="line">	******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 模板数据处理类</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TTemplate</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此文件主要是通过自定义选择的模板文件***.txt结合TTemplate工具类实现模板文件txt里的内容自定义生成输出我们想要的代码。</p>
+<p>窗口模板文件示例:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             #FileName#.cs</span></span><br><span class="line"><span class="comment"> * Author:                  #Author#</span></span><br><span class="line"><span class="comment"> * Create Date:             #CreatedDate#</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"><span class="keyword">using</span> TH.Modules.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Game.Modules.UI</span></span><br><span class="line">&#123;	</span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> #ClassName#窗口</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> #<span class="title">ClassName</span># : <span class="title">BaseWindow</span></span><br><span class="line">    &#123;</span><br><span class="line">		<span class="keyword">public</span> <span class="meta">#ClassName#()</span></span><br><span class="line">		&#123;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 添加监听</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">addListeners</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.addListeners();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 窗口显示</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">onShow</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.onShow();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 移除监听</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">removeListeners</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.removeListeners();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 窗口销毁</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">onDestroy</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.onDestroy();</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>窗口组件绑定模板示例:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             #FileName#.cs</span></span><br><span class="line"><span class="comment"> * Author:                  #Author#</span></span><br><span class="line"><span class="comment"> * Create Date:             #CreatedDate#</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"><span class="keyword">using</span> TH.Modules.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Game.Modules.UI</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> #ClassName#窗口的组件绑定</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> #<span class="title">ClassName</span>#</span><br><span class="line">    &#123;</span><br><span class="line">		 <span class="meta">#MEMBER_DEFINITION_LOOP#</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> #NodeDes# <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> <span class="meta">#NodeType# #NodeName#;#MEMBER_DEFINITION_LOOP#</span></span><br><span class="line">		   </span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 缓存组件</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">cacheComponents</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.cacheComponents();</span><br><span class="line">            <span class="meta">#MEMBER_INIT_LOOP#</span></span><br><span class="line">            <span class="meta">#NodeName# = #NodeMemberName#.NodeDatas[#NodeIndex#].NodeTarget as #NodeType#;#MEMBER_INIT_LOOP#</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 释放组件</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">disposeComponents</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.disposeComponents();</span><br><span class="line">			<span class="meta">#MEMBER_DISPOSE_LOOP#</span></span><br><span class="line">            <span class="meta">#NodeName# = null;#MEMBER_DISPOSE_LOOP#</span></span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其他模板生成参考文件:</p>
+<p>CellUIBinder.txt，CellUITemplate.txt，GameObjectUIBinder.txt</p>
+<h3 id="组件绑定设置"><a href="#组件绑定设置" class="headerlink" title="组件绑定设置"></a>组件绑定设置</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> ComponentBindSetting.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 组件绑定设置数据</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">CreateAssetMenu(fileName = <span class="string">&quot;ComponentBinderSetting&quot;</span>, menuName = <span class="string">&quot;ScriptableObjects/ComponentBinderSetting&quot;</span>, order = 1)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ComponentBinderSetting</span> : <span class="title">ScriptableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> ComponentBinderSettingEditor.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 组件绑定自定义Editor</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">CustomEditor(typeof(ComponentBinderSetting))</span>]</span><br><span class="line">[<span class="meta">DisallowMultipleComponent</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ComponentBinderSettingEditor</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实战使用"><a href="#实战使用" class="headerlink" title="实战使用"></a>实战使用</h3><ul>
+<li><p>组件绑定设置</p>
+<p><img src="/img/Unity/ComponentBinder/ComponentBinderSettingUI.PNG" alt="ComponentBinderSettingUI"></p>
+<p><strong>通过自定义模板类型的代码输出路径设置实现自定义代码输出设置</strong></p>
+</li>
+<li><p>组件绑定选择</p>
+<p><img src="/img/Unity/ComponentBinder/ComponentBindChosenUI.PNG" alt="ComponentBindChosenUI"></p>
+<ol>
+<li><strong>支持通节点不同组件的绑定</strong></li>
+<li><strong>支持节点自定义变量名和注释定义</strong></li>
+</ol>
+</li>
+<li><p>自定义绑定节点代码注释</p>
+<p><img src="/img/Unity/ComponentBinder/CustomScriptNotation.PNG" alt="CustomScriptNotation"></p>
+</li>
+<li><p>窗口模板组件绑定设置以及代码生成</p>
+<p><img src="/img/Unity/ComponentBinder/WindowTemplateBindUsing.PNG" alt="WindowTemplateBindUsing"></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             WindowBindPrefab.cs</span></span><br><span class="line"><span class="comment"> * Author:                  TONYTANG</span></span><br><span class="line"><span class="comment"> * Create Date:             2022//05/29</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"><span class="keyword">using</span> TH.Modules.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Game.Modules.UI</span></span><br><span class="line">&#123;	</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> WindowBindPrefab窗口</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">WindowBindPrefab</span> : <span class="title">BaseWindow</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">WindowBindPrefab</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 添加监听</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">addListeners</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.addListeners();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 窗口显示</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">onShow</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.onShow();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 移除监听</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">removeListeners</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.removeListeners();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 窗口销毁</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">onDestroy</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.onDestroy();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             WindowBindPrefabBinder.cs</span></span><br><span class="line"><span class="comment"> * Author:                  TONYTANG</span></span><br><span class="line"><span class="comment"> * Create Date:             2022//05/29</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"><span class="keyword">using</span> TH.Modules.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Game.Modules.UI</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> WindowBindPrefab窗口的组件绑定</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">WindowBindPrefab</span></span><br><span class="line">    &#123;</span><br><span class="line">		 </span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 根GameObject <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> GameObject _rootGo;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 根RectTransform <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> RectTransform _rootRect;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 背景图 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> Image imgBg;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 左侧按钮 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> Button btnLeftSwitch;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 右侧按钮 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> Button btnRightSwitch;</span><br><span class="line">		   </span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 缓存组件</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">cacheComponents</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.cacheComponents();</span><br><span class="line">            </span><br><span class="line">            _rootGo = mComponentBinder.NodeDatas[<span class="number">0</span>].NodeTarget <span class="keyword">as</span> GameObject;</span><br><span class="line">            _rootRect = mComponentBinder.NodeDatas[<span class="number">1</span>].NodeTarget <span class="keyword">as</span> RectTransform;</span><br><span class="line">            imgBg = mComponentBinder.NodeDatas[<span class="number">2</span>].NodeTarget <span class="keyword">as</span> Image;</span><br><span class="line">            btnLeftSwitch = mComponentBinder.NodeDatas[<span class="number">3</span>].NodeTarget <span class="keyword">as</span> Button;</span><br><span class="line">            btnRightSwitch = mComponentBinder.NodeDatas[<span class="number">4</span>].NodeTarget <span class="keyword">as</span> Button;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 释放组件</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">disposeComponents</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.disposeComponents();</span><br><span class="line">			</span><br><span class="line">            _rootGo = <span class="literal">null</span>;</span><br><span class="line">            _rootRect = <span class="literal">null</span>;</span><br><span class="line">            imgBg = <span class="literal">null</span>;</span><br><span class="line">            btnLeftSwitch = <span class="literal">null</span>;</span><br><span class="line">            btnRightSwitch = <span class="literal">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>更多的代码生成示例，参考Github源代码工程。</p>
+<p><img src="/img/Unity/ComponentBinder/GameObjectBinderUI.PNG" alt="GameObjectBinderUI"></p>
+<p><img src="/img/Unity/ComponentBinder/CellBinderUI.PNG" alt="CellBinderUI"></p>
+</li>
+</ul>
+<h2 id="重点知识"><a href="#重点知识" class="headerlink" title="重点知识"></a>重点知识</h2><ol>
+<li><strong>利用自定义UI结合Object[]实现自定义组件绑定数据序列化</strong></li>
+<li><strong>利用代码生成使用partial实现组件绑定代码无缝插入工程代码实现快速替换和访问</strong></li>
+</ol>
+<h2 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h2><p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/ComponentBinder">ComponentBinder</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/05/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%BC%93%E5%8A%A8/" rel="prev" title="数学与缓动">
+                  <i class="fa fa-angle-left"></i> 数学与缓动
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/06/08/Unity%E6%BB%9A%E5%8A%A8%E5%88%97%E8%A1%A8/" rel="next" title="Unity滚动列表">
+                  Unity滚动列表 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

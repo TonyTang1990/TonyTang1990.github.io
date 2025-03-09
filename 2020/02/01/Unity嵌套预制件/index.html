@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言本篇文章是为了记录学习Unity官方最新推出的嵌套预制件工作流的相关知识，深入理解新版嵌套预制件的设计思路与使用工作流。 达到以下几个目标：  理解新版嵌套预制件带来的好处 如何避免Unity版本升级过程中预制件相关操作工具不兼容等问题。 设计新的预制件相关工具时考虑新老版本预制件工作流问题。  Prefab首先我们先来了解下什么是预制件(Prefab)？ **Unity’s Prefab s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity嵌套预制件">
+<meta property="og:url" content="http://example.com/2020/02/01/Unity%E5%B5%8C%E5%A5%97%E9%A2%84%E5%88%B6%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本篇文章是为了记录学习Unity官方最新推出的嵌套预制件工作流的相关知识，深入理解新版嵌套预制件的设计思路与使用工作流。 达到以下几个目标：  理解新版嵌套预制件带来的好处 如何避免Unity版本升级过程中预制件相关操作工具不兼容等问题。 设计新的预制件相关工具时考虑新老版本预制件工作流问题。  Prefab首先我们先来了解下什么是预制件(Prefab)？ **Unity’s Prefab s">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Unity/NestedPrefab/NestedPrefabExample.png">
+<meta property="og:image" content="http://example.com/img/Unity/NestedPrefab/NestedPrefabChangeMat.png">
+<meta property="og:image" content="http://example.com/img/Unity/NestedPrefab/NestedPrefabPrefabVariant.png">
+<meta property="og:image" content="http://example.com/img/Unity/NestedPrefab/NestedPrefabChangeVariantParent.png">
+<meta property="og:image" content="http://example.com/img/Unity/NestedPrefab/NestedPrefabComponentApply.png">
+<meta property="og:image" content="http://example.com/img/Unity/NestedPrefab/UnpackPrefabInstance.png">
+<meta property="og:image" content="http://example.com/img/Unity/NestedPrefab/NestedPrefabUnpackPrefabColor.png">
+<meta property="og:image" content="http://example.com/img/Unity/NestedPrefab/NestedPrefabOpenPrefabMode.png">
+<meta property="og:image" content="http://example.com/img/Unity/NestedPrefab/NestedPrefabMode.png">
+<meta property="og:image" content="http://example.com/img/Unity/NestedPrefab/NestedPrefabMissingScriptMono.png">
+<meta property="og:image" content="http://example.com/img/Unity/NestedPrefab/PrefabStageListener.png">
+<meta property="article:published_time" content="2020-01-31T16:27:00.000Z">
+<meta property="article:modified_time" content="2022-07-31T07:29:52.838Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Prefab">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Unity/NestedPrefab/NestedPrefabExample.png">
+
+
+<link rel="canonical" href="http://example.com/2020/02/01/Unity%E5%B5%8C%E5%A5%97%E9%A2%84%E5%88%B6%E4%BB%B6/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2020/02/01/Unity%E5%B5%8C%E5%A5%97%E9%A2%84%E5%88%B6%E4%BB%B6/","path":"2020/02/01/Unity嵌套预制件/","title":"Unity嵌套预制件"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Unity嵌套预制件 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Prefab"><span class="nav-number">1.1.</span> <span class="nav-text">Prefab</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%A5%97%E9%A2%84%E5%88%B6%E4%BB%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">嵌套预制件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%88%B6%E4%BB%B6%E5%8F%98%E4%BD%93"><span class="nav-number">1.1.2.</span> <span class="nav-text">预制件变体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E7%89%88%E9%A2%84%E5%88%B6%E4%BB%B6%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">1.1.3.</span> <span class="nav-text">新版预制件工作流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6"><span class="nav-number">1.1.4.</span> <span class="nav-text">进阶</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">1.2.</span> <span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">引用</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/02/01/Unity%E5%B5%8C%E5%A5%97%E9%A2%84%E5%88%B6%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Unity嵌套预制件 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity嵌套预制件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-02-01 00:27:00" itemprop="dateCreated datePublished" datetime="2020-02-01T00:27:00+08:00">2020-02-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 15:29:52" itemprop="dateModified" datetime="2022-07-31T15:29:52+08:00">2022-07-31</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇文章是为了记录学习Unity官方最新推出的嵌套预制件工作流的相关知识，深入理解新版嵌套预制件的设计思路与使用工作流。</p>
+<p>达到以下几个目标：</p>
+<ol>
+<li>理解新版嵌套预制件带来的好处</li>
+<li>如何避免Unity版本升级过程中预制件相关操作工具不兼容等问题。</li>
+<li>设计新的预制件相关工具时考虑新老版本预制件工作流问题。</li>
+</ol>
+<h2 id="Prefab"><a href="#Prefab" class="headerlink" title="Prefab"></a>Prefab</h2><p>首先我们先来了解下什么是预制件(Prefab)？<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Prefabs.html"> **Unity’s Prefab system allows you to create, configure, and store a GameObject complete with all its components, property values, and child GameObjects<br> as a reusable Asset. The Prefab Asset acts as a template from which you can create new Prefab instances in the SceneA Scene contains the environments and menus of your game. Think of each unique Scene file as a unique level. In each Scene, you place your environments, obstacles, and decorations, essentially designing and building your game in pieces. More info<br>See in Glossary. </a></p>
+<p><strong>根据官网的介绍我们可以得知，在Unity中Prefab和纹理，材质，音效一样都是一种资源格式，预制件(Prefab)其实是一个资源载体(e.g. GameObject包含层级以及多种Component脚本做成的重用实体对象)，为了方便重复使用做好的资源模版。</strong></p>
+<p>老版本预制件系统问题：</p>
+<ol>
+<li>不支持嵌套预制件</li>
+<li>不支持变体预制件(后续会介绍)</li>
+</ol>
+<p>新版本预制件很好的解决了上面说到的两个问题。</p>
+<p><strong>新版预制件在Unity 2018.3推出</strong><br>新版预制件主要由以下三个部分组成：</p>
+<ol>
+<li>嵌套预制件</li>
+<li>预制件变体</li>
+<li>预制件模式</li>
+</ol>
+<p>接下来挨个学习上面三个部分。</p>
+<p>Note：<br><strong>新版Prefab是一种Asset，但打开处理的时候更多的是一种对Content的封装的概念，打开Prefab Mode是指打开Prefab浏览编辑Prefab Content</strong></p>
+<h3 id="嵌套预制件"><a href="#嵌套预制件" class="headerlink" title="嵌套预制件"></a>嵌套预制件</h3><p>嵌套预制件顾名思义是指预制件之间是允许引用使用的关系而不是完全独立复制使用的概念。<br>老版本预制件系统就是采用复制实体引用的方式。<br><strong>而新版嵌套预制件是采用真实预制件引用的方式。</strong></p>
+<p>嵌套预制件举例说明：<br>预制件A里用到了预制件B，如果我们修改预制件B，那么预制件A应该是自动更新变化。</p>
+<p>嵌套预制件实战：<br>如下所示，我们制作了三个预制件，分别是Prefab_Cube_A,Prefab_Sphere_B以及Prefab_A_And_B,其中前两者是独立的预制件，最后一个是使用前两个预制件拼接而成的新的预制件。<br><img src="/img/Unity/NestedPrefab/NestedPrefabExample.png" alt="NestedPrefabExample"></p>
+<p>可以看到嵌套的预制件在新的预制件下是蓝色的(意味着是关联了特定预制件的意思)，为了验证嵌套预制件，我简单的修改Prefab_Cube_A颜色来达到实现我们预期的嵌套预制件是引用关系的验证：<br><img src="/img/Unity/NestedPrefab/NestedPrefabChangeMat.png" alt="NestedPrefabChangeMat"><br>可以看到我们只修改了预制件Prefab_Cube_A的材质，但嵌套使用该预制件的Prefab_A_And_B里的Prefab_A也跟着变化了，这就是前面所提到的<strong>嵌套预制件的概念(嵌套引用关系而非实例化新个体)</strong></p>
+<h3 id="预制件变体"><a href="#预制件变体" class="headerlink" title="预制件变体"></a>预制件变体</h3><p>预制件变体的概念类似于编程里继承的概念，继承属性的同时，父预制件的修改也会影响到子预制件变体。</p>
+<p><strong>预制件变体不仅继承了父预制件的状态数据，还跟父预制件是强制关联的。</strong><br>举例说明：<br>通过预制件A创建预制件变体A2，当我们改变A时，A2继承的相同属性会跟着变化<br><img src="/img/Unity/NestedPrefab/NestedPrefabPrefabVariant.png" alt="NestedPrefabPrefabVariant"><br><img src="/img/Unity/NestedPrefab/NestedPrefabChangeVariantParent.png" alt="NestedPrefabChangeVariantParent"></p>
+<p>适用情况：</p>
+<ol>
+<li>需要在个别Prefab基础上做少许做成预制件使用，同时需要同步父预制件修改的情况下。</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>预制件变体可以理解成封装了一层Prefab的Prefab Asset</strong></li>
+<li><strong>预制件变体的Content根节点时Prefab而Prefab的Content根节点时GameObject</strong></li>
+</ol>
+<h3 id="新版预制件工作流"><a href="#新版预制件工作流" class="headerlink" title="新版预制件工作流"></a>新版预制件工作流</h3><p>Prefab有两种状态：</p>
+<ol>
+<li>Prefab Asset(Prefab资源)</li>
+<li>Prefab Instance(Prefab实例对象–场景里是蓝色的)<br>Prefab Instance和Prefab Asset之间是关联着的，跟老版预制件里的概念是一致的。我们可以通过修改Prefab Instance然后把改变Apply到Prefab Asset上。<strong>新版预制件有区别的是支持Component级别的Apply和Revert。</strong><br><img src="/img/Unity/NestedPrefab/NestedPrefabComponentApply.png" alt="NestedPrefabComponentApply"></li>
+</ol>
+<p>还有一种独立于预制件的状态：实例对象<br><img src="/img/Unity/NestedPrefab/UnpackPrefabInstance.png" alt="UnpackPrefabInstance"><br>于预制件无关的实体对象是黑色的而非蓝色:<br><img src="/img/Unity/NestedPrefab/NestedPrefabUnpackPrefabColor.png" alt="NestedPrefabUnpackPrefabColor"><br><strong>这里的Unpack相当于解除了Prefab Asset关联直接访问预制件的Content(Prefab Content后续会说到，在新版预制件里很重要的一个概念)</strong></p>
+<p>新版预制件有一个新的概念叫做预制件模式，修改并Apply修改到Prefab Asset上有两种方式：</p>
+<ol>
+<li>直接打开Prefab Mode编辑</li>
+<li>修改Prefab Instance后Apply到Prefab Asset上</li>
+</ol>
+<p>这里重点讲解学习Prefab Mode：<br><strong>Prefab Mode类似单独打开了一个修改预制件的场景，进入新的预制件场景才能看到预制件里的内容，这一点概念很重要</strong><br><img src="/img/Unity/NestedPrefab/NestedPrefabOpenPrefabMode.png" alt="NestedPrefabOpenPrefabMode"><br><img src="/img/Unity/NestedPrefab/NestedPrefabMode.png" alt="NestedPrefabMode"><br>在Prefab Mode下的修改可以通过保存和Undo操作来实现保存到Prefab Asset和撤销操作的效果。</p>
+<p>了解了新版Prefab的Prefab Mode概念后，让我们结合相关API来制作一些新版Prefab的处理操作工具来深入理解：<br>需求：<br>检查指定Prefab里是否有无效的脚本挂在(Missing Script)并清除所有无效挂在脚本后保存Prefab Asset<br><img src="/img/Unity/NestedPrefab/NestedPrefabMissingScriptMono.png" alt="NestedPrefabMissingScriptMono"></p>
+<p>相关API：</p>
+<ol>
+<li>AssetDatabase(处理Asset的工具类接口)</li>
+<li>Selection(处理Asset资源选中工具类接口)</li>
+</ol>
+<p>步骤：</p>
+<ol>
+<li>选中Prefab Asset</li>
+<li>判定是否是选中Prefab Asset</li>
+<li>打开Prefab Mode</li>
+<li>查找并删除所有Missing Script</li>
+<li>保存Prefab Asset并退出Prefab Mode<br>实现：<br>RemovePrefabMissingScriptTool.cs</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 删除预制件无效脚本引用工具</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RemovePrefabMissingScriptTool</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">MenuItem(<span class="string">&quot;Tools/Assets/移除Missing脚本 #&amp;s&quot;</span>, false)</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RemoveAllMissingScripts</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 1. 选中Prefab Asset</span></span><br><span class="line">        <span class="keyword">var</span> selections = Selection.GetFiltered(<span class="keyword">typeof</span>(Object), SelectionMode.Assets | SelectionMode.DeepAssets);</span><br><span class="line">        Debug.Log(<span class="string">$&quot;选中有效数量:<span class="subst">&#123;selections.Length&#125;</span>&quot;</span>);</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">var</span> selection <span class="keyword">in</span> selections)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(IsPrefabAsset(selection))</span><br><span class="line">            &#123;</span><br><span class="line">                RemovePrefabAllMissingScripts(selection <span class="keyword">as</span> GameObject);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                Debug.LogError(<span class="string">$&quot;不符合预制件要求的Asset:<span class="subst">&#123;selection.name&#125;</span>&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        AssetDatabase.SaveAssets();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 是否是预制件资源</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;obj&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">IsPrefabAsset</span>(<span class="params">Object obj</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(obj <span class="keyword">is</span> GameObject)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> assetpath = AssetDatabase.GetAssetPath(obj);</span><br><span class="line">            <span class="keyword">return</span> !<span class="built_in">string</span>.IsNullOrEmpty(assetpath);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 移除预制件Asset所有无效的脚本</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RemovePrefabAllMissingScripts</span>(<span class="params">GameObject go</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 3. 打开Prefab Mode</span></span><br><span class="line">        <span class="comment">// 4. 查找并删除所有Missing Script</span></span><br><span class="line">        <span class="comment">// 5. 保存Prefab Asset并推出Prefab Mode)</span></span><br><span class="line">        <span class="keyword">var</span> assetpath = AssetDatabase.GetAssetPath(go);</span><br><span class="line">        <span class="keyword">var</span> contentsRoot = PrefabUtility.LoadPrefabContents(assetpath);</span><br><span class="line">        RemoveAllMissingScripts(contentsRoot);</span><br><span class="line">        PrefabUtility.SaveAsPrefabAsset(contentsRoot, assetpath);</span><br><span class="line">        PrefabUtility.UnloadPrefabContents(contentsRoot);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 移除无效的脚本</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RemoveAllMissingScripts</span>(<span class="params">GameObject go</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Component[] components = go.GetComponents&lt;Component&gt;();</span><br><span class="line">        <span class="keyword">var</span> r = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">var</span> serializedObject = <span class="keyword">new</span> SerializedObject(go);</span><br><span class="line">        <span class="keyword">var</span> prop = serializedObject.FindProperty(<span class="string">&quot;m_Component&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; components.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (components[i] == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">string</span> s = go.name;</span><br><span class="line">                Transform t = go.transform;</span><br><span class="line">                <span class="keyword">while</span> (t.parent != <span class="literal">null</span>) </span><br><span class="line">                &#123;</span><br><span class="line">                    s = t.parent.name +<span class="string">&quot;/&quot;</span>+s;</span><br><span class="line">                    t = t.parent;</span><br><span class="line">                &#125;</span><br><span class="line">                Debug.Log (s + <span class="string">&quot; has an empty script attached in position: &quot;</span> + i, go);</span><br><span class="line"></span><br><span class="line">                prop.DeleteArrayElementAtIndex(i - r);</span><br><span class="line">                r++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        serializedObject.ApplyModifiedProperties();</span><br><span class="line">        <span class="keyword">foreach</span> (Transform childT <span class="keyword">in</span> go.transform)</span><br><span class="line">        &#123;</span><br><span class="line">            RemoveAllMissingScripts(childT.gameObject);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>核心思想是因为Missing Component本来就为Null无法向常规Component那样DestroyImmediate，需要通过SerializedObject去获取Component的方式删除指定位置的Component。</p>
+<p>此脚本只针对单个预制件内容进行修改，嵌套预制件需要通过批量多选的方式实现各自移除各自身上的Missing Script来实现移除所有Missing脚本。</p>
+<p>了解了Prefab Mode的存在，那么如何监听Prefab Mode的打开关闭生命周期了？<br>这里我们需要用到<strong>PrefabStage</strong> API(新版Prefab Mode下打开保存相关生命周期工具类接口)<br>这里只是简单的做个API实验，看看PrefabStage是否起作用。<br>PrefabStageListener.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEditor.Experimental.SceneManagement;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 新版预制件生命周期监听</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">ExecuteInEditMode</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PrefabStageListener</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        PrefabStage.prefabSaved += OnPrefabSaved;</span><br><span class="line">        PrefabStage.prefabSaving += OnPrefabSaving;</span><br><span class="line">        PrefabStage.prefabStageOpened += OnPrefabOpened;</span><br><span class="line">        PrefabStage.prefabStageClosing += OnPrefabClosing;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnDestroy</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        PrefabStage.prefabSaved -= OnPrefabSaved;</span><br><span class="line">        PrefabStage.prefabSaving -= OnPrefabSaving;</span><br><span class="line">        PrefabStage.prefabStageOpened -= OnPrefabOpened;</span><br><span class="line">        PrefabStage.prefabStageClosing -= OnPrefabClosing;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 响应预制件内容保存完毕</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;go&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnPrefabSaved</span>(<span class="params">GameObject go</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;预制件内容保存完毕!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 响应预制件内容保存</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;go&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnPrefabSaving</span>(<span class="params">GameObject go</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;预制件内容保存!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 响应预制件内容打开</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;prefabstage&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnPrefabOpened</span>(<span class="params">PrefabStage prefabstage</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;打开预制件内容!&quot;</span>);</span><br><span class="line">        Debug.Log(<span class="string">$&quot;预制件:<span class="subst">&#123;prefabstage.prefabAssetPath&#125;</span> 内容阶段:<span class="subst">&#123;prefabstage.stageHandle&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 响应预制件内容关闭</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;prefabstage&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnPrefabClosing</span>(<span class="params">PrefabStage prefabstage</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;关闭预制件内容!&quot;</span>);</span><br><span class="line">        Debug.Log(<span class="string">$&quot;预制件:<span class="subst">&#123;prefabstage.prefabAssetPath&#125;</span> 内容阶段:<span class="subst">&#123;prefabstage.stageHandle&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果:<br><img src="/img/Unity/NestedPrefab/PrefabStageListener.png" alt="PrefabStageListener"><br><strong>PrefabStage.prefabStageOpened全局监听不起作用(原因未知，忘知道的朋友告知)。PrefabStage.prefabStageClosing能正确工作。</strong></p>
+<p>Note:<br><strong>Prefab Mode模式下修改叫做Save而非Apply，因为已经处于Prefab Content模式下了</strong></p>
+<h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><p>PrefabUtility(操作处理Prefab的工具类接口)</p>
+<p>更多学习，待续……</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ol>
+<li>支持嵌套预制件，能更高效的利用预制件，节约预制件的资源大小</li>
+<li>支持预制件变体，能更高效的制作只有细微变化且有关联的相关预制件，增加开发效率</li>
+<li>新版预制件最大区别就是提出了Prefab Mode的概念，让预制件在一个独立的环境进行编辑，进入Prefab Mode编辑的是Prefab Content而非Prefab本身。</li>
+</ol>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Prefabs.html">Prefabs Manual</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/283752d80737">详解新版Unity中可嵌套的Prefab系统</a><br><a target="_blank" href="https://www.youtube.com/embed/b9wfVzkubzA?autoplay=1&amp;disablekb=1&amp;iv_load_policy=3&amp;modestbranding=1&amp;showinfo=0&amp;html5=1&amp;rel=0">Introducing the new prefab workflow - Unity at GDC 2019</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/embed/5q1An6SFe40?autoplay=1&disablekb=1&iv_load_policy=3&modestbranding=1&showinfo=0&html5=1">Unite LA 2018 - Introducing the New Prefab Workflow</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Prefab/" rel="tag"># Prefab</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/11/25/Unity%E5%AE%98%E6%96%B9%E6%8F%92%E4%BB%B6/" rel="prev" title="Unity官方插件">
+                  <i class="fa fa-angle-left"></i> Unity官方插件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/05/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%BC%93%E5%8A%A8/" rel="next" title="数学与缓动">
+                  数学与缓动 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

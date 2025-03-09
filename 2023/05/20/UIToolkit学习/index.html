@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Introduction之前有一篇学习Unity Editor相关的知识:UnityEditor知识 UIToolkit作为Unity最新一代UI系统，这里准备单独用篇来学习记录，通过深入学习UIToolkit，为后续编写一套节点系统做准备(用于剧情系统和引导系统实现)。 Note:  本章节重点是UIToolkit在Editor上的学习使用，Runtime目前看来UIToolkit还不够成熟，不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UIToolkit">
+<meta property="og:url" content="http://example.com/2023/05/20/UIToolkit%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Introduction之前有一篇学习Unity Editor相关的知识:UnityEditor知识 UIToolkit作为Unity最新一代UI系统，这里准备单独用篇来学习记录，通过深入学习UIToolkit，为后续编写一套节点系统做准备(用于剧情系统和引导系统实现)。 Note:  本章节重点是UIToolkit在Editor上的学习使用，Runtime目前看来UIToolkit还不够成熟，不">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Unity/UIToolkit/UIToolkitDrawingOrder.png">
+<meta property="og:image" content="http://example.com/img/Unity/UIToolkit/USSBoxModel.png">
+<meta property="og:image" content="http://example.com/img/Unity/UIToolkit/EventPropagation.png">
+<meta property="og:image" content="http://example.com/img/Unity/UIToolkit/UIToolkitDebuggerPreview.PNG">
+<meta property="og:image" content="http://example.com/">
+<meta property="og:image" content="http://example.com/img/Unity/UIToolkit/UIToolkitSampleWindow.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/UIToolkit/UIToolkitEditorWindowCreator.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/UIToolkit/UICreateUIByCodeEditorWindow.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/UIToolkit/UIChangeUSSByCodeEditorWindow.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/UIToolkit/UIUseUSSEditorWindow.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/UIToolkit/UIPositionAndLayoutEditorWindow.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/UIToolkit/UICustomUSSVariableEditorWindow.PNG">
+<meta property="article:published_time" content="2023-05-20T00:43:00.000Z">
+<meta property="article:modified_time" content="2023-05-28T15:35:12.671Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Editor">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Unity/UIToolkit/UIToolkitDrawingOrder.png">
+
+
+<link rel="canonical" href="http://example.com/2023/05/20/UIToolkit%E5%AD%A6%E4%B9%A0/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/05/20/UIToolkit%E5%AD%A6%E4%B9%A0/","path":"2023/05/20/UIToolkit学习/","title":"UIToolkit"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>UIToolkit | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#UIToolkit"><span class="nav-number">2.</span> <span class="nav-text">UIToolkit</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#UI-system"><span class="nav-number">2.1.</span> <span class="nav-text">UI  system</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Visual-tree"><span class="nav-number">2.1.1.</span> <span class="nav-text">Visual tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Layout-Engine"><span class="nav-number">2.1.2.</span> <span class="nav-text">Layout Engine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UXML-format"><span class="nav-number">2.1.3.</span> <span class="nav-text">UXML format</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Uity-style-sheets-USS"><span class="nav-number">2.1.4.</span> <span class="nav-text">Uity style sheets(USS)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#USS-Selector"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">USS Selector</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Type-selector"><span class="nav-number">2.1.4.1.1.</span> <span class="nav-text">Type selector</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Class-selector"><span class="nav-number">2.1.4.1.2.</span> <span class="nav-text">Class selector</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Name-selector"><span class="nav-number">2.1.4.1.3.</span> <span class="nav-text">Name selector</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Universal-selector"><span class="nav-number">2.1.4.1.4.</span> <span class="nav-text">Universal selector</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#USS-properties"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">USS properties</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#USS-data-types"><span class="nav-number">2.1.4.2.1.</span> <span class="nav-text">USS data types</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#USS-common-properties"><span class="nav-number">2.1.4.2.2.</span> <span class="nav-text">USS common properties</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AE%BD%E9%AB%98%E5%B1%9E%E6%80%A7"><span class="nav-number">2.1.4.2.2.1.</span> <span class="nav-text">宽高属性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%BE%B9%E7%BC%98-Margins-%E5%B1%9E%E6%80%A7"><span class="nav-number">2.1.4.2.2.2.</span> <span class="nav-text">边缘(Margins)属性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%BE%B9%E7%95%8C-Border-%E5%B1%9E%E6%80%A7"><span class="nav-number">2.1.4.2.2.3.</span> <span class="nav-text">边界(Border)属性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%86%85%E8%BE%B9%E8%B7%9D-Padding-%E5%B1%9E%E6%80%A7"><span class="nav-number">2.1.4.2.2.4.</span> <span class="nav-text">内边距(Padding)属性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%8E%92%E7%89%88%E5%B1%9E%E6%80%A7"><span class="nav-number">2.1.4.2.2.5.</span> <span class="nav-text">排版属性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BD%8D%E7%BD%AE%E5%B1%9E%E6%80%A7"><span class="nav-number">2.1.4.2.2.6.</span> <span class="nav-text">位置属性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E5%B1%9E%E6%80%A7"><span class="nav-number">2.1.4.2.2.7.</span> <span class="nav-text">背景属性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B9%9D%E5%AE%AB%E5%B1%9E%E6%80%A7"><span class="nav-number">2.1.4.2.2.8.</span> <span class="nav-text">九宫属性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Appearance-%E5%A4%96%E8%A7%82-%E5%B1%9E%E6%80%A7"><span class="nav-number">2.1.4.2.2.9.</span> <span class="nav-text">Appearance(外观)属性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E5%B1%9E%E6%80%A7"><span class="nav-number">2.1.4.2.2.10.</span> <span class="nav-text">文本属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#USS-custom-properties"><span class="nav-number">2.1.4.3.</span> <span class="nav-text">USS custom properties</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Best-practices-for-USS"><span class="nav-number">2.1.4.4.</span> <span class="nav-text">Best practices for USS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Theme-Style-Sheet-TSS"><span class="nav-number">2.1.4.5.</span> <span class="nav-text">Theme Style Sheet(TSS)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Query-Elements"><span class="nav-number">2.1.5.</span> <span class="nav-text">Query Elements</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Event-System"><span class="nav-number">2.1.6.</span> <span class="nav-text">Event System</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dispatch-Events"><span class="nav-number">2.1.6.1.</span> <span class="nav-text">Dispatch Events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Handle-Events"><span class="nav-number">2.1.6.2.</span> <span class="nav-text">Handle Events</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SerializedObject-Data-Binding"><span class="nav-number">2.1.7.</span> <span class="nav-text">SerializedObject Data Binding</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UI-Assets"><span class="nav-number">2.2.</span> <span class="nav-text">UI Assets</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UI-Tools-and-resources"><span class="nav-number">2.3.</span> <span class="nav-text">UI Tools and resources</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%88%98"><span class="nav-number">2.4.</span> <span class="nav-text">实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.4.1.</span> <span class="nav-text">基础学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-USS%E5%88%9B%E5%BB%BAUI"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">代码+USS创建UI</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%88%9B%E5%BB%BAUI"><span class="nav-number">2.4.1.1.1.</span> <span class="nav-text">代码创建UI</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E4%BF%AE%E6%94%B9USS"><span class="nav-number">2.4.1.1.2.</span> <span class="nav-text">代码修改USS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8USS%E6%8C%87%E5%AE%9AUI%E9%A3%8E%E6%A0%BC"><span class="nav-number">2.4.1.1.3.</span> <span class="nav-text">使用USS指定UI风格</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%8D%E7%BD%AE%E5%92%8C%E6%8E%92%E7%89%88"><span class="nav-number">2.4.1.1.4.</span> <span class="nav-text">位置和排版</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89USS%E5%8F%98%E9%87%8F"><span class="nav-number">2.4.1.1.5.</span> <span class="nav-text">自定义USS变量</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UXML%E5%88%9B%E5%BB%BAUI"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">UXML创建UI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UI%E4%BA%8B%E4%BB%B6%E5%93%8D%E5%BA%94"><span class="nav-number">2.4.1.3.</span> <span class="nav-text">UI事件响应</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A"><span class="nav-number">2.4.1.4.</span> <span class="nav-text">数据绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95"><span class="nav-number">2.4.1.5.</span> <span class="nav-text">调试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">2.4.1.6.</span> <span class="nav-text">知识点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.4.2.</span> <span class="nav-text">节点编辑器实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Github"><span class="nav-number">3.</span> <span class="nav-text">Github</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/20/UIToolkit%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="UIToolkit | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UIToolkit
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-05-20 08:43:00" itemprop="dateCreated datePublished" datetime="2023-05-20T08:43:00+08:00">2023-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-05-28 23:35:12" itemprop="dateModified" datetime="2023-05-28T23:35:12+08:00">2023-05-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Editor/" itemprop="url" rel="index"><span itemprop="name">Editor</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>之前有一篇学习Unity Editor相关的知识:<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2022/02/20/UnityEditor%E7%9F%A5%E8%AF%86">UnityEditor知识</a></p>
+<p>UIToolkit作为Unity最新一代UI系统，这里准备单独用篇来学习记录，通过深入学习UIToolkit，为后续编写一套节点系统做准备(用于剧情系统和引导系统实现)。</p>
+<p>Note:</p>
+<ol>
+<li><strong>本章节重点是UIToolkit在Editor上的学习使用，Runtime目前看来UIToolkit还不够成熟，不适合用到Runtime(2023&#x2F;5&#x2F;20)</strong></li>
+</ol>
+<h1 id="UIToolkit"><a href="#UIToolkit" class="headerlink" title="UIToolkit"></a>UIToolkit</h1><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIToolkits.html">UI Toolkit is the newest UI system in Unity. It’s designed to optimize performance across platforms, and is based on standard web technologies. You can use UI Toolkit to create extensions for the Unity Editor, and to create runtime UI for games and applications (when you install the UI Toolkit package.</a></p>
+<p>看官方介绍可以看出，UI Toolkit是官方推的新一代UI系统，基于Web技术概念的一套UI系统，可用于Editor和运行时通吃。</p>
+<p>UI Toolkit由三大部分组成:</p>
+<ol>
+<li>UI system(<a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIElements.html">Contains the core features and functionality required to create user interfaces.</a>)</li>
+<li>UI Assets(<a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIElements.html">Asset types inspired by standard web formats. Use them to structure and style UI.</a>)(个人理解类似UI布局文件Asset)</li>
+<li>Tools and resources(<a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIElements.html">Create and debug your interfaces, and learn how to use UI toolkit.</a>)</li>
+</ol>
+<h2 id="UI-system"><a href="#UI-system" class="headerlink" title="UI  system"></a>UI  system</h2><p>UI系统由以下部分组成:</p>
+<ol>
+<li>Visual tree(<a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIElements.html">Defines every user interface you build with the UI Toolkit. A visual tree is an object graph, made of lightweight nodes, that holds all the elements in a window or panel.</a>)(定义UI界面的数据，包含了所有组成UI显示的成员节点信息)</li>
+<li>Controls(<a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIElements.html">A library of standard UI controls such as buttons, popups, list views, and color pickers. You can use them as-is, customize them, or create your own controls.</a>)(UI组件)</li>
+<li>Data binding system(<a href="">Links properties to the controls that modify their values.</a>)(关联数据属性到UI组件)</li>
+<li>Layout Engine(<a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIElements.html">A layout system based on the CSS Flexbox model. It positions elements based on layout and styling properties.</a>)(类似CSS的UI布局系统)</li>
+<li>Event System(<a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIElements.html">Communicates user interactions to elements; for example, input, touch and pointer interactions, drag and drop operations, and other event types. The system includes a dispatcher, a handler, a synthesizer, and a library of event types.</a>)(UI事件系统，负责事件的分发等)</li>
+<li>UI Renderer(<a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIElements.html">A <strong>rendering</strong> system built directly on top of Unity’s graphics device layer.</a>)(在Unity基础上设计的UI渲染系统)</li>
+<li>UI Toolkit Runtime Support(<a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIElements.html">Contains the components required to create runtime UI. The UI Toolkit package is currently in preview.</a>)</li>
+</ol>
+<h3 id="Visual-tree"><a href="#Visual-tree" class="headerlink" title="Visual tree"></a>Visual tree</h3><p>Visual tree由VisualElement组成，VisualElement是所有UI Toolkit的节点基类，VisualElment包含了所有UI组件，排版，UI风格，UI事件处理等数据信息。</p>
+<p>UI元素绘制顺序树广度扩展:</p>
+<p><img src="/img/Unity/UIToolkit/UIToolkitDrawingOrder.png" alt="UIToolkitDrawingOrder"></p>
+<p>UIToolkit里的坐标系分为两种：</p>
+<ol>
+<li>Relative(position: relative相对坐标系)</li>
+<li>Absolute(position: absolute绝对坐标系)</li>
+</ol>
+<p>上面两个坐标系和Unity里的相对位置和世界位置的概念差不多。</p>
+<p>Note:</p>
+<ol>
+<li><strong>坐标原点在左上角</strong></li>
+<li><strong>VisualElementExtensions的扩展方法里提供了坐标系转换相关的方法和接口</strong></li>
+</ol>
+<h3 id="Layout-Engine"><a href="#Layout-Engine" class="headerlink" title="Layout Engine"></a>Layout Engine</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIE-LayoutEngine.html">UI Toolkit includes a layout engine that positions visual elements based on layout and styling properties.</a>(UI Toolkit的排版系统是基于VisualElement的排版和Styling属性设置决定的)</p>
+<h3 id="UXML-format"><a href="#UXML-format" class="headerlink" title="UXML format"></a>UXML format</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIE-UXML.html">Unity Extensible Markup Language (UXML) files are text files that define the structure of the user interface. </a>(Unity支持用UXML来描述UI界面组件数据)</p>
+<p><strong>可以使用<a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIBuilder.html">UI Builder</a>实现可视化布局编辑。</strong></p>
+<p><strong>UXML通过代码动态创建的数据对象类为VisualElementAssets。</strong></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-ElementRef.html">UXML现有可用Element查询</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-uxml-examples.html">UXML布局构建事例</a></p>
+<p>深入使用，待学习……</p>
+<p>Note:</p>
+<ol>
+<li><strong>You can’t generate a VisualTreeAsset from raw UXML at runtime.</strong></li>
+</ol>
+<h3 id="Uity-style-sheets-USS"><a href="#Uity-style-sheets-USS" class="headerlink" title="Uity style sheets(USS)"></a>Uity style sheets(USS)</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIE-USS.html">Style properties are either set in C# or from a style sheet. Style properties have their own data structure (<code>IStyle</code> interface). UI Toolkit supports style sheets written in USS (Unity style sheet).</a>(Unity支持定义类似CSS的USS文件来定义UI界面使用的Style属性设置)</p>
+<p><strong>USS通过代码动态创建的数据对象类为StyleSheet</strong></p>
+<p>USS包含以下部分:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-about-uss.html">Style rules that include a selector and a declaration block.</a>(个人理解Style定义包含选择器和内容定义)</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-about-uss.html">Selectors that identify which visual element the style rule affects.</a>(选择器用于匹配Element的Style使用)</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-about-uss.html">A declaration block, inside curly braces, that has one or more style declarations. Each style declaration has a property and a value. Each style declaration ends with a semi-colon.</a>(内容定义Style的详细配置)</li>
+</ol>
+<h4 id="USS-Selector"><a href="#USS-Selector" class="headerlink" title="USS Selector"></a>USS Selector</h4><p>Style选择器分有很多种，简单的选择器有:</p>
+<h5 id="Type-selector"><a href="#Type-selector" class="headerlink" title="Type selector"></a>Type selector</h5><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-USS-Selectors-type.html">type selectors match elements based on their element types.</a>(通过类型名字匹配)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Button &#123;</span><br><span class="line">  border-radius: 8px;</span><br><span class="line">  width: 100px;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Button name=&quot;Cancel&quot; text=&quot;Cancel&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Note:</p>
+<ul>
+<li><strong>type selector的名字不允许包含命名空间</strong></li>
+</ul>
+<h5 id="Class-selector"><a href="#Class-selector" class="headerlink" title="Class selector"></a>Class selector</h5><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-USS-Selectors-class.html">class selectors match elements that have specific USS classes assigned. </a>(通过定义类名匹配)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.yellow &#123;</span><br><span class="line">    background-color: yellow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Button name=&quot;OK&quot; class=&quot;yellow&quot; text=&quot;OK&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Note:</p>
+<ul>
+<li><strong>calss selector大小写敏感且不允许带数字</strong></li>
+</ul>
+<h5 id="Name-selector"><a href="#Name-selector" class="headerlink" title="Name selector"></a>Name selector</h5><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-USS-Selectors-name.html">name selectors match elements based on the name of an element.</a>(通过名字匹配)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#Cancel &#123;</span><br><span class="line">    border-width: 2px;</span><br><span class="line">    border-color: DarkRed;</span><br><span class="line">    background-color: pink;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Button name=&quot;Cancel&quot; text=&quot;Cancel&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Note:</p>
+<ul>
+<li><strong>代码里可以通过VisualElement.name修改去匹配Name Selector</strong></li>
+</ul>
+<h5 id="Universal-selector"><a href="#Universal-selector" class="headerlink" title="Universal selector"></a>Universal selector</h5><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-USS-Selectors-universal.html">universal selector, also called the wildcard selector, matches any element.</a>(通过通配符(正则)去匹配)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* &#123;</span><br><span class="line">    background-color: yellow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;VisualElement name=&quot;container1&quot;&gt;</span><br><span class="line">    &lt;VisualElement name=&quot;container2&quot; class=&quot;yellow&quot;&gt;</span><br><span class="line">      &lt;Button name=&quot;OK&quot; class=&quot;yellow&quot; text=&quot;OK&quot; /&gt;</span><br><span class="line">      &lt;Button name=&quot;Cancel&quot; text=&quot;Cancel&quot; /&gt;</span><br><span class="line">&lt;/VisualElement&gt;</span><br></pre></td></tr></table></figure>
+
+<p>更多复杂的选择器参考:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-about-uss.html">Complex selectors</a></p>
+<h4 id="USS-properties"><a href="#USS-properties" class="headerlink" title="USS properties"></a>USS properties</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-uss-properties.html">USS property assigns a style or behavior to a VisualElement. </a>(USS的内容属性用于给VisualElement指定具体显示配置)</p>
+<h5 id="USS-data-types"><a href="#USS-data-types" class="headerlink" title="USS data types"></a>USS data types</h5><p>Syntax - auto, <legnth>,<color>等。</p>
+<p>​	如果一个属性有多个值，可以如下方式表达不同含义：</p>
+<ul>
+<li><p>Side-by-side表示全部都必须按顺序出现</p>
+</li>
+<li><p>|表示多个选择里必须出现一个</p>
+</li>
+<li><p>||表示1个或多个必须按顺序出现</p>
+</li>
+<li><p>&amp;&amp;表示所有都必须出现</p>
+</li>
+<li><p>[]表示一个选择组(类似正则里[]的概念)</p>
+<p>上面提到的属性多个值都支持类似正则里*,+,?,{A,B}的后缀描述，表达的含义也就是类似正则里的出现次数控制。</p>
+</li>
+</ul>
+<p>Length - 支持像素(px)和百分比(%)两种长度单位</p>
+<p>initial - 全局关键词，标识重置属性到初始默认值</p>
+<p>Color - 支持16进制(#FFFFFF)和rgb表达方式(rgba(255, 255, 255, 1))</p>
+<p>​	Color关键词详情查看:</p>
+<p>​	<a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-uss-color-keywords.html">USS color keywords</a></p>
+<p>Assets - 支持引用项目里的资源，resource()(标识使用Resources目录资源)，url()(标识使用项目Asset资源，支持相对USS所在目录的相对路径和项目相对路径)</p>
+<h5 id="USS-common-properties"><a href="#USS-common-properties" class="headerlink" title="USS common properties"></a>USS common properties</h5><p>在了解一些常规布局属性概念前，让我们先来看看官网给的一张示意图:</p>
+<p><img src="/img/Unity/UIToolkit/USSBoxModel.png" alt="USSBoxModel"></p>
+<h6 id="宽高属性"><a href="#宽高属性" class="headerlink" title="宽高属性"></a>宽高属性</h6><p>width(宽度)，height(高度)，min-width(最小宽度)，min-height(最小高度)，max-width(最大宽度)，max-height(最大高度)……</p>
+<h6 id="边缘-Margins-属性"><a href="#边缘-Margins-属性" class="headerlink" title="边缘(Margins)属性"></a>边缘(Margins)属性</h6><p>margin-left(左侧边缘)，margin-top(顶部边缘)，margin-right(右侧边缘)，margin-bottom(底部边缘)……</p>
+<h6 id="边界-Border-属性"><a href="#边界-Border-属性" class="headerlink" title="边界(Border)属性"></a>边界(Border)属性</h6><p>border-left-width(左侧边界)，border-top-width(顶部边界)，border-right-width(右侧边界)，border-bottom-width(底部边界)，border-color(边界颜色)……</p>
+<h6 id="内边距-Padding-属性"><a href="#内边距-Padding-属性" class="headerlink" title="内边距(Padding)属性"></a>内边距(Padding)属性</h6><p>padding-left(左侧内边距)，padding-top(顶部内边距)，padding-right(右侧内边距)，padding-bottom(底部内边距)……</p>
+<h6 id="排版属性"><a href="#排版属性" class="headerlink" title="排版属性"></a>排版属性</h6><ul>
+<li>Items<ul>
+<li>flex-grow(排版放大设置)</li>
+<li>flex-shrink(排版缩小设置)</li>
+<li>flex-basic(排版大小设置)</li>
+<li>align-self(自身对齐设置)</li>
+<li>……</li>
+</ul>
+</li>
+<li>Containers<ul>
+<li>flex-direction(子成员排版对齐方向)</li>
+<li>flex-wrap(子成员放不下是否多行显示排版)</li>
+<li>align-content(子成员在排版方向上的对齐方式)</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+<h6 id="位置属性"><a href="#位置属性" class="headerlink" title="位置属性"></a>位置属性</h6><p>position(位置坐标系-绝对|相对)，left(距离父容器左测距离)，top(距离父容器顶部距离)，right(距离父容器右侧距离)，bottom(距离父容器底部距离)……</p>
+<p>UIToolkit里的坐标属性有两种坐标系:</p>
+<ol>
+<li>绝对坐标</li>
+<li>相对坐标</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>设置了Left,Top,Right,Bottom后，Width属性相关设置会被忽略。</strong></li>
+</ol>
+<h6 id="背景属性"><a href="#背景属性" class="headerlink" title="背景属性"></a>背景属性</h6><p>background-color(背景颜色)，backtground-image(背景图片)，-unity-background-scale-mode(背景图片缩放模式)，-unity-background-image-tint-color(背景图片色调?)……</p>
+<h6 id="九宫属性"><a href="#九宫属性" class="headerlink" title="九宫属性"></a>九宫属性</h6><p>-unity-slice-left(左侧切割数值)，-unity-slice-top(顶部切割数值)，-unity-slice-right(右侧切割数值)，-unity-slice-bottom(底部切割数值)，-unity-slice-scale(九宫缩放值?)……</p>
+<h6 id="Appearance-外观-属性"><a href="#Appearance-外观-属性" class="headerlink" title="Appearance(外观)属性"></a>Appearance(外观)属性</h6><p>overflow(溢出显示设置),-unity-overflow-clip-box(溢出裁剪box设置),-unity-paragraph-spacing(段落间隔设置),opacity(透明度显示设置),visibility(可见性设置),display(排版显示设置)……</p>
+<h6 id="文本属性"><a href="#文本属性" class="headerlink" title="文本属性"></a>文本属性</h6><p>color(绘制颜色设置),-unity-font(绘制文本字体设置),-unity-font-definition(?),font-size(字体大小设置),-unity-font-style(字体风格设置),-unity-text-align(字体对齐设置),-unity-text-overflow-position(?),white-space(空格处理方式设置),-unity-text-outline-width(描边宽度设置),-unity-text-outline-color(描边颜色设置)……</p>
+<p>详细USS properties查看:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-uss-properties.html">USS properties reference</a></p>
+<p>W3C CSS的详细属性效果查看:</p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS">CSS</a></p>
+<p>Note:</p>
+<ol>
+<li><strong><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-USS-PropertyTypes.html">USS properties use the same syntax as W3C CSS documents</a>(USS的内容属性采用W3C CSS相关文档规则)</strong></li>
+<li><strong><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-USS-SupportedProperties.html">The USS display property supports only a small subset of the CSS <code>display</code> property’s available keyword values.</a>(USS的属性支持只是CSS的很小部分子集)</strong></li>
+</ol>
+<h4 id="USS-custom-properties"><a href="#USS-custom-properties" class="headerlink" title="USS custom properties"></a>USS custom properties</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-USS-variables.html">USS variables, also called custom properties, define values that you can reuse in other USS rules. You can create variables for any type of USS property.</a></p>
+<p>可以看到USS支持在USS文件里自定义变量，然后像编程里的变量一样，一处定义多处使用。</p>
+<p>USS自定义变量规则如下:</p>
+<p><strong>–变量名:值</strong></p>
+<p>USS自定义变量在其他USS文件访问规则:</p>
+<p><strong>var(–变量名, 默认值(可选))</strong></p>
+<p>内置自定义变量查询:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-uss-built-in-variable-reference.html">USS built-in variable references</a></p>
+<h4 id="Best-practices-for-USS"><a href="#Best-practices-for-USS" class="headerlink" title="Best practices for USS"></a>Best practices for USS</h4><p>官方关于使用USS Style的建议:</p>
+<ol>
+<li><strong>Avoid inline styles(个人理解是使用全局USS File，避免对单个Visual Element设置Styles(会导致耗费更多内存))</strong></li>
+<li><strong>Selector architecture consideration(选择合适的selector方案，过多或过于复杂的selector方案会导致运行时选择style开销更大)</strong></li>
+</ol>
+<p>更多建议参考:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-USS-WritingStyleSheets.html">Best practices for USS</a></p>
+<h4 id="Theme-Style-Sheet-TSS"><a href="#Theme-Style-Sheet-TSS" class="headerlink" title="Theme Style Sheet(TSS)"></a>Theme Style Sheet(TSS)</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-tss.html">Theme Style Sheet (TSS) files are regular USS files. UI Toolkit treats TSS as a distinct asset type and uses it for management purposes.</a></p>
+<p>更多学习，待添加……</p>
+<h3 id="Query-Elements"><a href="#Query-Elements" class="headerlink" title="Query Elements"></a>Query Elements</h3><p><strong>Unity提供了Query功能(类似Linq)，方便用户快速从VisualTree或Elements里查找符合条件的Element。</strong></p>
+<ul>
+<li><p>UQuery</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/UIElements.UQuery.html">UQuery is a set of extension methods allowing you to select individual or collection of visualElements inside a complex hierarchy.</a>(一系列扩展方法用于查询指定VisualElements)</p>
+</li>
+<li><p>UQueryBuilder</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/UIElements.UQueryBuilder_1.html">Utility Object that contructs a set of selection rules to be ran on a root visual element.</a>(工具类，辅助UQuery构建一系列查询规则)</p>
+</li>
+<li><p>Q</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-UQuery.html">Q is the shorthand for Query<T>.First(). It returns the first element that matches the selection rules.</a>(Q是查询首个符合规则的Element的缩写)</p>
+</li>
+</ul>
+<h3 id="Event-System"><a href="#Event-System" class="headerlink" title="Event System"></a>Event System</h3><h4 id="Dispatch-Events"><a href="#Dispatch-Events" class="headerlink" title="Dispatch Events"></a>Dispatch Events</h4><p>UIToolkit Event System监听系统事件，然后通过EventDispatcher派发事件给Visual Element。</p>
+<p>所有的事件派发都会经历以下三个阶段：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Dispatching.html">Trickles down: Events sent to elements during the trickle down phase.</a>(个人没太理解这个阶段，感觉是一个事件捕获<strong>从上往下</strong>派发事件的过程(<strong>不含响应事件的最里层Visual Element</strong>)</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Dispatching.html">Bubbles up: Events sent to elements during the bubble-up phase.</a>(事件从目标节点向上冒泡派发给Visual Element的，即最里层符合的Visual Element最先派发(<strong>从下往上</strong>)(<strong>含响应事件最里层Visual Element</strong>))</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Dispatching.html">Cancellable: Events that can have their default action execution cancelled, stopped, or prevented.</a>(事件是可取消的，比如一般的事件冒泡为了不继续想外层冒泡，我们会设置事件阻断防止继续冒泡)</li>
+</ol>
+<p><img src="/img/Unity/UIToolkit/EventPropagation.png" alt="EventPropagation"></p>
+<p><strong>通过上面的介绍可以了解到，事件派发有两个流程(Trickles down &amp; Bubbles up)，在不打断事件派发的前提下，最里层响应Visual Element只会派发一次，其他外层传递路线上的Visual Element会派发两次事件。</strong></p>
+<p>事件基类为EventBase，所有相关事件介绍参考:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Reference.html">Event reference</a></p>
+<p>Note:</p>
+<ol>
+<li><strong><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events.html">The UI Toolkit event system shares the same terminology and event naming as HTML events</a>(UIToolkit采用和HTML一样的事件名和术语)</strong></li>
+</ol>
+<h4 id="Handle-Events"><a href="#Handle-Events" class="headerlink" title="Handle Events"></a>Handle Events</h4><p>事件处理顺序如下：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Handling.html">Execute event callbacks on elements from the root element down to the parent of the event target. This is the <strong>trickle-down phase</strong> of the dispatch process.</a>(事件捕获阶段从上往下触发事件)</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Handling.html">Execute event callbacks on the event target. This is the <strong>target phase</strong> of the dispatch process.</a>(在目标响应Visual Element上触发事件)</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Handling.html">Call ExecuteDefaultActionAtTarget() on the event target.</a>(在目标响应Visual Element上触发ExecuteDefaultActionAtTarget()方法)</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Handling.html">Execute event callbacks on elements from the event target parent up to the root. This is the <strong>bubble-up phase</strong> of the dispatch process.</a>(从目标Visual Element开始向上冒泡触发事件)</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Handling.html">Call ExecuteDefaultAction() on the event target.</a>(在目标响应Visual Element上触发ExecuteDefaultAction()方法)</li>
+</ol>
+<p>事件响应里有两个重要的概念:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Dispatching.html">Event.currentTarget is the visual element on which the callback was registered.</a>(当前注册响应事件的Visual Element)</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Dispatching.html">Event.target is the element where the event occurs, for example the element directly under the mouse.</a>(当前事件发生的Visual Element)</li>
+</ul>
+<p><strong><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Handling.html">By default, a registered callback executes during the target phase and the bubble-up phase. This default behavior ensures that a parent element reacts after its child element.</a>(默认状态下，我们注册的事件回调是在target phase和bubble-up phase阶段执行。这是为了确保事件回调触发是从下往上)</strong></p>
+<p>如果我们想在指定阶段(e.g. tickle-down phase或bubble-up phase)触发注册事件回调，我们需要在注册事件回调处，显示传参说明响应阶段:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">VisualElement myElement = <span class="keyword">new</span> VisualElement();</span><br><span class="line"></span><br><span class="line">myElement.RegisterCallback&lt;MouseDownEvent&gt;(MyCallback, TrickleDown.TrickleDown);</span><br></pre></td></tr></table></figure>
+
+<p>如果我们想事件传递自定义数据，我们需要自定义一个含自带数据的方法回调并监听事件：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">myElement.RegisterCallback&lt;MouseDownEvent, MyType&gt;(MyCallbackWithData, myData);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MyCallbackWithData</span>(<span class="params">MouseDownEvent evt, MyType data</span>)</span> &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>相关事件信息查询:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Reference.html">Event Reference</a></p>
+<h3 id="SerializedObject-Data-Binding"><a href="#SerializedObject-Data-Binding" class="headerlink" title="SerializedObject Data Binding"></a>SerializedObject Data Binding</h3><p>待添加……</p>
+<h2 id="UI-Assets"><a href="#UI-Assets" class="headerlink" title="UI Assets"></a>UI Assets</h2><p>Unity提供了两种Asset用于布局系统</p>
+<ol>
+<li>UXML documents(<a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIElements.html">Unity eXtensible Markup Language (UXML) is an HTML and XML inspired markup language that you use to define the structure of user interfaces and reusable UI templates.</a>)(类似HTML和XML的标记性语言，用于定义UI布局)</li>
+<li>Unity Style Sheets(USS)(<a target="_blank" rel="noopener" href="https://docs.unity3d.com/2020.3/Documentation/Manual/UIElements.html">Style sheets allow you to apply visual styles and behaviors to user interfaces. They’re similar to Cascading Style Sheets (CSS) used on the web, and support a subset of standard CSS properties. </a>)(类似CSS用于定义UI风格)</li>
+</ol>
+<h2 id="UI-Tools-and-resources"><a href="#UI-Tools-and-resources" class="headerlink" title="UI Tools and resources"></a>UI Tools and resources</h2><p>Unity提供了几个辅助工具，帮助我们学习和调试UI Toolkit</p>
+<ol>
+<li><p><strong>UI Debugger(UI调试器–可视化查看UI节点详细数据)</strong></p>
+<p><img src="/img/Unity/UIToolkit/UIToolkitDebuggerPreview.PNG" alt="UIToolkitDebuggerPreview"></p>
+</li>
+<li><p><strong>UI Builder(UI布局可视化编辑器(预览版本))</strong></p>
+<p><img src="/"></p>
+</li>
+<li><p><strong>UI Samples(UI事例)</strong></p>
+<p><img src="/img/Unity/UIToolkit/UIToolkitSampleWindow.PNG" alt="UIToolkitSampleWindow"></p>
+</li>
+</ol>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p>接下来通过实战学习，进一步了解UIToolkit的使用和设计。</p>
+<h3 id="基础学习"><a href="#基础学习" class="headerlink" title="基础学习"></a>基础学习</h3><h4 id="代码-USS创建UI"><a href="#代码-USS创建UI" class="headerlink" title="代码+USS创建UI"></a>代码+USS创建UI</h4><h5 id="代码创建UI"><a href="#代码创建UI" class="headerlink" title="代码创建UI"></a>代码创建UI</h5><p>UIToolkit为了帮助我们快速创建Editor UI窗口，提供了快捷创建入口:</p>
+<p>Asset-&gt;Create-&gt;UI Toolkit-&gt;Editor Window</p>
+<p><img src="/img/Unity/UIToolkit/UIToolkitEditorWindowCreator.PNG" alt="UIToolkitEditorWindowCreator"></p>
+<p>考虑到不适用UXML作为UI布局，使用纯代码写Editor UI，这里就不勾选UXML了。</p>
+<p>创建完会看到生成一个*.cs文件和一个*.uss文件，这是因为我们勾选了C#和USS，接下来我们打开UICreateUIByCodeEditorWindow.cs开始我们的Editor UI代码编写，后续会讲到如何利用*.uss文件来指定UI风格。</p>
+<p>UICreateUIByCodeEditorWindow.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UICreateUIByCodeEditorWindow</span> : <span class="title">EditorWindow</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">MenuItem(<span class="string">&quot;Window/UI Toolkit/UIToolkitStudy/UICreateUIByCodeEditorWindow&quot;</span>)</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ShowUICodeStyleEditorWindow</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        UICreateUIByCodeEditorWindow wnd = GetWindow&lt;UICreateUIByCodeEditorWindow&gt;();</span><br><span class="line">        wnd.titleContent = <span class="keyword">new</span> GUIContent(<span class="string">&quot;UICreateUIByCodeEditorWindow&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> UIToolkit的rootVisualElement绘制方法</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">CreateGUI</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        CreateUIByCode();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 通过代码创建UI</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateUIByCode</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 创建一个ui容器，用于管理我们新增的ui组件</span></span><br><span class="line">        VisualElement uiContainer = <span class="keyword">new</span> VisualElement();</span><br><span class="line">        <span class="comment">// 添加一个标题作为ui容器标题组件显示</span></span><br><span class="line">        Label uiTitleLable = <span class="keyword">new</span> Label(<span class="string">&quot;代码创建UI容器&quot;</span>);</span><br><span class="line">        uiContainer.Add(uiTitleLable);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 添加按钮组件</span></span><br><span class="line">        Button btn1 = <span class="keyword">new</span> Button();</span><br><span class="line">        btn1.text = <span class="string">&quot;代码创建按钮1&quot;</span>;</span><br><span class="line">        uiContainer.Add(btn1);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 必须将需要显示的组件添加到根节点才能显示</span></span><br><span class="line">        <span class="comment">// 将ui容器添加到根节点作为需要显示的UIElement</span></span><br><span class="line">        rootVisualElement.Add(uiContainer);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Unity/UIToolkit/UICreateUIByCodeEditorWindow.PNG" alt="UICreateUIByCodeEditorWindow"></p>
+<p>可以看到编写基于UIToolkit的Editor Window还是和以往一样，要继承EditorWindow，但实现GUI绘制的接口不是<strong>OnGUI()<strong>而是</strong>CreateGUI()</strong>。</p>
+<p>正如前面提到的UIToolkit里绘制的对象Visual Tree是由Visual Element组成的树状结构。而<strong>EditorWindow.rootVisualElement正是UIToolkit绘制EditorWindow的根VisualElement</strong>，我们所有的UIToolkit元素都是添加到此EditorWindow.rootVisualElement实现排版绘制的。</p>
+<h5 id="代码修改USS"><a href="#代码修改USS" class="headerlink" title="代码修改USS"></a>代码修改USS</h5><p>所有的UIToolkit组件都继承至VisualElement，想通过代码修改UIToolkit组件的Style很简单，直接访问VisualElement.style即可。</p>
+<p>UIChangeUSSByCodeEditorWindow.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 通过代码修改USS创建UI</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateStyleUIByCode</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">    <span class="comment">// 给Label指定不同的Color Style</span></span><br><span class="line">    uiTitleLable.style.color = Color.red;</span><br><span class="line">    <span class="comment">// 设置Label居中显示Style</span></span><br><span class="line">    uiTitleLable.style.alignSelf = Align.Center;</span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Unity/UIToolkit/UIChangeUSSByCodeEditorWindow.PNG" alt="UIChangeUSSByCodeEditorWindow"></p>
+<p>可以看到通过访问style属性并修改其中的color属性，我成功的修改了标题文本的颜色显示风格。更多的属性修改参考文档:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/UIElements.IStyle.html">IStyle</a></p>
+<h5 id="使用USS指定UI风格"><a href="#使用USS指定UI风格" class="headerlink" title="使用USS指定UI风格"></a>使用USS指定UI风格</h5><p>第一步依然是使用Create-&gt;UI Toolkit-&gt;Editor WIndow</p>
+<p>去掉UXML勾选，这里依然只通过代码和USS文件创建UI显示。</p>
+<p>UIUseUSSEditorWindow.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UIUseUSSEditorWindow</span> : <span class="title">EditorWindow</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">MenuItem(<span class="string">&quot;Window/UI Toolkit/UIToolkitStudy/UIUseUSSEditorWindow&quot;</span>)</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ShowUIUseUSSEditorWidnow</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        UIUseUSSEditorWindow wnd = GetWindow&lt;UIUseUSSEditorWindow&gt;();</span><br><span class="line">        wnd.titleContent = <span class="keyword">new</span> GUIContent(<span class="string">&quot;UIUseUSSEditorWindow&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">CreateGUI</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        CreateUIByUseUSS();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 使用USS创建UI</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateUIByUseUSS</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        VisualElement root = rootVisualElement;</span><br><span class="line">        <span class="comment">// 加载并指定USS的使用</span></span><br><span class="line">        <span class="keyword">var</span> styleSheet = AssetDatabase.LoadAssetAtPath&lt;StyleSheet&gt;(<span class="string">&quot;Assets/Scripts/Editor/UIToolkitStudy/UIUseUSSEditorWindow/UIUseUSSEditorWindow.uss&quot;</span>);</span><br><span class="line">        root.styleSheets.Add(styleSheet);</span><br><span class="line">        </span><br><span class="line">        VisualElement smallLabelWithStyle = <span class="keyword">new</span> Label(<span class="string">&quot;USS Using SmallLabel Class Selector!&quot;</span>);</span><br><span class="line">        smallLabelWithStyle.AddToClassList(<span class="string">&quot;SmallLabel&quot;</span>);</span><br><span class="line">        VisualElement bigLabelWithStyle = <span class="keyword">new</span> Label(<span class="string">&quot;USS Using BigLabel Class Selector!&quot;</span>);</span><br><span class="line">        smallLabelWithStyle.AddToClassList(<span class="string">&quot;BigLabel&quot;</span>);</span><br><span class="line">        VisualElement labelWithStyle = <span class="keyword">new</span> Label(<span class="string">&quot;USS Using Label Type Selector!&quot;</span>);</span><br><span class="line">        VisualElement boldLabelWithStyle = <span class="keyword">new</span> Label(<span class="string">&quot;USS Using BoldLabel Class Selector!&quot;</span>);</span><br><span class="line">        boldLabelWithStyle.AddToClassList(<span class="string">&quot;BoldLabel&quot;</span>);</span><br><span class="line">        root.Add(smallLabelWithStyle);</span><br><span class="line">        root.Add(bigLabelWithStyle);</span><br><span class="line">        root.Add(labelWithStyle);</span><br><span class="line">        root.Add(boldLabelWithStyle);</span><br><span class="line">        </span><br><span class="line">        Button ussCenterButton = <span class="keyword">new</span> Button();</span><br><span class="line">        ussCenterButton.name = <span class="string">&quot;CenterButton&quot;</span>;</span><br><span class="line">        ussCenterButton.text = <span class="string">&quot;Center USS Button Name Selector&quot;</span>;</span><br><span class="line">        root.Add(ussCenterButton);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>UIUseUSSEditorWindow.uss</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Label &#123;</span><br><span class="line">	font-size: 20px;</span><br><span class="line">	color: rgb(68, 138, 255);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.SmallLabel &#123;</span><br><span class="line">	font-size: 10px;</span><br><span class="line">	color: rgb(68, 138, 255);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.BigLabel &#123;</span><br><span class="line">	font-size: 40px;</span><br><span class="line">	color: rgb(68, 138, 255);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.BoldLabel &#123;</span><br><span class="line">	font-size: 20px;</span><br><span class="line">	-unity-font-style: bold;</span><br><span class="line">	color: rgb(68, 138, 255);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#CenterButton &#123;</span><br><span class="line">	align-self: center;</span><br><span class="line">	-unity-text-align: middle-center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Unity/UIToolkit/UIUseUSSEditorWindow.PNG" alt="UIUseUSSEditorWindow"></p>
+<p>可以看到我们在UIUseUSSEditorWindow.uss里分别定义了，<strong>Type Selector(Label)</strong>，<strong>Class Selector(.SmallLabel, .BigLabel, .BoldLabel)</strong>,<strong>Name Selector(CenterButton)</strong>。</p>
+<p>对应的我们在代码里通过以下三种方式分别指定了Selector：</p>
+<ol>
+<li><p>Type Selector</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VisualElement labelWithStyle = <span class="keyword">new</span> Label(<span class="string">&quot;USS Using Label Type Selector!&quot;</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Class Selctor</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">VisualElement smallLabelWithStyle = <span class="keyword">new</span> Label(<span class="string">&quot;USS Using SmallLabel Class Selector!&quot;</span>);</span><br><span class="line">smallLabelWithStyle.AddToClassList(<span class="string">&quot;SmallLabel&quot;</span>);</span><br><span class="line">VisualElement bigLabelWithStyle = <span class="keyword">new</span> Label(<span class="string">&quot;USS Using BigLabel Class Selector!&quot;</span>);</span><br><span class="line">smallLabelWithStyle.AddToClassList(<span class="string">&quot;BigLabel&quot;</span>);</span><br><span class="line">VisualElement labelWithStyle = <span class="keyword">new</span> Label(<span class="string">&quot;USS Using Label Type Selector!&quot;</span>);</span><br><span class="line">VisualElement boldLabelWithStyle = <span class="keyword">new</span> Label(<span class="string">&quot;USS Using BoldLabel Class Selector!&quot;</span>);</span><br><span class="line">boldLabelWithStyle.AddToClassList(<span class="string">&quot;BoldLabel&quot;</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Name Selector</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Button ussCenterButton = <span class="keyword">new</span> Button();</span><br><span class="line">ussCenterButton.name = <span class="string">&quot;CenterButton&quot;</span>;</span><br><span class="line">ussCenterButton.text = <span class="string">&quot;Center USS Button Name Selector&quot;</span>;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="位置和排版"><a href="#位置和排版" class="headerlink" title="位置和排版"></a>位置和排版</h5><p>第一步依然是使用Create-&gt;UI Toolkit-&gt;Editor WIndow</p>
+<p>去掉UXML勾选，这里依然只通过代码和USS文件创建UI显示。</p>
+<p>UIPositionAndLayoutEditorWindow.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 位置和排版EditorWindow</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UIPositionAndLayoutEditorWindow</span> : <span class="title">EditorWindow</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 竖向相对位置根组件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> VisualElement mRootVerticalRelativePosContainer;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">MenuItem(<span class="string">&quot;Window/UI Toolkit/UIToolkitStudy/UIPositionAndLayoutEditorWindow&quot;</span>)</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ShowUIPositionAndLayoutEditorWindow</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        UIPositionAndLayoutEditorWindow wnd = GetWindow&lt;UIPositionAndLayoutEditorWindow&gt;();</span><br><span class="line">        wnd.titleContent = <span class="keyword">new</span> GUIContent(<span class="string">&quot;UIPositionAndLayoutEditorWindow&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">CreateGUI</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        CreatePositionAndLayoutUI();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 创建位置和排版UI</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreatePositionAndLayoutUI</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        CreateRootRelativePosVerticalContainer();</span><br><span class="line">        CreateHorizontalRelativePosContainer();</span><br><span class="line">        CreateHorzintalLayoutContainer();</span><br><span class="line">        CreateVerticalAbsolutePosContainer();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 创建竖向相对位置根组件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateRootRelativePosVerticalContainer</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 竖向相对位置排版容器</span></span><br><span class="line">        mRootVerticalRelativePosContainer = <span class="keyword">new</span> VisualElement();</span><br><span class="line">        <span class="comment">// 设置竖向排版</span></span><br><span class="line">        mRootVerticalRelativePosContainer.style.flexDirection = FlexDirection.Column;</span><br><span class="line">        <span class="comment">// 设置相对位置</span></span><br><span class="line">        mRootVerticalRelativePosContainer.style.position = Position.Relative;</span><br><span class="line">        <span class="comment">// 指定竖向容器Style</span></span><br><span class="line">        mRootVerticalRelativePosContainer.AddToClassList(<span class="string">&quot;unity-box&quot;</span>);</span><br><span class="line">        <span class="comment">// 设置竖向容器大小位置</span></span><br><span class="line">        mRootVerticalRelativePosContainer.style.marginLeft = <span class="number">10</span>;</span><br><span class="line">        mRootVerticalRelativePosContainer.style.marginRight = <span class="number">10</span>;</span><br><span class="line">        mRootVerticalRelativePosContainer.style.marginTop = <span class="number">10</span>;</span><br><span class="line">        mRootVerticalRelativePosContainer.style.marginBottom = <span class="number">10</span>;</span><br><span class="line">        <span class="comment">// 设置竖向容器自适应大小</span></span><br><span class="line">        mRootVerticalRelativePosContainer.style.flexGrow = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 添加竖向排版标签</span></span><br><span class="line">        Label verticalLabel = <span class="keyword">new</span> Label();</span><br><span class="line">        verticalLabel.text = <span class="string">&quot;竖向相对位置排版容器标题&quot;</span>;</span><br><span class="line">        <span class="comment">// 设置文本居中显示</span></span><br><span class="line">        verticalLabel.style.alignSelf = Align.Center;</span><br><span class="line">        mRootVerticalRelativePosContainer.Add(verticalLabel);</span><br><span class="line">        rootVisualElement.Add(mRootVerticalRelativePosContainer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 创建横向相对位置容器</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateHorizontalRelativePosContainer</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 横向相对位置容器</span></span><br><span class="line">        <span class="keyword">var</span> horizontalRelativePosContainer = <span class="keyword">new</span> VisualElement();</span><br><span class="line">        <span class="comment">// 设置横向排版</span></span><br><span class="line">        horizontalRelativePosContainer.style.flexDirection = FlexDirection.Row;</span><br><span class="line">        <span class="comment">// 设置相对位置</span></span><br><span class="line">        horizontalRelativePosContainer.style.position = Position.Relative;</span><br><span class="line">        <span class="comment">// 指定横向相对位置容器Style</span></span><br><span class="line">        horizontalRelativePosContainer.AddToClassList(<span class="string">&quot;unity-box&quot;</span>);</span><br><span class="line">        <span class="comment">// 添加横向相对位置标签</span></span><br><span class="line">        Label horizontalRelativePosLabel = <span class="keyword">new</span> Label();</span><br><span class="line">        horizontalRelativePosLabel.text = <span class="string">&quot;横向相对位置排版容器标题&quot;</span>;</span><br><span class="line">        <span class="comment">// 设置文本居中显示</span></span><br><span class="line">        horizontalRelativePosLabel.style.alignSelf = Align.Center;</span><br><span class="line">        horizontalRelativePosContainer.Add(horizontalRelativePosLabel);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置横向容器多个按钮</span></span><br><span class="line">        Button horizontalButton1 = <span class="keyword">new</span> Button();</span><br><span class="line">        horizontalButton1.text = <span class="string">&quot;横向按钮1&quot;</span>;</span><br><span class="line">        horizontalButton1.style.marginLeft = <span class="number">25</span>;</span><br><span class="line">        Button horizontalButton2 = <span class="keyword">new</span> Button();</span><br><span class="line">        horizontalButton2.text = <span class="string">&quot;横向按钮2&quot;</span>;</span><br><span class="line">        horizontalButton2.style.marginLeft = <span class="number">50f</span>;</span><br><span class="line">        horizontalRelativePosContainer.Add(horizontalButton1);</span><br><span class="line">        horizontalRelativePosContainer.Add(horizontalButton2);</span><br><span class="line"></span><br><span class="line">        mRootVerticalRelativePosContainer.Add(horizontalRelativePosContainer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 创建横向排版容器</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateHorzintalLayoutContainer</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 横向排版容器</span></span><br><span class="line">        <span class="keyword">var</span> horizontalLayoutContainer = <span class="keyword">new</span> VisualElement();</span><br><span class="line">        <span class="comment">// 设置横向排版</span></span><br><span class="line">        horizontalLayoutContainer.style.flexDirection = FlexDirection.Row;</span><br><span class="line">        <span class="comment">// 设置内容超出后排版Style</span></span><br><span class="line">        horizontalLayoutContainer.style.flexWrap = Wrap.Wrap;</span><br><span class="line">        <span class="comment">// 指定横向排版容器Style</span></span><br><span class="line">        horizontalLayoutContainer.AddToClassList(<span class="string">&quot;unity-box&quot;</span>);</span><br><span class="line">        <span class="comment">// 添加横向排版标签</span></span><br><span class="line">        Label horizontalLayoutLabel = <span class="keyword">new</span> Label();</span><br><span class="line">        horizontalLayoutLabel.text = <span class="string">&quot;横向排版容器标题&quot;</span>;</span><br><span class="line">        <span class="comment">// 设置文本居中显示</span></span><br><span class="line">        horizontalLayoutLabel.style.alignSelf = Align.Center;</span><br><span class="line">        horizontalLayoutContainer.Add(horizontalLayoutLabel);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置横向容器多个按钮</span></span><br><span class="line">        Button horizontalButton1 = <span class="keyword">new</span> Button();</span><br><span class="line">        horizontalButton1.text = <span class="string">&quot;横向按钮1&quot;</span>;</span><br><span class="line">        <span class="comment">// 设置自动扩展系数</span></span><br><span class="line">        horizontalButton1.style.flexGrow = <span class="number">1</span>;</span><br><span class="line">        Button horizontalButton2 = <span class="keyword">new</span> Button();</span><br><span class="line">        horizontalButton2.text = <span class="string">&quot;横向按钮2&quot;</span>;</span><br><span class="line">        <span class="comment">// 设置自动扩展系数</span></span><br><span class="line">        horizontalButton2.style.flexGrow = <span class="number">2</span>;</span><br><span class="line">        <span class="comment">// 设置偏移间隔</span></span><br><span class="line">        horizontalButton2.style.marginLeft = <span class="number">10</span>;</span><br><span class="line">        Button horizontalButton3 = <span class="keyword">new</span> Button();</span><br><span class="line">        horizontalButton3.text = <span class="string">&quot;横向按钮3&quot;</span>;</span><br><span class="line">        <span class="comment">// 设置自动扩展系数</span></span><br><span class="line">        horizontalButton3.style.flexGrow = <span class="number">3</span>;</span><br><span class="line">        <span class="comment">// 设置偏移间隔</span></span><br><span class="line">        horizontalButton3.style.marginLeft = <span class="number">10</span>;</span><br><span class="line">        Button horizontalButton4 = <span class="keyword">new</span> Button();</span><br><span class="line">        horizontalButton4.text = <span class="string">&quot;横向按钮4&quot;</span>;</span><br><span class="line">        <span class="comment">// 设置自动扩展系数</span></span><br><span class="line">        horizontalButton4.style.flexGrow = <span class="number">4</span>;</span><br><span class="line">        <span class="comment">// 设置偏移间隔</span></span><br><span class="line">        horizontalButton4.style.marginLeft = <span class="number">10</span>;</span><br><span class="line">        horizontalLayoutContainer.Add(horizontalButton1);</span><br><span class="line">        horizontalLayoutContainer.Add(horizontalButton2);</span><br><span class="line">        horizontalLayoutContainer.Add(horizontalButton3);</span><br><span class="line">        horizontalLayoutContainer.Add(horizontalButton4);</span><br><span class="line"></span><br><span class="line">        mRootVerticalRelativePosContainer.Add(horizontalLayoutContainer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 创建竖向绝对位置容器</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateVerticalAbsolutePosContainer</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 竖向绝对坐标容器</span></span><br><span class="line">        <span class="keyword">var</span> verticalAbsolutePosContainer = <span class="keyword">new</span> VisualElement();</span><br><span class="line">        <span class="comment">// 设置竖向排版</span></span><br><span class="line">        verticalAbsolutePosContainer.style.flexDirection = FlexDirection.Column;</span><br><span class="line">        <span class="comment">// 设置绝对坐标</span></span><br><span class="line">        verticalAbsolutePosContainer.style.position = Position.Absolute;</span><br><span class="line">        <span class="comment">// 指定竖向绝对位置容器Style</span></span><br><span class="line">        verticalAbsolutePosContainer.AddToClassList(<span class="string">&quot;unity-box&quot;</span>);</span><br><span class="line">        <span class="comment">// 设置竖向容器大小位置</span></span><br><span class="line">        verticalAbsolutePosContainer.style.left = <span class="number">100</span>;</span><br><span class="line">        verticalAbsolutePosContainer.style.right = <span class="number">100</span>;</span><br><span class="line">        verticalAbsolutePosContainer.style.top = <span class="number">100</span>;</span><br><span class="line">        verticalAbsolutePosContainer.style.bottom = <span class="number">100</span>;</span><br><span class="line">        <span class="comment">// 设置竖向绝对位置容器自适应</span></span><br><span class="line">        verticalAbsolutePosContainer.style.flexGrow = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 添加竖向排版标签</span></span><br><span class="line">        Label verticalAbsolutePosLabel = <span class="keyword">new</span> Label();</span><br><span class="line">        verticalAbsolutePosLabel.text = <span class="string">&quot;竖向绝对位置标题&quot;</span>;</span><br><span class="line">        <span class="comment">// 设置文本居中显示</span></span><br><span class="line">        verticalAbsolutePosLabel.style.alignSelf = Align.Center;</span><br><span class="line">        verticalAbsolutePosContainer.Add(verticalAbsolutePosLabel);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置竖向容器多个按钮</span></span><br><span class="line">        Button verticalButton1 = <span class="keyword">new</span> Button();</span><br><span class="line">        verticalButton1.text = <span class="string">&quot;竖向按钮1&quot;</span>;</span><br><span class="line">        <span class="comment">// 设置按钮高度和位置</span></span><br><span class="line">        verticalButton1.style.height = <span class="number">20</span>;</span><br><span class="line">        verticalButton1.style.marginLeft = <span class="number">20</span>;</span><br><span class="line">        verticalButton1.style.marginRight = <span class="number">20</span>;</span><br><span class="line">        Button verticalButton2 = <span class="keyword">new</span> Button();</span><br><span class="line">        verticalButton2.text = <span class="string">&quot;竖向按钮2&quot;</span>;</span><br><span class="line">        <span class="comment">// 设置按钮高度</span></span><br><span class="line">        verticalButton2.style.height = <span class="number">20</span>;</span><br><span class="line">        verticalButton2.style.marginLeft = <span class="number">20</span>;</span><br><span class="line">        verticalButton2.style.marginRight = <span class="number">20</span>;</span><br><span class="line">        verticalAbsolutePosContainer.Add(verticalButton1);</span><br><span class="line">        verticalAbsolutePosContainer.Add(verticalButton2);</span><br><span class="line"></span><br><span class="line">        mRootVerticalRelativePosContainer.Add(verticalAbsolutePosContainer);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Unity/UIToolkit/UIPositionAndLayoutEditorWindow.PNG" alt="UIPositionAndLayoutEditorWindow"></p>
+<p>可以看到通过不断创建需要排版的容器设置对应排版和大小属性，我们成功的创建出了各种排版方向以及相对位置和绝对位置的显示UI。</p>
+<h5 id="自定义USS变量"><a href="#自定义USS变量" class="headerlink" title="自定义USS变量"></a>自定义USS变量</h5><p>在创建USS文件时，我们很多时候会填充相同值给不同的Selector，而修改时并不想一个一个去修改，这个时候就需要用到类似编程上定义变量公用同一个变量的方式。</p>
+<p>第一步依然是使用Create-&gt;UI Toolkit-&gt;Editor WIndow</p>
+<p>去掉UXML勾选，这里依然只通过代码和USS文件创建UI显示。</p>
+<p>UICustomUSSVariableEditorWindow.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 创建自定义USS变量的Editor Window</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UICustomUSSVariableEditorWindow</span> : <span class="title">EditorWindow</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">MenuItem(<span class="string">&quot;Window/UI Toolkit/UIToolkitStudy/UICustomUSSVariableEditorWindow&quot;</span>)</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ShowUICustomUSSVariableEditorWindow</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        UICustomUSSVariableEditorWindow wnd = GetWindow&lt;UICustomUSSVariableEditorWindow&gt;();</span><br><span class="line">        wnd.titleContent = <span class="keyword">new</span> GUIContent(<span class="string">&quot;UICustomUSSVariableEditorWindow&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">CreateGUI</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        CreateCustomUSSVariableUI();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 创建自定义USS变量的UI</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCustomUSSVariableUI</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 加载并指定USS的使用</span></span><br><span class="line">        <span class="keyword">var</span> customUSSVariable1StyleSheet1 = AssetDatabase.LoadAssetAtPath&lt;StyleSheet&gt;(<span class="string">&quot;Assets/Scripts/Editor/UIToolkitStudy/UICustomUSSVariableEditorWindow/UICustomUSSVariableEditorWindow1.uss&quot;</span>);</span><br><span class="line">        <span class="keyword">var</span> customUSSVariable1StyleSheet2 = AssetDatabase.LoadAssetAtPath&lt;StyleSheet&gt;(<span class="string">&quot;Assets/Scripts/Editor/UIToolkitStudy/UICustomUSSVariableEditorWindow/UICustomUSSVariableEditorWindow2.uss&quot;</span>);</span><br><span class="line">        rootVisualElement.styleSheets.Add(customUSSVariable1StyleSheet1);</span><br><span class="line">        rootVisualElement.styleSheets.Add(customUSSVariable1StyleSheet2);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 使用UICustomUSSVariableEditorWindow1里的NormalLabel</span></span><br><span class="line">        Label normalLabel = <span class="keyword">new</span> Label();</span><br><span class="line">        normalLabel.AddToClassList(<span class="string">&quot;NormalLabel&quot;</span>);</span><br><span class="line">        normalLabel.text = <span class="string">&quot;NormalLabel1&quot;</span>;</span><br><span class="line">        normalLabel.style.left = <span class="number">10</span>;</span><br><span class="line">        normalLabel.style.right = <span class="number">10</span>;</span><br><span class="line">        normalLabel.style.height = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用UICustomUSSVariableEditorWindow2里的NormalLabel2</span></span><br><span class="line">        Label normalLabel2 = <span class="keyword">new</span> Label();</span><br><span class="line">        normalLabel2.AddToClassList(<span class="string">&quot;NormalLabel2&quot;</span>);</span><br><span class="line">        normalLabel2.text = <span class="string">&quot;NormalLabel2&quot;</span>;</span><br><span class="line">        normalLabel2.style.left = <span class="number">10</span>;</span><br><span class="line">        normalLabel2.style.right = <span class="number">10</span>;</span><br><span class="line">        normalLabel2.style.height = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">        rootVisualElement.Add(normalLabel);</span><br><span class="line">        rootVisualElement.Add(normalLabel2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>UICustomUSSVariableEditorWindow1.uss</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">:root &#123;</span><br><span class="line">	--text-color: red;</span><br><span class="line">	--background-color: green;</span><br><span class="line">	--text-color2: yellow;</span><br><span class="line">	--background-color2: blue;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.NormalLabel &#123;</span><br><span class="line">	color: red;</span><br><span class="line">	background-color: var(--background-color);</span><br><span class="line">	align-self: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>UICustomUSSVariableEditorWindow2.uss</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.NormalLabel2 &#123;</span><br><span class="line">	color: var(--text-color2);</span><br><span class="line">	background-color: var(--background-color2);</span><br><span class="line">	align-self: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Unity/UIToolkit/UICustomUSSVariableEditorWindow.PNG" alt="UICustomUSSVariableEditorWindow"></p>
+<p>可以看到我们在USS文件里自定义了变量并在Class Selector里使用，通过加载多个USS文件，我们实现了跨USS文件的变量定义访问使用。</p>
+<h4 id="UXML创建UI"><a href="#UXML创建UI" class="headerlink" title="UXML创建UI"></a>UXML创建UI</h4><p>待添加……</p>
+<h4 id="UI事件响应"><a href="#UI事件响应" class="headerlink" title="UI事件响应"></a>UI事件响应</h4><h4 id="数据绑定"><a href="#数据绑定" class="headerlink" title="数据绑定"></a>数据绑定</h4><h4 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h4><h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ol>
+<li><strong>EditorWindow.CreateGUI()方法是用于UIToolkit创建Editor窗口的rootVisualElement显示方法</strong></li>
+<li><strong>Editor.CreateInspectorGUI()方法是用于UIToolkit创建自定义Inspector面板的显示方法</strong></li>
+<li><strong><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-support-for-editor-ui.html">UI Toolkit to create Editor UI and synchronize data between a property and a visual element for the Editor UI.</a>(UIToolkit支持在Editor UI上同步属性数据到Visual Element上)</strong></li>
+</ol>
+<h3 id="节点编辑器实现"><a href="#节点编辑器实现" class="headerlink" title="节点编辑器实现"></a>节点编辑器实现</h3><h1 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h1><p>个人Github:</p>
+<p><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2022/02/20/UnityEditor%E7%9F%A5%E8%AF%86/">UnityEditor知识</a></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIToolkits.html">Creating user interfaces (UI)</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS">CSS</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-uss-properties.html">USS properties reference</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/UIElements.IStyle.html">IStyle</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-ElementRef.html">UXML现有可用Element查询</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-uss-built-in-variable-reference.html">USS built-in variable references</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-Events-Reference.html">Event Reference</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Editor/" rel="tag"># Editor</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/04/09/%E8%B7%AF%E7%82%B9%E7%BC%96%E8%BE%91%E5%92%8C%E7%BC%93%E5%8A%A8/" rel="prev" title="路点编辑和缓动">
+                  <i class="fa fa-angle-left"></i> 路点编辑和缓动
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/23/%E5%9C%B0%E5%9B%BE%E7%BC%96%E8%BE%91%E5%99%A8/" rel="next" title="地图编辑器">
+                  地图编辑器 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

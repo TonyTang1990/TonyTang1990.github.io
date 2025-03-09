@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Android Sign Study这一章主要是学习Android签包相关的概念和方法。通过采用原始签包工具(zipalign &amp; apksigner &amp; keytool)，使用命令行的形式对于已经经过Unity打包签名的包进行重签来学习理解相关概念。 IntroductionWhenAndroid requires that all APKs be digitally signe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android自动化签包">
+<meta property="og:url" content="http://example.com/2017/06/14/Android%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Android Sign Study这一章主要是学习Android签包相关的概念和方法。通过采用原始签包工具(zipalign &amp; apksigner &amp; keytool)，使用命令行的形式对于已经经过Unity打包签名的包进行重签来学习理解相关概念。 IntroductionWhenAndroid requires that all APKs be digitally signe">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Android/CertificationVerificationFlowChat.PNG">
+<meta property="og:image" content="http://example.com/img/Android/apktoolprepare.PNG">
+<meta property="og:image" content="http://example.com/img/Android/apktooldecode.PNG">
+<meta property="og:image" content="http://example.com/img/Android/apktoolbuild.PNG">
+<meta property="og:image" content="http://example.com/img/Android/zipalignalignment.PNG">
+<meta property="og:image" content="http://example.com/img/Android/keytoolgenerakeystore.PNG">
+<meta property="og:image" content="http://example.com/img/Android/keystore.PNG">
+<meta property="og:image" content="http://example.com/img/Android/KeyStoreInfo.PNG">
+<meta property="og:image" content="http://example.com/img/Android/apksignersigne.PNG">
+<meta property="og:image" content="http://example.com/img/Android/apksignerverify.PNG">
+<meta property="og:image" content="http://example.com/img/Android/AndroidManifestHashValue.PNG">
+<meta property="og:image" content="http://example.com/img/Android/SHA1AfterBase64.PNG">
+<meta property="og:image" content="http://example.com/img/Android/AndroidResignAPKFolderStructure.png">
+<meta property="og:image" content="http://example.com/img/Android/AndroidResignAPKArgParse.png">
+<meta property="og:image" content="http://example.com/img/Android/AndroidResignAPKCommandsUsing.png">
+<meta property="og:image" content="http://example.com/img/Android/AndroidResignFinalAPK.png">
+<meta property="og:image" content="http://example.com/img/Android/AndroidResignAndReplaceResourceDynamically.png">
+<meta property="article:published_time" content="2017-06-14T02:12:01.000Z">
+<meta property="article:modified_time" content="2022-07-31T13:23:10.251Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Android/CertificationVerificationFlowChat.PNG">
+
+
+<link rel="canonical" href="http://example.com/2017/06/14/Android%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2017/06/14/Android%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/","path":"2017/06/14/Android自动化签包/","title":"Android自动化签包"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Android自动化签包 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android-Sign-Study"><span class="nav-number">1.</span> <span class="nav-text">Android Sign Study</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">2.</span> <span class="nav-text">Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#When"><span class="nav-number">2.1.</span> <span class="nav-text">When</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What"><span class="nav-number">2.2.</span> <span class="nav-text">What</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why"><span class="nav-number">2.3.</span> <span class="nav-text">Why</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conceptions"><span class="nav-number">2.4.</span> <span class="nav-text">Conceptions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%91%98%E8%A6%81-Message-Digest"><span class="nav-number">2.4.1.</span> <span class="nav-text">数据摘要(Message Digest)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D-Signature"><span class="nav-number">2.4.2.</span> <span class="nav-text">数字签名(Signature)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CA%E6%9C%BA%E6%9E%84-Certification-Authority"><span class="nav-number">2.4.3.</span> <span class="nav-text">CA机构(Certification Authority)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E8%AF%81%E4%B9%A6"><span class="nav-number">2.4.4.</span> <span class="nav-text">根证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6-Certification"><span class="nav-number">2.4.5.</span> <span class="nav-text">数字证书(Certification)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#keystores"><span class="nav-number">2.4.6.</span> <span class="nav-text">keystores</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How"><span class="nav-number">2.5.</span> <span class="nav-text">How</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#apktool"><span class="nav-number">2.5.1.</span> <span class="nav-text">apktool</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zipalign"><span class="nav-number">2.5.2.</span> <span class="nav-text">zipalign</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#keytool"><span class="nav-number">2.5.3.</span> <span class="nav-text">keytool</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apksigner"><span class="nav-number">2.5.4.</span> <span class="nav-text">apksigner</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deep"><span class="nav-number">2.6.</span> <span class="nav-text">Deep</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android-Stuido-and-Gradle"><span class="nav-number">3.</span> <span class="nav-text">Android Stuido and Gradle</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#APK%E9%87%8D%E7%AD%BE%E5%AE%9E%E6%88%98"><span class="nav-number">4.</span> <span class="nav-text">APK重签实战</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unity%E5%AE%9E%E6%88%98"><span class="nav-number">5.</span> <span class="nav-text">Unity实战</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Conception-Part"><span class="nav-number">6.1.</span> <span class="nav-text">Conception Part</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Knowledge-Part"><span class="nav-number">6.2.</span> <span class="nav-text">Knowledge Part</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-Part"><span class="nav-number">6.3.</span> <span class="nav-text">Other Part</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/06/14/Android%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Android自动化签包 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android自动化签包
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-06-14 10:12:01" itemprop="dateCreated datePublished" datetime="2017-06-14T10:12:01+08:00">2017-06-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 21:23:10" itemprop="dateModified" datetime="2022-07-31T21:23:10+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Native/" itemprop="url" rel="index"><span itemprop="name">Native</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="Android-Sign-Study"><a href="#Android-Sign-Study" class="headerlink" title="Android Sign Study"></a>Android Sign Study</h1><p>这一章主要是学习Android签包相关的概念和方法。<br>通过采用原始签包工具(zipalign &amp; apksigner &amp; keytool)，使用命令行的形式对于已经经过Unity打包签名的包进行重签来学习理解相关概念。</p>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><h2 id="When"><a href="#When" class="headerlink" title="When"></a>When</h2><p><a target="_blank" rel="noopener" href="https://developer.android.com/studio/publish/app-signing.html">Android requires that all APKs be digitally signed with a certificate before they can be installed.</a><br>Android要求所有的APK都必须通过证书签名否则不能被安装到设备上。</p>
+<h2 id="What"><a href="#What" class="headerlink" title="What"></a>What</h2><p><a target="_blank" rel="noopener" href="https://developer.android.com/studio/publish/app-signing.html">When you sign an APK, the signing tool attaches the public-key certificate to the APK. The public-key certificate serves as as a “fingerprint” that uniquely associates the APK to you and your corresponding private key.</a><br>签名可以唯一标示我们自己的APK。每个签名的APK都会有对应的公钥证书,而这个公钥证书会与我们的private key唯一对应，我们只需保证private key不泄露，就能保证我们签名的程序的唯一性。(公钥证书和私钥是由有公信力的机构分发的确保了公钥的正确性，那么与之唯一对应的私钥就保证了APK的唯一性。详情见后面)</p>
+<h2 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h2><p>那么我们为什么需要签名了？<br>以下引用至<a target="_blank" rel="noopener" href="https://kknews.cc/tech/yxlvj.html">Android APK签名原理及方法</a>:</p>
+<ol>
+<li><p>应用程序升级<br>如果想无缝升级一个应用，Android系统要求应用程序的新版本与老版本具有相同的签名与包名。若包名相同而签名不同，系统会拒绝安装新版应用。</p>
+</li>
+<li><p>应用程序模块化<br>Android系统可以允许同一个证书签名的多个应用程序在一个进程里运行，系统实际把他们作为一个单个的应用程序。此时就可以把我们的应用程序以模块的方式进行部署，而用户可以独立的升级其中的一个模块。</p>
+</li>
+<li><p>代码或数据共享<br>Android提供了基于签名的权限机制，一个应用程序可以为另一个以相同证书签名的应用程序公开自己的功能与数据，同时其它具有不同签名的应用程序不可访问相应的功能与数据。</p>
+</li>
+<li><p>应用程序的可认定性<br>签名信息中包含有开发者信息，在一定程度上可以防止应用被伪造。例如网易云加密对Android APK加壳保护中使用的“校验签名（防二次打包）”功能就是利用了这一点。</p>
+</li>
+</ol>
+<h2 id="Conceptions"><a href="#Conceptions" class="headerlink" title="Conceptions"></a>Conceptions</h2><h3 id="数据摘要-Message-Digest"><a href="#数据摘要-Message-Digest" class="headerlink" title="数据摘要(Message Digest)"></a>数据摘要(Message Digest)</h3><p>以下内容引用至<a target="_blank" rel="noopener" href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000">Android签名机制之—签名过程详解</a><br>这个知识点很好理解，百度百科即可，其实他也是一种算法，就是对一个数据源进行一个算法之后得到一个摘要，也叫作数据指纹，不同的数据源，数据指纹肯定不一样，就和人一样。</p>
+<p>消息摘要算法（Message Digest Algorithm）是一种能产生特殊输出格式的算法，其原理是根据一定的运算规则对原始数据进行某种形式的信息提取，被提取出的信息就被称作原始数据的消息摘要。<br>著名的摘要算法有RSA公司的MD5算法和SHA-1算法及其大量的变体。<br>消息摘要的主要特点有：<br>1）无论输入的消息有多长，计算出来的消息摘要的长度总是固定的。例如应用MD5算法摘要的消息有128个比特位，用SHA-1算法摘要的消息最终有160比特位的输出。<br>2）一般来说（不考虑碰撞的情况下），只要输入的原始数据不同，对其进行摘要以后产生的消息摘要也必不相同，即使原始数据稍有改变，输出的消息摘要便完全不同。但是，相同的输入必会产生相同的输出。<br>3）具有不可逆性，即只能进行正向的信息摘要，而无法从摘要中恢复出任何的原始消息。</p>
+<p><strong>可以看出数据摘要确保了数据的完整性。</strong></p>
+<h3 id="数字签名-Signature"><a href="#数字签名-Signature" class="headerlink" title="数字签名(Signature)"></a>数字签名(Signature)</h3><p>以下内容引用至<a target="_blank" rel="noopener" href="http://andrewlcgu.github.io/2016/04/17/apk-sign-theroy/">APK签名原理解析</a>:<br>数字签名是非对称密钥加密技术与数字摘要技术的应用。将信息摘要用发送者的私钥加密，与原文一起传送给接收者。接收者只有用发送者的公钥才能解密被加密的信息摘要，然后接收者用相同的Hash函数对收到的原文产生一个信息摘要，与解密的信息摘要做比对。如果相同，则说明收到的信息是完整的，在传输过程中没有被修改；不同则说明信息被修改过，因此数字签名能保证信息的完整性。并且由于只有发送者才有加密摘要的私钥，所以我们可以确定信息一定是发送者发送的(发送者的身份认证)。</p>
+<p><strong>可以看出数字签名确保了数据的正确性(数据来源可靠性)，但需要确保公钥的安全传输问题。</strong></p>
+<h3 id="CA机构-Certification-Authority"><a href="#CA机构-Certification-Authority" class="headerlink" title="CA机构(Certification Authority)"></a>CA机构(Certification Authority)</h3><p>以下内容引用至<a target="_blank" rel="noopener" href="http://andrewlcgu.github.io/2016/04/17/apk-sign-theroy/">APK签名原理解析</a>:<br>受信任的第三方，承担公钥体系中公钥的合法性检验的责任</p>
+<h3 id="根证书"><a href="#根证书" class="headerlink" title="根证书"></a>根证书</h3><p>以下内容引用至<a target="_blank" rel="noopener" href="http://andrewlcgu.github.io/2016/04/17/apk-sign-theroy/">APK签名原理解析</a>:<br>是未被签名的公钥证书或自签名的证书;是CA认证中心给自己颁发的证书，是信任链的起始点。安装根证书意味着对这个CA认证中心的信任。用户在使用自己的数字证书之前必须先下载根证书。</p>
+<h3 id="数字证书-Certification"><a href="#数字证书-Certification" class="headerlink" title="数字证书(Certification)"></a>数字证书(Certification)</h3><p>以下内容引用至<a target="_blank" rel="noopener" href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000">Android签名机制之—签名过程详解</a>:<br>所谓数字证书，一般包含以下一些内容：</p>
+<ol>
+<li>证书的发布机构（Issuer）</li>
+<li>证书的有效期（Validity）</li>
+<li>消息发送方的公钥</li>
+<li>证书所有者（Subject）</li>
+<li>数字签名所使用的算法</li>
+<li>数字签名<br>可以看出，数字证书其实也用到了数字签名技术。只不过要签名的内容是消息发送方的公钥，以及一些其它信息。但与普通数字签名不同的是，数字证书中签名者不是随随便便一个普通的机构，而是要有一定公信力的机构。这就好像你的大学毕业证书上签名的一般都是德高望重的校长一样。一般来说，这些有公信力机构的根证书已经在设备出厂前预先安装到了你的设备上了。所以，数字证书可以保证数字证书里的公钥确实是这个证书的所有者的，或者证书可以用来确认对方的身份。数字证书主要是用来解决公钥的安全发放问题。<br><img src="/img/Android/CertificationVerificationFlowChat.PNG" alt="CertificationVerificationFlowChat"></li>
+</ol>
+<p><strong>可以看出通过获得权威的机构获取到唯一的数字证书，这样一来解决了前面数字签名提到的公钥安全传输问题(数字证书能够确保公钥的正确性)</strong></p>
+<h3 id="keystores"><a href="#keystores" class="headerlink" title="keystores"></a>keystores</h3><p>因为没有正确签名的应用，Android系统不会安装或者运行。所以我们通过有公信力机构得到公钥证书以及与之唯一对应的私钥，我们就能验证特定应用是否是特定私钥签名的应用()<br>接下来我们了解下Android签名过程中一个重要概念：<br>keystore存储着公信力机构分发的私钥和公钥证书。<br>通过使用keystore签名APK，我们能够确保APK的唯一性。</p>
+<h2 id="How"><a href="#How" class="headerlink" title="How"></a>How</h2><p>接下来通过使用相关签名工具来重签一个已经签过名的APK来实战学习理解签名过程。</p>
+<h3 id="apktool"><a href="#apktool" class="headerlink" title="apktool"></a>apktool</h3><p>apktool是一个帮助我们编码和反编码APK的一个工具。<br>这里我有一个已经签过名的APK_Signed_Aligned.apk为例进行重签：<br>第一步：<br>准备好APK和apktool:<br><img src="/img/Android/apktoolprepare.PNG" alt="apktoolprepare"><br>第二步：<br>我们需要反编码APK：<br><img src="/img/Android/apktooldecode.PNG" alt="apktooldecode"><br>第三步:<br>替换APK_Signed_Aligned里的部分内容(比如替换Log之类的)然后进入刚才反编码的文件夹进行APK重编码(这时我们会得到一个重编码后APK_Unsigned_Unaligned.apk)：<br><img src="/img/Android/apktoolbuild.PNG" alt="apktoolbuild"><br>Note:<br><a target="_blank" rel="noopener" href="https://ibotpeaches.github.io/Apktool/documentation/#decoding">In order to run a rebuilt application. You must resign the application. Android documentation can help with this.</a><br>此时的APK_Unsigned_Unaligned.apk是处于未签名也未进行压缩数据对齐处理(后续会讲到)。</p>
+<h3 id="zipalign"><a href="#zipalign" class="headerlink" title="zipalign"></a>zipalign</h3><p><a target="_blank" rel="noopener" href="https://developer.android.com/studio/command-line/zipalign.html">zipalign is an archive alignment tool that provides important optimization to Android application (APK) files. The purpose is to ensure that all uncompressed data starts with a particular alignment relative to the start of the file.</a><br>zipalign是一个对于APK压缩数据进行对齐处理的工具。<br>第四步：<br>对APK_Unsigned_Unaligned.apk进行压缩数据对齐处理得到压缩数据对齐的APK_Unsigned_Aligned.apk:<br><img src="/img/Android/zipalignalignment.PNG" alt="zipalignalignment"></p>
+<p>Note:<br>zipalign位于Android SDK的build tools目录下。</p>
+<h3 id="keytool"><a href="#keytool" class="headerlink" title="keytool"></a>keytool</h3><p><a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/6/docs/technotes/tools/windows/keytool.html">Manages a keystore (database) of cryptographic keys, X.509 certificate chains, and trusted certificates.</a><br>keytool这里可以理解成有公信力的机构(工具)帮助我们生成唯一的公共证书和与之对应的私钥。</p>
+<p>第五步：<br>在对我们进行压缩数据对齐后的APK_Unsigned_Aligned.apk进行重签之前，我们需要生成自己的keystore用于签名认证我们的APK。<br>使用keytool生成我们需要的公共证书和与之对应的私钥：<br><img src="/img/Android/keytoolgenerakeystore.PNG" alt="keytoolgenerakeystore"><br>上面要填的信息就是之前在数字证书里提到的生成公共秘钥和私钥需要的信息。<br>最后得到我们的TonyTangKeyStore.jks(签名需要的keystore，公共秘钥和私钥都在里面)<br><img src="/img/Android/keystore.PNG" alt="keystore"><br>接下来我们通过keytool查看我们刚生成的keystore信息(因为不是在同一台电脑上测试学习KeyStore，所以路径并不一致)：<br><img src="/img/Android/KeyStoreInfo.PNG" alt="KeyStoreInfo"><br>可以看到我们的Keystore是由Sun公司提供的，采用SHA1(前面提到的数字摘要算法之一e.g. MD5 or SHA1)算法计算私钥的数字摘要。</p>
+<p>Note:<br>keytool位于JDK的bin目录下。<br>上面输入的Keystore密码后续签包时会用到。<br>上面生成keystore默认只有90天有效期，在开发过程中我们要保证keystore有效期远大于软件生命周期，不然期限到了就无法在继续使用同一个keystore，也就不能保证APK的唯一性了。<br>keytool貌似有个参数-validity是决定有效期的，这里就没有尝试了，详情参考keytool官网。</p>
+<h3 id="apksigner"><a href="#apksigner" class="headerlink" title="apksigner"></a>apksigner</h3><p>第六步：<br>得到了keystore，那么我们就可以进行签名工作了。<br>使用apksigner进行签包：<br><img src="/img/Android/apksignersigne.PNG" alt="apksignersigne"><br>通过apksigner验证特定APK是否签名：<br><img src="/img/Android/apksignerverify.PNG" alt="apksignerverify"><br>最终我们得到了我们重新重签后的APK_Signed_Aligned.apk(与我们使用的keystore里的私钥唯一对应)</p>
+<p>Note:<br><a target="_blank" rel="noopener" href="https://developer.android.com/studio/command-line/apksigner.html#usage">The apksigner tool, available in revision 24.0.3 and higher of the Android SDK Build Tools</a><br>apksigner工具在AndroidSDK 24.0.3的Build Tool才可用。<br>其他签名工具还有jarsigner和signapk。</p>
+<h2 id="Deep"><a href="#Deep" class="headerlink" title="Deep"></a>Deep</h2><p>深入学习理解签包里的相关文件：<br>这里主要参考别人的学习理解<a target="_blank" rel="noopener" href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000">Android签名机制之—签名过程详解</a><br>通过上文我们可以看出签名后验证APK的相关文件主要有以下三个文件：</p>
+<ol>
+<li>MANIFEST.MF</li>
+<li>CERT.SF</li>
+<li>CERT.RSA</li>
+</ol>
+<p>打开MANIFEST.MF(以下只复制了很少一部分做验证使用):</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Manifest-Version: <span class="number">1.0</span></span><br><span class="line">Created-By: <span class="number">1.0</span> (Android)</span><br><span class="line"></span><br><span class="line">Name: assets/bin/Data/Managed/System.Core.dll</span><br><span class="line">SHA1-Digest: cBOiG0b7uqe/+kFj8qkmBvP2/zw=</span><br><span class="line"></span><br><span class="line">Name: AndroidManifest.xml</span><br><span class="line">SHA1-Digest: JYiwTP2AVjbfgZVkMuuhe/bPrf0=</span><br></pre></td></tr></table></figure>
+<p>可以看出MANIFEST.MF文件记录了APK里文件内容的SHA1-Digest(数字摘要)，这个数字摘要通过上面博主找到的源码来看是通过对文件内容做一次SHA1算法后然后通过Base64 Encode得到的。</p>
+<p>下面我们直接通过HashTable和Base64网站验证一下(这里以AndroidManifest.xml为例)：<br><img src="/img/Android/AndroidManifestHashValue.PNG" alt="AndroidManifestHashValue"><br>因为我们使用的是SHA1数字摘要算法，所以这里用AndroidManifest.xml的SHA1值ECFB805F9645FB3CDB7B29DB4529B6FD7545261D进行反推。<br>通过Base64 Encode后：<br><img src="/img/Android/SHA1AfterBase64.PNG" alt="SHA1AfterBase64"><br>把Base64 Encode后的值和我们在MANIFEST.MF里AndroidManifest.xml的SHA1-Digest进行对比，就会发现是一致的。</p>
+<p>这里不再对三个文件做深入研究，上面那位博主已经做了很清晰的解释，详情参见<a target="_blank" rel="noopener" href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000">Android签名机制之—签名过程详解</a>。<br>这里只记录下三个文件之间的关系以及在APK简明里起的作用做个总结：</p>
+<ol>
+<li>MANIFEST.MF(对APK里的部分文件通过SHA1和Base64 Encode后记录下对应的数字摘要，<strong>用于验证APK文件的完整性</strong>)</li>
+<li>CERT.SF(对MANIFEST.MF文件进行一次SHA1和Basee64 Encode进行记录，并针对MANIFEST.MF里每一块进行SHA1和Base64 Encode并记录，<strong>用于验证MANIFEST.MF的完整性</strong>)</li>
+<li>CERT.RSA(这里会包含我们通过keystore生成的私钥计算出的签名以及公钥信息等数字证书信息，<strong>用于验证APK的唯一性也就是我们一直强调的签名来源</strong>)</li>
+</ol>
+<p>那么上面三个文件就能确保APK的唯一性和安全性了吗？<br>一下来自<a target="_blank" rel="noopener" href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000">Android签名机制之—签名过程详解</a>的总结：<br>首先，如果你改变了apk包中的任何文件，那么在apk安装校验时，改变后的文件摘要信息与MANIFEST.MF的检验信息不同，于是验证失败，程序就不能成功安装。<br>其次，如果你对更改的过的文件相应的算出新的摘要值，然后更改MANIFEST.MF文件里面对应的属性值，那么必定与CERT.SF文件中算出的摘要值不一样，照样验证失败。<br>最后，如果你还不死心，继续计算MANIFEST.MF的摘要值，相应的更改CERT.SF里面的值，那么数字签名值必定与CERT.RSA文件中记录的不一样，还是失败。<br>那么能不能继续伪造数字签名呢？不可能，因为没有数字证书对应的私钥。<br>所以，如果要重新打包后的应用程序能再Android设备上安装，必须对其进行重签名。</p>
+<p>从上面的分析可以得出，只要修改了Apk中的任何内容，就必须重新签名，不然会提示安装失败，当然这里不会分析，后面一篇文章会注重分析为何会提示安装失败。</p>
+<p>从上面的总结可以看出，Keystore的Private Key是作为我们APK签名安全的最后一道防线，确保数字签名不会被伪造。</p>
+<h1 id="Android-Stuido-and-Gradle"><a href="#Android-Stuido-and-Gradle" class="headerlink" title="Android Stuido and Gradle"></a>Android Stuido and Gradle</h1><p>在开始实战APK重签之前，这里需要先学习了解Android Studio和Gradle，这一步可以帮助我们把java代码打包成jar来使用。<br>详情参考<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2016/12/11/Unity%E5%8E%9F%E7%94%9F&%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8F%92%E4%BB%B6/#Android_Studio">Android Studio</a></p>
+<h1 id="APK重签实战"><a href="#APK重签实战" class="headerlink" title="APK重签实战"></a>APK重签实战</h1><p>通过上面的学习，我们知道了APK的重签需要经过一下步骤:</p>
+<ol>
+<li>反解APK</li>
+<li>修改内容</li>
+<li>重新打包APK</li>
+<li>APK数据对齐</li>
+<li>重新签名APK</li>
+</ol>
+<p>接下来我们以实现以下几个功能作为实战重签APK的学习目标:</p>
+<ol>
+<li>修改AndroidManifest.xml内容(通过修改versioncode打印检验)</li>
+<li>替换APK里的资源(替换streamingasset路径下的一个文本文件内容并打印检验)</li>
+<li>替换签名重签APK(通过apksigner验证apk重签后的签名)</li>
+</ol>
+<p>我将会结合前面提到的工具利用Python完成这一次自动化重签功能学习:<br>直接上学习代码:<br>resignAPK.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># 指定文件包含非anscii字符</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os  </span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment">## Decompile APK(反编译APK)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">DecompileAPK</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;DecompileAPK()&quot;</span>)</span><br><span class="line">    apttooldecompilecmd = <span class="string">&quot;&#123;&#125;/apktool.bat -f d &#123;&#125;.apk&quot;</span>.<span class="built_in">format</span>(apktoolDir, apkName)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;------excute cmd :&#123;&#125;&quot;</span>.<span class="built_in">format</span>(apttooldecompilecmd))</span><br><span class="line">    os.system(apttooldecompilecmd)</span><br><span class="line"></span><br><span class="line"><span class="comment">## Modify AndroidManifest File(修改AndroidMainifest.xml)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ModifyAndroidManifest</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;ModifyAndroidManifest()&quot;</span>)</span><br><span class="line">    lines = []</span><br><span class="line">    androidManifestFile = <span class="built_in">open</span>(decompileAndroidManifestPath, mode=<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> androidManifestFile:</span><br><span class="line">        line = ReplaceVersionCode(line, newVersionCode)</span><br><span class="line">        lines.append(line)</span><br><span class="line">    androidManifestFile.close()</span><br><span class="line"></span><br><span class="line">    androidManifestFile = <span class="built_in">open</span>(decompileAndroidManifestPath, mode=<span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> lines:</span><br><span class="line">        androidManifestFile.write(line)</span><br><span class="line">    androidManifestFile.close()</span><br><span class="line"></span><br><span class="line"><span class="comment">## Template Replace(模板替换AndroidManifest.xml里的值)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">CheckTemplateReplace</span>(<span class="params">line, qct, npn</span>):</span><br><span class="line">    <span class="comment"># Python 2.X string.find</span></span><br><span class="line">    <span class="comment">#result = string.find(line, qct)</span></span><br><span class="line">    <span class="comment"># Python 3.X str.find</span></span><br><span class="line">    result = line.find(qct)</span><br><span class="line">    <span class="keyword">if</span> result != -<span class="number">1</span>:</span><br><span class="line">        line = line.replace(qct, npn)</span><br><span class="line">    <span class="keyword">return</span> line</span><br><span class="line"></span><br><span class="line"><span class="comment">## Modify Version Code Value(修改AndroidManifest.xml里的version code值)</span></span><br><span class="line"><span class="comment">## 实际使用过程发现apktool反解APK后AndroidManifest.xmnl里没有对应versioncode值</span></span><br><span class="line"><span class="comment">## 但以下代码如果存在versioncode=&quot;*&quot;的话是能够替换成功的</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ReplaceVersionCode</span>(<span class="params">line, newverioncode</span>):</span><br><span class="line">    <span class="comment"># Python 2.X string.find</span></span><br><span class="line">    <span class="comment">#result = string.find(line, versionCodeTemplate)</span></span><br><span class="line">    <span class="comment"># Python 3.X str.find</span></span><br><span class="line">    result = line.find(versionCodeTemplate)</span><br><span class="line">    <span class="keyword">if</span> result != -<span class="number">1</span>:</span><br><span class="line">        line = re.sub(<span class="string">&#x27;(versionCode=&quot;[0-9]*&quot;)&#x27;</span>, <span class="string">&quot;versioncode=\&quot;&#123;&#125;\&quot;&quot;</span>.<span class="built_in">format</span>(newverioncode), line, <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> line</span><br><span class="line"></span><br><span class="line"><span class="comment">## Copy new resource to APK(复制新资源到包内)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">CopyNewResourceToAPK</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;CopyNewResourceToAPK()&quot;</span>)</span><br><span class="line">    shutil.copy(newResourceName, <span class="string">&quot;&#123;&#125;&quot;</span>.<span class="built_in">format</span>(replaceResourceDestinationPath))</span><br><span class="line"></span><br><span class="line"><span class="comment">## Recompile APK(重新打包APK)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">RecompileAPK</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;RecompileAPK()&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;------os.chdir(./&#123;&#125;)&quot;</span>.<span class="built_in">format</span>(apkName))</span><br><span class="line"></span><br><span class="line">    os.chdir(<span class="string">&quot;./&#123;&#125;&quot;</span>.<span class="built_in">format</span>(apkName))</span><br><span class="line"></span><br><span class="line">    retval = os.getcwd()</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;------Current working directory &#123;&#125;&quot;</span>.<span class="built_in">format</span>(retval))</span><br><span class="line"></span><br><span class="line">    apttoolrecompilecmd = <span class="string">&quot;&#123;&#125;/apktool.bat b -o ../&#123;&#125;.apk&quot;</span>.<span class="built_in">format</span>(apktoolDir, apkUnsignedUnaglinedName)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;------excute cmd :&#123;&#125;&quot;</span>.<span class="built_in">format</span>(apttoolrecompilecmd))</span><br><span class="line"></span><br><span class="line">    os.system(apttoolrecompilecmd)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;------os.chdir(./..)&quot;</span>)</span><br><span class="line"></span><br><span class="line">    os.chdir(<span class="string">&quot;./..&quot;</span>)</span><br><span class="line"></span><br><span class="line">    retval = os.getcwd()</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Current working directory &#123;&#125;&quot;</span>.<span class="built_in">format</span>(retval))</span><br><span class="line"></span><br><span class="line"><span class="comment">## Aligned APK(APK 4K对齐)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">AlignedAPK</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;AlignedAPK()&quot;</span>)</span><br><span class="line"></span><br><span class="line">    zalignedcmd = <span class="string">&quot;&#123;&#125;\\build-tools\\24.0.3\\zipalign.exe -f 4 &#123;&#125;.apk &#123;&#125;.apk&quot;</span>.<span class="built_in">format</span>(androidSDKDir, apkUnsignedUnaglinedName, apkUnsignedAglinedName)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;------zalignedcmd :&#123;&#125;&quot;</span>.<span class="built_in">format</span>(zalignedcmd))</span><br><span class="line"></span><br><span class="line">    os.system(zalignedcmd)</span><br><span class="line"></span><br><span class="line"><span class="comment">## Resigned APK(重签APK)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ResignedAPK</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;ResignedAPK()&quot;</span>)</span><br><span class="line"></span><br><span class="line">    resignedcmd = <span class="string">&quot;&#123;&#125;\\build-tools\\24.0.3\\apksigner.bat sign --ks &#123;&#125; --ks-pass pass:&#123;&#125; --out &#123;&#125;.apk &#123;&#125;.apk&quot;</span>.<span class="built_in">format</span>(androidSDKDir, keystoreFilename, keystorePassword, apkResignedName, apkUnsignedAglinedName)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;------resignedcmd :&#123;&#125;&quot;</span>.<span class="built_in">format</span>(resignedcmd))</span><br><span class="line"></span><br><span class="line">    os.system(resignedcmd)</span><br><span class="line"></span><br><span class="line"><span class="comment">## Repackage process</span></span><br><span class="line"><span class="comment"># argparse解析参数输入，需要先定义一个ArgumentParser对象</span></span><br><span class="line"><span class="comment"># description - -h的时候显示在最前面的信息</span></span><br><span class="line">parser = argparse.ArgumentParser(description=<span class="string">&#x27;Study argparse module.&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># add_argument - 定义如何解析一个参数</span></span><br><span class="line"><span class="comment"># 第一个参数代表参数名</span></span><br><span class="line"><span class="comment"># type - 指定参数数据类型</span></span><br><span class="line"><span class="comment"># help - -h时解释该参数的用意</span></span><br><span class="line"><span class="comment"># dest - 表示该参数最终在parser.parse_args()返回对象里的名字</span></span><br><span class="line"><span class="comment"># default - 表示该参数的默认值</span></span><br><span class="line"><span class="comment"># required - 表示该参数是不是必须填的参数</span></span><br><span class="line">parser.add_argument(<span class="string">&#x27;--APKName&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>,</span><br><span class="line">                    <span class="built_in">help</span>=<span class="string">&#x27;APK名字&#x27;</span>, dest=<span class="string">&#x27;APKName&#x27;</span>,</span><br><span class="line">                    required=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">parser.add_argument(<span class="string">&#x27;--VersionCode&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">int</span>,</span><br><span class="line">                    <span class="built_in">help</span>=<span class="string">&#x27;新的VersionCode&#x27;</span>, dest=<span class="string">&#x27;NewVersionCode&#x27;</span>,</span><br><span class="line">                    required=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">parser.add_argument(<span class="string">&#x27;--ResourceName&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>,</span><br><span class="line">                    <span class="built_in">help</span>=<span class="string">&#x27;新资源名字&#x27;</span>, dest=<span class="string">&#x27;NewResourceName&#x27;</span>,</span><br><span class="line">                    default=<span class="string">&#x27;default.aba&#x27;</span>)</span><br><span class="line"></span><br><span class="line">parser.add_argument(<span class="string">&#x27;--ResourcePath&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>,</span><br><span class="line">                    <span class="built_in">help</span>=<span class="string">&#x27;新资源包内目录&#x27;</span>, dest=<span class="string">&#x27;NewResourcePath&#x27;</span>,</span><br><span class="line">                    default=<span class="string">&#x27;./assets/&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析输入的参数</span></span><br><span class="line">args = parser.parse_args()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印参数的详细信息，通过访问parser.parse_args()的对象去访问</span></span><br><span class="line"><span class="built_in">print</span>(args)</span><br><span class="line">apkName = args.APKName</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;apkName : &#123;0&#125;&quot;</span>.<span class="built_in">format</span>(apkName))</span><br><span class="line">newVersionCode = args.NewVersionCode</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;newVersionCode : &#123;0&#125;&quot;</span>.<span class="built_in">format</span>(newVersionCode))</span><br><span class="line">newResourceName = args.NewResourceName</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;newResourceName : &#123;0&#125;&quot;</span>.<span class="built_in">format</span>(newResourceName))</span><br><span class="line">newResourcePath = args.NewResourcePath</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;newResourcePath : &#123;0&#125;&quot;</span>.<span class="built_in">format</span>(newResourcePath))</span><br><span class="line"></span><br><span class="line">currentFolder = os.getcwd()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;currentFolder : &#123;0&#125;&quot;</span>.<span class="built_in">format</span>(currentFolder))</span><br><span class="line"></span><br><span class="line">apktoolDir = currentFolder</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;apktoolDir : &#123;0&#125;&quot;</span>.<span class="built_in">format</span>(apktoolDir))</span><br><span class="line"></span><br><span class="line">androidSDKDir = os.getenv(<span class="string">&quot;AndroidSDK&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;androidSDKDir : &#123;&#125;&quot;</span>.<span class="built_in">format</span>(androidSDKDir))</span><br><span class="line"><span class="keyword">if</span> androidSDKDir == <span class="literal">None</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;androidSDKDir == None,请配置ANdroidSDK环境变量路径&quot;</span>)</span><br><span class="line">    time.sleep(<span class="number">150</span>)</span><br><span class="line">    exit()</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;androidSDKDir != None&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># version code替换原模板</span></span><br><span class="line">versionCodeTemplate = <span class="string">&quot;versionCode=&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;versionCodeTemplate = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(versionCodeTemplate))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 需要替换的资源目录</span></span><br><span class="line">replaceResourcePath = <span class="string">&quot;./&#123;&#125;/&#123;&#125;&quot;</span>.<span class="built_in">format</span>(apkName, newResourcePath)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;replaceResourcePath = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(replaceResourcePath))</span><br><span class="line"></span><br><span class="line">keystoreFilename = <span class="string">&quot;TonyTangNewKeyStore.jks&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;keystoreFilename = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(keystoreFilename))</span><br><span class="line"></span><br><span class="line">keystorePassword = <span class="string">&quot;th13568582998&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;keystorePassword = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(keystorePassword))</span><br><span class="line"></span><br><span class="line">decompileFolderPath = <span class="string">&quot;&#123;&#125;&quot;</span>.<span class="built_in">format</span>(apkName)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;decompileFolderPath = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(decompileFolderPath))</span><br><span class="line"></span><br><span class="line">decompileAndroidManifestPath = <span class="string">&quot;./&#123;&#125;/AndroidManifest.xml&quot;</span>.<span class="built_in">format</span>(decompileFolderPath)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;decompileAndroidManifestPath = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(decompileAndroidManifestPath))</span><br><span class="line"></span><br><span class="line">replaceResourceDestinationPath = <span class="string">&quot;&#123;&#125;&#123;&#125;&quot;</span>.<span class="built_in">format</span>(replaceResourcePath, newResourceName)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;replaceResourceDestinationPath = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(replaceResourceDestinationPath))</span><br><span class="line"></span><br><span class="line">apkUnsignedUnaglinedName = <span class="string">&quot;&#123;&#125;_Unsinged_Unaligned&quot;</span>.<span class="built_in">format</span>(apkName)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;apkUnsignedUnaglinedName = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(apkUnsignedUnaglinedName))</span><br><span class="line"></span><br><span class="line">apkUnsignedAglinedName = <span class="string">&quot;&#123;&#125;_Unsigned_Aligned&quot;</span>.<span class="built_in">format</span>(apkName)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;apkUnsignedAglinedName = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(apkUnsignedAglinedName))</span><br><span class="line"></span><br><span class="line">apkResignedName = <span class="string">&quot;&#123;&#125;_Signed_Aligned&quot;</span>.<span class="built_in">format</span>(apkName)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;apkResignedName = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(apkResignedName))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;&#123;&#125;.apk resigned start&quot;</span>.<span class="built_in">format</span>(apkName))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 反解APK</span></span><br><span class="line">DecompileAPK()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改AndroidMainifest.xml里面的内容</span></span><br><span class="line">ModifyAndroidManifest()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制资源到指定目录</span></span><br><span class="line">CopyNewResourceToAPK()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新打包APK</span></span><br><span class="line">RecompileAPK()</span><br><span class="line"></span><br><span class="line"><span class="comment"># APK数据对齐</span></span><br><span class="line">AlignedAPK()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新签名APK</span></span><br><span class="line">ResignedAPK()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 暂停不关闭命令行窗口(仅限Windows)</span></span><br><span class="line">os.system(<span class="string">&#x27;pause&#x27;</span>) </span><br></pre></td></tr></table></figure>
+<p>上面的注释都比较详细了，就不再细说每一步了。<br>这里直接来看下运行这个resignAPK.py的环境要求以及目录结构：<br><img src="/img/Android/AndroidResignAPKFolderStructure.png" alt="AndroidResignAPKFolderStructure"><br>以下是使用argparse作为参数解析库的帮助查看:<br><img src="/img/Android/AndroidResignAPKArgParse.png" alt="AndroidResignAPKArgParse"><br>以下是正式使用重签resignAPK.py用法:<br><img src="/img/Android/AndroidResignAPKCommandsUsing.png" alt="AndroidResignAPKCommandsUsing"><br>最后输出了一个叫apkName_Signed_Aligned的APK使我们最终重签后的APK:<br><img src="/img/Android/AndroidResignFinalAPK.png" alt="AndroidResignFinalAPK"><br>ABTestFile.text文件是位于StreamingAsset目录下的一个文件，原文是test，我覆盖后内容是test2。<br>配合测试访问代码:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             ResourceManager.cs</span></span><br><span class="line"><span class="comment"> * Author:                  TONYTANG</span></span><br><span class="line"><span class="comment"> * Create Date:             2018/08/12</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> ResourceManager.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 资源加载管理单例类</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ResourceManager</span> : <span class="title">SingletonTemplate</span>&lt;<span class="title">ResourceManager</span>&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> AB资源路径</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> ABPath</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> mABPath = Application.streamingAssetsPath;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 测试资源文件名</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> mTestResourceFileName = <span class="string">&quot;/ABTestFile.text&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 加载AB测试资源</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadABTestResource</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;loadABTestResource()&quot;</span>);</span><br><span class="line">        CoroutineManager.Singleton.startCoroutine(loadTestResourceCoroutine());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 加载临时资源携程</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function">IEnumerator <span class="title">loadTestResourceCoroutine</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;loadTestResourceCoroutine()&quot;</span>);</span><br><span class="line">        <span class="keyword">var</span> testresourcefullpath = mABPath + mTestResourceFileName;</span><br><span class="line"><span class="meta">#<span class="keyword">if</span> UNITY_ANDROID &amp;&amp; !UNITY_EDITOR</span></span><br><span class="line">        UnityEngine.Networking.UnityWebRequest www = UnityEngine.Networking.UnityWebRequest.Get(testresourcefullpath);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> www.SendWebRequest();</span><br><span class="line">        Debug.Log(<span class="built_in">string</span>.Format(<span class="string">&quot;ABTestFile Content : &#123;0&#125;&quot;</span>, www.downloadHandler.text));</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">        <span class="keyword">var</span> testresource = System.IO.File.ReadAllText(testresourcefullpath);</span><br><span class="line">        Debug.Log(<span class="built_in">string</span>.Format(<span class="string">&quot;ABTestFile Content : &#123;0&#125;&quot;</span>, testresource));</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Android/AndroidResignAndReplaceResourceDynamically.png" alt="AndroidResignAndReplaceResourceDynamically"><br>至此我们成功完成了通过python编写了自动化重签APK，动态替换APK部分资源，动态修改AndroidManifest.xml内容的功能。</p>
+<h1 id="Unity实战"><a href="#Unity实战" class="headerlink" title="Unity实战"></a>Unity实战</h1><p>待续……</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><h2 id="Conception-Part"><a href="#Conception-Part" class="headerlink" title="Conception Part"></a>Conception Part</h2><p><a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/6/docs/technotes/tools/windows/keytool.html">keytool</a><br><a target="_blank" rel="noopener" href="https://developer.android.com/studio/command-line/zipalign.html">zipalign</a><br><a target="_blank" rel="noopener" href="https://developer.android.com/studio/command-line/apksigner.html#usage">apksigner</a><br><a target="_blank" rel="noopener" href="https://ibotpeaches.github.io/Apktool/documentation/#decoding">Apktool</a><br><a target="_blank" rel="noopener" href="https://developer.android.com/studio/intro/">Android Studio</a><br><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/userguide.html">Gradle</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Gradle">Gradle Wiki</a><br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/30432152">如何通俗地理解 Gradle？</a><br><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/tutorial_using_tasks.html">Build Script Basics</a><br><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/more_about_tasks.html">Authoring Tasks</a></p>
+<h2 id="Knowledge-Part"><a href="#Knowledge-Part" class="headerlink" title="Knowledge Part"></a>Knowledge Part</h2><p><a target="_blank" rel="noopener" href="https://developer.android.com/studio/publish/app-signing.html">Sign Your App</a><br><a target="_blank" rel="noopener" href="https://kknews.cc/tech/yxlvj.html">Android APK签名原理及方法</a><br><a target="_blank" rel="noopener" href="http://blog.csdn.net/jiangwei0910410003/article/details/50402000">Android签名机制之—签名过程详解</a><br><a target="_blank" rel="noopener" href="http://andrewlcgu.github.io/2016/04/17/apk-sign-theroy/">APK签名原理解析</a><br><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v7t7.html">JNI和NDK交叉编译进阶学习</a><br><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102vazu.html">NDK&amp;JNI&amp;Java&amp;Android初步学习总结归纳</a><br><a target="_blank" rel="noopener" href="http://google.github.io/android-gradle-dsl/current/index.html">Android DSL Android Plugin DSL Reference</a><br><a target="_blank" rel="noopener" href="https://guides.gradle.org/building-android-apps/?_ga=2.32380022.931589262.1533988091-1402562034.1533988091">Gradle - Building Android Apps</a></p>
+<h2 id="Other-Part"><a href="#Other-Part" class="headerlink" title="Other Part"></a>Other Part</h2><p><a target="_blank" rel="noopener" href="http://implbits.com/products/hashtab/">HashTable</a><br><a target="_blank" rel="noopener" href="http://tomeko.net/online_tools/hex_to_base64.php?lang=en">Base64Website</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/06/12/Python%E4%BD%BF%E7%94%A8/" rel="prev" title="Python使用">
+                  <i class="fa fa-angle-left"></i> Python使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/08/14/Unity%E4%B8%AD%E7%9A%84Lua/" rel="next" title="Unity中的Lua">
+                  Unity中的Lua <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

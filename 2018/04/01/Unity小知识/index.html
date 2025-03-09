@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言本篇文章只是为了记录一些使用学习Unity过程中的一些能够帮助我们自动化快速完成一些重复工作的小技巧。 Script Template需求使用Unity的时候我们难以避免需要创建脚本，平时都是通过Priject -&gt; Right CLick -&gt; Create -&gt; C# Script的形式创建默认的脚本。 默认脚本如下: 12345678910111213141516usi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity小知识">
+<meta property="og:url" content="http://example.com/2018/04/01/Unity%E5%B0%8F%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本篇文章只是为了记录一些使用学习Unity过程中的一些能够帮助我们自动化快速完成一些重复工作的小技巧。 Script Template需求使用Unity的时候我们难以避免需要创建脚本，平时都是通过Priject -&gt; Right CLick -&gt; Create -&gt; C# Script的形式创建默认的脚本。 默认脚本如下: 12345678910111213141516usi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Unity/UnityScriptTemplate.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CustomScriptTemplateUI.png">
+<meta property="og:image" content="http://example.com/img/Unity/Unity-Tips/CacheServerDownloadPage.png">
+<meta property="og:image" content="http://example.com/img/Unity/Unity-Tips/RunCacheServer.png">
+<meta property="og:image" content="http://example.com/img/Unity/Unity-Tips/CacheServerConnect.png">
+<meta property="article:published_time" content="2018-04-01T04:24:38.000Z">
+<meta property="article:modified_time" content="2022-07-31T08:01:41.873Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Unity/UnityScriptTemplate.PNG">
+
+
+<link rel="canonical" href="http://example.com/2018/04/01/Unity%E5%B0%8F%E7%9F%A5%E8%AF%86/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2018/04/01/Unity%E5%B0%8F%E7%9F%A5%E8%AF%86/","path":"2018/04/01/Unity小知识/","title":"Unity小知识"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Unity小知识 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Script-Template"><span class="nav-number">1.1.</span> <span class="nav-text">Script Template</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E6%B1%82"><span class="nav-number">1.1.1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.3.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Asset-Import-Cache-%E8%B5%84%E6%BA%90%E5%AF%BC%E5%85%A5%E7%BC%93%E5%AD%98"><span class="nav-number">1.2.</span> <span class="nav-text">Asset Import Cache(资源导入缓存)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cache-Server"><span class="nav-number">1.2.1.</span> <span class="nav-text">Cache Server</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#What"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">What</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Why"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Why</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#How"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">How</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%85%E7%BB%AD"><span class="nav-number">1.3.</span> <span class="nav-text">待续</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Conceptions-Part"><span class="nav-number">2.1.</span> <span class="nav-text">Conceptions Part</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-Part"><span class="nav-number">2.2.</span> <span class="nav-text">Other Part</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/01/Unity%E5%B0%8F%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Unity小知识 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity小知识
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-04-01 12:24:38" itemprop="dateCreated datePublished" datetime="2018-04-01T12:24:38+08:00">2018-04-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 16:01:41" itemprop="dateModified" datetime="2022-07-31T16:01:41+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇文章只是为了记录一些使用学习Unity过程中的一些能够帮助我们自动化快速完成一些重复工作的小技巧。</p>
+<h2 id="Script-Template"><a href="#Script-Template" class="headerlink" title="Script Template"></a>Script Template</h2><h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>使用Unity的时候我们难以避免需要创建脚本，平时都是通过Priject -&gt; Right CLick -&gt; Create -&gt; C# Script的形式创建默认的脚本。</p>
+<p>默认脚本如下:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">NewBehaviourScript</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Use this for initialization</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span> ()</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Update is called once per frame</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span> ()</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需求决定功能，但默认的脚本模本不足以提供我们想要的结果，比如我们希望自动创建如下的脚本:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             NewBehaviourScript类</span></span><br><span class="line"><span class="comment"> * Author:                  tanghuan</span></span><br><span class="line"><span class="comment"> * Create Date:             2018/04/01</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> NewBehaviourScript类</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">NewBehaviourScript</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样我们就不需要每次都自己去编写自动化描述相关的内容了。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>如何实现，先让我们来看看，Unity是如何自动化生成NewBehaviourScript.cs脚本的。</p>
+<p>让我们打开%EDITORPATH%&#x2F;Data&#x2F;Resources&#x2F;ScriptTemplates&#x2F;路径一探究竟:<br><img src="/img/Unity/UnityScriptTemplate.PNG" alt="UnityScriptTemplate"></p>
+<p>可以看到Unity默认的脚本模板是定义在这个路径下的，让我们打开81-C# Script-NewBehaviourScript.cs.txt看看默认的脚本模板是如何定义的:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> #<span class="title">SCRIPTNAME</span># : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Use this for initialization</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span> ()</span> &#123;</span><br><span class="line">        <span class="meta">#NOTRIM#</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Update is called once per frame</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span> ()</span> &#123;</span><br><span class="line">        <span class="meta">#NOTRIM#</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于Unity脚本模板的定义规则，这里没有找到官方的介绍，下面的规则参考了网上的说法:<br><a target="_blank" rel="noopener" href="https://gist.github.com/JoaoBorks/af59720a4baba84f080e2df686cacba2">Custom Unity Script Template</a></p>
+<p>但Unity提供的脚本模板Keyword数量有限，所以我们想要创建自己的脚本模本需要分两步走：</p>
+<ol>
+<li>根据Unity脚本模板规则创建自定义脚本</li>
+<li>监听脚本Asset修改保存回调去自动化修改替换自定义Keyword</li>
+</ol>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><ol>
+<li>根据Unity脚本模板规则创建自定义脚本，编写自定义脚本模板<br>81-C# Custom Mono Script Template-NewBehaviourScript.cs.txt</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             #SCRIPTNAME#.cs</span></span><br><span class="line"><span class="comment"> * Author:                  #AUTHOR#</span></span><br><span class="line"><span class="comment"> * Create Date:             #CREATEDATE#</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> #SCRIPTNAME#.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> #<span class="title">SCRIPTNAME</span># : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到通过添加Unity脚本模板，右键创建时已经多了一个模板脚本选择。<br><img src="/img/Unity/CustomScriptTemplateUI.png" alt="CustomScriptTemplateUI"></p>
+<ol start="2">
+<li>监听脚本Asset创建回调去自动化修改替换自定义Keyword<br>ScriptKeywordProcesser.cs</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             脚本模板自定义Keyword处理脚本</span></span><br><span class="line"><span class="comment"> * Author:                  tanghuan</span></span><br><span class="line"><span class="comment"> * Create Date:             2018/04/01</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> System.Security.Principal;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 脚本模板自定义Keyword处理脚本</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ScriptKeywordProcesser</span> : <span class="title">UnityEditor.AssetModificationProcessor</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 非用户导入的Asset创建回调(e.g. .meta文件)</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;assetpath&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">OnWillCreateAsset</span>(<span class="params"><span class="built_in">string</span> assetpath</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        assetpath = assetpath.Replace(<span class="string">&quot;.meta&quot;</span>, <span class="built_in">string</span>.Empty);</span><br><span class="line">        <span class="built_in">int</span> index = assetpath.LastIndexOf(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span>(index &lt;= <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//判定是否是cs脚本</span></span><br><span class="line">        <span class="built_in">string</span> filepostfix = assetpath.Substring(index);</span><br><span class="line">        <span class="keyword">if</span>(!filepostfix.Equals(<span class="string">&quot;.cs&quot;</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//判定脚本文件是否存在</span></span><br><span class="line">        index = Application.dataPath.LastIndexOf(<span class="string">&quot;Assets&quot;</span>);</span><br><span class="line">        assetpath = Application.dataPath.Substring(<span class="number">0</span>, index) + assetpath;</span><br><span class="line">        <span class="keyword">if</span>(!File.Exists(assetpath))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> filecontent = File.ReadAllText(assetpath);</span><br><span class="line">        filecontent = replaceKeywords(filecontent);</span><br><span class="line">        File.WriteAllText(assetpath, filecontent);</span><br><span class="line">        AssetDatabase.Refresh();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 替换文本Keyword</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Note:</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 自定义Keyword替换规则写在这里</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;filecontent&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">replaceKeywords</span>(<span class="params"><span class="built_in">string</span> filecontent</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> author = WindowsIdentity.GetCurrent().Name;</span><br><span class="line">        <span class="comment">// 只取最终用户名</span></span><br><span class="line">        <span class="keyword">var</span> splashindex = author.IndexOf(<span class="string">&quot;\\&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span>(splashindex &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            author = author.Substring(<span class="number">0</span>, splashindex);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        filecontent = filecontent.Replace(<span class="string">&quot;#AUTHOR#&quot;</span>, author);</span><br><span class="line">        filecontent = filecontent.Replace(<span class="string">&quot;#CREATEDATE#&quot;</span>, DateTime.Now.ToString(<span class="string">&quot;yyyy//MM/dd&quot;</span>));</span><br><span class="line">        <span class="keyword">return</span> filecontent;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最终自动化创建一份MyCustomMonoScript.cs:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             MyCustomMonoScript.cs</span></span><br><span class="line"><span class="comment"> * Author:                  TONYTANG</span></span><br><span class="line"><span class="comment"> * Create Date:             2018/04/01</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> MyCustomMonoScript.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyCustomMonoScript</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>至此我们成功创建并支持了自定义关键词的自动化脚本创建，以后再也不用每次都去编写这些固定的文件头了。</p>
+<h2 id="Asset-Import-Cache-资源导入缓存"><a href="#Asset-Import-Cache-资源导入缓存" class="headerlink" title="Asset Import Cache(资源导入缓存)"></a>Asset Import Cache(资源导入缓存)</h2><p>在Unity里，我们每次导入或者修改资源都会资源被重新导入。在大的项目里，当大量的资源被其他人修改或者切换平台的时候会导致资源导入的时间很长，这一点是不能接受的。</p>
+<p>Unity官方出的Cache Server正式为了减少资源导入，充分利用缓存以及共享导入资源的方式减少导入资源的时间。</p>
+<p>先让我们看看，什么是Cache Server。</p>
+<h3 id="Cache-Server"><a href="#Cache-Server" class="headerlink" title="Cache Server"></a>Cache Server</h3><p>接下来还是按照What,Why,How的方式循序渐进了解学习Cache Server.</p>
+<h4 id="What"><a href="#What" class="headerlink" title="What"></a>What</h4><p>What is Cache Server?(什么是Cache Server?)<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/CacheServer.html">When you enable the Cache Server (see How to set up a Cache Server as a user, below), you can even share Asset imports across multiple projects (that is, the work of importing is done on one computer and the results are shared with others).</a><br>从官方的介绍可以看出，Cache Server是为了共享资源导入的一个工具。</p>
+<h4 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h4><p>Why do we use Cache Server?(为什么需要用Cache Server?)<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/CacheServer.html">Unity has a completely automatic Asset<br> pipeline. Whenever a source Asset like a .psd or an .fbx file is modified, Unity detects the change and automatically re-imports it. The imported data from the file is subsequently stored by Unity in an internal format.</a><br>因为Unity会把外部资源根据导入设置导入成一个内部的资源格式来使用，每次资源导入设置或者资源有变化都会导致资源被重新导入一次。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/CacheServer.html">Caching the imported Assets data on the Cache Server drastically reduces the time it takes to import Assets.</a><br>缓存并共享前面说到的资源导入则可以有效的减少资源导入的时间，提高团队工作效率，这也是我们为什么需要Cach Server的主要原因。</p>
+<h4 id="How"><a href="#How" class="headerlink" title="How"></a>How</h4><p>How to use Cache Server?(如何使用Cache Server)<br>在了解如何使用Cach Server之前，让我们先了解下Asset在什么情况下会被重新导入：</p>
+<ol>
+<li>The Asset file itself(Asset自身)</li>
+<li>The import settings(导入设置)</li>
+<li>Asset importer version(Asset导入版本-这里应该是指Unity版本)</li>
+<li>The current platform(资源平台-平时我们切换的Android，IOS，PC这些)<br><strong>当上述4点任何一点被改变的话都会导致资源被重新导入。否则就直接使用Cache Server上缓存的资源导入。</strong></li>
+</ol>
+<p>如何高效的使用Cach Server了？</p>
+<ol>
+<li>足够的硬盘空间</li>
+<li>高速的读写硬盘(SSD)</li>
+<li>足够的网络带宽(最好用于局域网内)</li>
+<li>尽量在Linux或者MacOS上使用Cache Server</li>
+</ol>
+<p>第四个点参考官网描述:<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/CacheServer.html">he Cache Server runs optimally on a Linux or Mac OS X computer. The Windows file system is not particularly well-optimized for how the Cache Server stores data, and problems with file locking on Windows can cause issues that don’t occur on Linux or Mac OS X.</a></p>
+<p>接下来让我们实战看看如何设置Cache Server:<br>第一步：<br>下载对应Unity版本的Cache Server</p>
+<p>Unity对应版本官方的Cache Server链接:<br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/get-unity/download/archive">Unity 下载存档</a><br><img src="/img/Unity/Unity-Tips/CacheServerDownloadPage.png" alt="CacheServerDownloadPage"><br>最新Cache Server链接是在Github上:<br><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/unity-cache-server">unity-cache-server</a></p>
+<p>第二步：<br>运行Cache Server<br>这里我是安装在MacOS上的，所以运行RunOSX.command命令行即可:<br><img src="/img/Unity/Unity-Tips/RunCacheServer.png" alt="RunCacheServer"></p>
+<p>第三步：<br>查看Cache Server所在电脑IP(最好能固定Cache Server电脑的IP地址，避免每次去设置)，配置需要使用Cache Server的Unity<br><img src="/img/Unity/Unity-Tips/CacheServerConnect.png" alt="CacheServerConnect"><br>看到Connection Successful就代表我们链接成功了。</p>
+<p>接下来我们就可以重用团队或者已经缓存过的Asset导入资源了。</p>
+<p>Note:<br>使用Cache Server有哪些需要注意的点了？</p>
+<ol>
+<li>修改已存在的Material</li>
+<li>脚本和一些原始资源(Maya，3D Max直接使用的格式)不会被缓存</li>
+</ol>
+<h2 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h2><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><h2 id="Conceptions-Part"><a href="#Conceptions-Part" class="headerlink" title="Conceptions Part"></a>Conceptions Part</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/CacheServer.html">Cache Server</a></p>
+<h2 id="Other-Part"><a href="#Other-Part" class="headerlink" title="Other Part"></a>Other Part</h2><p><a target="_blank" rel="noopener" href="https://gist.github.com/JoaoBorks/af59720a4baba84f080e2df686cacba2">Custom Unity Script Template</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/18/%E5%AF%BC%E8%A1%A8%E5%B7%A5%E5%85%B7/" rel="prev" title="导表工具">
+                  <i class="fa fa-angle-left"></i> 导表工具
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/05/29/2D%E5%83%8F%E7%B4%A0%E7%94%BB/" rel="next" title="2D像素画">
+                  2D像素画 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

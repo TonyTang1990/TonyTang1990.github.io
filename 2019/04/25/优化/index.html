@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言本章节主要目的是学习记录游戏开发中各个模块里的优化知识，深入理解项目设计里的各种底层知识点，避免前期不考虑后期优化成灾的情况。 Note:  此处并不是要宣扬优化，项目初期不推崇过度优化毕竟产品做出来才是王道，而是通过深入理解核心知识点在项目初期做出正确的设计来避免没必要的后期优化。  UI模块深入深度学习Unity UI(UGUI)模块的使用，优化，原理知识等。 UI基础UI核心概念Canv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="优化篇">
+<meta property="og:url" content="http://example.com/2019/04/25/%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本章节主要目的是学习记录游戏开发中各个模块里的优化知识，深入理解项目设计里的各种底层知识点，避免前期不考虑后期优化成灾的情况。 Note:  此处并不是要宣扬优化，项目初期不推崇过度优化毕竟产品做出来才是王道，而是通过深入理解核心知识点在项目初期做出正确的设计来避免没必要的后期优化。  UI模块深入深度学习Unity UI(UGUI)模块的使用，优化，原理知识等。 UI基础UI核心概念Canv">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-04-25T06:41:00.000Z">
+<meta property="article:modified_time" content="2022-07-31T07:30:15.491Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Optimization">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2019/04/25/%E4%BC%98%E5%8C%96/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2019/04/25/%E4%BC%98%E5%8C%96/","path":"2019/04/25/优化/","title":"优化篇"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>优化篇 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#UI%E6%A8%A1%E5%9D%97"><span class="nav-number">1.1.</span> <span class="nav-text">UI模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UI%E5%9F%BA%E7%A1%80"><span class="nav-number">1.1.1.</span> <span class="nav-text">UI基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UI%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">UI核心概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UI%E5%90%88%E6%89%B9%E8%A7%84%E5%88%99"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">UI合批规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UI%E5%B0%84%E7%BA%BF"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">UI射线</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">常见问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Profile-Tool"><span class="nav-number">1.1.3.</span> <span class="nav-text">Profile Tool</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.1.4.</span> <span class="nav-text">优化建议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E6%88%98"><span class="nav-number">1.1.5.</span> <span class="nav-text">实战</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E6%A8%A1%E5%9D%97"><span class="nav-number">1.2.</span> <span class="nav-text">资源模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E8%B5%84%E6%BA%90"><span class="nav-number">1.2.1.</span> <span class="nav-text">纹理资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E4%BD%93"><span class="nav-number">1.2.2.</span> <span class="nav-text">字体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9F%B3%E6%95%88"><span class="nav-number">1.2.3.</span> <span class="nav-text">音效</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">引用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Relative-Study"><span class="nav-number">2.1.</span> <span class="nav-text">Relative Study</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unity-Conception-Part"><span class="nav-number">2.2.</span> <span class="nav-text">Unity Conception Part</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-Part"><span class="nav-number">2.3.</span> <span class="nav-text">Other Part</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/04/25/%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="优化篇 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          优化篇
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-25 14:41:00" itemprop="dateCreated datePublished" datetime="2019-04-25T14:41:00+08:00">2019-04-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 15:30:15" itemprop="dateModified" datetime="2022-07-31T15:30:15+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Optimization/" itemprop="url" rel="index"><span itemprop="name">Optimization</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本章节主要目的是学习记录游戏开发中各个模块里的优化知识，深入理解项目设计里的各种底层知识点，避免前期不考虑后期优化成灾的情况。</p>
+<p>Note:</p>
+<ol>
+<li>此处并不是要宣扬优化，项目初期不推崇过度优化毕竟产品做出来才是王道，而是通过深入理解核心知识点在项目初期做出正确的设计来避免没必要的后期优化。</li>
+</ol>
+<h2 id="UI模块"><a href="#UI模块" class="headerlink" title="UI模块"></a>UI模块</h2><p>深入深度学习Unity UI(UGUI)模块的使用，优化，原理知识等。</p>
+<h3 id="UI基础"><a href="#UI基础" class="headerlink" title="UI基础"></a>UI基础</h3><h4 id="UI核心概念"><a href="#UI核心概念" class="headerlink" title="UI核心概念"></a>UI核心概念</h4><p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">Canvases are responsible for combining their constituent geometry into batches, generating the appropriate render commands and sending these to Unity’s Graphics system. All of this is done in native C++ code, and is called a rebatch or a batch build.</a></p>
+<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">Geometry is provided to Canvases by Canvas Renderer components.</a></p>
+<p>从前面可以看出UGUI的绘制是以画布为单位的，子Canvas也就是嵌套的关系，大部分情况子Canvas脏了只会触发子Canvas的网格重建不会触发父Canvas的网格重建。</p>
+<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">When composing user interfaces in Unity UI, keep in mind that all geometry drawn by a Canvas will be drawn in the <strong>Transparent queue.</strong></a>(UGUI的Canvas绘制实在Transpanrent Queue里)</p>
+<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">A <em>Graphic</em> is a base class provided by the Unity UI C# library. It is the base class for all Unity UI C# classes that provide drawable geometry to the Canvas system. Most built-in Unity UI Graphics are implemented via the <em>MaskableGraphic</em> subclass, which allows them to be masked via the <em>IMaskable</em> interface.</a>(UGUI里Graphic是提供Canvas里可绘制单位的基类，大部分UGUI组件继承至MaskableGraphic，为了支持Mask过滤。)</p>
+<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">The updates of Layout and Graphic components is called a rebuild.</a>(网格重建是因为排版或者Graphic组件有更新导致的，比如UI位置变化(排版),UI图片变化(组件变化))</p>
+<ol>
+<li>Batch Building Process(Canvases)<br><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">The batch building process is the process whereby a Canvas combines the meshes representing its UI elements and generates the appropriate rendering commands to send to Unity’s graphics pipeline. The results of this process are cached and reused until the Canvas is marked as dirty, which occurs whenever there is a change to one of its constituent meshes.</a>(网格合并是为了将Canvas下的元素合并到一个网格数据里缓存起来直到UI被标记脏时。主要是为了减少DrawCall，减少GPU压力)</li>
+<li>Rebuild Process(Graphics)<br><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">The Rebuild process is where the layout and meshes of Unity UI’s C# Graphic components are recalculated.</a>(网格重建是因为Canvas下的UI有排版或者Graphic组件有变化触发的，目的是为了重新计算绘制所需的网格数据)</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">Whenever any drawable UI element on a given Canvas changes, the Canvas must re-run the batch building process. This process re-analyzes every drawable UI element on the Canvas, regardless of whether it has changed or not. </a>(任何的可绘制UI变化都会导致Canvas重新执行网格合并，因为Mesh有变化了)</p>
+<h4 id="UI合批规则"><a href="#UI合批规则" class="headerlink" title="UI合批规则"></a>UI合批规则</h4><p>UI顺序：<br><a href="">Unity UIs are constructed back-to-front, with objects’ order in the hierarchy determining their sort order. </a><br>UI是从后往前结合节点层级(Hierarchy)判定的出序列号的，相邻序列号的会检测是否能合批。所以我们要注意合批打断问题(比如相邻节点没有使用同一个图集，材质。相邻UI节点重叠问题等。)</p>
+<p>详细学习参考：<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/5b6f5022662e">Unity 之 UGUI 小总结</a></p>
+<h4 id="UI射线"><a href="#UI射线" class="headerlink" title="UI射线"></a>UI射线</h4><p>UI射线响应需要满足下面几个条件：</p>
+<ol>
+<li>目标UI是激活状态</li>
+<li>点击区域是目标UI区域</li>
+<li>目标UI对象本身或父节点有ICanvasRaycastFilter组件设置允许raycast</li>
+</ol>
+<p>优化Raycast方案：</p>
+<ol>
+<li>减少不必要的UI响应Raycast(关闭不必要的UI Raycast Target设置)</li>
+</ol>
+<p>Note:<br>Unity 5.4之前有个Bug是即使没有input输入也会每帧检查Raycast造成额外开销。</p>
+<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p>UI的几个常见问题如下:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b59f">Excessive GPU fragment shader utilization (i.e. fill-rate overutilization)</a>(过度使用GPU – 片元Shader的使用显示，比如填充率过高)</li>
+<li><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b59f">Excessive CPU time spent rebuilding a Canvas batch</a>(过度使用CPU – Canvas网格重建和合并)</li>
+<li><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b59f">Excessive numbers of rebuilds of Canvas batches (over-dirtying)</a>(过度高频率的触发Canvas网格重建和合并 – 比如大量的动态元素)</li>
+<li><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b59f">Excessive CPU time spent generating vertices (usually from text)</a>(过度的使用CPU – 生成过多的顶点数据，比如文本顶点数量)</li>
+</ol>
+<p>从上面可以看出优化UI主要从两个方面下手：</p>
+<ul>
+<li>CPU(减少Canvas频繁的合并，减少生成过多的顶点数量)</li>
+<li>GPU(减少Drawcall和填充率)</li>
+</ul>
+<h3 id="Profile-Tool"><a href="#Profile-Tool" class="headerlink" title="Profile Tool"></a>Profile Tool</h3><ol>
+<li>Unity Profiler</li>
+<li>Unity Frame Debugger</li>
+<li>Xcode Intruments</li>
+<li>Xcode Frame Debugger<br>详情参考：<br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/unity-ui-profiling-tools?playlist=30089">Unity UI Profiling Tools</a></li>
+</ol>
+<h3 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h3><ol>
+<li>减少不可见UI – 比如全屏不透明UI显示时隐藏背后UI</li>
+<li>简化UI结构 – 比如减少不必要节点 不要使用混合GameObject节点等</li>
+<li>关闭不可见Camera – 比如全屏不透明UI显示时隐藏其他不必要Camera</li>
+<li>划分多Canvas+动静分离 – 比如不同的窗口放到不同的Canvas下避免互相影响。动的元素放在一个Canvas下，静的元素放在一个Canvas下，避免动的元素影响静态元素的网格重建</li>
+<li>使用最新版TextMeshPro来替换原生Text方案(TMP使用SDF技术支持不失真的动态字体大小变化)</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li>UGUI的Text的文字顶点绘制是单个文字就是一个独立的四边形网格(造成顶点数多)</li>
+<li>UGUI的Text动态字体对于不同的大小或者风格(粗体细体)是按不同的文字来处理的(容易造成Canvas的重绘(动态字体纹理重新生成))</li>
+<li>文本变化是会触发网格重建和合并的(因为文本网格数据变化了)</li>
+</ol>
+<h3 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h3><p>通过前面的学习，我们知道了UI的开销主要在Rebatch和Rebuild上。前者可以理解成通过UGUI合批规则把Canvas下的UI合并到指定数量的DrawCall传递到GPU去。后者可以理解成UI变化后重新计算Mesh。</p>
+<p>UI优化的关键也就不言而喻了：</p>
+<ol>
+<li><p>减少Rebatch<br> Canvas没有标记dirty或者Canvas下没有UI Mesh有变化时不会触发Rebatch。<br> 这也就是为什么要划分Canvas且采用动静分离的原因，目的就是把经常变化的UI分离到单独的Canvas，减少静态UI部分的Rebatch开销。</p>
+</li>
+<li><p>减少Rebuild</p>
+</li>
+<li><p>降低隐藏激活开销(这一点主要是对于UI显示状态变化时的一种优化)</p>
+<p> 根据<a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/1875.html"><a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/1875.html">UWA 六月直播季 | 6.29 Unity UI模块中的优化案例精讲</a></a>的建议，UGUI最好采用Canvas Group设置Alpha为0的方式来避免SetActive带来的开销以及避免隐藏时的渲染开销</p>
+</li>
+</ol>
+<p>Note:<br>Unity 5.2版本Unity大力优化了UI Batch部分。</p>
+<h2 id="资源模块"><a href="#资源模块" class="headerlink" title="资源模块"></a>资源模块</h2><p>资源分很多，比如纹理贴图，图集，材质，Shader，字体，音效，模型，动画等等等。接下来我会针对特定部分来学习针对性的优化知识点。</p>
+<h3 id="纹理资源"><a href="#纹理资源" class="headerlink" title="纹理资源"></a>纹理资源</h3><p>这里说的纹理资源同时也包含了图集，图集也可以理解成纹理的一种。</p>
+<h3 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h3><p>待续……</p>
+<h3 id="音效"><a href="#音效" class="headerlink" title="音效"></a>音效</h3><p>待续……</p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><h2 id="Relative-Study"><a href="#Relative-Study" class="headerlink" title="Relative Study"></a>Relative Study</h2><p><a href="">TextMeshPro相关学习</a></p>
+<h2 id="Unity-Conception-Part"><a href="#Unity-Conception-Part" class="headerlink" title="Unity Conception Part"></a>Unity Conception Part</h2><p><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/guide-optimizing-unity-ui?playlist=30089">A guide to optimizing Unity UI</a><br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/fundamentals-unity-ui?playlist=30089">Fundamentals of Unity UI</a><br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/unity-ui-profiling-tools?playlist=30089">Unity UI Profiling Tools</a><br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/fill-rate-canvases-and-input?playlist=30089&tdsourcetag=s_pcqq_aiomsg">Fill-rate, Canvases and input</a><br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/optimizing-ui-controls?playlist=30089">Optimizing UI Controls</a><br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/other-ui-optimization-techniques-and-tips?playlist=30089">Other UI Optimization Techniques and Tips</a></p>
+<h2 id="Other-Part"><a href="#Other-Part" class="headerlink" title="Other Part"></a>Other Part</h2><p><a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/QA_UGUI-1.html">关于Unity中的UGUI优化，你可能遇到这些问题</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/5b6f5022662e">Unity 之 UGUI 小总结</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/1875.html"><a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/1875.html">UWA 六月直播季 | 6.29 Unity UI模块中的优化案例精讲</a></a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Optimization/" rel="tag"># Optimization</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/19/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" rel="prev" title="版本控制">
+                  <i class="fa fa-angle-left"></i> 版本控制
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/05/03/%E7%83%AD%E6%9B%B4%E6%96%B0/" rel="next" title="热更新">
+                  热更新 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

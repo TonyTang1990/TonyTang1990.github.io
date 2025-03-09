@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言本章节博客是在项目需要使用FGUI的前提下，驱动深入学习FGUI的使用的。关于FGUI个人的认知还停留在第三方跨平台跨引擎制作UI的工具的层面上，接下来还是遵循老规矩从What,Why,How三个步骤来一步一步深入学习FGUI。 FGUI什么是FGUI了？ FGUI全称是FairyGUI。官方的介绍是:专业游戏 UI 解决方案从对设计师友好的编辑器 到支持 10+ 款引擎的 SDK 助力您生产">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FGUI学习">
+<meta property="og:url" content="http://example.com/2021/05/05/FGUI%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本章节博客是在项目需要使用FGUI的前提下，驱动深入学习FGUI的使用的。关于FGUI个人的认知还停留在第三方跨平台跨引擎制作UI的工具的层面上，接下来还是遵循老规矩从What,Why,How三个步骤来一步一步深入学习FGUI。 FGUI什么是FGUI了？ FGUI全称是FairyGUI。官方的介绍是:专业游戏 UI 解决方案从对设计师友好的编辑器 到支持 10+ 款引擎的 SDK 助力您生产">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/FGUI/FGUIProjectsCapture.PNG">
+<meta property="og:image" content="http://example.com/img/FGUI/FGUIProjectsStructure.PNG">
+<meta property="og:image" content="http://example.com/img/FGUI/FGUIPublicInterface.PNG">
+<meta property="og:image" content="http://example.com/img/FGUI/FGUIPublishAssets.PNG">
+<meta property="og:image" content="http://example.com/img/FGUI/PictureResourceExport.PNG">
+<meta property="article:published_time" content="2021-05-05T11:08:24.000Z">
+<meta property="article:modified_time" content="2022-07-31T13:23:50.559Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="UI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/FGUI/FGUIProjectsCapture.PNG">
+
+
+<link rel="canonical" href="http://example.com/2021/05/05/FGUI%E5%AD%A6%E4%B9%A0/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/05/05/FGUI%E5%AD%A6%E4%B9%A0/","path":"2021/05/05/FGUI学习/","title":"FGUI学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>FGUI学习 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FGUI"><span class="nav-number">1.1.</span> <span class="nav-text">FGUI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FGUI%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">FGUI使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%85"><span class="nav-number">1.2.1.</span> <span class="nav-text">包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8C%85%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">包的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8C%85%E7%9A%84%E4%BE%9D%E8%B5%96"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">包的依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%84%E6%BA%90URL%E5%9C%B0%E5%9D%80"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">资源URL地址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E5%B8%83"><span class="nav-number">1.2.2.</span> <span class="nav-text">发布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E4%BB%B6"><span class="nav-number">1.2.3.</span> <span class="nav-text">元件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GObject"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">GObject</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GComponent"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">GComponent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%BE%E7%89%87"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">图片</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB"><span class="nav-number">1.2.4.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%A8%E9%AA%BC%E5%8A%A8%E7%94%BB"><span class="nav-number">1.2.5.</span> <span class="nav-text">骨骼动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2"><span class="nav-number">1.2.6.</span> <span class="nav-text">图形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%85%E8%BD%BD%E5%99%A8"><span class="nav-number">1.2.7.</span> <span class="nav-text">装载器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3D%E5%86%85%E5%AE%B9%E8%A3%85%E8%BD%BD%E5%99%A8"><span class="nav-number">1.2.8.</span> <span class="nav-text">3D内容装载器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E6%9C%AC"><span class="nav-number">1.2.9.</span> <span class="nav-text">文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%8C%E6%96%87%E6%9C%AC"><span class="nav-number">1.2.10.</span> <span class="nav-text">富文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%96%87%E6%9C%AC"><span class="nav-number">1.2.11.</span> <span class="nav-text">输入文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E4%BD%93"><span class="nav-number">1.2.12.</span> <span class="nav-text">字体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84"><span class="nav-number">1.2.13.</span> <span class="nav-text">组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6"><span class="nav-number">1.2.14.</span> <span class="nav-text">组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%9A%E5%8A%A8%E5%AE%B9%E5%99%A8"><span class="nav-number">1.2.15.</span> <span class="nav-text">滚动容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">1.3.</span> <span class="nav-text">控制器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.4.</span> <span class="nav-text">关联系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE"><span class="nav-number">1.5.</span> <span class="nav-text">标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E9%92%AE"><span class="nav-number">1.6.</span> <span class="nav-text">按钮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E6%8B%89%E6%A1%86"><span class="nav-number">1.7.</span> <span class="nav-text">下拉框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%BA%A6%E6%9D%A1"><span class="nav-number">1.8.</span> <span class="nav-text">进度条</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BB%91%E5%8A%A8%E6%9D%A1"><span class="nav-number">1.9.</span> <span class="nav-text">滑动条</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BB%9A%E5%8A%A8%E6%9D%A1"><span class="nav-number">1.10.</span> <span class="nav-text">滚动条</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E8%A1%A8"><span class="nav-number">1.11.</span> <span class="nav-text">列表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FGUI%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">FGUI设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%BE%E7%A4%BAUI%E9%9D%A2%E6%9D%BF"><span class="nav-number">2.1.</span> <span class="nav-text">显示UI面板</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/05/FGUI%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="FGUI学习 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FGUI学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-05 19:08:24" itemprop="dateCreated datePublished" datetime="2021-05-05T19:08:24+08:00">2021-05-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 21:23:50" itemprop="dateModified" datetime="2022-07-31T21:23:50+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Plugin/" itemprop="url" rel="index"><span itemprop="name">Plugin</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本章节博客是在项目需要使用FGUI的前提下，驱动深入学习FGUI的使用的。关于FGUI个人的认知还停留在第三方跨平台跨引擎制作UI的工具的层面上，接下来还是遵循老规矩从What,Why,How三个步骤来一步一步深入学习FGUI。</p>
+<h2 id="FGUI"><a href="#FGUI" class="headerlink" title="FGUI"></a>FGUI</h2><p>什么是FGUI了？</p>
+<p>FGUI全称是FairyGUI。官方的介绍是:<a target="_blank" rel="noopener" href="https://www.fairygui.com/">专业游戏 UI 解决方案从对设计师友好的编辑器 到支持 10+ 款引擎的 SDK 助力您生产力翻倍</a></p>
+<p>为什么要选择FGUI了？</p>
+<p>从官网的介绍可以看出，使用FGUI有以下几个好处:</p>
+<ol>
+<li>跨平台，多引擎支持(意味着一套UI多处使用)</li>
+<li>内部支持的多国语言</li>
+<li>高性能DralCall合并优化机制</li>
+<li>丰富的UI库(跨平台的UI组件库–省去了从零造UI轮子的功夫)</li>
+</ol>
+<p>接下来就是学习如何使用FGUI了？</p>
+<p>这里依然选择从官网教程入手:</p>
+<p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor">编辑器使用基础</a></p>
+<h2 id="FGUI使用"><a href="#FGUI使用" class="headerlink" title="FGUI使用"></a>FGUI使用</h2><p>第一步：</p>
+<p>下载<a target="_blank" rel="noopener" href="https://www.fairygui.com/download">FGUI编辑器</a></p>
+<p>第二步:</p>
+<p>创建第一个FGUI项目(创建新项目-&gt;输入新项目名称以及选择位置)</p>
+<p><img src="/img/FGUI/FGUIProjectsCapture.PNG" alt="FGUIProjectsCapture"></p>
+<p><img src="/img/FGUI/FGUIProjectsStructure.PNG" alt="FGUIProjectsStructure"></p>
+<p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/index">编辑器的基础使用参考这里</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/project_settings">项目设置参考这里</a></p>
+<p>接下来学习下FGUI里总要的一些独有概念：</p>
+<h3 id="包"><a href="#包" class="headerlink" title="包"></a>包</h3><h4 id="包的定义"><a href="#包的定义" class="headerlink" title="包的定义"></a>包的定义</h4><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/package">FairyGUI是以包为单位组织资源的。包在文件系统中体现为一个目录。assets目录下每个子目录都表示一个包。**包内的每个资源都有一个是否导出的属性，一个包只能使用其他包设置为已导出的资源，而不设置为导出的资源是不可访问的。</a></p>
+<h4 id="包的依赖"><a href="#包的依赖" class="headerlink" title="包的依赖"></a>包的依赖</h4><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/package">FairyGUI是不处理包之间的依赖关系的，如果B包导出了一个元件B1，而A包的A1元件使用了元件B1，那么在创建A1之前，必须保证B包已经被载入，否则A1里的B1不能正确显示（但不会影响程序正常运行）。<strong>这个载入需要由开发者手动调用，FairyGUI不会自动载入。</strong></a></p>
+<h4 id="资源URL地址"><a href="#资源URL地址" class="headerlink" title="资源URL地址"></a>资源URL地址</h4><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/package">在FairyGUI中，每一个资源都有一个URL地址。选中一个资源，右键菜单，选择“复制URL”，就可以得到资源的URL地址。无论在编辑器中还是在代码里，都可以通过这个URL引用资源。</a></p>
+<p>Note:</p>
+<ol>
+<li>URL有两种格式(一种是不可读的一个编码，另一种是ui:&#x2F;&#x2F;包名&#x2F;&#x2F;资源名)</li>
+</ol>
+<h3 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h3><p><img src="/img/FGUI/FGUIPublicInterface.PNG" alt="FGUIPublicInterface"></p>
+<p>可以看到FGUI发布是针对前面设定的包的概念来发布的，可以发布一个包也可以发布所有包。发布里面还有很多设置，比如对纹理图片的导出设置等，具体后续用到详细研究详情参考:<a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/publish">发布</a></p>
+<p>这里主要说下<strong>发布代码</strong>这个设置，看介绍是一个FGUI提供的组件绑定代码自动化生成机制。</p>
+<p>FGUI发布后会得到一个***_fui.bytes的二进制文件:</p>
+<p><img src="/img/FGUI/FGUIPublishAssets.PNG" alt="FGUIPublishAssets"></p>
+<p>Note:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/publish"><strong>当我们载入包时，需要使用这里设定的文件名，而当创建对象时，需要使用包名称</strong></a></li>
+</ol>
+<h3 id="元件"><a href="#元件" class="headerlink" title="元件"></a>元件</h3><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/object">每个舞台中的组成元素我们称之为元件</a></p>
+<p>元件的类型有很多，他们是:</p>
+<ol>
+<li>基础元件(图片，图形，动画，装载器，文本，富文本，组，组件)</li>
+<li>组合型元件(标签，按钮，下拉框，滚动条，滑动条，进度条)</li>
+<li>特殊元件(列表)</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/object"><strong>关联系统只对元件的宽高有效，不计入Scale的影响</strong></a></li>
+<li><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/object">设置元件的倾斜值。 对于Unity平台，你可以放心地对图片、动画、装载器使用倾斜，这几乎不会带来额外消耗，但对于其他类型的元件，例如组件，请谨慎使用</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/object">BlendMode这个提供了一部分的混合选项设置。对于Unity平台，对图片、动画、文字，你可以放心地修改它们的BlendMode。但对于组件，请谨慎使用。滤镜设置同理。</a></li>
+</ol>
+<h4 id="GObject"><a href="#GObject" class="headerlink" title="GObject"></a>GObject</h4><p>FGUI里大部分元件类的基类。个人理解是元件的根Object抽象。</p>
+<p>关键元件的位置，缩放，旋转，可见，大小等设置接口都在这个类里。</p>
+<h4 id="GComponent"><a href="#GComponent" class="headerlink" title="GComponent"></a>GComponent</h4><p>与Unity里的Component组件不同。个人理解更像是一种包含关系的Component而非GameObject那种绑定Component概念。</p>
+<h4 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h4><p>可以理解成Unity里导入图片资源，然后可以对图片资源的大小，是否切九宫，纹理集导出设置等进行设置。</p>
+<p>设置图片资源为导出后，发布包会看到生成了两份数据:</p>
+<p><img src="/img/FGUI/PictureResourceExport.PNG" alt="PictureResourceExport"></p>
+<p>一份为图片资源导出后的图集资源</p>
+<p>一份为包的二进制资源</p>
+<p>GImage是图片对应FGUI里的类型，类似Unity的Image，相关设置接口都在GImage类里。</p>
+<p>Note:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/image">FairyGUI支持的图片格式有：PNG，JPG，TGA，SVG。</a></li>
+<li>默认导入的图片是没有标记小红点的也就是默认不导出的，这里需要选中后右键设置为导出，最后导出包的时候才会导出资源。(<strong>只有导出后的资源才允许被其他包使用</strong>)</li>
+</ol>
+<h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>FGUI支持三种方式创建动画，详情参考：<a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/movieclip">动画</a></p>
+<p>这里主要学习直接在FGUI里创建动画的方式：</p>
+<ol>
+<li>资源-&gt; 新建动画</li>
+<li>导入序列帧图片资源</li>
+<li>设置动画属性参数</li>
+</ol>
+<p>动画文件对应FGUI里的GMoviewClip类，相关API参考GMoviewClip源码</p>
+<h3 id="骨骼动画"><a href="#骨骼动画" class="headerlink" title="骨骼动画"></a>骨骼动画</h3><p>暂时略过</p>
+<h3 id="图形"><a href="#图形" class="headerlink" title="图形"></a>图形</h3><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/graph">FairyGUI支持生成简单的图形。</a></p>
+<p><strong>多边形图形编辑支持直接操作顶点。</strong></p>
+<p><strong>图形的主要用途是用于占位，支持设置绑定原生对象(e.g. Image)</strong></p>
+<p>图形对应FGUI里的GGraph类，相关API参考GGraph源码</p>
+<p>Note:</p>
+<ol>
+<li><strong>图形支持动态创建，动态创建图形需要注意一定要设置图形的大小，否则显示不出来。</strong></li>
+</ol>
+<h3 id="装载器"><a href="#装载器" class="headerlink" title="装载器"></a>装载器</h3><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/loader">装载器的用途是动态载入资源。</a></p>
+<p>装载器对应FGUI里的GLoader类，相关API参考GLoader源码。</p>
+<p>GLoader可以载入图片、动画和组件。如果是UI包里的资源，那么通过“ui:&#x2F;&#x2F;包名&#x2F;图片名”这种格式的地址就可以载入。</p>
+<p>FGUI支持了我们自定义装载器实现自定义加载，详情参考官网:<a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/loader">装载器</a></p>
+<p>Note:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/loader">默认的GLoader具有有限度的的加载外部资源的能力，详情参考参考官网说明</a></li>
+<li>GLoader不管理外部对象的生命周期，不会主动销毁自定义加载的外部资源需要自行管理</li>
+</ol>
+<h3 id="3D内容装载器"><a href="#3D内容装载器" class="headerlink" title="3D内容装载器"></a>3D内容装载器</h3><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/loader3d">3D内容装载器的用途是动态载入比较复杂的资源，例如<a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/skeleton">骨骼动画</a>、模型（暂未支持）、粒子特效（暂未支持）等。</a></p>
+<p>暂时略过</p>
+<h3 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h3><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/text">文本是FairyGUI的基础控件之一。文本不支持交互，鼠标&#x2F;触摸感应是关闭的。</a></p>
+<p>文本对应FGUI里的GTextField类，相关API参考GTextField源码。</p>
+<p>使用<strong>文本模板</strong>可以更灵活的动态调整文本输出。解决文本占位输出问题。比如我的元宝:{jin&#x3D;100}金{yin&#x3D;200}银。勾选文本模板即可通过直接更新关键字数值即可。</p>
+<p>事例:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aTextField.SetVar(<span class="string">&quot;jin&quot;</span>, <span class="string">&quot;500&quot;</span>).SetVar(<span class="string">&quot;yin&quot;</span>, <span class="string">&quot;500&quot;</span>).FlushVars();</span><br></pre></td></tr></table></figure>
+
+<p>Note:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/text">设置文本支持UBB语法。使用UBB语法可以使单个文本包含多种样式，例如字体大小，颜色等。请参考<a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/text#ubb%E8%AF%AD%E6%B3%95">UBB语法</a>。</a></li>
+<li>文本模板优先于UBB解析</li>
+</ol>
+<h3 id="富文本"><a href="#富文本" class="headerlink" title="富文本"></a>富文本</h3><p>富文本与普通文本的区别在于：</p>
+<ol>
+<li>普通文本不支持交互，鼠标&#x2F;触摸感应是关闭的；富文本支持。</li>
+<li>普通文本不支持链接和图文混排；富文本支持。</li>
+<li>普通文本不支持HTML语法（但可以使用UBB实现不同样式）；富文本支持。</li>
+</ol>
+<p>富文本对应FGUI里的GRichTextField类，相关API参考GRichTextField源码。</p>
+<h3 id="输入文本"><a href="#输入文本" class="headerlink" title="输入文本"></a>输入文本</h3><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/inputtext">输入文本元件用于接收用户输入文字。</a></p>
+<p>输入文本对应FGUI里的GTextInput类，相关API参考GTextInput源码。</p>
+<p>Note:</p>
+<ol>
+<li>设置文本支持UBB语法。</li>
+</ol>
+<h3 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h3><p>FairyGUI支持3种字体的使用方式:</p>
+<ol>
+<li>系统字体</li>
+<li>TTF字体</li>
+<li>位图字体</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/font">无论字体是否设置为导出，它都不会被发布。UI包发布后，引用此字体资源的文本元件的字体名称是该字体的资源名字。</a></li>
+<li>FairyGUI内置支持使用TextMeshPro插件。</li>
+</ol>
+<h3 id="组"><a href="#组" class="headerlink" title="组"></a>组</h3><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/group">在舞台上选定一个或多个元件，然后按Ctrl+G，就可以建立一个组。 FairyGUI的组有两种类型，<code>普通组</code>和<code>高级组</code>。</a></p>
+<ul>
+<li><p>普通组</p>
+<p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/group">普通组仅在编辑时有效，是辅助你进行UI设计的。普通组发布后不存在，也就是在运行时无法访问到普通组。</a></p>
+<p>普通组作用:</p>
+<ol>
+<li>可以整体一起移动；</li>
+<li>可以整体一起调整深度；</li>
+<li>可以整体复制和粘贴。</li>
+<li>双击组，进入组内部后，可以随意调整各个元件的深度，不影响组外的东西。</li>
+<li>当组大小改变时，组内的内容将同时增大或者缩小。</li>
+</ol>
+</li>
+<li><p>高级组</p>
+<p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/group">高级组除了具有普通组所有的功能外，它在发布后仍然保留，也就是在运行时可以通过代码访问高级组对象。所以它可以像一个普通元件那样设置关联和属性控制。</a></p>
+<p>高级组作用:</p>
+<ol>
+<li>可以设置可见性。如果组不可见，则组内的所有元件均不可见。</li>
+<li>设置属性控制。高级组支持的属性控制有：显示控制，位置控制，大小控制。</li>
+<li>设置关联。</li>
+<li>设置布局。</li>
+</ol>
+</li>
+</ul>
+<p>个人觉得FGUI里的组类似Unity里的父节点，同时高级组实现了一些类似Layout排版组件的布局效果以及其他特殊控制效果。</p>
+<p>高级组对应FGUI里的GGroup类，相关API参考GGroup类源码。</p>
+<h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h3><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/component">组件是FairyGUI中的一个基础容器。组件可以包含一个或多个基础显示对象，也可以包含组件。</a></p>
+<ul>
+<li><p>自定义属性</p>
+<p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/component">当组件被拖入到到其他组件后，能通过检查器设置的属性一般是固定的，例如一个按钮，我们可以改变它的标题、图标、是否选中等，这些都是编辑器提供的固定属性。但如果我在按钮中放置了额外的文本或者装载器，而且需要设定他们在实例化后的属性时，就需要用自定义属性，将组件的子元件甚至更深层次的元件的属性暴露出来。</a></p>
+</li>
+<li><p>自定义数据</p>
+<p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/component">可以设置一个自定义的数据，这个数据FairyGUI不做解析，按原样发布到最后的描述文件中。开发者可以在运行时获取。</a></p>
+</li>
+</ul>
+<p><strong>设计图功能</strong>是为了快速拼出效果图要的效果。</p>
+<p><strong>点击穿透</strong>设置可以快速将点击事件向后传递。</p>
+<p><strong>点击测试</strong>用于不规则区域的点击响应。</p>
+<p><strong>遮罩</strong>FGUI里分两种：</p>
+<ul>
+<li><p>矩形遮罩</p>
+</li>
+<li><p>自定义遮罩</p>
+</li>
+</ul>
+<p><strong>扩展</strong>功能，<a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/component">选择哪种“扩展”，组件就有了那种扩展的属性和行为特性。</a></p>
+<p>组件对应FGUI里的GComponent类，相关API详情参考GComponent源码。</p>
+<p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/component">动态创建的组件是空组件，可以作为其他组件的容器。一个常见的用途，如果你要建立一个多层的UI管理系统，那么空组件就是一个合适的层级容器选择。</a></p>
+<p>Note:</p>
+<ol>
+<li>动态创建的组件默认是点击穿透的，也就是说如果直接new一个空组件作为接收点击用途，你还得有额外设置</li>
+<li><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/component">在FairyGUI中，显示列表是以树形组织的，下面说的渲染顺序均指在<strong>同一个父元件</strong>下安排的顺序，不同父元件的元件是不可能互相交错的，这是前提，请注意。</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/component">GObject.sortingOrder。**这个属性只用于特定的用途，不作常规的使用。它一般用于类似固定置顶的功能，另外，永远不要将sortingOrder用在列表中。</a></li>
+</ol>
+<h3 id="滚动容器"><a href="#滚动容器" class="headerlink" title="滚动容器"></a>滚动容器</h3><p>滚动容器对应FGUI里的ScrollPane类，相关API详情参考ScrollPane源码。</p>
+<p>……</p>
+<h2 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h2><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/controller">控制器是FairyGUI核心功能之一，它为UI制作中以下类似需求提供了支持：</a></p>
+<ul>
+<li>分页 一个组件可以由多个页面组成。</li>
+<li>按钮状态 按钮通常有按下、鼠标悬浮等多个状态，我们可以利用控制器为每个状态安排不同的显示内容。</li>
+<li>属性变化 利用控制器，我们可以使元件具有多个不同的形态，并且可以方便地切换。</li>
+</ul>
+<p>这里提到了一个重要的概念:分页。</p>
+<p>控制器的概念是基于分页的，意思就是通过设计控制的页面的控制效果，我们可以提前做好多个页面效果，运行时只需切页来达到对应效果即可。</p>
+<p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/controller">显示控制-2一般和显示控制搭配使用，它可以实现两个控制器控制一个元件显隐的需求。特别还提供了一个逻辑关系的选项，可以选择“与”或者“或”。</a></p>
+<p>控制器可以很方便实现类似Button多种点击状态以及Toggle选中和未选中效果(程序只需负责切页即可，所有显示效果在FGUI编辑器里定义好)。</p>
+<p>比如单选按钮就是通过多个单选按钮配合多个页面控制+按钮联动实现的。</p>
+<p>这里的控制器相当于把操作表现流程放到UI制作流程里了(不得不说FGUI确实对于UI制作流有很大好处，部分逻辑都不再需要程序自行编写了)</p>
+<p>滚动容器对应FGUI里的Controller类，相关API详情参考Controller源码。</p>
+<h2 id="关联系统"><a href="#关联系统" class="headerlink" title="关联系统"></a>关联系统</h2><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/relation">关联系统是FairyGUI实现自动布局的核心技术。其他UI框架提供的布局系统，一般只提供各种固定的layout，或者锚点，都只能定义元件与容器之间的关系。而FairyGUI的关联能够定义任意两个元件的关系，而且互动方式更多样。</a></p>
+<p>FGUI的关联系统，个人理解更偏向于美术的概念，而非传统程序锚点的概念，左左，左右，右左这些都是显示知名两个Component的位置关系。</p>
+<h2 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h2><p>标签对应FGUI里的GLabel类，相关API详情参考GLabel源码。</p>
+<p>Note:</p>
+<ol>
+<li>标签里title和icon是两个特殊的名字，FGUI设置标签文本和图表会快速查找对应名字作为对应组件。</li>
+</ol>
+<h2 id="按钮"><a href="#按钮" class="headerlink" title="按钮"></a>按钮</h2><p>标签对应FGUI里的GButton类，相关API详情参考GButton源码。</p>
+<p>……</p>
+<h2 id="下拉框"><a href="#下拉框" class="headerlink" title="下拉框"></a>下拉框</h2><p>下拉框对应FGUI里的GComboBox类，相关API详情参考GComboBox源码。</p>
+<p>……</p>
+<h2 id="进度条"><a href="#进度条" class="headerlink" title="进度条"></a>进度条</h2><p>进度条对应FGUI里的GProgressBat类，相关API详情参考GProgressBar源码。</p>
+<p>……</p>
+<h2 id="滑动条"><a href="#滑动条" class="headerlink" title="滑动条"></a>滑动条</h2><p>滑动条对应FGUI里的GSlider类，相关API详情参考GSilder源码。</p>
+<p>……</p>
+<h2 id="滚动条"><a href="#滚动条" class="headerlink" title="滚动条"></a>滚动条</h2><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/scrollbar">与很多UI框架使用皮肤机制定义滚动条不同，在FairyGUI中，滚动条是可以随心设计的。<br><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/scrollpane">滚动容器</a>和滚动条是独立的，也就是说，即使没有滚动条，滚动容器也能完成滚动的功能。<br>注意：滚动条不能直接拖到舞台上使用，永远不要这样做。</a></p>
+<p>滚动条对应FGUI里的GScrollBar类，相关API详情参考GScrollBar源码。</p>
+<p>Note:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/scrollbar">运行时滚动条组件的类型是GScrollBar，但你不需要访问GScrollBar对象。所有滚动相关的操作都通过ScrollPane完成</a></li>
+</ol>
+<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><p>滚动条对应FGUI里的GList类，相关API详情参考GList源码。</p>
+<p>这是我们游戏中会比较常用的组件，FGUI的列表已经实现了数据与渲染分离(虚拟列表)，也实现了列表所需的几乎所有需求(e.g. 动态大小，动态魔板，循环列表，滚动到指定单元格等)</p>
+<p>详情参考:<a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/list">FGUI列表</a></p>
+<p>Note:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.fairygui.com/docs/editor/list"><strong>不允许使用AddChild或RemoveChild对虚拟列表增删对象。如果要清空列表，必须要通过设置numItems&#x3D;0，而不是RemoveChildren。</strong></a></li>
+</ol>
+<h1 id="FGUI设计"><a href="#FGUI设计" class="headerlink" title="FGUI设计"></a>FGUI设计</h1><h2 id="显示UI面板"><a href="#显示UI面板" class="headerlink" title="显示UI面板"></a>显示UI面板</h2><p>待续……</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://www.fairygui.com/">FGUI</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/UI/" rel="tag"># UI</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/01/21/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" rel="prev" title="碰撞检测">
+                  <i class="fa fa-angle-left"></i> 碰撞检测
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/20/UnityEditor%E7%9F%A5%E8%AF%86/" rel="next" title="UnityEditor知识">
+                  UnityEditor知识 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言本章节博客是在项目需求设计支持Lua AI系统的前提下，驱动深入学习行为树设计实现。关于AI的相关基础概念学习可以参考:Programming Game AI by Example。而本章节的重点就是行为树，最终目的是实现一份Unity里能够支持项目级使用的支持Lua测使用AI的行为树框架设计。源代码考虑到公司正在使用所以暂时不放源码，大家可以参考设计思路自行实现。 行为树行为树介绍行为树首先">
+<meta property="og:type" content="article">
+<meta property="og:title" content="行为树-Unity">
+<meta property="og:url" content="http://example.com/2020/09/12/%E8%A1%8C%E4%B8%BA%E6%A0%91-Unity/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本章节博客是在项目需求设计支持Lua AI系统的前提下，驱动深入学习行为树设计实现。关于AI的相关基础概念学习可以参考:Programming Game AI by Example。而本章节的重点就是行为树，最终目的是实现一份Unity里能够支持项目级使用的支持Lua测使用AI的行为树框架设计。源代码考虑到公司正在使用所以暂时不放源码，大家可以参考设计思路自行实现。 行为树行为树介绍行为树首先">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/AI/BehaviorTreeHierachy.png">
+<meta property="og:image" content="http://example.com/img/AI/BehaviourTree/CustomVariableNodes.png">
+<meta property="og:image" content="http://example.com/img/AI/BehaviourTree/CustomVariableInspector.png">
+<meta property="og:image" content="http://example.com/img/AI/BehaviourTree/AllCustomVariableInspector.png">
+<meta property="og:image" content="http://example.com/img/AI/BehaviourTree/GenericMenu.png">
+<meta property="og:image" content="http://example.com/img/AI/BehaviourTree/BTOperationPanel.png">
+<meta property="og:image" content="http://example.com/img/AI/BehaviourTree/GenericMenu.png">
+<meta property="og:image" content="http://example.com/img/AI/BehaviourTree/BTEditorNode.png">
+<meta property="og:image" content="http://example.com/img/AI/BehaviourTree/BTNodeConnectLine.png">
+<meta property="og:image" content="http://example.com/img/AI/BehaviourTree/BTJsonData.png">
+<meta property="og:image" content="http://example.com/img/AI/BehaviourTree/BTNodeEditor.png">
+<meta property="og:image" content="http://example.com/img/AI/BehaviourTree/BehaviourTreeUML1.png">
+<meta property="og:image" content="http://example.com/img/AI/BehaviourTree/BehaviourTreeUML2.png">
+<meta property="article:published_time" content="2020-09-12T13:47:46.000Z">
+<meta property="article:modified_time" content="2022-07-31T07:28:19.136Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/AI/BehaviorTreeHierachy.png">
+
+
+<link rel="canonical" href="http://example.com/2020/09/12/%E8%A1%8C%E4%B8%BA%E6%A0%91-Unity/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2020/09/12/%E8%A1%8C%E4%B8%BA%E6%A0%91-Unity/","path":"2020/09/12/行为树-Unity/","title":"行为树-Unity"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>行为树-Unity | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E6%A0%91"><span class="nav-number">1.1.</span> <span class="nav-text">行为树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E6%A0%91%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.1.</span> <span class="nav-text">行为树介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">节点分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">节点状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E9%80%89%E6%8B%A9"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">节点选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E6%A0%91%E6%9B%B4%E6%96%B0"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">行为树更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E6%A0%91%E4%B8%AD%E6%96%AD"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">行为树中断</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E8%A1%8C%E4%B8%BA%E6%A0%91"><span class="nav-number">1.1.2.</span> <span class="nav-text">为什么使用行为树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E6%A0%91%E5%AE%9E%E6%88%98"><span class="nav-number">1.1.3.</span> <span class="nav-text">行为树实战</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">数据管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">节点编辑器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E6%A0%91%E6%A1%86%E6%9E%B6"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">行为树框架</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E6%A0%91%E6%89%93%E6%96%AD"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">行为树打断</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/12/%E8%A1%8C%E4%B8%BA%E6%A0%91-Unity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="行为树-Unity | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          行为树-Unity
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-09-12 21:47:46" itemprop="dateCreated datePublished" datetime="2020-09-12T21:47:46+08:00">2020-09-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 15:28:19" itemprop="dateModified" datetime="2022-07-31T15:28:19+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本章节博客是在项目需求设计支持Lua AI系统的前提下，驱动深入学习行为树设计实现。关于AI的相关基础概念学习可以参考:<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/10/14/Artificial-Inteligence-Study/#Programming_Game_AI_by_Example">Programming Game AI by Example</a>。而本章节的重点就是行为树，最终目的是实现一份Unity里能够支持项目级使用的支持Lua测使用AI的行为树框架设计。源代码考虑到公司正在使用所以暂时不放源码，大家可以参考设计思路自行实现。</p>
+<h2 id="行为树"><a href="#行为树" class="headerlink" title="行为树"></a>行为树</h2><h3 id="行为树介绍"><a href="#行为树介绍" class="headerlink" title="行为树介绍"></a>行为树介绍</h3><p>行为树首先要知道的一点，是一颗树形结构，树里包含控制决策走向的控制节点和负责展示表现的叶子结点。</p>
+<p>行为树抽象一个角色的简单AI角色逻辑如下：<br><img src="/img/AI/BehaviorTreeHierachy.png" alt="BehaviorTreeHierachy"></p>
+<p>优点：</p>
+<ol>
+<li>可视化决策逻辑</li>
+<li>可复用控制节点</li>
+<li>逻辑和实现低耦合(叶子结点才是与上层逻辑挂钩的)</li>
+</ol>
+<h4 id="节点分类"><a href="#节点分类" class="headerlink" title="节点分类"></a>节点分类</h4><p>从设计上来说节点功能划分为两类：</p>
+<ol>
+<li>决策节点(决定行为树走向的非叶子节点)</li>
+<li>行为节点(叶子节点决定最后的行为表现)</li>
+</ol>
+<p>决策节点分类：</p>
+<ol>
+<li>组合节点(序列节点(相当于and)、选择节点(相当于or)、并行节点(相当于for循环)等)</li>
+<li>装饰节点(可以作为某种节点的一种额外的附加条件，如允许次数限制，时间限制，错误处理等。Note:<strong>装饰节点只有一个子节点</strong>)</li>
+</ol>
+<p>行为节点分类：</p>
+<ol>
+<li>条件节点(控制节点结果)</li>
+<li>动作节点(实际的行为表现)</li>
+</ol>
+<h4 id="节点状态"><a href="#节点状态" class="headerlink" title="节点状态"></a>节点状态</h4><p>所有的节点都有三种状态：</p>
+<ol>
+<li>运行中(Running)</li>
+<li>运行完毕(Success &#x2F; Failed)</li>
+<li>无效(Invalide)</li>
+</ol>
+<p>正是通过上面的三种状态来实现行为树的行为决策的(所有节点都有返回状态)</p>
+<h4 id="节点选择"><a href="#节点选择" class="headerlink" title="节点选择"></a>节点选择</h4><p>决策控制选择节点时需要有依据，这里的依据可以看做是选择某个节点的一个前提条件(Precondition)，前提可以让我们快速判定分支避免不必要的子节点判定。控制节点相当于默认返回True，叶子节点可以作为选择节点的依据。</p>
+<p>关于节点选择更多的优化(e.g. 1. 带优先级的选择 2. 带权值的选择……)参考：</p>
+<p><a target="_blank" rel="noopener" href="http://www.aisharing.com/archives/99">行为树（Behavior Tree）实践（2）– 进一步的讨论</a></p>
+<p><strong>Note:</strong><br><strong>这里考虑到前置条件等价于组合节点的第一个节点设置条件节点，所以最终实战实现里没有实现前置条件(Precondition)</strong></p>
+<h4 id="行为树更新"><a href="#行为树更新" class="headerlink" title="行为树更新"></a>行为树更新</h4><p>行为树更新方案：<br>2. <strong>每次从上次运行的节点运行(打断时从根节点重新运行)</strong></p>
+<h4 id="行为树中断"><a href="#行为树中断" class="headerlink" title="行为树中断"></a>行为树中断</h4><p>前面我们已经选择了方案2，这里就要考虑一下如何实现行为打断了。</p>
+<p>从前面可以看出行为树节点是有Running状态的，也就是说只要满足子节点的层层条件后，可以持续执行一段时间(比如寻找目标地点寻路过去这段时间都是Running)。</p>
+<p>试想一下游戏过程中所有的条件数据都是在实时变化的，执行寻找目标地点的条件可以在任何时候出现条件不满足的情况，那么我们如何打断正在执行的Running节点，让行为树判定执行一条符合条件的行为分支了？</p>
+<p>通过了解，BehaviorDesigner里存在4中类型的中断：</p>
+<ol>
+<li>None</li>
+<li>Self</li>
+<li>Lower Priority</li>
+<li>Both</li>
+</ol>
+<p>详情参考:<a target="_blank" rel="noopener" href="https://blog.csdn.net/FireworksFlower/article/details/99655101">行为树 中断的理解</a></p>
+<p>核心都是通过标识决策节点的打断类型以及配合设置相应条件节点来实现额外的条件判定，从而实现其他子节点运行时也可以动态判定其他节点条件来实现打断运行节点。</p>
+<p>BehaviorDesigner节点有抽象出节点优先级概念(大概就是树形结构的层级顺序优先级)。</p>
+<p>这里只是为了实现一个简易版的行为树，所以就不实现那么复杂的打断机制了。</p>
+<p>方案：<br><strong>行为树运行时记录运行时跑过的需要重新评估的节点的运行结果状态(现阶段主要是指条件节点)，每一次从根节点运行时都判定需要重新评估的节点运行状态是否有变化，有变化表示条件有变行为树需要打断执行。</strong></p>
+<h3 id="为什么使用行为树"><a href="#为什么使用行为树" class="headerlink" title="为什么使用行为树"></a>为什么使用行为树</h3><p>从<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/10/14/Artificial-Inteligence-Study/#Programming_Game_AI_by_Example">Programming Game AI by Example</a>的介绍里可以看到相比状态机(FSM)行为树有以下几个好处:</p>
+<ol>
+<li>使用行为树解决了状态机(FSM)过于复杂后维护成本高不利于扩展的问题。</li>
+<li>行为树决策节点重用性高</li>
+<li>行为树可视化编辑器能高效的查看行为树执行情况</li>
+</ol>
+<h3 id="行为树实战"><a href="#行为树实战" class="headerlink" title="行为树实战"></a>行为树实战</h3><p>目标：</p>
+<ol>
+<li>实现一套可用于项目级别使用的支持Lua版编写AI的Unity行为树(深入理解行为树的原理和实现)</li>
+</ol>
+<p>设计：</p>
+<ol>
+<li>使用黑板模式作为单颗行为树的数据中心解决方案</li>
+<li>使用Unity原生API实现行为树节点编辑器，支持高效方便的行为树编辑导出调试工具</li>
+<li>使用Json(至于性能问题未来可选择高效的Json库，这里主要看中Json的可读性)作为行为树数据序列化反序列化方案</li>
+<li>使用C#开发一套兼容CS和Lua的行为树框架(方便未来直接用于作为CS测的行为树解决方案)，兼容Lua的核心思想是参数由string序列化，行为树节点反序列化构建时自行解析。</li>
+<li>支持暂停，打断以及加载不同行为树Json的行为树框架</li>
+<li>支持条件节点状态变化级别的行为树打断设计</li>
+</ol>
+<h4 id="数据管理"><a href="#数据管理" class="headerlink" title="数据管理"></a>数据管理</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/KillerAery/p/10054558.html">黑板模式</a></p>
+<p>可以简单的理解成一个共享数据的地方，核心设计是一个K-V结构的Map容器(结合泛型的设计支持不同类型的数据访问)，通过统一的数据访问方式实现行为树统一的数据访问。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> 黑板模式，数据共享中心</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Blackboard</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 黑板数据集合中心</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="keyword">protected</span> Dictionary&lt;<span class="built_in">string</span>, IBlackboardData&gt; mBlackboardDataMap;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">Blackboard</span>()</span></span><br><span class="line">       &#123;</span><br><span class="line">           mBlackboardDataMap = <span class="keyword">new</span> Dictionary&lt;<span class="built_in">string</span>, IBlackboardData&gt;();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 添加黑板数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;data&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">AddData</span>(<span class="params"><span class="built_in">string</span> key, IBlackboardData data</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">           IBlackboardData <span class="keyword">value</span>;</span><br><span class="line">           <span class="keyword">if</span>(!mBlackboardDataMap.TryGetValue(key, <span class="keyword">out</span> <span class="keyword">value</span>))</span><br><span class="line">           &#123;</span><br><span class="line">               mBlackboardDataMap.Add(key, data);</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">else</span></span><br><span class="line">           &#123;</span><br><span class="line">               Debug.LogError(<span class="built_in">string</span>.Format(<span class="string">&quot;黑板数据里已存在Key:&#123;0&#125;的数据，添加数据失败!&quot;</span>, key));</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 移除黑板数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">RemoveData</span>(<span class="params"><span class="built_in">string</span> key</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">return</span> mBlackboardDataMap.Remove(key);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 获取指定黑板数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> T <span class="title">GetData</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="built_in">string</span> key</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">var</span> <span class="keyword">value</span> = GetBlackboardData(key);</span><br><span class="line">           <span class="keyword">if</span> (<span class="keyword">value</span> != <span class="literal">null</span>)</span><br><span class="line">           &#123;</span><br><span class="line">               <span class="keyword">return</span> (<span class="keyword">value</span> <span class="keyword">as</span> BlackboardData&lt;T&gt;).Data;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">else</span></span><br><span class="line">           &#123;</span><br><span class="line">               Debug.LogError(<span class="string">&quot;返回默认值!&quot;</span>);</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">default</span>(T);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 更新黑板数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;data&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">UpdateData</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="built_in">string</span> key, T data</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">var</span> <span class="keyword">value</span> = GetBlackboardData(key);</span><br><span class="line">           <span class="keyword">if</span>(<span class="keyword">value</span> != <span class="literal">null</span>)</span><br><span class="line">           &#123;</span><br><span class="line">               (<span class="keyword">value</span> <span class="keyword">as</span> BlackboardData&lt;T&gt;).Data = data;</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">else</span></span><br><span class="line">           &#123;</span><br><span class="line">               Debug.LogError(<span class="built_in">string</span>.Format(<span class="string">&quot;更新Key:&#123;0&#125;的数据失败!&quot;</span>, key));</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 清除黑板数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ClearData</span>()</span></span><br><span class="line">       &#123;</span><br><span class="line">           mBlackboardDataMap.Clear();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 获取黑板指定数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">private</span> IBlackboardData <span class="title">GetBlackboardData</span>(<span class="params"><span class="built_in">string</span> key</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">           IBlackboardData <span class="keyword">value</span>;</span><br><span class="line">           <span class="keyword">if</span> (!mBlackboardDataMap.TryGetValue(key, <span class="keyword">out</span> <span class="keyword">value</span>))</span><br><span class="line">           &#123;</span><br><span class="line">               Debug.LogError(<span class="built_in">string</span>.Format(<span class="string">&quot;找不到Key:&#123;0&#125;的黑板数据!&quot;</span>, key));</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">value</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> 黑板数据接口抽象</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IBlackboardData</span></span><br><span class="line">   &#123;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> 黑板数据泛型基类</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BlackboardData</span>&lt;<span class="title">T</span>&gt; : <span class="title">IBlackboardData</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="keyword">public</span> T Data</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">get</span>;</span><br><span class="line">           <span class="keyword">set</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">BlackboardData</span>(<span class="params">T data</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">           Data = data;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">#<span class="keyword">region</span> 黑板数据常用数据类型定义</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> 黑板数据整形数据</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">IntBlackboardData</span> : <span class="title">BlackboardData</span>&lt;<span class="title">int</span>&gt;</span><br><span class="line">   &#123;</span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">IntBlackboardData</span>(<span class="params"><span class="built_in">int</span> data</span>) : <span class="title">base</span>(<span class="params">data</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line">   <span class="meta">#<span class="keyword">endregion</span></span></span><br></pre></td></tr></table></figure>
+
+<p>这里具体的黑板数据类型支持通过集成BlackboardData即可，这里就不放全部代码了。</p>
+<p><strong>黑板模式这里用于实现自定义变量并支持修改和读取判定，用于实现自定义变量控制AI逻辑。</strong><br>黑板模式实现效果如下:<br><img src="/img/AI/BehaviourTree/CustomVariableNodes.png" alt="自定义变量节点"><br><img src="/img/AI/BehaviourTree/CustomVariableInspector.png" alt="自定义变量参数面板"><br><img src="/img/AI/BehaviourTree/AllCustomVariableInspector.png" alt="所有自定义变量展示面板"></p>
+<h4 id="节点编辑器"><a href="#节点编辑器" class="headerlink" title="节点编辑器"></a>节点编辑器</h4><p>关于节点编辑器，核心要了解Unity以下几个API:</p>
+<ol>
+<li>Event – UnityGUI事件响应编写接口类<br> <img src="/img/AI/BehaviourTree/GenericMenu.png" alt="节点编辑器操作响应"></li>
+<li>GUILayout.BeginArea() GUILayout.Toolbar() GUILayout.EndArea() EditorGUILayout.*** – GUI自定义面板UI显示接口<br> <img src="/img/AI/BehaviourTree/BTOperationPanel.png" alt="节点编辑器操作面板"></li>
+<li>GenericMenu – Unity编写自定义菜单的类<br> <img src="/img/AI/BehaviourTree/GenericMenu.png" alt="行为树编辑器菜单"></li>
+<li>BeginWindows() GUI.Window() EndWindows() GUI.DragWindow() – Unity编写节点窗口的类(支持拖拽的节点)<br> <img src="/img/AI/BehaviourTree/BTEditorNode.png" alt="行为树节点窗口"></li>
+<li>Handles.DrawBezier() – 绘制节点曲线(Bezier曲线)连接线的接口<br> <img src="/img/AI/BehaviourTree/BTNodeConnectLine.png" alt="行为树节点连线"></li>
+<li>JsonUtility.ToJson() JsonUtility.FromJson<T>() – Unity Json数据序列化反序列化存储<br> <img src="/img/AI/BehaviourTree/BTJsonData.png" alt="行为树序列化反序列化存储"></li>
+</ol>
+<p>结合上面几个核心类，最终实现行为树节点编辑器效果图如下:<br><img src="/img/AI/BehaviourTree/BTNodeEditor.png" alt="行为树节点编辑器效果展示"></p>
+<h4 id="行为树框架"><a href="#行为树框架" class="headerlink" title="行为树框架"></a>行为树框架</h4><p>这里考虑项目正在使用，所以不方便放出源码，通过给出行为树的UML类图设计，大家可以参考思路自行实现(因为UML比较大所以分了两张图):<br><img src="/img/AI/BehaviourTree/BehaviourTreeUML1.png" alt="行为树UML类图1"><br><img src="/img/AI/BehaviourTree/BehaviourTreeUML2.png" alt="行为树UML类图2"></p>
+<h4 id="行为树打断"><a href="#行为树打断" class="headerlink" title="行为树打断"></a>行为树打断</h4><p>这里单独谈谈行为树的打断实现，在BehaviourDesigner里行为树的打断设计相对比较复杂，详情可以参考:<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012632851/article/details/89647097">Unity3D Behavior Designer 行为树4 打断机制的实现</a></p>
+<p>而这里实现的行为树打断是一种较为简单打断方式，就是在每棵行为树重新从根节点开始执行时，记录执行过的节点以及需要重新判定的节点以及状态，在下一次从根节点运行时执行需要重新判定的节点是否有状态变化来判定是否需要打断行为树Running等执行状态。而需要打断的节点是从上一次记录的执行过的节点里执行结果为Running的才需要打断，其他状态不用打断。</p>
+<p>行为树驱动执行代码大致如下:<br>BTGraph.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 更新</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnUpdate</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (RootNode != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 根节点处于非成功和失败状态(一般来说是Running)</span></span><br><span class="line">        <span class="keyword">if</span> (!RootNode.IsTerminated)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 节点处于非运行时需要清除上一次运行数据</span></span><br><span class="line">            <span class="keyword">if</span>(!RootNode.IsRunning)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 清除上一次运行数据(比如执行过的节点和需要重新评估的节点数据)</span></span><br><span class="line">                ClearRunningDatas();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 重新评估需要重新判定的节点，看状态是否有变化</span></span><br><span class="line">            <span class="keyword">if</span> (ReevaluatedExecutedNodes())</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 重新判定节点运行结果有变化需要重置运行节点重新判定</span></span><br><span class="line">                DoAbortBehaviourTree();</span><br><span class="line">            &#125;</span><br><span class="line">            RootNode.OnUpdate();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 根节点处于成功或失败状态</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 清除上一次运行数据(比如执行过的节点和需要重新评估的节点数据)</span></span><br><span class="line">            ClearRunningDatas();</span><br><span class="line">            <span class="comment">// 重新评估需要重新判定的节点，看状态是否有变化</span></span><br><span class="line">            <span class="keyword">if</span> (ReevaluatedExecutedNodes())</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 重新判定节点运行结果有变化需要重置运行节点重新判定</span></span><br><span class="line">                DoAbortBehaviourTree();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 判定行为树单次执行完后是否需要自动重启下一次执行</span></span><br><span class="line">            <span class="keyword">if</span> (OwnerBT.RestartWhenComplete)</span><br><span class="line">            &#123;</span><br><span class="line">                RootNode.OnUpdate();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 执行终止行为树</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DoAbortBehaviourTree</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">&quot;DoAbortBehaviourTree()&quot;</span>);</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> executingnode <span class="keyword">in</span> ExecutingNodesMap)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 只有执行中的节点需要打断(避免执行完成的节点二次打断)</span></span><br><span class="line">        <span class="keyword">if</span>(executingnode.Value.IsRunning)</span><br><span class="line">        &#123;</span><br><span class="line">            executingnode.Value.OnConditionalAbort();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ClearRunningDatas();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而动态打断机制是通过指定特定节点(比如当前博主只支持条件节点)是否支持参与重新打断判定实现的。<br>BTBaseConditionNode.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 是否可被重新评估</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">CanReevaluate</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> AbortType == EAbortType.Self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>公司项目没有继续做了，项目开源了:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/BehaviourTreeForLua">BehaviourTreeForLua</a></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="http://www.aisharing.com/archives/90">行为树（Behavior Tree）实践（1）– 基本概念</a><br><a target="_blank" rel="noopener" href="http://www.aisharing.com/archives/99">行为树（Behavior Tree）实践（2）– 进一步的讨论</a><br><a target="_blank" rel="noopener" href="http://www.aisharing.com/archives/517">用800行代码做个行为树（Behavior Tree）的库（1）</a><br><a target="_blank" rel="noopener" href="http://www.aisharing.com/archives/522">用800行代码做个行为树（Behavior Tree）的库（2）</a><br><a target="_blank" rel="noopener" href="https://www.veinin.com/2018/08/07/ai_behavior_tree_design_and_implementation_01/">AI 行为树设计与实现-理论篇</a><br><a target="_blank" rel="noopener" href="https://domicat.me/2017/03/behavior-tree-1/">行为树及其实现</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_31850729/article/details/69944324">unity 行为树 简单实现</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/fg5823820/article/details/8750606">基于Unity行为树设计与实现的尝试</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/KillerAery/p/10054558.html">游戏设计模式——黑板模式</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012632851/article/details/89647097">Unity3D Behavior Designer 行为树4 打断机制的实现</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/06/08/Unity%E6%BB%9A%E5%8A%A8%E5%88%97%E8%A1%A8/" rel="prev" title="Unity滚动列表">
+                  <i class="fa fa-angle-left"></i> Unity滚动列表
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/01/21/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" rel="next" title="碰撞检测">
+                  碰撞检测 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

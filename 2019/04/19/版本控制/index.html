@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言本篇文章是为了记录版本控制相关知识，着重学习Git的使用。 版本控制在项目开发过程中，对项目代码进行维护保存，对于多个人协同工作记录下每一次的变更记录，方便日后查看以及恢复。主流的版本管理工具比如Tortoise SVN,P4,Git等。 集中式 vs 分布式这里不对版本管理工具做太深入的学习讲解。参见：集中式VS分布式 分布式工作流：  集中式工作流:  Note：Tortoise SVN是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="版本控制">
+<meta property="og:url" content="http://example.com/2019/04/19/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本篇文章是为了记录版本控制相关知识，着重学习Git的使用。 版本控制在项目开发过程中，对项目代码进行维护保存，对于多个人协同工作记录下每一次的变更记录，方便日后查看以及恢复。主流的版本管理工具比如Tortoise SVN,P4,Git等。 集中式 vs 分布式这里不对版本管理工具做太深入的学习讲解。参见：集中式VS分布式 分布式工作流：  集中式工作流:  Note：Tortoise SVN是">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/VersionControl/%E5%88%86%E5%B8%83%E5%BC%8F.png">
+<meta property="og:image" content="http://example.com/img/VersionControl/%E9%9B%86%E4%B8%AD%E5%BC%8F.png">
+<meta property="og:image" content="http://example.com/img/Unity/VisalSVNCreateRepository.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/VisualSVNUserManager.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/VisualSVNGroupManager.PNG">
+<meta property="og:image" content="http://example.com/img/VersionControl/GitBashUI.png">
+<meta property="og:image" content="http://example.com/img/VersionControl/GitExtensions.png">
+<meta property="og:image" content="http://example.com/img/VersionControl/GitExtensionCommandsUI.png">
+<meta property="og:image" content="http://example.com/img/VersionControl/GitWorkFlow.png">
+<meta property="og:image" content="http://example.com/img/VersionControl/GitAdd.png">
+<meta property="og:image" content="http://example.com/img/VersionControl/GitCommit.png">
+<meta property="article:published_time" content="2019-04-19T04:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-31T13:24:17.281Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="VersionControl">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/VersionControl/%E5%88%86%E5%B8%83%E5%BC%8F.png">
+
+
+<link rel="canonical" href="http://example.com/2019/04/19/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2019/04/19/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/","path":"2019/04/19/版本控制/","title":"版本控制"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>版本控制 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6"><span class="nav-number">1.1.</span> <span class="nav-text">版本控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E4%B8%AD%E5%BC%8F-vs-%E5%88%86%E5%B8%83%E5%BC%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">集中式 vs 分布式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Tortoise-SVN"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Tortoise SVN</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Visual-SVN-Server"><span class="nav-number">1.1.1.1.1.</span> <span class="nav-text">Visual SVN Server</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Tortoise-SVN-1"><span class="nav-number">1.1.1.1.2.</span> <span class="nav-text">Tortoise SVN</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SVN%E5%AE%9E%E6%88%98%E5%AE%9E%E7%94%A8"><span class="nav-number">1.1.1.1.3.</span> <span class="nav-text">SVN实战实用</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%90%AD%E5%BB%BASVN-Server"><span class="nav-number">1.1.1.1.3.1.</span> <span class="nav-text">搭建SVN Server</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#SVN%E5%85%B8%E5%9E%8B%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.1.1.3.2.</span> <span class="nav-text">SVN典型目录结构</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git"><span class="nav-number">1.1.2.</span> <span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Git%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Git安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git-GUI"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Git GUI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git%E4%BC%98%E5%8A%BF"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">Git优势</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git%E7%9F%A5%E8%AF%86"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Git知识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git%E5%AE%9E%E6%88%98"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">Git实战</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git%E5%B0%8F%E7%9F%A5%E8%AF%86"><span class="nav-number">1.1.2.6.</span> <span class="nav-text">Git小知识</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/04/19/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="版本控制 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          版本控制
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-19 12:00:00" itemprop="dateCreated datePublished" datetime="2019-04-19T12:00:00+08:00">2019-04-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 21:24:17" itemprop="dateModified" datetime="2022-07-31T21:24:17+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Other/" itemprop="url" rel="index"><span itemprop="name">Other</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇文章是为了记录版本控制相关知识，着重学习Git的使用。</p>
+<h2 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h2><p>在项目开发过程中，对项目代码进行维护保存，对于多个人协同工作记录下每一次的变更记录，方便日后查看以及恢复。<br>主流的版本管理工具比如Tortoise SVN,P4,Git等。</p>
+<h3 id="集中式-vs-分布式"><a href="#集中式-vs-分布式" class="headerlink" title="集中式 vs 分布式"></a>集中式 vs 分布式</h3><p>这里不对版本管理工具做太深入的学习讲解。<br>参见：<br><a target="_blank" rel="noopener" href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001374027586935cf69c53637d8458c9aec27dd546a6cd6000">集中式VS分布式</a></p>
+<p>分布式工作流：</p>
+<p><img src="/img/VersionControl/%E5%88%86%E5%B8%83%E5%BC%8F.png" alt="分布式"></p>
+<p>集中式工作流:</p>
+<p><img src="/img/VersionControl/%E9%9B%86%E4%B8%AD%E5%BC%8F.png" alt="集中式"></p>
+<p>Note：<br>Tortoise SVN是集中式。</p>
+<p>Git是分布式。</p>
+<h4 id="Tortoise-SVN"><a href="#Tortoise-SVN" class="headerlink" title="Tortoise SVN"></a>Tortoise SVN</h4><h5 id="Visual-SVN-Server"><a href="#Visual-SVN-Server" class="headerlink" title="Visual SVN Server"></a>Visual SVN Server</h5><p><a target="_blank" rel="noopener" href="https://www.visualsvn.com/server/">VisualSVN Server allows you to easily install and manage a fully-functional Subversion server on the Windows platform.</a>(VisualSVN Server是一个在WIndows上帮助我们快速搭建Subversion server的工具。)</p>
+<h5 id="Tortoise-SVN-1"><a href="#Tortoise-SVN-1" class="headerlink" title="Tortoise SVN"></a>Tortoise SVN</h5><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/TortoiseSVN">TortoiseSVN是一个Windows平台下的Subversion用户端软件.</a></p>
+<p>前者是针对Server端，后者是针对Client端。<br>两者结合使用就能实现版本管理控制。</p>
+<h5 id="SVN实战实用"><a href="#SVN实战实用" class="headerlink" title="SVN实战实用"></a>SVN实战实用</h5><h6 id="搭建SVN-Server"><a href="#搭建SVN-Server" class="headerlink" title="搭建SVN Server"></a>搭建SVN Server</h6><p>详细设置步骤参考:<br><a target="_blank" rel="noopener" href="https://www.visualsvn.com/server/getting-started/">VISUALSVN SERVER &#x2F;&#x2F; Getting started</a></p>
+<p><a target="_blank" rel="noopener" href="https://superuser.com/questions/644278/how-to-use-visualsvn-server-and-tortoisesvn-client">How to use VisualSVN Server and TortoiseSVN client</a></p>
+<p>个人工作的话，可以只搭建本地服务器。(未测试Jenkins是否能使用本地服务器)<br>为了多人共享工作(打包IOS需要Mac)，我们需要搭建一个SVN服务器用于存放我们的原始文件。<br>以下以多人共享工作，搭建SVN服务器为例:</p>
+<ol>
+<li>下载安装Visual SVN</li>
+<li>创建SVN Repository<br><img src="/img/Unity/VisalSVNCreateRepository.PNG" alt="VisalSVNCreateRepository"></li>
+<li>设置用户成员访问读写权限<br><img src="/img/Unity/VisualSVNUserManager.PNG" alt="VisualSVNUserManager"><br><img src="/img/Unity/VisualSVNGroupManager.PNG" alt="VisualSVNGroupManager"></li>
+<li>Check Out刚才创建的Repository</li>
+</ol>
+<p>Note:</p>
+<p>Mac上可以试试<a target="_blank" rel="noopener" href="http://www.smartsvn.com/download">SmartSVN</a></p>
+<h6 id="SVN典型目录结构"><a href="#SVN典型目录结构" class="headerlink" title="SVN典型目录结构"></a>SVN典型目录结构</h6><p>SVN</p>
+<ul>
+<li>&#x2F;trunk(主干，用于所有人开发)</li>
+<li>&#x2F;branches(分支，用于存放多个分支副本(比如开发过程中为了保存特定节点分出来的))</li>
+<li>&#x2F;tags(存放标记副本)</li>
+</ul>
+<h3 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h3><p>首先要记住的是Git是分布式的，和Tortoise SVN(集中式)不一样。</p>
+<h4 id="Git安装"><a href="#Git安装" class="headerlink" title="Git安装"></a>Git安装</h4><p><a target="_blank" rel="noopener" href="https://git-scm.com/downloads">Git download</a></p>
+<p>安装Git没太多说的，直接下载安装即可。</p>
+<p>安装好后就能直接使用Git了，下图是安装后通过Git Bash打开的界面:</p>
+<p><img src="/img/VersionControl/GitBashUI.png" alt="GitBashUI"></p>
+<h4 id="Git-GUI"><a href="#Git-GUI" class="headerlink" title="Git GUI"></a>Git GUI</h4><p>不习惯命令行的话，官方也有很多插件支持可视化Git操作。</p>
+<p><a target="_blank" rel="noopener" href="https://git-scm.com/downloads/guis">Git GUI</a></p>
+<p>这里本人用的是<a target="_blank" rel="noopener" href="https://gitextensions.github.io/">GitExtensions</a></p>
+<p><img src="/img/VersionControl/GitExtensions.png" alt="GitExtensions"></p>
+<p>GitExtension UI操作:</p>
+<p><img src="/img/VersionControl/GitExtensionCommandsUI.png" alt="GitExtensionCommandsUI"></p>
+<p>Note:<br>结合本人使用体验，TortoiseSVN相比GitExtension更方便也更不容易出问题(比如选取提交数量过多GitExtension卡死。TortoiseSVN操作和SVN操作方式类似，熟悉SVN的更容易上手和理解。)</p>
+<h4 id="Git优势"><a href="#Git优势" class="headerlink" title="Git优势"></a>Git优势</h4><ol>
+<li><p>可离线操作(分布式，可以离线操作。 SVN集中式必须联网和服务器通信)</p>
+</li>
+<li><p>本地备份不需要本地存在多份实体文件(有抽象的分支概念)</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://git-scm.com/about/small-and-fast">Small and Fast</a>(小而快)</p>
+</li>
+<li><p>开源</p>
+</li>
+</ol>
+<h4 id="Git知识"><a href="#Git知识" class="headerlink" title="Git知识"></a>Git知识</h4><p>下面的知识主要参考:</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_22337877/article/details/73249912">Git 工作区和缓存区</a></p>
+<ol>
+<li>工作区 – 简单来说，电脑中能看到的目录，就是一个工作区。</li>
+<li>缓存区 – 在真正提交改动前会存放的地方</li>
+<li>版本库(分本地和远程版本库) – 工作区中有一个隐藏目录.git，这个不算工作区，而是Git的版本库。</li>
+</ol>
+<p>参考下面这张图详细理解:</p>
+<p><img src="/img/VersionControl/GitWorkFlow.png" alt="GitWorkFlow"></p>
+<p>更多细节学习了解参考:</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hsany330/article/details/8668748">Git三区（工作区，缓存区，仓库）的互操作</a></p>
+<h4 id="Git实战"><a href="#Git实战" class="headerlink" title="Git实战"></a>Git实战</h4><p><strong>主分支最新+没有冲突提交</strong></p>
+<ol>
+<li><p>git add</p>
+<p>把文件添加进去，实际上是把文件修改添加到暂存区</p>
+</li>
+</ol>
+<p><img src="/img/VersionControl/GitAdd.png" alt="GitAdd"></p>
+<ol start="2">
+<li><p>git commit</p>
+<p>提交更改，实际上就是把暂存区的所有内容提交到当前分支。<strong>git commit后还只是提交到自己的分支上，还没有推送到真正的主干分支上。</strong></p>
+</li>
+</ol>
+<p><img src="/img/VersionControl/GitCommit.png" alt="GitCommit"></p>
+<ol start="3">
+<li><p>git push origin master</p>
+<p><strong>git push才是把个人分支的提交推送到主干分支上</strong></p>
+</li>
+</ol>
+<p><strong>落后更新+冲突提交</strong></p>
+<ol>
+<li><p>git pull</p>
+<p>落后分支的话，我们想要提交东西到主分支我们需要先拉去主分支内容</p>
+</li>
+<li><p>git stash</p>
+<p>缓存冲突文件修改，确保能git pull成功</p>
+</li>
+<li><p>git pull</p>
+<p>确保正确拉倒主分支</p>
+</li>
+<li><p>git commit + 解决冲突</p>
+<p>解决冲突，提交缓存区文件倒本地分支</p>
+</li>
+<li><p>git push</p>
+<p>正式推送到主干分支上</p>
+</li>
+</ol>
+<p>从上面可以看出，要想推送最新修改如果落后或者与主分支修改文件有冲突，我们需要先缓存本地修改到缓存区，然后拉取主干分支之后在进行提交推送修改文件流程。</p>
+<p><strong>提交过滤指定文件或文件夹</strong></p>
+<p>git提供了一个.gitignore文件，方便我们编写需要过滤的规则：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">#</span> 文件以及目录过滤</span><br><span class="line"><span class="params">#</span> 过滤library目录</span><br><span class="line">Library/</span><br><span class="line"><span class="params">#</span> 过滤.vs目录</span><br><span class="line">.vs/</span><br><span class="line"><span class="params">#</span> 过滤Temp目录</span><br><span class="line">Temp/</span><br><span class="line"><span class="params">#</span> 过滤cs工程文件</span><br><span class="line">*.csproj</span><br><span class="line">*.sln</span><br></pre></td></tr></table></figure>
+
+<p>详细参考：</p>
+<p><a target="_blank" rel="noopener" href="https://git-scm.com/docs/gitignore">gitignore</a></p>
+<h4 id="Git小知识"><a href="#Git小知识" class="headerlink" title="Git小知识"></a>Git小知识</h4><p>待添加…..</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://www.visualsvn.com/server/">Visual SVN</a><br><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001374027586935cf69c53637d8458c9aec27dd546a6cd6000">集中式VS分布式</a><br><a target="_blank" rel="noopener" href="https://git-scm.com/about">Git Instroduction</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_22337877/article/details/73249912">Git 工作区和缓存区</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/VersionControl/" rel="tag"># VersionControl</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/10/24/AssetBundle%E8%B5%84%E6%BA%90%E6%89%93%E5%8C%85%E5%8A%A0%E8%BD%BD%E7%AE%A1%E7%90%86%E5%AD%A6%E4%B9%A0/" rel="prev" title="AssetBundle资源打包加载管理">
+                  <i class="fa fa-angle-left"></i> AssetBundle资源打包加载管理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/04/25/%E4%BC%98%E5%8C%96/" rel="next" title="优化篇">
+                  优化篇 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言本章节是为了记录Lua开发过程中，关于EmmyLua插件的CSharp注释生成工具的编写和使用介绍。 项目需求需要用到Lua作为开发语言，众所周知Lua是弱类型解析执行语言，所以即使在IDE的加持下，开发和协同效率都会比较低。从而为了提高Lua开发效率，EmmyLua这个第三方插件诞生了，他提供了Lua调试以及Lua注释编写解析后类型推断提示等功能。 正是因为EmmyLua的类型推断是基于我们">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EmmyLua注释生成工具">
+<meta property="og:url" content="http://example.com/2023/03/10/EmmyLua%E6%B3%A8%E9%87%8A%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本章节是为了记录Lua开发过程中，关于EmmyLua插件的CSharp注释生成工具的编写和使用介绍。 项目需求需要用到Lua作为开发语言，众所周知Lua是弱类型解析执行语言，所以即使在IDE的加持下，开发和协同效率都会比较低。从而为了提高Lua开发效率，EmmyLua这个第三方插件诞生了，他提供了Lua调试以及Lua注释编写解析后类型推断提示等功能。 正是因为EmmyLua的类型推断是基于我们">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Lua/EmmyLuaGenerator/EmmyLuaGeneratorEntry.PNG">
+<meta property="og:image" content="http://example.com/img/Lua/EmmyLuaGenerator/EmmyLuaGeneratorPreview.PNG">
+<meta property="og:image" content="http://example.com/img/Lua/EmmyLuaGenerator/CodeExportSetting.PNG">
+<meta property="og:image" content="http://example.com/img/Lua/EmmyLuaGenerator/GenerateEmmyLuaAnnotation.PNG">
+<meta property="article:published_time" content="2023-03-09T16:00:30.000Z">
+<meta property="article:modified_time" content="2023-03-09T17:07:11.719Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Other">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Lua/EmmyLuaGenerator/EmmyLuaGeneratorEntry.PNG">
+
+
+<link rel="canonical" href="http://example.com/2023/03/10/EmmyLua%E6%B3%A8%E9%87%8A%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/03/10/EmmyLua%E6%B3%A8%E9%87%8A%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7/","path":"2023/03/10/EmmyLua注释生成工具/","title":"EmmyLua注释生成工具"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>EmmyLua注释生成工具 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9C%80%E6%B1%82"><span class="nav-number">1.1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.2.</span> <span class="nav-text">设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%88%98%E4%BD%BF%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">实战使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub"><span class="nav-number">2.1.</span> <span class="nav-text">GitHub</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/10/EmmyLua%E6%B3%A8%E9%87%8A%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="EmmyLua注释生成工具 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          EmmyLua注释生成工具
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2023-03-10 00:00:30 / Modified: 01:07:11" itemprop="dateCreated datePublished" datetime="2023-03-10T00:00:30+08:00">2023-03-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Lua/" itemprop="url" rel="index"><span itemprop="name">Lua</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本章节是为了记录Lua开发过程中，关于EmmyLua插件的CSharp注释生成工具的编写和使用介绍。</p>
+<p>项目需求需要用到Lua作为开发语言，众所周知Lua是弱类型解析执行语言，所以即使在IDE的加持下，开发和协同效率都会比较低。从而为了提高Lua开发效率，<a target="_blank" rel="noopener" href="https://github.com/EmmyLua">EmmyLua</a>这个第三方插件诞生了，他提供了<strong>Lua调试</strong>以及<strong>Lua注释编写解析后类型推断提示</strong>等功能。</p>
+<p>正是因为EmmyLua的类型推断是基于我们的代码注释而来的，所以我们在Lua开发过程中，想要快速得到CSharp等代码类的访问提示，那我们就需要生成对应的CS的Lua注释代码，<strong>此工具正是为了生成项目里CSharp代码的EmmyLua注释而生的。</strong></p>
+<ul>
+<li><p>目标</p>
+<p><strong>高度可配置化的CSharp代码EmmyLua注释生成工具</strong></p>
+</li>
+</ul>
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>自定义配置需求:</p>
+<ol>
+<li><strong>支持配置不同导出类型输出目录</strong></li>
+<li><strong>支持配置指定Assemble不参与导出(加入黑名单)</strong></li>
+<li><strong>支持配置指定Assemble的导出分类</strong>**</li>
+<li><strong>支持配置指定Assemble，Namespace，Type是否导出EmmyLua注释</strong></li>
+<li><strong>支持勾选一键嵌套勾选导出设置</strong></li>
+</ol>
+<p>CSharp导出需求:</p>
+<ol>
+<li><strong>类(e.g. 普通类, 抽象类)</strong></li>
+<li><strong>接口</strong></li>
+<li><strong>值类型(含枚举)</strong></li>
+<li><strong>成员，属性，方法，event</strong></li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>不支持匿名类，泛型类，代码生成类和代码生成类内部类</strong></li>
+<li><strong>不支持泛型成员，泛型属性，泛型方法，泛型</strong>*</li>
+</ol>
+<h2 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h2><p><strong>基于项目CS代码，通过反射获取访问所有Assemble以及相关类型信息数据统计读取，结合Unity Editor窗口工具实现可视化自定义勾选类型注释导出的高度可配置工具。</strong></p>
+<p>知识点主要是反射和简单的EditorGUI编写。</p>
+<p>设计代码就不详细讲解了，源代码链接:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/EmmyLuaGenerator">EmmyLuaGenerator</a></p>
+<p>这里主要提一下在判定哪些类型需要参与导出时的一些核心类型判定代码：</p>
+<ul>
+<li><p><strong>判定是否是委托</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 委托类型</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Type DelegateType = <span class="keyword">typeof</span>(Delegate);</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 指定类型是否是委托相关类型</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;type&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">IsDelegateAssignableType</span>(<span class="params">Type type</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> DelegateType.IsAssignableFrom(type);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>判定是否是编译生成类型(e.g. 匿名类)</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 编译类型属性类型</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Type CompilerGeneratedAttributeType = <span class="keyword">typeof</span>(CompilerGeneratedAttribute);</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 指定类型是否是编译生成类型(e.g. 匿名类)</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;type&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">IsCompilerType</span>(<span class="params">Type type</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> Attribute.GetCustomAttribute(type, CompilerGeneratedAttributeType) != <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>判定是否是嵌套在编译生成类型里的类型(e.g. 匿名内部类)</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 指定类型是否是编译生成类型(e.g. 匿名类)</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;type&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">IsCompilerType</span>(<span class="params">Type type</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> Attribute.GetCustomAttribute(type, CompilerGeneratedAttributeType) != <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 指定类型是否嵌套在编译生成类型里的类型(e.g. 匿名类)</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;type&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">IsNestedCompilerType</span>(<span class="params">Type type</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!type.IsNested || type.DeclaringType == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(IsCompilerType(type.DeclaringType))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> IsNestedCompilerType(type.DeclaringType);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>判定是否是可空类型</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 是否是Nullable类型</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;type&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">IsNullableType</span>(<span class="params">Type type</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> Nullable.GetUnderlyingType(type) != <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>判定是否是数值类型</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 数值类型HashSet</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> HashSet&lt;Type&gt; NumericHashSet = <span class="keyword">new</span> HashSet&lt;Type&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">typeof</span>(Byte), <span class="keyword">typeof</span>(SByte), <span class="keyword">typeof</span>(Int16), <span class="keyword">typeof</span>(Int32), <span class="keyword">typeof</span>(Int64),</span><br><span class="line">    <span class="keyword">typeof</span>(<span class="built_in">uint</span>), <span class="keyword">typeof</span>(UInt16), <span class="keyword">typeof</span>(UInt32), <span class="keyword">typeof</span>(UInt64), <span class="keyword">typeof</span>(BigInteger),</span><br><span class="line">    <span class="keyword">typeof</span>(<span class="built_in">float</span>), <span class="keyword">typeof</span>(<span class="built_in">double</span>), <span class="keyword">typeof</span>(<span class="built_in">decimal</span>), <span class="keyword">typeof</span>(Single),</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 是否是数值类型</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;type&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">IsNumericType</span>(<span class="params">Type type</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> NumericHashSet.Contains(type);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>判定是否是Unity遗弃数据(类，成员，方法…….)</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Unity标记遗弃的成员</span></span><br><span class="line"><span class="keyword">var</span> isObsoleteField = Attribute.GetCustomAttribute(fieldInfo, ObsoleteAttributeType);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="实战使用"><a href="#实战使用" class="headerlink" title="实战使用"></a>实战使用</h2><ul>
+<li><p>工具入口</p>
+<p><img src="/img/Lua/EmmyLuaGenerator/EmmyLuaGeneratorEntry.PNG" alt="EmmyLuaGeneratorEntry"></p>
+</li>
+<li><p>EmmyLua注释生成器编辑窗口</p>
+<p><img src="/img/Lua/EmmyLuaGenerator/EmmyLuaGeneratorPreview.PNG" alt="EmmyLuaGeneratorPreview"></p>
+</li>
+<li><p>自定义导出Assemble，Namespace和Class勾选</p>
+<p><img src="/img/Lua/EmmyLuaGenerator/CodeExportSetting.PNG" alt="CustomExportSetting"></p>
+</li>
+<li><p>生成EmmyLua注释</p>
+<p><img src="/img/Lua/EmmyLuaGenerator/GenerateEmmyLuaAnnotation.PNG" alt="GenerateEmmyLuaAnnotation"></p>
+</li>
+</ul>
+<p>从上面可以看到，我把项目代码的导出分类，归为5类:</p>
+<ol>
+<li>Unity代码</li>
+<li>DotNet代码</li>
+<li>项目代码</li>
+<li>FGUI代码</li>
+<li>第三方代码</li>
+</ol>
+<p>通过给每一个Assemble配置导出分类可以实现指定Assemble的EmmyLua注释导出到指定输出目录。</p>
+<p>最后让我们来看看导出的EmmyLua代码:</p>
+<ul>
+<li><p>项目<strong>PathUtilities</strong>注释生成</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">---@class CS.PathUtilities : CS.System.Object</span><br><span class="line">local PathUtilities = &#123;&#125;</span><br><span class="line">---@param path <span class="built_in">string</span> @</span><br><span class="line">---@return <span class="built_in">string</span> @</span><br><span class="line">function PathUtilities.GetRegularPath(path) end</span><br><span class="line"></span><br><span class="line">---@param path <span class="built_in">string</span> @</span><br><span class="line">---@return <span class="built_in">string</span> @</span><br><span class="line">function PathUtilities.GetFolderName(path) end</span><br><span class="line"></span><br><span class="line">---@param folderFullPath <span class="built_in">string</span> @</span><br><span class="line">---@return <span class="built_in">string</span> @</span><br><span class="line">function PathUtilities.GetAssetsRelativeFolderPath(folderFullPath) end</span><br><span class="line"></span><br><span class="line">---@return <span class="built_in">string</span> @</span><br><span class="line">function PathUtilities.GetProjectPath() end</span><br><span class="line"></span><br><span class="line">---@return <span class="built_in">string</span> @</span><br><span class="line">function PathUtilities.GetProjectFullPath() end</span><br><span class="line"></span><br><span class="line">---@param folderfullpath <span class="built_in">string</span> @</span><br><span class="line">---@return <span class="built_in">string</span> @</span><br><span class="line">function PathUtilities.GetProjectRelativeFolderPath(folderfullpath) end</span><br><span class="line"></span><br><span class="line">---@param assetpath <span class="built_in">string</span> @</span><br><span class="line">---@return <span class="built_in">string</span> @</span><br><span class="line">function PathUtilities.GetAssetFullPath(assetpath) end</span><br><span class="line"></span><br><span class="line">---@param path <span class="built_in">string</span> @</span><br><span class="line">---@param postFix <span class="built_in">string</span> @</span><br><span class="line">---@return <span class="built_in">string</span> @</span><br><span class="line">function PathUtilities.GetPathWithoutPostFix(path, postFix) end</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> PathUtilities</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>C#的<strong>System.Object</strong>注释生成</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">---@class CS.System.Object</span><br><span class="line">local Object = &#123;&#125;</span><br><span class="line">---@param obj CS.System.Object @</span><br><span class="line">---@return boolean @</span><br><span class="line">function Object:Equals(obj) end</span><br><span class="line"></span><br><span class="line">---@return number @</span><br><span class="line">function Object:GetHashCode() end</span><br><span class="line"></span><br><span class="line">---@return CS.System.Type @</span><br><span class="line">function Object:GetType() end</span><br><span class="line"></span><br><span class="line">---@return <span class="built_in">string</span> @</span><br><span class="line">function Object:ToString() end</span><br><span class="line"></span><br><span class="line">---@param objA CS.System.Object @</span><br><span class="line">---@param objB CS.System.Object @</span><br><span class="line">---@return boolean @</span><br><span class="line">function Object.Equals(objA, objB) end</span><br><span class="line"></span><br><span class="line">---@param objA CS.System.Object @</span><br><span class="line">---@param objB CS.System.Object @</span><br><span class="line">---@return boolean @</span><br><span class="line">function Object.ReferenceEquals(objA, objB) end</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> Object</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Unity的<strong>UnityEngine.Object</strong>注释生成</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">---@class CS.UnityEngine.Object : CS.System.Object</span><br><span class="line">local Object = &#123;&#125;</span><br><span class="line">---@field <span class="keyword">public</span> name <span class="built_in">string</span> @</span><br><span class="line">---@field <span class="keyword">public</span> hideFlags number @</span><br><span class="line">---@return number @</span><br><span class="line">function Object:GetInstanceID() end</span><br><span class="line"></span><br><span class="line">---@return number @</span><br><span class="line">function Object:GetHashCode() end</span><br><span class="line"></span><br><span class="line">---@param other CS.System.Object @</span><br><span class="line">---@return boolean @</span><br><span class="line">function Object:Equals(other) end</span><br><span class="line"></span><br><span class="line">---@return <span class="built_in">string</span> @</span><br><span class="line">function Object:ToString() end</span><br><span class="line"></span><br><span class="line">---@param original CS.UnityEngine.Object @</span><br><span class="line">---@param position CS.UnityEngine.Vector3 @</span><br><span class="line">---@param rotation CS.UnityEngine.Quaternion @</span><br><span class="line">---@return CS.UnityEngine.Object @</span><br><span class="line">function Object.Instantiate(original, position, rotation) end</span><br><span class="line"></span><br><span class="line">---@param original CS.UnityEngine.Object @</span><br><span class="line">---@param position CS.UnityEngine.Vector3 @</span><br><span class="line">---@param rotation CS.UnityEngine.Quaternion @</span><br><span class="line">---@param parent CS.UnityEngine.Transform @</span><br><span class="line">---@return CS.UnityEngine.Object @</span><br><span class="line">function Object.Instantiate(original, position, rotation, parent) end</span><br><span class="line"></span><br><span class="line">---@param original CS.UnityEngine.Object @</span><br><span class="line">---@return CS.UnityEngine.Object @</span><br><span class="line">function Object.Instantiate(original) end</span><br><span class="line"></span><br><span class="line">---@param original CS.UnityEngine.Object @</span><br><span class="line">---@param parent CS.UnityEngine.Transform @</span><br><span class="line">---@return CS.UnityEngine.Object @</span><br><span class="line">function Object.Instantiate(original, parent) end</span><br><span class="line"></span><br><span class="line">---@param original CS.UnityEngine.Object @</span><br><span class="line">---@param parent CS.UnityEngine.Transform @</span><br><span class="line">---@param instantiateInWorldSpace boolean @</span><br><span class="line">---@return CS.UnityEngine.Object @</span><br><span class="line">function Object.Instantiate(original, parent, instantiateInWorldSpace) end</span><br><span class="line"></span><br><span class="line">---@param obj CS.UnityEngine.Object @</span><br><span class="line">---@param t number @</span><br><span class="line">function Object.Destroy(obj, t) end</span><br><span class="line"></span><br><span class="line">---@param obj CS.UnityEngine.Object @</span><br><span class="line">function Object.Destroy(obj) end</span><br><span class="line"></span><br><span class="line">---@param obj CS.UnityEngine.Object @</span><br><span class="line">---@param allowDestroyingAssets boolean @</span><br><span class="line">function Object.DestroyImmediate(obj, allowDestroyingAssets) end</span><br><span class="line"></span><br><span class="line">---@param obj CS.UnityEngine.Object @</span><br><span class="line">function Object.DestroyImmediate(obj) end</span><br><span class="line"></span><br><span class="line">---@param type CS.System.Type @</span><br><span class="line">---@return CS.UnityEngine.Object[] @</span><br><span class="line">function Object.FindObjectsOfType(type) end</span><br><span class="line"></span><br><span class="line">---@param type CS.System.Type @</span><br><span class="line">---@param includeInactive boolean @</span><br><span class="line">---@return CS.UnityEngine.Object[] @</span><br><span class="line">function Object.FindObjectsOfType(type, includeInactive) end</span><br><span class="line"></span><br><span class="line">---@param target CS.UnityEngine.Object @</span><br><span class="line">function Object.DontDestroyOnLoad(target) end</span><br><span class="line"></span><br><span class="line">---@param type CS.System.Type @</span><br><span class="line">---@return CS.UnityEngine.Object @</span><br><span class="line">function Object.FindObjectOfType(type) end</span><br><span class="line"></span><br><span class="line">---@param type CS.System.Type @</span><br><span class="line">---@param includeInactive boolean @</span><br><span class="line">---@return CS.UnityEngine.Object @</span><br><span class="line">function Object.FindObjectOfType(type, includeInactive) end</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> Object</span><br></pre></td></tr></table></figure>
+
+<p><strong>更多的注释生成就不一一展示了，可以看到通过EmmyLua注释生成工具，我已经成功的实现了导出EmmyLua注释的高度自由的自定义配置，并且基于该配置成功生成了符合EmmyLua注释规则的Lua代码，有了这个工具，我们就可以根据项目的自定义需求快速实现导出相关类型EmmyLua注释代码了。从而实现利用EmmyLua的注释类型推断功能帮助我们高效的编写Lua代码了。</strong></p>
+</li>
+</ul>
+<p>Note:</p>
+<ol>
+<li><strong>以上我只选了一些常规的Assemble和类型参与导出，需要更多的自定义导出可自行配置。</strong></li>
+<li><strong>上述我只支持了5种导出类型分类，想要自定义更多分类可自行修改源码。</strong></li>
+<li><strong>为了GUI显示效率，这里最大Assemble分析数量限制了75，大部分项目Assemble数量会远超75，但真正需要导出的Assemble数量一般不会超过75，也就是说设置完Assemble黑名单后，75最大Assemble显示数量是满足使用需求的，不足的话自行修改。</strong></li>
+<li><strong>想触发CS脚本代码分析可保存配置后重新打开EmmyLua代码生成窗口即可。</strong></li>
+</ol>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://emmylua.github.io/annotation.html">EmmyLua注释编写规范</a></p>
+<h2 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h2><p><a target="_blank" rel="noopener" href="https://github.com/EmmyLua">EmmyLua</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/EmmyLuaGenerator">EmmyLuaGenerator</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Other/" rel="tag"># Other</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/10/12/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/" rel="prev" title="异步编程">
+                  <i class="fa fa-angle-left"></i> 异步编程
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/04/09/%E8%B7%AF%E7%82%B9%E7%BC%96%E8%BE%91%E5%92%8C%E7%BC%93%E5%8A%A8/" rel="next" title="路点编辑和缓动">
+                  路点编辑和缓动 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

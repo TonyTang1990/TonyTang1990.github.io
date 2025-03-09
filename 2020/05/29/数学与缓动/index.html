@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言本章节博客是在使用一段时间Dotween后，对于Dotween是如何实现各种不同的缓动类型效果比较好奇。从本片博客会了解线性方程与线性代数之间的关系，以及数学(线性方程)在缓动中的实际应用和数学公式是如何输出显示的。本博客着重于学习数学在插值动画上的运用学习，博客末尾会给出实战的Git地址。 数学在开始之前，让我们先来了解下如何编写网页版数学公式，然后用于我们的MarkDown中显示。 紧接着">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数学与缓动">
+<meta property="og:url" content="http://example.com/2020/05/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%BC%93%E5%8A%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本章节博客是在使用一段时间Dotween后，对于Dotween是如何实现各种不同的缓动类型效果比较好奇。从本片博客会了解线性方程与线性代数之间的关系，以及数学(线性方程)在缓动中的实际应用和数学公式是如何输出显示的。本博客着重于学习数学在插值动画上的运用学习，博客末尾会给出实战的Git地址。 数学在开始之前，让我们先来了解下如何编写网页版数学公式，然后用于我们的MarkDown中显示。 紧接着">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Unity/Math/XianXingFangCheng.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/LateXXianXingFangCheng.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/MathmaticVisualization.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/LateXXianXingFangCheng.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/XianXingFangChengMatrixStyle.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/ColumePictureXianXingFangCheng.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/XianXingFangChengRealMatrixStyle.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/JianHuaMatrix.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/UnityLerpOutput.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/LerpScreenShort.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/y=x%E5%87%BD%E6%95%B0%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/EaseLerpFunction.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/EasingFuncLerpPos.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/DotweenSequenceUsing.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/TAnimationUML.png">
+<meta property="og:image" content="http://example.com/img/Unity/Math/InspectorSimulation.png">
+<meta property="article:published_time" content="2020-05-29T01:15:31.000Z">
+<meta property="article:modified_time" content="2024-08-04T16:02:22.843Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Unity/Math/XianXingFangCheng.png">
+
+
+<link rel="canonical" href="http://example.com/2020/05/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%BC%93%E5%8A%A8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2020/05/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%BC%93%E5%8A%A8/","path":"2020/05/29/数学与缓动/","title":"数学与缓动"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数学与缓动 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6"><span class="nav-number">1.1.</span> <span class="nav-text">数学</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">数学公式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AC%E5%BC%8F%E5%88%B6%E4%BD%9C"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">公式制作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AC%E5%BC%8F%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">公式可视化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">线性方程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0"><span class="nav-number">1.1.3.</span> <span class="nav-text">线性代数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%80%BC"><span class="nav-number">1.2.</span> <span class="nav-text">插值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%80%BC%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">插值线性方程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%80%BC%E7%BB%84%E4%BB%B6"><span class="nav-number">1.2.2.</span> <span class="nav-text">插值组件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Git%E5%9C%B0%E5%9D%80"><span class="nav-number">3.</span> <span class="nav-text">Git地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/05/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%BC%93%E5%8A%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数学与缓动 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数学与缓动
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-05-29 09:15:31" itemprop="dateCreated datePublished" datetime="2020-05-29T09:15:31+08:00">2020-05-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-08-05 00:02:22" itemprop="dateModified" datetime="2024-08-05T00:02:22+08:00">2024-08-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Math/" itemprop="url" rel="index"><span itemprop="name">Math</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本章节博客是在使用一段时间Dotween后，对于Dotween是如何实现各种不同的缓动类型效果比较好奇。从本片博客会了解线性方程与线性代数之间的关系，以及数学(线性方程)在缓动中的实际应用和数学公式是如何输出显示的。本博客着重于学习数学在插值动画上的运用学习，博客末尾会给出实战的Git地址。</p>
+<h2 id="数学"><a href="#数学" class="headerlink" title="数学"></a>数学</h2><p>在开始之前，让我们先来了解下如何编写网页版数学公式，然后用于我们的MarkDown中显示。</p>
+<p>紧接着我们来回顾和学习了解，线性方程和线性代数各自的概念以及他们之间的关系。</p>
+<h3 id="数学公式"><a href="#数学公式" class="headerlink" title="数学公式"></a>数学公式</h3><p>考虑到MarkDown或者网页显示数学公式都要有额外的插件支持，所以这里采用独立第三方制作公式显示，然后截图使用图片的形式来显示到MarkDown和网页上。</p>
+<h4 id="公式制作"><a href="#公式制作" class="headerlink" title="公式制作"></a>公式制作</h4><p>通过搜索了解到<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/LaTeX"><strong>LaTeX</strong>，是一种基于TeX的排版系统</a></p>
+<p>LateX表达数学公式支持两种方式：</p>
+<ol>
+<li><p>inline mode(is used to write formulas that are part of a text)</p>
+<p>inline mode采用以下分隔符: </p>
+<p>\( \)<code>, </code>$ $<code>or</code>\begin{math} \end{math}</p>
+</li>
+<li><p>display mode(is used to write expressions that are not part of a text or paragraph, and are therefore put on separate lines.)</p>
+</li>
+</ol>
+<p>由于LateX规则过于庞大，所以这里只是简单的用到什么查什么。</p>
+<p>更多更详细的学习参考:</p>
+<p><a target="_blank" rel="noopener" href="https://cn.overleaf.com/learn/latex/Mathematical_expressions">Latex数学公式编写介绍</a></p>
+<p>接下来只是以简单的二元一次方程组为示例，来学习LateX的数学表达结构:</p>
+<p>先来看看最终要的效果：</p>
+<p><img src="/img/Unity/Math/XianXingFangCheng.png" alt="XianXingFangCheng"></p>
+<p>实战：</p>
+<p>这简单的二元一次方程，涉及到如下几个概念：</p>
+<ul>
+<li><p>[导入amsmath功能包](<a target="_blank" rel="noopener" href="https://cn.overleaf.com/learn/latex/Aligning">https://cn.overleaf.com/learn/latex/Aligning</a> equations with amsmath)</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://cn.overleaf.com/learn/latex/Brackets_and_Parentheses">Brackets and Parentheses-括号</a></p>
+</li>
+<li><p>[Aligning equations with amsmath-公式对齐](<a target="_blank" rel="noopener" href="https://cn.overleaf.com/learn/latex/Aligning">https://cn.overleaf.com/learn/latex/Aligning</a> equations with amsmath)</p>
+</li>
+</ul>
+<p>直接上最终LateX代码：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">\usepackage&#123;amsmath&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;align*&#125;</span><br><span class="line">&amp; \left( <span class="number">2</span>x - y = <span class="number">0</span> \right) \\</span><br><span class="line">&amp; \left( -x + <span class="number">2</span>y = <span class="number">3</span> \right)</span><br><span class="line">\end&#123;align*&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出效果:</p>
+<p><img src="/img/Unity/Math/LateXXianXingFangCheng.png" alt="LateXXianXingFangCheng"></p>
+<p>上面没有找到如何输出{符号，忘知道的朋友告知。</p>
+<p>上面这种表达方式，我们可以理解成方程组的<strong>行表达形式</strong></p>
+<p><a target="_blank" rel="noopener" href="https://cn.overleaf.com/">在线编写LateX网址</a></p>
+<p>上面那个LateX网址是收费的，其次是完全自己写LateX语法符号来编写数学公式。后来发现了更加可视化容易编写数学公式的在线免费网站，有兴趣的可以了解下：</p>
+<p><a target="_blank" rel="noopener" href="https://www.mathcha.io/editor">mathcha</a></p>
+<p>只需要按照规则输入符号就能打出想要的数学公式效果。</p>
+<h4 id="公式可视化"><a href="#公式可视化" class="headerlink" title="公式可视化"></a>公式可视化</h4><p>解决了函数编写输出，那么肯定希望更直观的看到函数的二维坐标系绘图，这里我找到一个在线绘制数学函数的网站：</p>
+<p><a target="_blank" rel="noopener" href="https://www.wolframalpha.com/examples/mathematics/">WolframAlpha</a></p>
+<p><img src="/img/Unity/Math/MathmaticVisualization.png" alt="MathmaticVisualization"></p>
+<h3 id="线性方程"><a href="#线性方程" class="headerlink" title="线性方程"></a>线性方程</h3><p>线性方程，这个应该是初中学习的知识，参考前面的示例来回顾一下：</p>
+<p><img src="/img/Unity/Math/LateXXianXingFangCheng.png" alt="LateXXianXingFangCheng"></p>
+<p><a href="%5Bhttps://zh.wikipedia.org/wiki/%E6%96%B9%E7%A8%8B%E7%BB%84%5D(https://zh.wikipedia.org/wiki/%E6%96%B9%E7%A8%8B%E7%BB%84)"><strong>方程组</strong>又称<strong>联立方程</strong>，是两个或两个以上含有多个[未知数]联立得到的[集]。未知数的值称为方程组的**[根]<strong>，求方程组根的过程称为</strong>解方程组**。</a></p>
+<p>这里就不深入探讨了，总之就是解方程组。这里我们更关注的是方程组是如何和线性代数关联上的。</p>
+<h3 id="线性代数"><a href="#线性代数" class="headerlink" title="线性代数"></a>线性代数</h3><p><a href="%5Bhttps://zh.wikipedia.org/wiki/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%5D(https://zh.wikipedia.org/wiki/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0)"><strong>线性代数</strong>是关于向量空间的一个数学分支。它包括对线、面和子空间的研究，同时也涉及到所有的向量空间的一般性质。</a></p>
+<p>前面的二元一次方程示例用不同的角度来思考和表达。</p>
+<p>以<strong>列表达形式</strong>如下：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;equation&#125;</span><br><span class="line">x \binom&#123;<span class="number">2</span>&#125;&#123;<span class="number">1</span>&#125; + y \binom&#123;<span class="number">-1</span>&#125;&#123;<span class="number">-2</span>&#125; = \binom&#123;<span class="number">0</span>&#125;&#123;<span class="number">3</span>&#125;</span><br><span class="line">\end&#123;equation&#125;</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p><img src="/img/Unity/Math/XianXingFangChengMatrixStyle.png" alt="XianXingFangChengMatrixStyle"></p>
+<p>结合二维坐标系：</p>
+<p><img src="/img/Unity/Math/ColumePictureXianXingFangCheng.png" alt="ColumePictureXianXingFangCheng"></p>
+<p>图中是以向量的概念来绘制方程组图像，可以看到矩阵的概念已经呼之欲出了。</p>
+<p>以矩阵的概念来表达如下：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">\qquad \qquad \qquad \qquad \qquad \quad</span><br><span class="line">$\begin&#123;bmatrix&#125;</span><br><span class="line"><span class="number">2</span> &amp; <span class="number">-1</span> \\</span><br><span class="line"><span class="number">-1</span> &amp; <span class="number">2</span></span><br><span class="line">\end&#123;bmatrix&#125;$</span><br><span class="line">$\begin&#123;bmatrix&#125;</span><br><span class="line">x \\</span><br><span class="line">y</span><br><span class="line">\end&#123;bmatrix&#125;$</span><br><span class="line">=</span><br><span class="line">$\begin&#123;bmatrix&#125;</span><br><span class="line"><span class="number">0</span> \\</span><br><span class="line"><span class="number">3</span></span><br><span class="line">\end&#123;bmatrix&#125;$</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p><img src="/img/Unity/Math/XianXingFangChengRealMatrixStyle.png" alt="XianXingFangChengRealMatrixStyle"></p>
+<p> 以下<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016428152">截图来源</a>：</p>
+<p><img src="/img/Unity/Math/JianHuaMatrix.png" alt="JianHuaMatrix"></p>
+<p>可以看出落实到矩阵的概念上，就是对于向量的矩阵变换问题了。向量X通过矩阵A的变换变换到b。</p>
+<p><strong>矩阵变换正是线性代数中的一部分。</strong></p>
+<p><strong>矩阵可以帮助我们对于复杂的多维函数方程更方便的构造和求解。</strong></p>
+<p>更多在线学习参考:</p>
+<p><a target="_blank" rel="noopener" href="http://open.163.com/newview/movie/free?pid=M6V0BQC4M&mid=M6V29E773">方程组的几何解释</a></p>
+<h2 id="插值"><a href="#插值" class="headerlink" title="插值"></a>插值</h2><p>相比前面的数学基础概念，总算进入更有趣的实战环节了。</p>
+<p>插值缓动效果是指游戏里一些需要缓慢变化的动画效果(e.g. 移动位置插值，透明度变化插值，颜色变化插值等)。</p>
+<p>一般来说在Unity里要实现插值，我们会直接通过类似Update(e.g. Update或Coroutine)的形式去累加时间，然后通过Unity提供的插值函数来获取当前插值的进度值，最终使用这个进度值参与插值运算得出最终插值效果。</p>
+<p>所以我们会看到类似以下的代码:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Lerp挂载基类</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LerpBaseMono</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Lerp时长</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> LerpDurationTime = <span class="number">2.0f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 当前Lerp类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">protected</span> ELerpType mLerpType = ELerpType.None;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Use this for initialization</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span> ()</span> &#123;</span><br><span class="line">        DoLerpPrepation();</span><br><span class="line">        StartCoroutine(LerpCoroutine());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行Lerp准备工作</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">DoLerpPrepation</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Lerp携程</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> IEnumerator <span class="title">LerpCoroutine</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> starttime = Time.time;</span><br><span class="line">        <span class="keyword">var</span> endtime = starttime + LerpDurationTime;</span><br><span class="line">        <span class="keyword">while</span>(Time.time &lt; endtime)</span><br><span class="line">        &#123;</span><br><span class="line">            DoLerp(starttime, endtime, Time.time);</span><br><span class="line">            <span class="keyword">yield</span> <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        DoLerp(starttime, endtime, Time.time);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行Lerp</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;starttime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;endtime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;currenttime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">DoLerp</span>(<span class="params"><span class="built_in">float</span> starttime, <span class="built_in">float</span> endtime, <span class="built_in">float</span> currenttime</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> t = Mathf.InverseLerp(starttime, endtime, currenttime);</span><br><span class="line">        Debug.Log(<span class="string">$&quot;开始时间:<span class="subst">&#123;starttime&#125;</span>结束时间:<span class="subst">&#123;endtime&#125;</span>当前时间:<span class="subst">&#123;currenttime&#125;</span>当前缓动值:<span class="subst">&#123;t&#125;</span>&quot;</span>);</span><br><span class="line">        DoRealLerp(t);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行真实Lerp效果</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;t&quot;&gt;</span>缓动进度(0-1)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">DoRealLerp</span>(<span class="params"><span class="built_in">float</span> t</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出如下:</p>
+<p><img src="/img/Unity/Math/UnityLerpOutput.png" alt="UnityLerpOutput"></p>
+<p>接下来有了缓动的插值t,我们就可以做不同的缓动动画效果了。</p>
+<p>上面的代码已经为挂载不同的缓动效果做了设计准备，接下来让我们实现三个简单的缓动效果:</p>
+<ol>
+<li>位移缓动</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> PositionLerpMono.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 位置Lerp组件</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PositionLerpMono</span> : <span class="title">LerpBaseMono</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 结束位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector3 EndPos = Vector3.zero;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 开始位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">protected</span> Vector3 mStartPos;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行Lerp准备工作</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">DoLerpPrepation</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">base</span>.DoLerpPrepation();</span><br><span class="line">        mLerpType = ELerpType.LerpPosition;</span><br><span class="line">        mStartPos = transform.localPosition;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行真实Lerp效果</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;t&quot;&gt;</span>缓动进度(0-1)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">DoRealLerp</span>(<span class="params"><span class="built_in">float</span> t</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        transform.localPosition = Vector3.LerpUnclamped(mStartPos, EndPos, t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>缩放缓动</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> ScaleLerpMono.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 缩放缓动组件</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ScaleLerpMono</span> : <span class="title">LerpBaseMono</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 结束缩放值</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Vector3 EndScale = Vector3.one;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 开始缩放值</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">protected</span> Vector3 mStartScale;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行Lerp准备工作</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">DoLerpPrepation</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">base</span>.DoLerpPrepation();</span><br><span class="line">        mLerpType = ELerpType.LerpScale;</span><br><span class="line">        mStartScale = transform.localScale;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行真实Lerp效果</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;t&quot;&gt;</span>缓动进度(0-1)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">DoRealLerp</span>(<span class="params"><span class="built_in">float</span> t</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        transform.localScale = Vector3.LerpUnclamped(mStartScale, EndScale, t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>透明度缓动</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> AlphaLerpMono.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 透明度缓动组件</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">RequireComponent(typeof(Graphic))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AlphaLerpMono</span> : <span class="title">LerpBaseMono</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 结束透明度</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> EndAlpha = <span class="number">0.0f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Graphic组件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">protected</span> Graphic mGraphicComponent;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 开始透明度</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">protected</span> <span class="built_in">float</span> mStartAlpha;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行Lerp准备工作</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">DoLerpPrepation</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">base</span>.DoLerpPrepation();</span><br><span class="line">        mGraphicComponent = GetComponent&lt;Graphic&gt;();</span><br><span class="line">        mStartAlpha = mGraphicComponent.color.a;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行真实Lerp效果</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;t&quot;&gt;</span>缓动进度(0-1)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">DoRealLerp</span>(<span class="params"><span class="built_in">float</span> t</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> oldcolor = mGraphicComponent.color;</span><br><span class="line">        oldcolor.a = Mathf.Lerp(mStartAlpha, <span class="keyword">this</span>.EndAlpha, t);</span><br><span class="line">        mGraphicComponent.color = oldcolor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>效果如下:</p>
+<p><img src="/img/Unity/Math/LerpScreenShort.png" alt="LerpScreenShort"></p>
+<p>通过上面可以看到我们已经实现了一个简陋版的不同Lerp效果的插值动画。</p>
+<h3 id="插值线性方程"><a href="#插值线性方程" class="headerlink" title="插值线性方程"></a>插值线性方程</h3><p>接下来就要引入之前提到的线性方程了，从上面可以看出DoRealLerp里的参数t决定了缓动效果的最终进度值，现阶段t的值是通过世间累加然后Lerp插值到0-1的，也就是说是线性的速度。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> t = Mathf.InverseLerp(starttime, endtime, currenttime);</span><br></pre></td></tr></table></figure>
+
+<p>这里的线性速度换成线性方程的话，可以理解成y&#x3D;x</p>
+<p><img src="/img/Unity/Math/y=x%E5%87%BD%E6%95%B0%E5%9B%BE.png" alt="y&#x3D;x函数图"></p>
+<p>也就是说如果我们把t的变化速度函数修改成其他的线性方程，那就能达到同样的Lerp效果以不同的插值函数来表现。</p>
+<p>让我们先通过easings.net来预览下插值函数大概长什么样:</p>
+<p><img src="/img/Unity/Math/EaseLerpFunction.png" alt="EaseLerpFunction"></p>
+<p>这里核心思想是想替换t的插值计算方式，这里关于插值函数的代码就直接采用Github上现成的了:</p>
+<p><a target="_blank" rel="noopener" href="https://gist.github.com/ManeFunction/9f2d437fca6ccf31e4a48fec0584e21a"><strong>EasingFunctions.cs</strong></a></p>
+<p>修改基类代码如下:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Lerp挂载基类</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LerpBaseMono</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Lerp时长</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> LerpDurationTime = <span class="number">2.0f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 缓动类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> EasingFunction.Ease EaseType = EasingFunction.Ease.Linear;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Use this for initialization</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span> ()</span> &#123;</span><br><span class="line">        StartCoroutine(LerpCoroutine());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行Lerp准备工作</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">DoLerpPrepation</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Lerp携程</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> IEnumerator <span class="title">LerpCoroutine</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        DoLerpPrepation();</span><br><span class="line">        <span class="keyword">var</span> starttime = Time.time;</span><br><span class="line">        <span class="keyword">var</span> endtime = starttime + LerpDurationTime;</span><br><span class="line">        <span class="keyword">while</span>(Time.time &lt; endtime)</span><br><span class="line">        &#123;</span><br><span class="line">            DoLerp(starttime, endtime, Time.time);</span><br><span class="line">            <span class="keyword">yield</span> <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        DoLerp(starttime, endtime, Time.time);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行Lerp</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;starttime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;endtime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;currenttime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">DoLerp</span>(<span class="params"><span class="built_in">float</span> starttime, <span class="built_in">float</span> endtime, <span class="built_in">float</span> currenttime</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> t = Mathf.InverseLerp(starttime, endtime, currenttime);</span><br><span class="line">        <span class="keyword">var</span> easefunc = EasingFunction.GetEasingFunction(EaseType);</span><br><span class="line">        t = easefunc(<span class="number">0</span>, <span class="number">1</span>, t);</span><br><span class="line">        <span class="comment">//Debug.Log($&quot;缓动类型:&#123;this.EaseType&#125;开始时间:&#123;starttime&#125;结束时间:&#123;endtime&#125;当前时间:&#123;currenttime&#125;当前缓动值:&#123;t&#125;&quot;);</span></span><br><span class="line">        DoRealLerp(t);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行真实Lerp效果</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;t&quot;&gt;</span>缓动进度(0-1)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">DoRealLerp</span>(<span class="params"><span class="built_in">float</span> t</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样一来我们就成功的替换了缓动的线性方程，且限定了缓动值t在0-1范围内，实现了不同缓动速度的t。</p>
+<p>让我们来看看最终效果:</p>
+<p><img src="/img/Unity/Math/EasingFuncLerpPos.png" alt="EasingFuncLerpPos"></p>
+<p>正如我们预期的那样，同样的终点和持续时间，三个不同缓动类型(线性方程)的移动插值，表现出了不一样的速度变化。</p>
+<h3 id="插值组件"><a href="#插值组件" class="headerlink" title="插值组件"></a>插值组件</h3><p>上面我们的缓动组件已经雏形已经有了，接下来就是重新好好设计重构以下我们的缓动组件来达到通过挂在缓动组件能快速得到类似Dotween一样的代码效果。</p>
+<p>用过<a target="_blank" rel="noopener" href="http://dotween.demigiant.com/documentation.php">Dotween</a>都知道Dotween通过扩展方法的形式和泛型的形式，方便的支持了快速调用动画接口，接下来来看看Dotween几个大的概念设计：</p>
+<ul>
+<li>Tweener<ul>
+<li><a target="_blank" rel="noopener" href="http://dotween.demigiant.com/documentation.php">A tween that takes control of a value and animates it.</a></li>
+</ul>
+</li>
+<li>Sequence<ul>
+<li><a target="_blank" rel="noopener" href="http://dotween.demigiant.com/documentation.php">A special tween that, instead of taking control of a value, takes control of other tweens and animates them as a group.</a></li>
+</ul>
+</li>
+</ul>
+<p>Tweener是单个动画对象的抽象。</p>
+<p>Sequence是多个动画Tweener的组合管理抽象。</p>
+<p>所以借助于Tweener和Sequence再加上内部插值缓动的Ease的支持，能快速的触发各种缓动方程的动画组合拼接。</p>
+<p>这里就不详细讲解Dotween的学习使用了，这里放一张官网Sequence的代码示例来感受一下，Dotween是如何快捷高效的支持多种缓动方程多个动画效果的编写的:</p>
+<p><img src="/img/Unity/Math/DotweenSequenceUsing.png" alt="DotweenSequenceUsing"></p>
+<p>接下来参考Dotween的设计，我将动画组件UML设计如下:</p>
+<p><img src="/img/Unity/Math/TAnimationUML.png" alt="TAnimationUML"></p>
+<p>编辑器面板扩展模拟播放:</p>
+<p><img src="/img/Unity/Math/InspectorSimulation.png" alt="InspectorSimulation"></p>
+<p>可以把上面的设计理解成组件版的简陋Dotween:</p>
+<ul>
+<li><p>TBaseAnimation.cs</p>
+<p>所有插值动画的基类(抽象网络插值动画的流程以及基础支持),支持是否Awake时自动播放，插值类型，延迟时间，持续时间，循环类型设置等基础设置</p>
+</li>
+<li><p>TBaseAnimationEditor.cs</p>
+<p>插值动画自定义面板，核心扩展支持了Editor快速模拟播放，暂停，继续，停止按钮功能。</p>
+</li>
+<li><p>TSequenceAnimation.cs</p>
+<p>序列动画抽象,负责像Dotween的Sequence一样管理一系列TBaseAnimation的整体播放效果(比如线性播放和并发播放，目前仅支持单次或无限循环播放两种方式)</p>
+</li>
+<li><p>TSequenceAnimationEditor.cs</p>
+<p>序列动画的自定义面板，核心是通过SerializeObject和SerializeProperty编写支持Undo的自定义序列动画面板，同时支持了Editor快速模拟播放，暂停，继续，停止按钮功能。</p>
+</li>
+<li><p>EasingFunctions.cs</p>
+<p>Git上找的关于不同插值动画类型的核心函数方程定义,把时间插值比列通过不同的函数方程计算出不同的插值系数，从而实现不同的插值方程式的插值动画效果</p>
+</li>
+<li><p>TPositionAnimation.cs, TScaleAnimation.cs, TAlphaAnimation.cs ……</p>
+<p>落实到具体的插值动画类型的实现类</p>
+</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<li>通过起始时间，结束时间，当前时间我们可以计算出当前的插值比例。然后通过数学方程将插值比例使用不同的数学方程转换成我们不同插值类型的插值比例从而得到我们想要的不同函数插值效果。</li>
+<li>组件式的插值动画相比之下没有纯代码(e.g. Dotween)那么高效和可控，但重用性高，方便快速制作简单的程序化动画。</li>
+<li>SerializeObject和SerializeProperty的使用就好比对象和反射属性之间的概念和关系，使用SerializeObject和SerilizeProperty能方便的使用Unity的Undo系统。</li>
+</ol>
+<h1 id="Git地址"><a href="#Git地址" class="headerlink" title="Git地址"></a>Git地址</h1><p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/Ease-Component">Ease Component</a></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://dev.twsiyuan.com/2017/02/tween-animation-and-easing-functions-in-unity.html">Animation &amp; Easing functions in Unity (Tween)</a></p>
+<p><a target="_blank" rel="noopener" href="https://easings.net/">Easing functions</a></p>
+<p><a target="_blank" rel="noopener" href="https://gist.github.com/ManeFunction/9f2d437fca6ccf31e4a48fec0584e21a">EasingFunctions GitHub</a></p>
+<p><a target="_blank" rel="noopener" href="http://dotween.demigiant.com/getstarted.php">Dotween</a></p>
+<p><a target="_blank" rel="noopener" href="https://whichxjy.com/my-dotween/">DOTween 动画引擎仿写</a></p>
+<p><a href="%5Bhttps://zh.wikipedia.org/wiki/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%5D(https://zh.wikipedia.org/wiki/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0)">线性代数</a></p>
+<p><a target="_blank" rel="noopener" href="http://open.163.com/newview/movie/free?pid=M6V0BQC4M&mid=M6V29E773">方程组的几何解释</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016428152">线性代数与方程的关系（笔记）</a></p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/LaTeX">LATEX</a></p>
+<p><a href="%5Bhttps://cn.overleaf.com%5D(https://cn.overleaf.com/)">在线编写LateX网址</a></p>
+<p><a target="_blank" rel="noopener" href="https://cn.overleaf.com/learn/latex/Mathematical_expressions">Latex数学公式编写介绍</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.wolframalpha.com/examples/mathematics/">WolframAlpha</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Math/" rel="tag"># Math</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/02/01/Unity%E5%B5%8C%E5%A5%97%E9%A2%84%E5%88%B6%E4%BB%B6/" rel="prev" title="Unity嵌套预制件">
+                  <i class="fa fa-angle-left"></i> Unity嵌套预制件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/05/29/Unity%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A/" rel="next" title="Unity组件绑定">
+                  Unity组件绑定 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

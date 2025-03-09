@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言日常项目中，我们对于Unity资源导入会做一些自动化的设置和检查，确保导入到项目里的资源是正确符合要求的，确保游戏资源最优化。而这些自动化检查和处理离不开AssetPostProcess接口，常规的方式是通过重写AssetPostProcess相关接口进行硬编码的方式实现资源导入自动化检查和设置。但这样的实现方式显得不灵活，当我们需要改变或新增一些资源时，我们需要硬编码去实现需求。 为了寻求高">
+<meta property="og:type" content="article">
+<meta property="og:title" content="可配置Asset管线系统">
+<meta property="og:url" content="http://example.com/2022/07/16/%E5%8F%AF%E9%85%8D%E7%BD%AEAsset%E7%AE%A1%E7%BA%BF%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言日常项目中，我们对于Unity资源导入会做一些自动化的设置和检查，确保导入到项目里的资源是正确符合要求的，确保游戏资源最优化。而这些自动化检查和处理离不开AssetPostProcess接口，常规的方式是通过重写AssetPostProcess相关接口进行硬编码的方式实现资源导入自动化检查和设置。但这样的实现方式显得不灵活，当我们需要改变或新增一些资源时，我们需要硬编码去实现需求。 为了寻求高">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/AssetPipelineConfigPanel.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/AssetGlobalPreProcessorConfigPanel.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/AssetGlobalPostProcessorConfigPanel.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/AssetLocalPreProcessorConfigPanel.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/AssetLocalBlackListConfigWindow.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/AssetLocalPostProcessorConfigPanel.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/AssetProcessorPreviewPanel.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/AssetGlobalCheckConfigPanel.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/AssetCheckPreviewPanel.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/ProcessorCreateOperation.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/CustomProcessorAsset.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/ProcessorCustomProperty.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/MixFolderLocalPreProcessorConfig.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/MixFolderAssetPipelineLog.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/AssetPipeline/MixFolderTextureSettingAfterImport.PNG">
+<meta property="article:published_time" content="2022-07-16T04:16:00.000Z">
+<meta property="article:modified_time" content="2024-12-19T07:53:42.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Unity/AssetPipeline/AssetPipelineConfigPanel.PNG">
+
+
+<link rel="canonical" href="http://example.com/2022/07/16/%E5%8F%AF%E9%85%8D%E7%BD%AEAsset%E7%AE%A1%E7%BA%BF%E7%B3%BB%E7%BB%9F/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/07/16/%E5%8F%AF%E9%85%8D%E7%BD%AEAsset%E7%AE%A1%E7%BA%BF%E7%B3%BB%E7%BB%9F/","path":"2022/07/16/可配置Asset管线系统/","title":"可配置Asset管线系统"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>可配置Asset管线系统 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Asset%E7%AE%A1%E7%BA%BF%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">Asset管线设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E8%AF%B4%E6%98%8E"><span class="nav-number">3.</span> <span class="nav-text">类说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%88%98%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">实战实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%AA%97%E5%8F%A3"><span class="nav-number">4.1.</span> <span class="nav-text">配置窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%A4%84%E7%90%86%E5%99%A8%E5%92%8C%E6%A3%80%E6%9F%A5%E5%99%A8"><span class="nav-number">4.2.</span> <span class="nav-text">自定义处理器和检查器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Asset%E7%AE%A1%E7%BA%BF%E5%A4%84%E7%90%86"><span class="nav-number">4.3.</span> <span class="nav-text">Asset管线处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E7%82%B9%E7%9F%A5%E8%AF%86"><span class="nav-number">5.</span> <span class="nav-text">重点知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">6.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E5%AE%9E%E7%8E%B0%E9%9A%BE%E7%82%B9"><span class="nav-number">7.</span> <span class="nav-text">设计实现难点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Github%E5%9C%B0%E5%9D%80"><span class="nav-number">8.</span> <span class="nav-text">Github地址</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/16/%E5%8F%AF%E9%85%8D%E7%BD%AEAsset%E7%AE%A1%E7%BA%BF%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="可配置Asset管线系统 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          可配置Asset管线系统
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-07-16 12:16:00" itemprop="dateCreated datePublished" datetime="2022-07-16T12:16:00+08:00">2022-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-12-19 15:53:42" itemprop="dateModified" datetime="2024-12-19T15:53:42+08:00">2024-12-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>日常项目中，我们对于Unity资源导入会做一些<strong>自动化的设置和检查，确保导入到项目里的资源是正确符合要求的，确保游戏资源最优化</strong>。而这些自动化检查和处理离不开<strong>AssetPostProcess</strong>接口，常规的方式是通过重写AssetPostProcess相关接口进行硬编码的方式实现资源导入自动化检查和设置。但这样的实现方式显得不灵活，当我们需要改变或新增一些资源时，我们需要硬编码去实现需求。</p>
+<p><strong>为了寻求高效高度扩展性的Asset管线系统，从而引出了本篇文章实现的可配置化Asset管线系统。</strong></p>
+<h2 id="Asset管线设计"><a href="#Asset管线设计" class="headerlink" title="Asset管线设计"></a>Asset管线设计</h2><ol>
+<li>使用ScriptableObject实现自定义配置数据存储，结合导出Json实现无需等待配置Asset导入就可读取数据进行Asset管线系统初始化</li>
+<li>使用EditorWindow实现自定义配置窗口</li>
+<li>使用AssetPostProcess实现Asset后处理系统流程接入</li>
+<li>设计AssetPipeline和AssetPipelineSystem实现Asset管线系统流程初始化(利用InitializeOnLoadMethodAttribute标签实现Asset管线提前初始化)</li>
+<li>设计AssetProcessorSystem和AssetCheckSystem实现Asset管线的2大系统(Asset处理系统和Asset检查系统)</li>
+<li>支持配置多个Asset管线策略以及不同平台选用不同策略来实现平台各异化的管线系统配置</li>
+<li>支持Asset管线预处理，后处理，移动处理和删除处理器配置</li>
+<li>支持全局和局部两种大的类型处理器和检查器配置</li>
+<li>支持Asset管线预检查和后检查检查器配置</li>
+<li>支持局部Asset处理器和检查器黑名单目录配置</li>
+<li>处理器和检查器支持指定Asset类型级别设置</li>
+<li>处理器和检查器支持指定Asset管线处理类型(AssetPostProcess相关流程接口)级别设置</li>
+<li>支持所有处理器和检查器UI预览查看</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>Asset管线先执行全局后局部,局部Asset处理由外到内执行(覆盖关系)</strong></li>
+<li><strong>Asset管线移动Asset当做重新导入Asset处理，确保Asset移动后得到正确的Asset管线处理</strong></li>
+<li><strong>Asset管线不满足条件的不会触发(比如: 1. 不在目标资源目录下 2. 在黑名单列表里)</strong></li>
+<li><strong>配置符合的触发顺序如下: 触发Asset导入全局预检查 -&gt; 触发Asset导入局部预检查 -&gt; 触发Asset导入全局预处理 -&gt; 触发Asset导入局部预处理 -&gt; 触发Asset导入全局后处理 -&gt; 触发Asset导入局部后处理 -&gt; 触发Asset导入全局后检查 -&gt; 触发Asset导入局部后检查</strong></li>
+<li><strong>处理器和检查器支持指定需要处理的Asset类型组合，但Asset管线处理类型只能选择一个</strong></li>
+<li><strong>通用后处理类型包含后处理，移动处理和删除处理</strong></li>
+</ol>
+<h2 id="类说明"><a href="#类说明" class="headerlink" title="类说明"></a>类说明</h2><p>Asset管线核心框架部分:</p>
+<ul>
+<li>AssetType – Asset类型定义</li>
+<li>AssetProcessType – Asset管线处理类型定义</li>
+<li>AssetPipeline – Asset管线入口(负责接入Asset后处理流程以及Asset管线系统初始化)</li>
+<li>AssetPipelineSystem – Asset管线系统(负责初始化Asset管线里各系统以及各系统调用)</li>
+<li>AssetProcessorSystem – Asset处理系统(负责Asset自动化后处理相关配置)</li>
+<li>AssetCheckSystem – Asset检查系统(负责Asset自动化检查相关配置)</li>
+<li>AssetPipelineSettingData – Asset管线系统配置相关数据(非ScriptableObject)(比如Asset管线开关，Log开关等配置)</li>
+<li>ProcessorSettingData – Asset处理器设置数据(AssetPipelineWindow 窗口配置)</li>
+<li>ProcessorConfigData – Asset处理器配置数据(AssetPipelineWindow 窗口配置)</li>
+<li>AssetCheckSettingData – Asset检查设置数据(AssetPipelineWindow 窗口配置)</li>
+<li>AssetCheckConfigData – Asset检查配置数据(AssetPipelineWindow 窗口配置)</li>
+<li>BaseProcessor – Asset处理器抽象类(负责抽象Asset处理器流程和数据，继承至ScriptableObject实现自定义数据配置处理)</li>
+<li>BaseProcessorJson – Asset处理器Json抽象类(负责抽象Asset处理器流程和数据定义(和BaseProcessor保持一致用于Json反序列化构造)，实现自定义数据配置处理)</li>
+<li>BasePreProcessor – Asset预处理器抽象类(负责抽象Asset预处理器流程和数据，继承至BaseProcessor )</li>
+<li>BasePreProcessorJson – Asset预处理器Json抽象类(负责抽象Asset预处理器流程和数据定义(和BasePreProcessor保持一致用于Json反序列化构造)，继承至BaseProcessorJson)</li>
+<li>BasePostProcessor – Asset预处理器抽象类(负责抽象Asset后处理器流程和数据，继承至BaseProcessor )</li>
+<li>BasePostProcessJson – Asset预处理器Json抽象类(负责抽象Asset后处理器流程和数据定义(和BasePostProcessor保持一致用于Json反序列化构造)，继承至BaseProcessorJson)</li>
+<li>BaseCheck – Asset检查抽象类(负责抽象Asset检查器流程和数据，继承至ScriptableObject实现自定义数据配置处理)</li>
+<li>BaseCheckJson – Asset检查器Json抽象类(负责抽象Asset检查器流程和数据定义(和BaseCheck保持一致用于Json反序列化构建)，实现自定义数据配置处理)</li>
+<li>BasePreCheck – Asset预检查抽象类(负责抽象Asset预检查器流程和数据，继承至BaseCheck )</li>
+<li>BasePreCheckJson – Asset预检查器Json抽象类(负责抽象Asset预检查器流程和数据定义(和BasePreCheck保持一致用于Json反序列化构建)，继承至BaseCheckJson)</li>
+<li>BasePostCheck – Asset后检查抽象类(负责抽象Asset后检查器流程和数据，继承至BaseCheck )</li>
+<li>BasePostCheckJson – Asset后检查器Json抽象类(负责抽象Asset后检查器流程和数据定义(和BasePostCheck保持一致用于Json反序列化构建)，继承至BaseCheckJson)</li>
+<li>AssetInfo – 用于记录处理器和检查器相关的路径信息和类型信息(用于后续Json反序列依据)</li>
+<li>AssetProcessorInfoData – 所有处理器AssetInfo信息集合(用于后续Json反序列化构造处理器依据)</li>
+<li>AssetCheckInfoData – 所有检查器AssetInfo信息集合(用于后续Json反序列化构造检查器依据)</li>
+<li>更多的数据定义这里就不一一列举了</li>
+</ul>
+<p>窗口部分:</p>
+<ul>
+<li>AssetPipelineWindow – Asset管线可配置化配置窗口</li>
+<li>AssetPipelinePanel – Asset管线面板</li>
+<li>AssetProcessorPanel – Asset处理器面板</li>
+<li>AssetCheckPanel – Asset检查器面板</li>
+<li>LocaDetailWindow – Asset管线局部数据详情配置窗口(用于配置局部数据黑名单路径配置)</li>
+</ul>
+<p>其他部分:</p>
+<ul>
+<li>AssetPipelineUtilities – Asset管线工具类(负责提供Asset管线相关工具方法)</li>
+<li>AssetPipelineStyles – Asset管线用到的GUI显示风格定义</li>
+<li>AssetPipelineGUIContent – Asset管线用到的显示图标定义</li>
+<li>AssetPipelineConst – Asset管线用到的常量定义</li>
+<li>AssetPipelineLog – Asset管线自定义Log</li>
+<li>AssetPipelinePrefKey – Asset管线本地存储Key定义</li>
+</ul>
+<h2 id="实战实现"><a href="#实战实现" class="headerlink" title="实战实现"></a>实战实现</h2><p>在了解详细的细节实现之前，先了解下Asset管线是如何定义Asset类型和Asset管线处理类型的，这个对于后续实战配置理解会有帮助。</p>
+<ul>
+<li><p><strong>Asset类型定义</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> AssetType.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Asset类型</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">Flags</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">enum</span> AssetType : Int32</span><br><span class="line">&#123;</span><br><span class="line">    None = <span class="number">0</span>,                         <span class="comment">// 无效类型</span></span><br><span class="line">    Texture = <span class="number">1</span> &lt;&lt; <span class="number">0</span>,                 <span class="comment">// 图片</span></span><br><span class="line">    Material = <span class="number">1</span> &lt;&lt; <span class="number">1</span>,                <span class="comment">// 材质</span></span><br><span class="line">    SpriteAtlas = <span class="number">1</span> &lt;&lt; <span class="number">2</span>,             <span class="comment">// 图集</span></span><br><span class="line">    FBX = <span class="number">1</span> &lt;&lt; <span class="number">3</span>,                     <span class="comment">// 模型文件</span></span><br><span class="line">    AudioClip = <span class="number">1</span> &lt;&lt; <span class="number">4</span>,               <span class="comment">// 音效</span></span><br><span class="line">    Font = <span class="number">1</span> &lt;&lt; <span class="number">5</span>,                    <span class="comment">// 字体</span></span><br><span class="line">    Shader = <span class="number">1</span> &lt;&lt; <span class="number">6</span>,                  <span class="comment">// Shader</span></span><br><span class="line">    Prefab = <span class="number">1</span> &lt;&lt; <span class="number">7</span>,                  <span class="comment">// 预制件</span></span><br><span class="line">    ScriptableObject = <span class="number">1</span> &lt;&lt; <span class="number">8</span>,        <span class="comment">// ScriptableObject</span></span><br><span class="line">    TextAsset = <span class="number">1</span> &lt;&lt; <span class="number">9</span>,               <span class="comment">// 文本Asset</span></span><br><span class="line">    Scene = <span class="number">1</span> &lt;&lt; <span class="number">10</span>,                  <span class="comment">// 场景</span></span><br><span class="line">    AnimationClip = <span class="number">1</span> &lt;&lt; <span class="number">11</span>,          <span class="comment">// 动画文件</span></span><br><span class="line">    Mesh = <span class="number">1</span> &lt;&lt; <span class="number">12</span>,                   <span class="comment">// Mesh文件</span></span><br><span class="line">    Script = <span class="number">1</span> &lt;&lt; <span class="number">13</span>,                 <span class="comment">// 脚本(e.g. cs, dll等)</span></span><br><span class="line">    Video = <span class="number">1</span> &lt;&lt; <span class="number">14</span>,                  <span class="comment">// 视频</span></span><br><span class="line">    Folder = <span class="number">1</span> &lt;&lt; <span class="number">15</span>,                 <span class="comment">// 文件夹</span></span><br><span class="line">    Other = <span class="number">1</span> &lt;&lt; <span class="number">16</span>,                  <span class="comment">// 其他</span></span><br><span class="line">    All = Int32.MaxValue,             <span class="comment">// 所有类型</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>上面的Asset类型只所以定义成Flags是为了处理器和检查器可以定义需要支持的Asset类型组合</strong></p>
+</li>
+<li><p>Asset管线处理类型定义</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> AssetProcessorType.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Asset管线处理类型</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="built_in">enum</span> AssetProcessType</span><br><span class="line">&#123;</span><br><span class="line">    CommonPreprocess = <span class="number">1</span>,               <span class="comment">// 通用预处理</span></span><br><span class="line">    PreprocessAnimation,                <span class="comment">// 动画预处理</span></span><br><span class="line">    PreprocessAudio,                    <span class="comment">// 音效预处理</span></span><br><span class="line">    PreprocessModel,                    <span class="comment">// 模型预处理</span></span><br><span class="line">    PreprocessTexture,                  <span class="comment">// 纹理预处理</span></span><br><span class="line">    CommonPostprocess,                  <span class="comment">// 通用后处理</span></span><br><span class="line">    PostprocessAnimation,               <span class="comment">// 动画后处理</span></span><br><span class="line">    PostprocessModel,                   <span class="comment">// 模型后处理</span></span><br><span class="line">    PostprocessMaterial,                <span class="comment">// 材质后处理</span></span><br><span class="line">    PostprocessPrefab,                  <span class="comment">// 预制件后处理</span></span><br><span class="line">    PostprocessTexture,                 <span class="comment">// 纹理后处理</span></span><br><span class="line">    PostprocessAudio,                   <span class="comment">// 音效后处理</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的类型分别对应<strong>AssetPostprocessor</strong>里的Asset处理接口，这里就不详细介绍了，具体看代码。</p>
+</li>
+</ul>
+<h3 id="配置窗口"><a href="#配置窗口" class="headerlink" title="配置窗口"></a>配置窗口</h3><p><img src="/img/Unity/AssetPipeline/AssetPipelineConfigPanel.PNG" alt="Asset管线策略配置面板"></p>
+<p>此窗口主要负责配置Asset管线策略以及不同平台Asset管线策略的使用。同时也负责选择当前配置的策略和设置全局的资源处理目录。</p>
+<p><img src="/img/Unity/AssetPipeline/AssetGlobalPreProcessorConfigPanel.PNG" alt="Asset管线全局预处理器配置面板"></p>
+<p><img src="/img/Unity/AssetPipeline/AssetGlobalPostProcessorConfigPanel.PNG" alt="Asset管线全局后处理器配置面板"></p>
+<p><strong>全局后处理器，移动处理器和删除处理器配置面板类似就不一一截图了，他们分别对应通用后处理里的imported，moved和deleted流程。</strong></p>
+<p><img src="/img/Unity/AssetPipeline/AssetLocalPreProcessorConfigPanel.PNG" alt="Asset管线局部预处理器配置面板"></p>
+<p><strong>从上面可以看到我们对于局部处理器的配置方式，是通过制定目录，选择处理器列表的方式实现的，同时每个处理器还支持制定黑名单目录(用于部分处理器子目录不生效的配置)</strong></p>
+<p><strong>通过点击数量(*)我们可以打开指定局部处理器配置指定处理器的黑名单详情设置窗口</strong></p>
+<p><img src="/img/Unity/AssetPipeline/AssetLocalBlackListConfigWindow.PNG" alt="Asset管线局部数据黑名单目录配置窗口"></p>
+<p>通过上面的黑名单目录配置结合前面的局部预处理配置我们可以看出，我们希望ETC2设置对于Assets&#x2F;Res&#x2F;textures目录生效但不希望对Assets&#x2F;Res&#x2F;textures&#x2F;TestBlackList目录生效，对于TestBlackList目录我们单独设置了ASTC处理器设置。</p>
+<p><img src="/img/Unity/AssetPipeline/AssetLocalPostProcessorConfigPanel.PNG" alt="Asset管线局部后处理器配置面板"></p>
+<p>关于移动处理器和删除处理器和预处理器和后处理器配置类似的，只是对应不同处理流程，这里就不一一截图举例了。</p>
+<p><img src="/img/Unity/AssetPipeline/AssetProcessorPreviewPanel.PNG" alt="Asset管线处理器预览面板"></p>
+<p><strong>检查器窗口配置和处理器窗口配置是类似的，只是检查器只支持了预检查器和后检查器，这里我就只简单截一张效果图看看，就不详细说明了</strong></p>
+<p><img src="/img/Unity/AssetPipeline/AssetGlobalCheckConfigPanel.PNG" alt="Asset管线全局预检查器配置面板"></p>
+<p><img src="/img/Unity/AssetPipeline/AssetCheckPreviewPanel.PNG" alt="Asset管线检查器预览面板"></p>
+<p>了解了配置窗口，接下来看看我们是如何在Asset管线框架基础上，实现定义这些自定义的处理器和检查器的。</p>
+<h3 id="自定义处理器和检查器"><a href="#自定义处理器和检查器" class="headerlink" title="自定义处理器和检查器"></a>自定义处理器和检查器</h3><p><strong>自定义的检查器需要通过继承BasePreProcessor或BasePostProcessor或BasePreCheck或BasePostCheck来实现的</strong></p>
+<p>CheckFileName.cs预检查器ScriptableObject数据定义:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CheckFileName.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 检查文件名</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">CreateAssetMenu(fileName = <span class="string">&quot;CheckFileName&quot;</span>, menuName = <span class="string">&quot;ScriptableObjects/AssetPipeline/AssetCheck/PreCheck/CheckFileName&quot;</span>, order = 2001)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CheckFileName</span> : <span class="title">BasePreCheck</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 检查器名</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">string</span> Name</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;检查文件名&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标Asset类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> AssetType TargetAssetType</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> AssetType.All;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标Asset管线处理类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> AssetProcessType TargetAssetProcessType</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> AssetProcessType.CommonPreprocess;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>CheckFileNameJson.cs预检查器Json处理流程和数据定义:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CheckFileSizeJson.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 检查文件大小检查器Json</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">Serializable</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CheckFileSizeJson</span> : <span class="title">BasePreCheckJson</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 检查器名</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">string</span> Name</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;检查文件大小&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标Asset类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> AssetType TargetAssetType</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> AssetPipelineSystem.GetAllCommonAssetType();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标Asset管线处理类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> AssetProcessType TargetAssetProcessType</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> AssetProcessType.CommonPreprocess;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 处理器触发排序Order</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">int</span> Order</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 文件大小限制</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> FileSizeLimit = <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行检查器处理</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;assetPostProcessor&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;paramList&quot;&gt;</span>不定长参数<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">DoCheck</span>(<span class="params">AssetPostprocessor assetPostProcessor, <span class="keyword">params</span> <span class="built_in">object</span>[] paramList</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> DoCheckFileSize(assetPostProcessor.assetPath);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行指定路径的检查器处理</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;assetPath&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">DoCheckByPath</span>(<span class="params"><span class="built_in">string</span> assetPath, <span class="keyword">params</span> <span class="built_in">object</span>[] paramList</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> DoCheckFileSize(assetPath);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行文件大小检查</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;assetPath&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="built_in">bool</span> <span class="title">DoCheckFileSize</span>(<span class="params"><span class="built_in">string</span> assetPath</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> assetFullPath = PathUtilities.GetAssetFullPath(assetPath);</span><br><span class="line">        <span class="keyword">using</span> (FileStream fs = File.Open(assetFullPath, FileMode.Open))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> overSize = fs.Length &gt; FileSizeLimit;</span><br><span class="line">            <span class="keyword">if</span> (!overSize)</span><br><span class="line">            &#123;</span><br><span class="line">                AssetPipelineLog.Log(<span class="string">$&quot;AssetPath:<span class="subst">&#123;assetPath&#125;</span>文件大小检查,实际大小:<span class="subst">&#123;fs.Length / <span class="number">1024f</span> / <span class="number">1024f</span>&#125;</span>M,限制大小:<span class="subst">&#123;FileSizeLimit / <span class="number">1024f</span> / <span class="number">1024f</span>&#125;</span>M&quot;</span>.WithColor(Color.yellow));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                AssetPipelineLog.LogError(<span class="string">$&quot;AssetPath:<span class="subst">&#123;assetPath&#125;</span>文件大小检查,实际大小:<span class="subst">&#123;fs.Length / <span class="number">1024f</span> / <span class="number">1024f</span>&#125;</span>M,限制大小:<span class="subst">&#123;FileSizeLimit / <span class="number">1024f</span> / <span class="number">1024f</span>&#125;</span>M&quot;</span>.WithColor(Color.yellow));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> !overSize;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>从上面可以看到我们通过CheckFileName继承BasePreCheck表明我们是实现一个预检查器。通过声明AssetType为AssetType.All表明我们要支持的所有的Asset类型处理。通过声明TargetAssetProcessType为AssetProcessType.CommonPreprocess表示我们要支持通用预处理流程。</strong></p>
+<p><strong>同时为了支持在InitializeOnLoadMethodAttribute方法里读取非Asset相关类型信息和数据进行初始化(后续会讲到为什么)，我们定义了对应的CheckFileNameJson类来实现处理流程和数据定义。因为CheckFileNameJson和CheckFileName的序列化数据定义一致，所以通过CheckFileName的ScriptableObject导出的Json数据是可以成功反序列化读取的。最终我们使用*Json类实现了对配置数据的反序列化从而填充到我们的Asset管线系统里作为后处理数据依据。</strong></p>
+<p>ASTC格式设置预处理器ScriptableObeject数据定义:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> ASTCSet.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> ASTC设置</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">CreateAssetMenu(fileName = <span class="string">&quot;ASTCSet&quot;</span>, menuName = <span class="string">&quot;ScriptableObjects/AssetPipeline/AssetProcessor/PreProcessor/ASTCSet&quot;</span>, order = 1001)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ASTCSet</span> : <span class="title">BasePreProcessor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 检查器名</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">string</span> Name</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;ASTC设置&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标Asset类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> AssetType TargetAssetType</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> AssetType.Texture;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标Asset管线处理类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> AssetProcessType TargetAssetProcessType</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> AssetProcessType.PreprocessTexture;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标纹理格式</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">Header(<span class="string">&quot;目标纹理格式&quot;</span>)</span>]</span><br><span class="line">    <span class="keyword">public</span> TextureImporterFormat TargetTextureFormat = TextureImporterFormat.ASTC_4x4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ASTC格式设置预处理器对应*Json的处理流程和数据定义:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> ASTCSetJson.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> ASTC设置预处理器Json</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">Serializable</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ASTCSetJson</span> : <span class="title">BasePreProcessorJson</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 检查器名</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">string</span> Name</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;ASTC设置&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标Asset类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> AssetType TargetAssetType</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> AssetType.Texture;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标Asset管线处理类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> AssetProcessType TargetAssetProcessType</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> AssetProcessType.PreprocessTexture;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 处理器触发排序Order</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">int</span> Order</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标纹理格式</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> TextureImporterFormat TargetTextureFormat = TextureImporterFormat.ASTC_4x4;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行处理器处理</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;assetPostProcessor&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;paramList&quot;&gt;</span>不定长参数列表<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">DoProcessor</span>(<span class="params">AssetPostprocessor assetPostProcessor, <span class="keyword">params</span> <span class="built_in">object</span>[] paramList</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> assetImporter = assetPostProcessor.assetImporter;</span><br><span class="line">        DoASTCSet(assetImporter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行指定路径的处理器处理</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;assetPath&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;paramList&quot;&gt;</span>不定长参数列表<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">DoProcessorByPath</span>(<span class="params"><span class="built_in">string</span> assetPath, <span class="keyword">params</span> <span class="built_in">object</span>[] paramList</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> assetImporter = AssetImporter.GetAtPath(assetPath);</span><br><span class="line">        DoASTCSet(assetImporter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行ASTC设置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;assetImporter&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DoASTCSet</span>(<span class="params">AssetImporter assetImporter</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> textureImporter = assetImporter <span class="keyword">as</span> TextureImporter;</span><br><span class="line">        <span class="keyword">var</span> actiivePlatformName = EditorUtilities.GetPlatformNameByTarget(EditorUserBuildSettings.activeBuildTarget);</span><br><span class="line">        <span class="keyword">var</span> platformTextureSettings = textureImporter.GetPlatformTextureSettings(actiivePlatformName);</span><br><span class="line">        <span class="keyword">var</span> automaticFormat = textureImporter.GetAutomaticFormat(actiivePlatformName);</span><br><span class="line">        <span class="keyword">var</span> isAutomaticASTC = ResourceUtilities.IsASTCFormat(automaticFormat);</span><br><span class="line">        <span class="keyword">var</span> textureFormat = isAutomaticASTC ? automaticFormat : TargetTextureFormat;</span><br><span class="line">        platformTextureSettings.overridden = <span class="literal">true</span>;</span><br><span class="line">        platformTextureSettings.format = textureFormat;</span><br><span class="line">        textureImporter.SetPlatformTextureSettings(platformTextureSettings);</span><br><span class="line">        AssetPipelineLog.Log(<span class="string">$&quot;设置AssetPath:<span class="subst">&#123;assetImporter.assetPath&#125;</span>纹理压缩格式:<span class="subst">&#123;textureFormat&#125;</span>&quot;</span>.WithColor(Color.yellow));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ASTC设置预处理器和检查文件名预处理器类似，这里就不一一说明了。</p>
+<p>但从上面都可以看到每一个处理器和检查器我们都定义了<strong>CreateAssetMenu和一些自定义序列化属性</strong>，这样我们就可以通过右键创建指定处理器和检查器Asset了。</p>
+<p><img src="/img/Unity/AssetPipeline/ProcessorCreateOperation.PNG" alt="自定义处理器Asset创建"></p>
+<p><img src="/img/Unity/AssetPipeline/CustomProcessorAsset.PNG" alt="自定义处理器Asset"></p>
+<p><img src="/img/Unity/AssetPipeline/ProcessorCustomProperty.PNG" alt="处理器自定义参数设置"></p>
+<p><strong>从上面可以看到同一个类型定义的处理器，我们可以通过创建多个然后改变处理器参数实现细节不同处理效果的处理器需求。</strong></p>
+<h3 id="Asset管线处理"><a href="#Asset管线处理" class="headerlink" title="Asset管线处理"></a>Asset管线处理</h3><p>接下来让我们看看根据实际Asset管线配置，我们的Asset导入是如何触发一系列配置的。</p>
+<p><img src="/img/Unity/AssetPipeline/MixFolderLocalPreProcessorConfig.PNG" alt="Mix文件夹局部预处理器配置"></p>
+<p><img src="/img/Unity/AssetPipeline/MixFolderAssetPipelineLog.PNG" alt="Mix文件夹Asset导入纹理Log"></p>
+<p><img src="/img/Unity/AssetPipeline/MixFolderTextureSettingAfterImport.PNG" alt="Mix文件夹导入纹理处理设置"></p>
+<p><strong>可以看到通过配置好的Asset管线流程，我们导入到Mix文件夹的纹理图片，成功触发了一系列的处理器和检查器配置，并最终实现了可配置化检查和处理Asset后处理设置的需求。</strong></p>
+<h2 id="重点知识"><a href="#重点知识" class="headerlink" title="重点知识"></a>重点知识</h2><ol>
+<li><strong>在DoProcessor和DoProcessorByPath流程接口里有params object[] paramList参数，这个参数就是为了兼容不同Asset管线处理流程数据传递问题的。指定处理器流程的处理器或检查器可以通过强转paramList得到Asset管线流程一开始传递的原始数据。</strong></li>
+<li><strong>Asset类型是通过后缀名和类型映射硬编码实现的，如有不支持的文件后置和文件类型，请自行添加。</strong></li>
+<li><strong>检查器只支持了预检查器和后检查器，如果未来有移动和删除检查器的需求也是可以支持的</strong></li>
+<li><strong>检查器目前检查不符合只是打印日志警告，未来想做更多的处理(e.g. 不满足检查设置的自动移动到指定目录去)</strong></li>
+</ol>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li><strong>默认Editor&#x2F;AssetPipeline&#x2F;Config&#x2F;AssetProcessors和Editor&#x2F;AssetPipeline&#x2F;Config&#x2F;AssetChecks目录下才会生成预览，请创建在这两个目录下</strong></li>
+<li><strong>生成AB名处理器会在后处理设置完成后导致Asset处理未保存状态，导致相同Asset设置AB名会重复触发Post Import流程，暂时通过判定AB名是否相同避免重复设置AB名避免重复进入Post Import流程</strong></li>
+</ol>
+<h2 id="设计实现难点"><a href="#设计实现难点" class="headerlink" title="设计实现难点"></a>设计实现难点</h2><p>问题：</p>
+<ol>
+<li><strong>原设计全部是基于ScriptableObejct作为数据存储媒介，导致各电脑同步时配置数据也处于导入状态导致无法正确加载最新的后处理配置(更坏的情况可能加载失败)。(2022&#x2F;8&#x2F;31)</strong></li>
+<li><strong>InitializeOnLoadMethodAttribute标记的方法里无法使用跟Asset相关的类型(比如ScriptableObject相关类)信息也不允许加载Asset相关资源，如果加载Asset相关类型信息会在触发后处理接口的时候发现Asset相关的类型信息发生了Type Exception(类型丢失)(2023&#x2F;10&#x2F;19)</strong></li>
+<li><strong>InitializeOnLoadMethodAttribute标签只能确保部分流程重新初始化AssetPipeline系统，但只有Asset导入(比如协同更新AssetPipeline配置文件时)时并不会触发InitializeOnLoadMethodAttribute，导致Asset未能按最新的AssetPipeline配置执行后处理(2024&#x2F;12&#x2F;19)</strong></li>
+</ol>
+<p>解决方案:</p>
+<ol>
+<li><strong>所有ScriptableObject配置导出一份Json(基于ScritableObject的引用改存AssetPath)，保存时基于ScriptableObject配置生成最新的Json数据。Asset管线系统加载配置数据基于导出的Json，ScriptableObject只作为可视化配置读取的数据来源以及导出Json的数据依据。(2022&#x2F;8&#x2F;31)</strong></li>
+<li><strong>通过拆分配置数据(比如ASTCSet相关的ScriptableObject只负责数据定义)和处理流程(比如ASTCSetJson负责定义和ASTCSet一致的数据实现配置数据反序列化构建+处理流程定义)实现在InitializeOnLoadMethodAttribute标记的方法里读取Asset管线配置数据进行Asset管线系统数据初始化，作为我们Asset管线后处理数据依据(2023&#x2F;10&#x2F;19)</strong></li>
+<li><strong>通过FileSystemWatcher进行对AssetPipeline配置文件保存目录的json文件变化监听，实现AssetPipeline配置文件协同更新时重新初始化AssetPipeline系统(如果用户更新时直接待在Unity界面提前触发Asset导入会导致部分Asset导入时还未加载最新的AssetPipeline配置文件，这个问题暂时没有好的解决方案，欢迎提供好的解决方案)(InitializeOnLoadMethodAttribute+FileSystemWatcher解决99.99%使用情况)</strong></li>
+</ol>
+<h2 id="Github地址"><a href="#Github地址" class="headerlink" title="Github地址"></a>Github地址</h2><p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/AssetPipeline">AssetPipeline</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/06/01/Excel%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0/" rel="prev" title="Excel深入学习">
+                  <i class="fa fa-angle-left"></i> Excel深入学习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/16/%E7%BD%91%E7%BB%9C%E5%AF%B9%E6%97%B6/" rel="next" title="网络对时">
+                  网络对时 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

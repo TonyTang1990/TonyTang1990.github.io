@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="排序算法概念 时间复杂度 – 指执行算法所需要的计算工作量   平均时间复杂度 – 理论上一般情况的时间复杂度  最坏时间复杂度 – 特殊情况下（导致时间耗费最多的数据输入）  最优时间复杂度 – 特殊情况下（导致时间耗费最少的数据输入）  空间复杂度 – 指执行算法所需要的内存空间   排序算法 冒泡排序(Sort Algorithm)基本思想：  比较相邻的元素。如果第一个比第二个大，就交换他">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序算法学习">
+<meta property="og:url" content="http://example.com/2015/07/11/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="排序算法概念 时间复杂度 – 指执行算法所需要的计算工作量   平均时间复杂度 – 理论上一般情况的时间复杂度  最坏时间复杂度 – 特殊情况下（导致时间耗费最多的数据输入）  最优时间复杂度 – 特殊情况下（导致时间耗费最少的数据输入）  空间复杂度 – 指执行算法所需要的内存空间   排序算法 冒泡排序(Sort Algorithm)基本思想：  比较相邻的元素。如果第一个比第二个大，就交换他">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Algorithem/Sort-Algorithem.PNG">
+<meta property="article:published_time" content="2015-07-11T07:38:16.000Z">
+<meta property="article:modified_time" content="2019-03-04T16:42:58.920Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Sort">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Algorithem/Sort-Algorithem.PNG">
+
+
+<link rel="canonical" href="http://example.com/2015/07/11/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2015/07/11/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/","path":"2015/07/11/排序算法/","title":"排序算法学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>排序算法学习 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">排序算法概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F-Sort-Algorithm"><span class="nav-number">2.1.</span> <span class="nav-text">冒泡排序(Sort Algorithm)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F-Heap-Sort"><span class="nav-number">2.2.</span> <span class="nav-text">堆排序(Heap Sort)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F-Quick-Sort"><span class="nav-number">2.3.</span> <span class="nav-text">快速排序(Quick Sort)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F-Merge-Sort"><span class="nav-number">2.4.</span> <span class="nav-text">归并排序(Merge Sort)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F-Insert-Sort"><span class="nav-number">2.5.</span> <span class="nav-text">插入排序(Insert Sort)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/07/11/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="排序算法学习 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          排序算法学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2015-07-11 15:38:16" itemprop="dateCreated datePublished" datetime="2015-07-11T15:38:16+08:00">2015-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2019-03-05 00:42:58" itemprop="dateModified" datetime="2019-03-05T00:42:58+08:00">2019-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="排序算法概念"><a href="#排序算法概念" class="headerlink" title="排序算法概念"></a>排序算法概念</h1><ol>
+<li><p><strong>时间复杂度</strong> – 指执行算法所需要的计算工作量 </p>
+</li>
+<li><p><em>平均时间复杂度</em> – 理论上一般情况的时间复杂度</p>
+</li>
+<li><p><em>最坏时间复杂度</em> – 特殊情况下（导致时间耗费最多的数据输入）</p>
+</li>
+<li><p><em>最优时间复杂度</em> – 特殊情况下（导致时间耗费最少的数据输入）</p>
+</li>
+<li><p><strong>空间复杂度</strong> – 指执行算法所需要的内存空间</p>
+</li>
+</ol>
+<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><hr>
+<h2 id="冒泡排序-Sort-Algorithm"><a href="#冒泡排序-Sort-Algorithm" class="headerlink" title="冒泡排序(Sort Algorithm)"></a>冒泡排序(Sort Algorithm)</h2><p><em>基本思想：</em></p>
+<ol>
+<li>比较相邻的元素。如果第一个比第二个大，就交换他们两个。</li>
+<li>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。这步做完后，最后的元素会是最大的数。</li>
+<li>针对所有的元素重复以上的步骤，除了最后一个。</li>
+<li>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</li>
+</ol>
+<p><em>Code</em></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="type">int</span>* sortarray)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//双重循环都跟数据大小有关</span></span><br><span class="line">    <span class="comment">//所以冒泡排序平均时间复杂度是O(square(n))</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">intArraySize</span>(sortarray); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = i + <span class="number">1</span>; j &lt; <span class="built_in">intArraySize</span>(sortarray); j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>( sortarray[i] &gt; sortarray[j] )</span><br><span class="line">            &#123;</span><br><span class="line">                swap_time++;</span><br><span class="line">                <span class="built_in">swap</span>(sortarray[i], sortarray[j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>冒泡排序时间复杂度</em><br>平均时间复杂度：O(square(n))<br>最坏时间复杂度：O(square(n)) （每一次比较都需要交换）<br>最优时间复杂度：O(n) （第一次循环就完成所有排序而无需进行后面的，需要判断结束条件）</p>
+<h2 id="堆排序-Heap-Sort"><a href="#堆排序-Heap-Sort" class="headerlink" title="堆排序(Heap Sort)"></a>堆排序(Heap Sort)</h2><p><em>相关概念</em></p>
+<ol>
+<li>完全二叉树<br>除最后一层外，每一层的节点数均达到最大值；在最后一层上只缺右边的若干结点</li>
+<li>堆<br>ki&lt;&#x3D;k(2i）且ki&lt;&#x3D;k(2i+1)(1≤i≤ n&#x2F;2），当然，这是小根堆，大根堆则换成&gt;&#x3D;号。&#x2F;&#x2F;k(i）相当于二叉树的非叶子结点，K(2i）则是左子节点，k(2i+1）是右子节点</li>
+</ol>
+<p><em>基本思想</em><br>利用最大堆最小堆的特性，我们可以很容易的拿到最大或最小值，通过构建最大最小堆我们可以得到排序后的值</p>
+<ol>
+<li>最大堆调整（Max_Heapify）：将堆的末端子节点作调整，使得子节点永远小于父节点</li>
+<li>创建最大堆（Build_Max_Heap）：将堆所有数据重新排序</li>
+<li>堆排序（HeapSort）：移除位在第一个数据的根节点，并做最大堆调整的递归运算</li>
+</ol>
+<p><em>Code</em></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//调整堆确保堆是最大堆，这里花O(log(n))，跟堆的深度有关</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">heapAdjust</span><span class="params">(<span class="type">int</span>* sortarray, <span class="type">int</span> parentindex, <span class="type">int</span> length)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> max_index = parentindex;</span><br><span class="line">	<span class="type">int</span> left_child_index = parentindex * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line">	<span class="type">int</span> right_child_index = parentindex * <span class="number">2</span> + <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Chose biggest one between parent and left&amp;right child</span></span><br><span class="line">	<span class="keyword">if</span>( left_child_index &lt; length &amp;&amp; sortarray[left_child_index] &gt; sortarray[max_index] )</span><br><span class="line">	&#123;</span><br><span class="line">		max_index = left_child_index;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>( right_child_index &lt; length &amp;&amp; sortarray[right_child_index] &gt; sortarray[max_index] )</span><br><span class="line">	&#123;</span><br><span class="line">		max_index = right_child_index;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//If any child is bigger than parent, </span></span><br><span class="line">	<span class="comment">//then we swap it and do adjust for child again to make sure meet max heap definition</span></span><br><span class="line">	<span class="keyword">if</span>( max_index != parentindex )</span><br><span class="line">	&#123;</span><br><span class="line">		swap_time++;</span><br><span class="line">		<span class="built_in">swap</span>(sortarray[max_index], sortarray[parentindex]);</span><br><span class="line">		<span class="built_in">heapAdjust</span>(sortarray, max_index, length);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//通过初试数据构建最大堆</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">buildingHeap</span><span class="params">(<span class="type">int</span>* sortarray)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>( <span class="type">int</span> i = <span class="built_in">int</span>(<span class="built_in">intArraySize</span>(sortarray)/<span class="number">2</span>) - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//1.2 Adjust heap</span></span><br><span class="line">		<span class="comment">//Make sure meet max heap definition</span></span><br><span class="line">		<span class="comment">//Max Heap definition:</span></span><br><span class="line">		<span class="comment">// (k(i) &gt;= k(2i) &amp;&amp; k(i) &gt;= k(2i+1))   (1 &lt;= i &lt;= n/2)</span></span><br><span class="line">		<span class="built_in">heapAdjust</span>(sortarray, i, <span class="built_in">intArraySize</span>(sortarray));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">heapSort</span><span class="params">(<span class="type">int</span>* sortarray)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//Steps:</span></span><br><span class="line">	<span class="comment">// 1. Build heap</span></span><br><span class="line">	<span class="comment">// 1.1 Init heap</span></span><br><span class="line">	<span class="comment">// 1.2 Adjust heap</span></span><br><span class="line">	<span class="comment">// 2. Sort heap</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//1. Build max heap</span></span><br><span class="line">	<span class="comment">// 1.1 Init heap</span></span><br><span class="line">	<span class="comment">//Assume we construct max heap</span></span><br><span class="line">	<span class="built_in">buildingHeap</span>(sortarray);</span><br><span class="line">	<span class="comment">//2. Sort heap</span></span><br><span class="line">	<span class="comment">//这里花O(n)，跟数据数量有关</span></span><br><span class="line">	<span class="keyword">for</span>( <span class="type">int</span> i = <span class="built_in">intArraySize</span>(sortarray) - <span class="number">1</span>; i &gt; <span class="number">0</span>; i-- )</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//swap first element and last element</span></span><br><span class="line">		<span class="comment">//do adjust heap process again to make sure the new array are still max heap</span></span><br><span class="line">		<span class="built_in">swap</span>(sortarray[i],sortarray[<span class="number">0</span>]);</span><br><span class="line">		<span class="comment">//Due to we already building max heap before,</span></span><br><span class="line">		<span class="comment">//so  we just need to adjust for index 0 after we swap first and last element</span></span><br><span class="line">		<span class="built_in">heapAdjust</span>(sortarray, <span class="number">0</span>, i);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>堆排序时间复杂度</em><br>平均时间复杂度：O(n * log(n))<br>最坏时间复杂度：O(n * log(n))<br>最优时间复杂度：O(n * log(n)) (时间复杂度都跟堆的深度和数据长度相关，无可避免的需要去做堆调整和堆排序<br>所以最坏时间复杂度和最优时间复杂度都是O(n*log(n)</p>
+<h2 id="快速排序-Quick-Sort"><a href="#快速排序-Quick-Sort" class="headerlink" title="快速排序(Quick Sort)"></a>快速排序(Quick Sort)</h2><p><em>基本思想</em></p>
+<ol>
+<li>选择一个值作为基准后，通过比较把小于基准值的值放到基准值左边，大于基准值的放到基准值右边，这样一来就有一个数据放在了正确位置。</li>
+<li>通过分治的思想，将数据组不断细分成小数据组进行基准值的排序直到细分到只剩一个数据为止</li>
+</ol>
+<p><em>Code</em></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">partition</span><span class="params">(<span class="type">int</span>* sortarray, <span class="type">int</span> l, <span class="type">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//choose pivot</span></span><br><span class="line">	<span class="type">int</span> pivot = sortarray[r];</span><br><span class="line">	<span class="type">int</span> i = l;</span><br><span class="line">	<span class="keyword">for</span>( <span class="type">int</span> j = l; j &lt; r; j++ )</span><br><span class="line">	&#123;</span><br><span class="line">		time_complexity++;</span><br><span class="line">		<span class="keyword">if</span>( sortarray[j] &lt;= pivot )</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">swap</span>(sortarray[i],sortarray[j]);</span><br><span class="line">			i++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">swap</span>(sortarray[i], sortarray[r]);</span><br><span class="line">	<span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">quicksort</span><span class="params">(<span class="type">int</span>* sortarray, <span class="type">int</span> low, <span class="type">int</span> high, <span class="type">bool</span> benableoptimize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//partition</span></span><br><span class="line">	<span class="comment">//Here we use last element of array as pivot</span></span><br><span class="line">	<span class="comment">//recursion</span></span><br><span class="line">	<span class="comment">//Pivot chosen to optimize quicksort</span></span><br><span class="line">	<span class="comment">// median-of-three</span></span><br><span class="line">	<span class="type">int</span> pivotpos; </span><br><span class="line">	<span class="type">int</span> middlepos = (high + <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">if</span>( benableoptimize )</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>( sortarray[low] &gt; sortarray[middlepos] )</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">swap</span>(sortarray[low],sortarray[middlepos]);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>( sortarray[middlepos] &gt; sortarray[high] )</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">swap</span>(sortarray[middlepos],sortarray[high]);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>( sortarray[low] &gt; sortarray[middlepos] )</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">swap</span>(sortarray[low], sortarray[middlepos]);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		pivotpos = middlepos;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		pivotpos = high;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	pivotpos=<span class="built_in">partition</span>(sortarray,low,pivotpos);</span><br><span class="line">	<span class="built_in">quicksort</span>(sortarray,low,pivotpos<span class="number">-1</span>,benableoptimize);</span><br><span class="line">	<span class="built_in">quicksort</span>(sortarray,pivotpos<span class="number">+1</span>,high,benableoptimize);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>时间复杂度</em><br>平均时间复杂度：O(n * log(n)) (细分的时候每一次都对半分)<br>最坏时间复杂度：O(n * square(n)) （细分的时候每一次都分成一个和其他所有,所以在比较有序数据组面前快排效率不高）</p>
+<p>最优时间复杂度：<br>快速排序可以通过选择更有效的基准值来提高效率<br>基准值会影响数据组的细分也就是影响后半部分分治的效率，所以最优时间复杂度取决于如何取基准值（上面提到median-of-three方式选基准值就是通过把第一和中间和最后元素排序后选取中间元素作为基准值来确保在细分的时候尽可能满足对半分从而提高效率）</p>
+<h2 id="归并排序-Merge-Sort"><a href="#归并排序-Merge-Sort" class="headerlink" title="归并排序(Merge Sort)"></a>归并排序(Merge Sort)</h2><p><em>基本思想</em></p>
+<ol>
+<li>通过分治思想，把数据组的排列细分成排序多个的小数据组后合并</li>
+<li>通过比较两两有序的小数据组完成合并后的数据排序，然后和其他有序数据组再次进行比较合并，最终完成所有数据的排列和合并</li>
+</ol>
+<p><em>Code</em></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">merge</span><span class="params">(vector&amp; sortarray, <span class="type">int</span> start, <span class="type">int</span> middle, <span class="type">int</span> end)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> left_size = middle - start + <span class="number">1</span>;</span><br><span class="line">	<span class="type">int</span> right_size = end - middle;</span><br><span class="line">	vector left;</span><br><span class="line">	vector right;</span><br><span class="line">	<span class="keyword">for</span>( <span class="type">int</span> i = <span class="number">0</span>; i &lt; left_size; i++ )</span><br><span class="line">	&#123;</span><br><span class="line">		left.<span class="built_in">push_back</span>(sortarray[start + i]);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>( <span class="type">int</span> j = <span class="number">0</span>; j &lt; right_size; j++ )</span><br><span class="line">	&#123;</span><br><span class="line">		right.<span class="built_in">push_back</span>(sortarray[j + middle + <span class="number">1</span>]);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="type">int</span> k = <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> l = <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> index = start;</span><br><span class="line">	<span class="comment">//The worst condition is compare n * log(n) - n + 1</span></span><br><span class="line">	<span class="comment">//The best condition is compare n * log(n) / 2</span></span><br><span class="line">	<span class="keyword">while</span>( k &lt; left_size &amp;&amp; l &lt; right_size )</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>( left[k] &lt; right[l] )</span><br><span class="line">		&#123;</span><br><span class="line">			sortarray[index] = left[k];</span><br><span class="line">			k++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			sortarray[index] = right[l];</span><br><span class="line">			l++;</span><br><span class="line">		&#125;</span><br><span class="line">		index++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>( k &lt; left_size )</span><br><span class="line">	&#123;</span><br><span class="line">		sortarray[index] = left[k];</span><br><span class="line">		k++;</span><br><span class="line">		index++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>( l &lt; right_size )</span><br><span class="line">	&#123;</span><br><span class="line">		sortarray[index] = right[l];</span><br><span class="line">		l++;</span><br><span class="line">		index++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mergesort</span><span class="params">(vector&amp; sortarray, <span class="type">int</span> start, <span class="type">int</span> end)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//sort first (subdivide array)</span></span><br><span class="line">	<span class="comment">//then merge (finally merge to together recursively)</span></span><br><span class="line">	<span class="keyword">if</span>( start &lt; end )</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> middle = (end + start) / <span class="number">2</span>;</span><br><span class="line">		<span class="built_in">mergesort</span>(sortarray, start, middle);</span><br><span class="line">		<span class="built_in">mergesort</span>(sortarray, middle + <span class="number">1</span>, end);</span><br><span class="line">		<span class="built_in">merge</span>(sortarray, start, middle, end);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>时间复杂度</em><br>平均时间复杂度：O( n * log(n) )<br>最优时间复杂度：O( n )（数据组已经有序，只需要把细分数据合并）<br>最坏时间复杂度：O( n * log(n) )</p>
+<p><em>Note</em><br>因为归并排序需要存储细分后的数据组，所以归并排序比较占内存<br>归并比较次数 n介于 n * log(n) - n + 1 和 n * log(n) &#x2F; 2<br>归并赋值次数2n * log(n)<br>归并平均时间复杂度和最坏时间复杂度都是n * log(n)<br>相比快速排序归并排序更稳定(最坏情况下)，而且更适合局部数据有序的情况</p>
+<h2 id="插入排序-Insert-Sort"><a href="#插入排序-Insert-Sort" class="headerlink" title="插入排序(Insert Sort)"></a>插入排序(Insert Sort)</h2><p><em>基本思想</em><br>通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入</p>
+<ol>
+<li>从第一个元素开始，该元素可以认为已经被排序</li>
+<li>取出下一个元素，在已经排序的元素序列中从后向前扫描</li>
+<li>如果该元素（已排序）大于新元素，将该元素移到下一位置</li>
+<li>重复步骤3，直到找到已排序的元素小于或者等于新元素的位置</li>
+<li>将新元素插入到该位置后</li>
+<li>重复步骤2~5</li>
+</ol>
+<p><em>Code</em></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">insertSort</span><span class="params">(<span class="type">int</span>* sortarray)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> i,j;</span><br><span class="line">	<span class="type">int</span> temp;</span><br><span class="line">	<span class="comment">//从第二个数开始取，依次插入，O(n)</span></span><br><span class="line">	<span class="keyword">for</span>( i = <span class="number">1</span>; i &lt; <span class="built_in">intArraySize</span>(sortarray); i++ )</span><br><span class="line">	&#123;</span><br><span class="line">		temp = sortarray[i];</span><br><span class="line">		<span class="comment">//依次跟之前已经排序好的数组元素比较O(n)</span></span><br><span class="line">		<span class="keyword">for</span>( j = i - <span class="number">1</span>; j &gt;= <span class="number">0</span> &amp;&amp; sortarray[j] &gt; temp; j-- )</span><br><span class="line">		&#123;</span><br><span class="line">			sortarray[j<span class="number">+1</span>] = sortarray[j];</span><br><span class="line">		&#125;</span><br><span class="line">		sortarray[j<span class="number">+1</span>] = temp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>时间复杂度</em><br>平均时间复杂度：O(square(n))<br>最坏时间复杂度：O(square(n))<br>最优时间复杂度：O(n)（数据已经是有序的情况下，不需要比较，直接插入）</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>各排序算法有各自的优势，适合不同的情况。<br>相对稳定且时间复杂度低的排序算法：<br>堆排序，快速排序，归并排序</p>
+<p>而归并排序相比快速排序更稳定（最坏情况下），更适合局部数据有序的情况，但归并的内存占用比较多</p>
+<p>插入排序虽然时间复杂度比较高，但在已经排好序的数据面前，时间复杂度是O(n)<br>插入排序适合有序数据组且经常需要插入数据的情况</p>
+<p>各排序算法时间复杂度总结：<br>来源：<a target="_blank" rel="noopener" href="http://bost.ocks.org/mike/algorithms/">Visualizing Algorithms</a><br><img src="/img/Algorithem/Sort-Algorithem.PNG" alt="Sort-Algorithem"></p>
+<p>参考：<br><a target="_blank" rel="noopener" href="http://www.cricode.com/3212.html">8大排序算法图文讲解</a></p>
+<p>推荐网站：<br><a target="_blank" rel="noopener" href="http://bost.ocks.org/mike/algorithms/">Visualizing Algorithms</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Sort/" rel="tag"># Sort</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2015/07/15/Unity%E5%AD%A6%E4%B9%A0/" rel="next" title="Unity学习">
+                  Unity学习 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

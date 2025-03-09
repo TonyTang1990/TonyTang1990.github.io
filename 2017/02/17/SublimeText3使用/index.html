@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="EditorEditor Comparison先如今有很多优秀的编辑器(有些近乎IDE的水准):  Sublime Text 3 Vim Emacs VS Code Notepade++……  每一种都各有各的优势，作为一个小白用户，连Sublime Text 3和VS Code都算不上使用熟悉，所以这里并不能做详细的比较。 Editor ChosenHow to choose editor?在选">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SublimeText3使用">
+<meta property="og:url" content="http://example.com/2017/02/17/SublimeText3%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="EditorEditor Comparison先如今有很多优秀的编辑器(有些近乎IDE的水准):  Sublime Text 3 Vim Emacs VS Code Notepade++……  每一种都各有各的优势，作为一个小白用户，连Sublime Text 3和VS Code都算不上使用熟悉，所以这里并不能做详细的比较。 Editor ChosenHow to choose editor?在选">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/MarkPreviewShortCut.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/MarkDownPreviewOnBrowser.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/WhereFlake8.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/SublimeLinterFlake8.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/GitPlugin.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/GitGutter.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/KeyBinding.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/SublimeText3Setting.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/SublimeText3SnippetsTrigger.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/SublimeText3SnippetsUsing.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/PackageControl.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/ShowCommands.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/ShowCommands.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/TerminalSetting.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/MutilpleSelection.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/ShowCommands.PNG">
+<meta property="og:image" content="http://example.com/img/Editors/SublimeText3/SplitEdit.PNG">
+<meta property="article:published_time" content="2017-02-17T15:59:11.000Z">
+<meta property="article:modified_time" content="2022-07-31T13:22:01.735Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="SubmlineText3">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Editors/SublimeText3/MarkPreviewShortCut.PNG">
+
+
+<link rel="canonical" href="http://example.com/2017/02/17/SublimeText3%E4%BD%BF%E7%94%A8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2017/02/17/SublimeText3%E4%BD%BF%E7%94%A8/","path":"2017/02/17/SublimeText3使用/","title":"SublimeText3使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SublimeText3使用 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Editor"><span class="nav-number">1.</span> <span class="nav-text">Editor</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Editor-Comparison"><span class="nav-number">1.1.</span> <span class="nav-text">Editor Comparison</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Editor-Chosen"><span class="nav-number">1.2.</span> <span class="nav-text">Editor Chosen</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sublime-Text-3"><span class="nav-number">2.</span> <span class="nav-text">Sublime Text 3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Install"><span class="nav-number">2.1.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Useful-Package"><span class="nav-number">2.2.</span> <span class="nav-text">Useful Package</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Custom-Sublime-Text-3"><span class="nav-number">2.3.</span> <span class="nav-text">Custom Sublime Text 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Useful-Shortcut"><span class="nav-number">2.4.</span> <span class="nav-text">Useful Shortcut</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Package"><span class="nav-number">2.4.1.</span> <span class="nav-text">Package</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Editing"><span class="nav-number">2.4.2.</span> <span class="nav-text">Editing</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Usefule-Commands"><span class="nav-number">2.5.</span> <span class="nav-text">Usefule Commands</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Usefule-Setting"><span class="nav-number">2.6.</span> <span class="nav-text">Usefule Setting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#User-Setting-Backup"><span class="nav-number">2.7.</span> <span class="nav-text">User Setting Backup</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/02/17/SublimeText3%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SublimeText3使用 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SublimeText3使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-02-17 23:59:11" itemprop="dateCreated datePublished" datetime="2017-02-17T23:59:11+08:00">2017-02-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 21:22:01" itemprop="dateModified" datetime="2022-07-31T21:22:01+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Other/" itemprop="url" rel="index"><span itemprop="name">Other</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="Editor"><a href="#Editor" class="headerlink" title="Editor"></a>Editor</h1><h2 id="Editor-Comparison"><a href="#Editor-Comparison" class="headerlink" title="Editor Comparison"></a>Editor Comparison</h2><p>先如今有很多优秀的编辑器(有些近乎IDE的水准):</p>
+<ol>
+<li>Sublime Text 3</li>
+<li>Vim</li>
+<li>Emacs</li>
+<li>VS Code</li>
+<li>Notepade++<br>……</li>
+</ol>
+<p>每一种都各有各的优势，作为一个小白用户，连Sublime Text 3和VS Code都算不上使用熟悉，所以这里并不能做详细的比较。</p>
+<h2 id="Editor-Chosen"><a href="#Editor-Chosen" class="headerlink" title="Editor Chosen"></a>Editor Chosen</h2><p>How to choose editor?<br>在选择自己的IDE或则编辑器的时候，我很赞同一句话“没有最厉害最优秀的只有最适合。”<br>所以哪一种最好最适合取决于我们用它做什么。</p>
+<p>What do I need?<br>作为一个前端程序员，大部分时间是在做手游或者PC端的开发，需要和Android，IOS，PC打交道。<br>在Windows上主要使用VS，Android Studio作为IDE。<br>在Mac上使用XCode作为IDE。<br>主要使用C++,C#,Java,Python,bat,Lua等编程语言。<br>但VS，Android Studio，XCode都属于比较大型的IDE，这里主要是需要一个轻量级的编辑器。<br>主要希望有下列功能：</p>
+<ol>
+<li>跨平台(跨Mac和Windows开发)</li>
+<li>语法高亮</li>
+<li>代码补充</li>
+<li>调试(option)</li>
+<li>快速切换，查询，跳转等方便快捷的快捷修改</li>
+<li>快速启动</li>
+<li>方便自定义(比如背景，快捷键设置等)</li>
+<li>扩展性强(方便添加支持更多功能)<br>……</li>
+</ol>
+<p>Why choose Sublime Text 3?<br>这里就不一一说明Sublime Text 3的好处了，几乎上面我需要的都可以很方便的扩展支持，这也就是为什么选择Sublime Text 3的原因。</p>
+<h1 id="Sublime-Text-3"><a href="#Sublime-Text-3" class="headerlink" title="Sublime Text 3"></a>Sublime Text 3</h1><p><a target="_blank" rel="noopener" href="https://www.sublimetext.com/">Sublime Text 3官网</a></p>
+<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><p><a target="_blank" rel="noopener" href="https://www.sublimetext.com/3">Download Sublime Text 3</a></p>
+<h2 id="Useful-Package"><a href="#Useful-Package" class="headerlink" title="Useful Package"></a>Useful Package</h2><ol>
+<li>Package Control<br>Sublime Text 3扩展性强就在于通过安装扩展包，可以得到很多有用的功能支持。<br>而帮助快速安装和查找有用的Package，就不得不提Package Control，有了它我们可以快速的搜索和安装想要的Package。<br>如何安装Package Control：<br><a target="_blank" rel="noopener" href="https://packagecontrol.io/installation">Package Control Installation</a><br>如果不知道有哪些Package，可以在下面官网查询：<br><a target="_blank" rel="noopener" href="https://packagecontrol.io/">Package Control Package</a></li>
+<li>Terminal<br>偶尔会需要打开命令行窗口，这个插件可以帮助我们直接在Sublime里通过快捷键快速打开系统自带命令行<br><a target="_blank" rel="noopener" href="https://github.com/wbond/sublime_terminal">Terminal</a><br>Note:<br>虽然Sublime Text 3也有Git相关的插件，但是考虑已经添加了快速打开命令行的插件，并且Git使用不会太频繁，所以不单独添加Git扩展。</li>
+<li>Markdown<br>Markdown是我们经常会去编写文档的一类格式，语法高亮，快速浏览效果是效率的关键。<ol>
+<li><p><a target="_blank" rel="noopener" href="https://packagecontrol.io/packages/MarkdownEditing">Markdown Edit</a><br> Better syntax understanding and good color schemes.</p>
+</li>
+<li><p>Markdown Preview<br> ctrl+shift+p，然后输入Markdown Preview: Preview in Browser<br> 我们去Preference -&gt; Key Binding里去改快速生成Markdown HTML的快捷键</p>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="/img/Editors/SublimeText3/MarkPreviewShortCut.PNG" alt="MarkPreviewShortCut"><br>    最后得到我们Markdown的网页版：<br><img src="/img/Editors/SublimeText3/MarkDownPreviewOnBrowser.PNG" alt="MarkDownPreviewOnBrowser"></p>
+<ol start="4">
+<li><a target="_blank" rel="noopener" href="https://packagecontrol.io/packages/SublimeCodeIntel">SublimeCodeIntel</a><br><a target="_blank" rel="noopener" href="https://www.oschina.net/news/71008/8-sublime-text-3-plugins">SublimeCodeIntel 作为一个代码提示和补全插件，支持 JavaScript、Mason、XBL、XUL、RHTML、SCSS、Python、HTML、Ruby、Python3、XML、Sass、XSLT、Django、HTML5、Perl、CSS、Twig、Less、Smarty、Node.js、Tcl、TemplateToolkit 和 PHP 等所有语言，是 Sublime Text 自带代码提示功能基础上一个更好的扩展，自带代码提示功能只可提示系统代码，而SublimeCodeIntel则可以提示用户自定义代码。</a><br>这里本人主要是为了配置Python<br>因为官网提到Default Settings在更新时会被覆盖，如果要修改设置应该写在User里。<br>Preferences -&gt; Package Settings -&gt; SublimeCodeIntel -&gt; Setting User<br>配置Python如下：</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/*</span></span><br><span class="line"><span class="comment">   SublimeCodeIntel user settings</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">       Defines a configuration for each language.</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="string">&quot;codeintel_language_settings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;Python&quot;</span>: &#123; </span><br><span class="line">           <span class="comment">// For Windows Python 2.7</span></span><br><span class="line">           <span class="string">&quot;python&quot;</span>: <span class="string">&quot;H:/StudyTools/Phyton2_7/python.exe&quot;</span>,</span><br><span class="line">           <span class="string">&quot;pythonExtraPaths&quot;</span>:[</span><br><span class="line">               <span class="string">&quot;H:/StudyTools/Phyton2_7&quot;</span>,</span><br><span class="line">               <span class="string">&quot;H:/StudyTools/Phyton2_7/DLLs&quot;</span>,  </span><br><span class="line">               <span class="string">&quot;H:/StudyTools/Phyton2_7/Lib&quot;</span>,  </span><br><span class="line">               <span class="string">&quot;H:/StudyTools/Phyton2_7/Lib/lib-tk&quot;</span>,  </span><br><span class="line">               <span class="string">&quot;H:/StudyTools/Phyton2_7/Lib/site-packages&quot;</span>,  </span><br><span class="line">           ],</span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        <span class="string">&quot;Python3&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;python&quot;</span>: <span class="string">&quot;H:/StudyTools/Python3_6/python.exe&quot;</span>,</span><br><span class="line">            <span class="string">&quot;pythonExtraPaths&quot;</span>: [</span><br><span class="line">               <span class="string">&quot;H:/StudyTools/Python3_6&quot;</span>,</span><br><span class="line">               <span class="string">&quot;H:/StudyTools/Python3_6/DLLs&quot;</span>,  </span><br><span class="line">               <span class="string">&quot;H:/StudyTools/Python3_6/Lib&quot;</span>,  </span><br><span class="line">               <span class="string">&quot;H:/StudyTools/Python3_6/Lib/tkinter&quot;</span>,  </span><br><span class="line">               <span class="string">&quot;H:/StudyTools/Python3_6/Lib/site-packages&quot;</span>,  </span><br><span class="line">            ],</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>其中是Python和Python3分别代表Python2.x和Python3.x的安装路径
+如果需要配置其他语言，也写在&quot;codeintel_language_settings&quot;里即可。
+这个由于还没正式开始学习使用Python，但测试无论配没配置上面，系统提示和自定义方法都会有自动提示和补全功能和函数跳转(Alt+click)(不确定是Sublime Text 3自带的还是SublimeCodeIntel的功能，暂时先按上面的方式设置)
+</code></pre>
+<ol start="5">
+<li><a target="_blank" rel="noopener" href="http://www.sublimelinter.com/en/latest/installation.html">SublimeLinter</a><br>SublimeLinter是一个 framework for linters(静态代码检查的框架)。要支持不同的语言需要额外装对应的扩展包。<br>主要是为了装Python的静态代码和代码规范检查。<br>现在SublimeLinter上Python的Linter有很多，比如pep8,pylint,flake8,bandit等<br>作为Python初学者这里暂时不纠结哪一个更好，暂时使用flake作为尝试。<br>因为SublimeLinterFlake8会用到flake，所以需要安装flake先：<br>打开terminal，输入pip install flake<br>python3自带pip<br>低于python2.7.9的好像要自己装pip<br>pip可以理解成类似于Package Control帮助快速安装Python工具包的工具。<br>确认flake8.exe在环境变量中：<br><img src="/img/Editors/SublimeText3/WhereFlake8.PNG" alt="WhereFlake8"><br>然后通过PackageControl安装SublimeLinterFlake8即可。<br>这样一来就有静态代码和代码规范检查了:<br><img src="/img/Editors/SublimeText3/SublimeLinterFlake8.PNG" alt="SublimeLinterFlake8"></li>
+<li><a target="_blank" rel="noopener" href="https://packagecontrol.io/packages/Git">Git</a><br>Git是程序员经常打交道的东西。为了在Sublime Text 3里快速的使用Git提高效率。安装Git插件可以支持我们在Ctrl+Shift+P里直接调用Git命令。<br>安装步骤还是通过Package Control这里就不再重述。<br>直接看看安装好后的效果：<br><img src="/img/Editors/SublimeText3/GitPlugin.PNG" alt="GitPlugin"></li>
+<li><a target="_blank" rel="noopener" href="https://packagecontrol.io/packages/GitGutter">GitGutter</a><br>GitGutter主要是提供了Git提交时在Sublime Text 3里支持高亮显示增删改查等变化。<br>老规矩安装(Packgage Control)<br>直接看看使用GitGutter提交时的高亮显示变化效果:<br><img src="/img/Editors/SublimeText3/GitGutter.PNG" alt="GitGutter"></li>
+</ol>
+<h2 id="Custom-Sublime-Text-3"><a href="#Custom-Sublime-Text-3" class="headerlink" title="Custom Sublime Text 3"></a>Custom Sublime Text 3</h2><ol>
+<li><p>Key Binding<br>自定义快捷键。打开Preference -&gt; Key Binding进行快捷键修改(这里以打开修改方法跳转，文件搜索等快捷键跟VS番茄插件一致为例)<br><img src="/img/Editors/SublimeText3/KeyBinding.PNG" alt="KeyBinding"><br>Note:<br>改快捷键绑定只是让新的快捷键覆盖相同快捷键但并不关闭原始快捷键设置，要想默认快捷键不起作用还得设置相同的快捷键覆盖。</p>
+</li>
+<li><p>Sublime Text 3 Setting<br>字体大小，行号显示，拼写检查等设置。<br>修改默认设置跟自定义快捷键差不多。<br>比如我们想默认字体大小改大一点：<br>Preference -&gt; Settings<br><img src="/img/Editors/SublimeText3/SublimeText3Setting.PNG" alt="SublimeText3Setting"><br>我们希望修改只针对MarkDown文件的语法高亮规则：<br>打开*.md文件<br>Preference -&gt; Settings - Syntax Specific</p>
+</li>
+<li><p>Theme</p>
+</li>
+<li><p>Custom Snippets<br>自定义快速填充片段。帮助我们在快速编写重复的代码或者注释。<br>Tools -&gt; Developer -&gt; New Snippets<br>放在:C:\Users\mshz\AppData\Roaming\Sublime Text 3\Packages\User下<br>貌似每一个Snippets文件只能编写一个对应的Snippet。<br>所以要想管理不同编程语言之间的Snippets，我们可以通过建立不同的文件夹进行管理分类。<br>接下来看看Snippet事例和使用效果：</p>
+</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;snippet&gt;</span><br><span class="line">  &lt;content&gt;&lt;![CDATA[</span><br><span class="line"><span class="meta"># File Name:    $TM_FILENAME</span></span><br><span class="line"><span class="meta"># Description:    This file is used to $&#123;1:Staff&#125;</span></span><br><span class="line"><span class="meta"># Author:       $&#123;2:TangHuan&#125;</span></span><br><span class="line"><span class="meta"># Create Date:    $&#123;3:Year&#125;/$&#123;4:Month&#125;/$&#123;5:Day&#125;</span></span><br><span class="line">]]&gt;&lt;/content&gt;</span><br><span class="line">  &lt;!-- Optional: Set a tabTrigger to define how to trigger the snippet --&gt;</span><br><span class="line">  &lt;tabTrigger&gt;PyFileHeader&lt;/tabTrigger&gt;</span><br><span class="line">  &lt;!-- Optional: Set a scope to limit <span class="keyword">where</span> the snippet will trigger --&gt;</span><br><span class="line">  &lt;scope&gt;source.python&lt;/scope&gt;</span><br><span class="line">&lt;/snippet&gt;</span><br></pre></td></tr></table></figure>
+<p><content><![CDATA[这里的内容是我们自定义快速生成的模板]]></content><br><tabTrigger>这里的内容是触发当前Snippet的输入内容</tabTrigger><br><scop>这里的内容是当前Snippet支持的文件类型</scop><br>看看使用效果:<br><img src="/img/Editors/SublimeText3/SublimeText3SnippetsTrigger.PNG" alt="SublimeText3SnippetsTrigger"><br><img src="/img/Editors/SublimeText3/SublimeText3SnippetsUsing.PNG" alt="SublimeText3SnippetsUsing"></p>
+<h2 id="Useful-Shortcut"><a href="#Useful-Shortcut" class="headerlink" title="Useful Shortcut"></a>Useful Shortcut</h2><h3 id="Package"><a href="#Package" class="headerlink" title="Package"></a>Package</h3><ol>
+<li>Open Package Control - Ctrl + Shift + P<br><img src="/img/Editors/SublimeText3/PackageControl.PNG" alt="PackageControl"></li>
+<li>Open Console - Ctrl + &#96;<br><img src="/img/Editors/SublimeText3/ShowCommands.PNG" alt="Console"></li>
+<li>Open CMD Console - Ctrl + Shift + T<br><img src="/img/Editors/SublimeText3/ShowCommands.PNG" alt="ShowCommands"><br>Windows上默认是打开的power shell，如果希望打开普通的cmd窗口，可以在Preferences &gt; Package Settings &gt; Terminal &gt; Settings – Default 里指定terminal路径参数等<br><img src="/img/Editors/SublimeText3/TerminalSetting.PNG" alt="TerminalSetting"></li>
+</ol>
+<h3 id="Editing"><a href="#Editing" class="headerlink" title="Editing"></a>Editing</h3><ol>
+<li>Go Anything - Ctrl + P<br>平时打开一个工程或则大的文件目录，我们想要快速定位特定文件里的特定内容。<br>这时Go Anything能满足需求。<br>比如查找FPSDisplay.cs文件里Init()符号：<br>FPSDisplay.cs @Init<br>查找FPSDisplay.cs文件里的特定文字：<br>FPSDisplay.cs #Hello<br>跳转特定文件特定行：<br>FPSDisplay.cs :1(行号)</li>
+<li>Multiple Selections<br>当我们需要在文本中找到特定文本并进行修改时，我们可以通过Multiple Selections进行选中我们想要选中的文本然后进行一次修改多行改变，而不用修改多次。<br>Ctrl+D：选中当前光标所在位置的单词。连续使用时，进行多光标选择，选中下一个同名单词。<br>Ctrl+K：配合Ctrl+D可以跳过下一个同名单词。<br>下面是选择替换FPSDisplay.cs中的mTestSublimeGoAnything为例(只替换第一个和第三个匹配的)：<br><img src="/img/Editors/SublimeText3/MutilpleSelection.PNG" alt="MutilpleSelection"></li>
+</ol>
+<h2 id="Usefule-Commands"><a href="#Usefule-Commands" class="headerlink" title="Usefule Commands"></a>Usefule Commands</h2><ol>
+<li>sublime.log_commands(True) – 在console窗口显示当前操作的命令(可以针对特定命令修改成我们自己想要的快捷键)<br><img src="/img/Editors/SublimeText3/ShowCommands.PNG" alt="ShowCommands"></li>
+</ol>
+<h2 id="Usefule-Setting"><a href="#Usefule-Setting" class="headerlink" title="Usefule Setting"></a>Usefule Setting</h2><ol>
+<li>Split Editing<br>View -&gt; Layout -&gt; **<br>很多时候我们需要同时查看多个文件，方便对照查看并修改。<br>分割出来的窗口在窗口操作上是独立的，但同样的文件在两个窗口是同一份。<br><img src="/img/Editors/SublimeText3/SplitEdit.PNG" alt="SplitEdit"></li>
+</ol>
+<h2 id="User-Setting-Backup"><a href="#User-Setting-Backup" class="headerlink" title="User Setting Backup"></a>User Setting Backup</h2><p>备份Sublime Text 3所有的Package和个性化设置。<br>我们只需要保存一下目录即可:<br>C:\Users\user\AppData\Roaming\Sublime Text 3\Packages<br>当需要同步的时候，把上面的内容覆盖到新的电脑上Sublime Text 3对应的目录即可。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://www.sublimetext.com/">Sublime Text 3</a><br><a target="_blank" rel="noopener" href="http://blog.guowenfh.com/2015/12/26/SublimeText/">一个前端程序猿的Sublime Text3的自我修养</a><br><a target="_blank" rel="noopener" href="https://www.sublimetext.com/docs/3/">Sublime Text 3 Documentation</a><br><a target="_blank" rel="noopener" href="https://www.oschina.net/news/71008/8-sublime-text-3-plugins">开发者最常用的 8 款 Sublime text 3 插件</a><br><a target="_blank" rel="noopener" href="http://tanchao90.com/sublime/">Sublime Text 使用小结</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SubmlineText3/" rel="tag"># SubmlineText3</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/12/20/Unity-Shader/" rel="prev" title="Unity Shader">
+                  <i class="fa fa-angle-left"></i> Unity Shader
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/04/29/Unity%E8%87%AA%E5%8A%A8%E5%8C%96&IOS%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/" rel="next" title="Unity自动化&IOS自动化签包">
+                  Unity自动化&IOS自动化签包 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

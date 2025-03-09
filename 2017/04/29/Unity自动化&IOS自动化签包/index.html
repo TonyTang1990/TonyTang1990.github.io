@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Unity自动化打包本章节主要是为了学习Unity自动化打包相关知识以及运用。本文大部分属于本人学习理解的东西，如有不对欢迎指出，学习交流，共同进步。 本章节的流程如下：  了解什么是打包以及打包过程中的一些相关概念 了解什么是自动化以及帮助我们快速完成一键打包的工具 自动化打包工具或编程语言的选取 Unity自动化打包过程中的相关工具 实战集成运用到Unity构建一键打包 更多学习程序发布以及相">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity自动化&amp;IOS自动化签包">
+<meta property="og:url" content="http://example.com/2017/04/29/Unity%E8%87%AA%E5%8A%A8%E5%8C%96&IOS%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Unity自动化打包本章节主要是为了学习Unity自动化打包相关知识以及运用。本文大部分属于本人学习理解的东西，如有不对欢迎指出，学习交流，共同进步。 本章节的流程如下：  了解什么是打包以及打包过程中的一些相关概念 了解什么是自动化以及帮助我们快速完成一键打包的工具 自动化打包工具或编程语言的选取 Unity自动化打包过程中的相关工具 实战集成运用到Unity构建一键打包 更多学习程序发布以及相">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Unity/OpenAutomation.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/OpenAutomationWithCommands.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/JenkinsFreeStyleProject.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/FreeStyleWithParametersSetting.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/FreeStyleWithSourceSetting.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/FreeStyleWithCommandsSetting.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/FreeStyleWithPostProcessing.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/FreeStyleWithOwnWorkspace.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/DownloadPipelinePlugin.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CreatePipelineStep1.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/CreatePipelineStep2.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/SetPipelineSourceFromWeb.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/SetPipelineSourceFromSVN.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/PipelineSnippetGenerator.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/EmailNotificationSetting.png">
+<meta property="og:image" content="http://example.com/img/Unity/ExtendedEmailNotificationPart1.png">
+<meta property="og:image" content="http://example.com/img/Unity/WorkspaceExtendedEmailSetting.png">
+<meta property="og:image" content="http://example.com/img/Unity/EmailResult.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/JenkinsUnityPathConfiguration.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/JenkinsUnityMethodCall.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/JenkinsUnityMethodCallOutput.PNG">
+<meta property="og:image" content="http://example.com/img/Bash/BatStudyOutput.png">
+<meta property="og:image" content="http://example.com/img/Bash/BashEcho.png">
+<meta property="og:image" content="http://example.com/img/Bash/LSCommand.png">
+<meta property="og:image" content="http://example.com/img/Unity/IOSAppDistributionWorkflows.PNG">
+<meta property="og:image" content="http://example.com/img/Bash/XcodebuildManualPage.png">
+<meta property="og:image" content="http://example.com/img/Bash/XcodeProjectDemo.png">
+<meta property="og:image" content="http://example.com/img/Bash/XcodeProjectListInfo.png">
+<meta property="og:image" content="http://example.com/img/Bash/XcodeProjectBuildSettingsInfo.png">
+<meta property="og:image" content="http://example.com/img/XcodeAutoSign/ManXcodeBuild.png">
+<meta property="og:image" content="http://example.com/img/XcodeAutoSign/XcodeBundleId.png">
+<meta property="og:image" content="http://example.com/img/XcodeAutoSign/KeyChainCertificates.png">
+<meta property="og:image" content="http://example.com/img/XcodeAutoSign/CertificateDetail.png">
+<meta property="og:image" content="http://example.com/img/XcodeAutoSign/ProvisioningProfile.png">
+<meta property="og:image" content="http://example.com/img/XcodeAutoSign/ProvisionProfileName.png">
+<meta property="og:image" content="http://example.com/img/XcodeAutoSign/DeploymentTarget.png">
+<meta property="og:image" content="http://example.com/img/XcodeAutoSign/ExportOptionFile.png">
+<meta property="og:image" content="http://example.com/img/XcodeAutoSign/ArchiveFile.png">
+<meta property="article:published_time" content="2017-04-29T07:17:56.000Z">
+<meta property="article:modified_time" content="2021-10-15T00:57:00.293Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Unity/OpenAutomation.PNG">
+
+
+<link rel="canonical" href="http://example.com/2017/04/29/Unity%E8%87%AA%E5%8A%A8%E5%8C%96&IOS%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2017/04/29/Unity%E8%87%AA%E5%8A%A8%E5%8C%96&IOS%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/","path":"2017/04/29/Unity自动化&IOS自动化签包/","title":"Unity自动化&IOS自动化签包"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Unity自动化&IOS自动化签包 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Unity%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85"><span class="nav-number">1.</span> <span class="nav-text">Unity自动化打包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6"><span class="nav-number">1.1.</span> <span class="nav-text">版本控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%8C%85"><span class="nav-number">1.2.</span> <span class="nav-text">打包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%B9%B3%E5%8F%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">多平台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96"><span class="nav-number">1.2.2.</span> <span class="nav-text">自动化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Jenkins"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Jenkins</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Jenkins%E5%AE%9E%E6%88%98"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Jenkins实战</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%87%AA%E7%94%B1%E9%A3%8E%E6%A0%BC%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.2.2.2.1.</span> <span class="nav-text">自由风格构建系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Pipeline"><span class="nav-number">1.2.2.2.2.</span> <span class="nav-text">Pipeline</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#What"><span class="nav-number">1.2.2.2.2.1.</span> <span class="nav-text">What</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Why"><span class="nav-number">1.2.2.2.2.2.</span> <span class="nav-text">Why</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#How"><span class="nav-number">1.2.2.2.2.3.</span> <span class="nav-text">How</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Jenkinsfile"><span class="nav-number">1.2.2.2.2.4.</span> <span class="nav-text">Jenkinsfile</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Problems"><span class="nav-number">1.2.2.2.2.5.</span> <span class="nav-text">Problems</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Tools"><span class="nav-number">1.2.2.2.3.</span> <span class="nav-text">Tools</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Pipeline-Tools"><span class="nav-number">1.2.2.2.3.1.</span> <span class="nav-text">Pipeline Tools</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Email-Plugin"><span class="nav-number">1.2.2.2.3.2.</span> <span class="nav-text">Email Plugin</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Unity3D-Plugin"><span class="nav-number">1.2.2.2.3.3.</span> <span class="nav-text">Unity3D Plugin</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Jenkins%E4%BB%8E%E9%9B%B6%E6%90%AD%E5%BB%BA"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">Jenkins从零搭建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">脚本语言</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#bat"><span class="nav-number">1.2.2.4.1.</span> <span class="nav-text">bat</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Shell"><span class="nav-number">1.2.2.4.2.</span> <span class="nav-text">Shell</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#bash"><span class="nav-number">1.2.2.4.2.1.</span> <span class="nav-text">bash</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Python-%E4%B8%A5%E6%A0%BC%E6%84%8F%E4%B9%89%E4%B8%8A%E4%B8%8D%E7%AE%97%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80"><span class="nav-number">1.2.2.4.3.</span> <span class="nav-text">Python(严格意义上不算脚本语言)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IOS%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">IOS自动化打包</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#IOS%E6%89%93%E5%8C%85%E5%87%86%E5%A4%87"><span class="nav-number">1.2.2.5.1.</span> <span class="nav-text">IOS打包准备</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#XUPorter-or-Unity-API-PBXFroject"><span class="nav-number">1.2.2.5.2.</span> <span class="nav-text">XUPorter or Unity API(PBXFroject)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#XUPoter"><span class="nav-number">1.2.2.5.2.1.</span> <span class="nav-text">XUPoter</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#PBXProject"><span class="nav-number">1.2.2.5.2.2.</span> <span class="nav-text">PBXProject</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IOS%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85"><span class="nav-number">1.2.2.6.</span> <span class="nav-text">IOS自动化签包</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">2.</span> <span class="nav-text">References</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jenkins-Part"><span class="nav-number">2.1.</span> <span class="nav-text">Jenkins Part</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shell-Part"><span class="nav-number">2.2.</span> <span class="nav-text">Shell Part</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xcodebuild-Part"><span class="nav-number">2.3.</span> <span class="nav-text">Xcodebuild Part</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-Part"><span class="nav-number">2.4.</span> <span class="nav-text">Other Part</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/04/29/Unity%E8%87%AA%E5%8A%A8%E5%8C%96&IOS%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Unity自动化&IOS自动化签包 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity自动化&IOS自动化签包
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-04-29 15:17:56" itemprop="dateCreated datePublished" datetime="2017-04-29T15:17:56+08:00">2017-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2021-10-15 08:57:00" itemprop="dateModified" datetime="2021-10-15T08:57:00+08:00">2021-10-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Automation/" itemprop="url" rel="index"><span itemprop="name">Automation</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="Unity自动化打包"><a href="#Unity自动化打包" class="headerlink" title="Unity自动化打包"></a>Unity自动化打包</h1><p>本章节主要是为了学习Unity自动化打包相关知识以及运用。<br>本文大部分属于本人学习理解的东西，如有不对欢迎指出，学习交流，共同进步。</p>
+<p>本章节的流程如下：</p>
+<ol>
+<li>了解什么是打包以及打包过程中的一些相关概念</li>
+<li>了解什么是自动化以及帮助我们快速完成一键打包的工具</li>
+<li>自动化打包工具或编程语言的选取</li>
+<li>Unity自动化打包过程中的相关工具</li>
+<li>实战集成运用到Unity构建一键打包</li>
+<li>更多学习程序发布以及相关概念</li>
+</ol>
+<p>在了解相关自动化工具之前，我们需要先简单了解下什么是版本控制。在我们的日常开发工作中必不可少。</p>
+<h2 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h2><p><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2019/04/19/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/">版本控制相关概念学习</a></p>
+<h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><p>平时做游戏开发，在完成整个游戏功能开发后，需要通过打包上真机测试。<br>把所有游戏资源代码打包成安装包的过程称为打包。</p>
+<h3 id="多平台"><a href="#多平台" class="headerlink" title="多平台"></a>多平台</h3><p>在多平台的处理上，Unity已经帮我们做了很大一部分工作了。让我们大部分时间只需关心游戏核心开发(Unity部分API在不同平台有差异)，在打包这一块只需打选择对应平台即可。</p>
+<p>但Unity自带的打包，终究只包含最基本的打包流程，当我们有特殊需求时，我们需要通过Unity以及相关工具完成支持我们自定义的打包流程。</p>
+<h3 id="自动化"><a href="#自动化" class="headerlink" title="自动化"></a>自动化</h3><p>在了解什么是自动化之前，让我们看看打包的基本流程。<br>在打包过程中，打包往往包含4个步骤。</p>
+<ol>
+<li>Preprocess(打包准备步骤)<br>这一步主要是为正式打包编译做准备，比如做一些平台相关设置，资源打包处理，文件复制等</li>
+<li>Build(打包编译步骤)<br>这一步是程序代码和资源正式打包成安装包的步骤，主要是通过指定打包参数执行打包。<br>Unity在打包到Android和IOS平台时有差异。Android是直接就打包出APK，而IOS要先打包成XCode工程，然后在通过编译XCode工程打包出Ipa安装包。</li>
+<li>Postprocess(打包结束后期处理步骤)<br>这一步是打包完成后负责后续的自动化操作以及善后工作，比如在打包IOS时打包出XCode工程后，可以在这一步进行XCode工程的自动化处理部分(比如动态添加info.plist文件信息，动态插入代码等)</li>
+<li>Deploy(安装步骤)<br>这一步主要是打包好的安装包安装到真机的步骤</li>
+</ol>
+<p>如果没有自动化，我们需要一步一步人工手动去完成上面的步骤。<br>而自动化就是只需人工设置打包最基本的参数信息，然后通过一步就自动化完成上述步骤的过程。</p>
+<h4 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h4><p><strong>Introduction</strong><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Jenkins_(%E8%BD%AF%E4%BB%B6)">Jenkins是一个用Java编写的开源的持续集成工具。Jenkins提供了软件开发的持续集成服务。它运行在Servlet容器中（例如Apache Tomcat）。它支持软件配置管理（SCM）工具（包括AccuRev SCM、CVS、Subversion、Git、Perforce、Clearcase和RTC），可以执行基于Apache Ant和Apache Maven的项目，以及任意的Shell脚本和Windows批处理命令。Jenkins的主要开发者是川口耕介。</a></p>
+<p>本人使用目的：<br>做Unity游戏打包机，持续集成自动化打包流程，做到一键打包。</p>
+<p><a target="_blank" rel="noopener" href="https://jenkins.io/doc/"><strong>Deployment</strong></a></p>
+<ol>
+<li>Download Jeakins</li>
+<li>Open up a terminal in the download directory and run java -jar jenkins.war</li>
+<li>Browse to <a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080</a> and follow the instructions to complete the installation.(安装插件)</li>
+</ol>
+<h4 id="Jenkins实战"><a href="#Jenkins实战" class="headerlink" title="Jenkins实战"></a>Jenkins实战</h4><h5 id="自由风格构建系统"><a href="#自由风格构建系统" class="headerlink" title="自由风格构建系统"></a>自由风格构建系统</h5><p>主要是采用特定的构建系统去构建自动化。(比如java通过ant||Maven，windows通过bat||python等)<br><img src="/img/Unity/OpenAutomation.PNG" alt="OpenAutomation"></p>
+<p>如果不想采用Pipeline编写自动化流程，也可以通过直接编写调用Windows Bat或者Python等命令触发自动化流程。<br><img src="/img/Unity/OpenAutomationWithCommands.PNG" alt="OpenAutomationWithCommands"></p>
+<p>Unity3d Plugin不支持Pipeline，所以为了使用Unity3d Plugins,这里采用自由风格构建系统来搭建Unity3D的自动化打包。</p>
+<ol>
+<li>Create Free Style(创建自由风格项目)<br>新建 -&gt; 构建一个自由风格的软件项目<br><img src="/img/Unity/JenkinsFreeStyleProject.PNG" alt="JenkinsFreeStyleProject"></li>
+<li>设置参数构造(用于自定义参数添加)<br><img src="/img/Unity/FreeStyleWithParametersSetting.PNG" alt="FreeStyleWithParametersSetting"></li>
+<li>设置代码来源<br><img src="/img/Unity/FreeStyleWithSourceSetting.PNG" alt="FreeStyleWithSourceSetting"></li>
+<li>设置构建命令(bat || python || unity3d……)<br><img src="/img/Unity/FreeStyleWithCommandsSetting.PNG" alt="FreeStyleWithCommandsSetting"></li>
+<li>设置构建完毕后的一些行为(比如邮件通知)<br><img src="/img/Unity/FreeStyleWithPostProcessing.PNG" alt="FreeStyleWithPostProcessing"></li>
+</ol>
+<p>Note:<br>想要改变默认的workspace路径的话。<br>设置-&gt;使用自定义的工作空间(只针对当前设置的自由风格项目有效)<br><img src="/img/Unity/FreeStyleWithOwnWorkspace.PNG" alt="FreeStyleWithOwnWorkspace"></p>
+<h5 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h5><h6 id="What"><a href="#What" class="headerlink" title="What"></a>What</h6><p><a target="_blank" rel="noopener" href="https://jenkins.io/doc/">Jenkins Pipeline is a suite of plugins which supports implementing and integrating continuous delivery pipelines into Jenkins. Pipeline provides an extensible set of tools for modeling simple-to-complex delivery pipelines “as code”.</a>(这里的Pipeline是一套插件，用于支持持续自动化集成编写。好比脚本文件定义一系列的自动化流程，但并不等价于脚本。)</p>
+<p>那么Pipeline是用什么语言编写了？<br>Jenkins是基于Java的，Pipeline的编写是基于Groovy。<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Groovy">Groovy是Java平台上设计的面向对象编程语言。这门动态语言拥有类似Python、Ruby和Smalltalk中的一些特性，可以作为Java平台的脚本语言使用。</a></p>
+<h6 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h6><p>为什么需要Pipeline？</p>
+<ol>
+<li>Code – 可管理可编辑可视化的自动化流程脚本</li>
+<li>Durable – 可持续化开发</li>
+<li>Pausable – 可以自动也可以停止等待输入</li>
+<li>Versatile – 支持复杂的持续交付需求</li>
+<li>Extensible – “The Pipeline plugin supports custom extensions to its DSL [5: Domain-Specific<br>Language] and multiple options for integration with other plugins.”</li>
+</ol>
+<h6 id="How"><a href="#How" class="headerlink" title="How"></a>How</h6><p>接下来让我们看看如何创建一个Pipeline。</p>
+<ol>
+<li>下载Pipeline插件<br><img src="/img/Unity/DownloadPipelinePlugin.PNG" alt="DownloadPipelinePlugin"></li>
+<li>New Item – 新建Pipeline(选择Pipeline类型)<br><img src="/img/Unity/CreatePipelineStep1.PNG" alt="CreatePipeline"></li>
+<li>Configure Pipeline<ul>
+<li>配置Pipeline的名字<br><img src="/img/Unity/CreatePipelineStep2.PNG" alt="ConfigurePipeline"></li>
+<li>设置Jenkins Pipeline Code的来源<ul>
+<li>网页版编写<br><img src="/img/Unity/SetPipelineSourceFromWeb.PNG" alt="CreatePipelineSetPipelineSource"></li>
+<li>SVN下含Jenksfile文件<br><img src="/img/Unity/SetPipelineSourceFromSVN.PNG" alt="CreatePipelineSetPipelineSourceSVN"><br>这里不深入讨论Jenkins的各种设置，详情查看官方文档<a target="_blank" rel="noopener" href="https://jenkins.io/user-handbook.pdf">Jenkins User Handbook</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>Note:<br>Pipeline supports two syntaxes, Declarative and Scripted Pipeline</p>
+<h6 id="Jenkinsfile"><a href="#Jenkinsfile" class="headerlink" title="Jenkinsfile"></a>Jenkinsfile</h6><p>除了直接在网页上编写Pipeline自动化流程。我们也可以指定Jenkinsfile文件作为编写Pipeline的地方。</p>
+<p>为什么需要Jenkinsfile？<br>主要还是为了放入版本管理，方便所有人可视化看到自动化流程代码。</p>
+<p>e.g.</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!groovy</span></span><br><span class="line">pipeline &#123;</span><br><span class="line">    <span class="comment">//agent指定jenkins从哪里以及如何执行pipeline</span></span><br><span class="line">    <span class="comment">//any表示从any available agent处执行</span></span><br><span class="line">    agent any</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//看定义在那一层，就只针对那一层起作用(pipeline一层针对pipeline。stage一层针对特定stage)</span></span><br><span class="line">    <span class="comment">//也可以修改已定义的环境变量值</span></span><br><span class="line">    environment &#123;</span><br><span class="line">        UNITY_PROJECT_PATH = <span class="string">&#x27;E:\\TonyTang\\Work\\Projects\\TGame_code&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//自定义参数</span></span><br><span class="line">    <span class="comment">//可以通过pipeline代码编写，也可以直接在web UI界面上添加</span></span><br><span class="line">    parameters&#123;</span><br><span class="line">        <span class="built_in">string</span>(name: <span class="string">&#x27;Platform&#x27;</span>, defaultValue: <span class="string">&#x27;Android&#x27;</span>, description: <span class="string">&#x27;Which plaftform is using?&#x27;</span>)</span><br><span class="line">        booleanParam(name: <span class="string">&#x27;DEBUG_BUILD&#x27;</span>, defaultValue: <span class="literal">true</span>, description: <span class="string">&#x27;Is debug version?&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(<span class="string">&#x27;postprocess&#x27;</span>)&#123;</span><br><span class="line">            <span class="comment">//when表示执行条件判断</span></span><br><span class="line">            <span class="comment">//决定stage是否应该执行</span></span><br><span class="line">            <span class="keyword">when</span>&#123;</span><br><span class="line">                expression</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">params</span>.DEBUG_BUILD</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            steps&#123;</span><br><span class="line">                <span class="comment">//params是访问pipeline里定义的所有parameters入口</span></span><br><span class="line">                echo <span class="string">&quot;Current platform is $&#123;params.Platform&#125;&quot;</span></span><br><span class="line">                echo <span class="string">&#x27;postprocess&#x27;</span></span><br><span class="line">                echo UNITY_PROJECT_PATH</span><br><span class="line">                <span class="comment">//env是jenkins定义的全局的环境变量</span></span><br><span class="line">                <span class="comment">//http://localhost:8080/job/TonyTangPipeline/pipeline-syntax/globals</span></span><br><span class="line">                echo env.WORKSPACE</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(<span class="string">&#x27;build&#x27;</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                <span class="comment">//Windows调用bat</span></span><br><span class="line">                <span class="comment">//Mac Linux采用sh</span></span><br><span class="line">                bat <span class="string">&#x27;TonyTangPipeline&#x27;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(<span class="string">&#x27;deploy&#x27;</span>)&#123;</span><br><span class="line">            steps&#123;</span><br><span class="line">                echo <span class="string">&#x27;deploy&#x27;</span></span><br><span class="line">                <span class="comment">//支持调用python</span></span><br><span class="line">                bat <span class="string">&#x27;python FirstPython.py&#x27;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//post表示Pipeline执行完之后执行，做一些clean up操作</span></span><br><span class="line">    post &#123;</span><br><span class="line">        <span class="comment">//根据pipeline的结果做特定操作</span></span><br><span class="line">        always&#123;</span><br><span class="line">            echo <span class="string">&#x27;Always!&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">        success &#123;</span><br><span class="line">            echo <span class="string">&#x27;Success!&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">        failure&#123;</span><br><span class="line">            echo <span class="string">&#x27;Failed!&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Script Pipeline(Optional)</span></span><br><span class="line"><span class="comment">//在pipeline执行完成之后执行</span></span><br><span class="line"><span class="comment">//支持大部分Groovy</span></span><br><span class="line"><span class="comment">//Script Pipeline的参数定义需要在properties里</span></span><br><span class="line">properties([parameters([<span class="built_in">string</span>(defaultValue: <span class="string">&#x27;Android&#x27;</span>, description: <span class="string">&#x27;Which platform is using?&#x27;</span>, name: <span class="string">&#x27;Platform&#x27;</span>)])])</span><br><span class="line"></span><br><span class="line">node &#123;</span><br><span class="line">    <span class="comment">//定义字符串</span></span><br><span class="line">    def Date = <span class="string">&#x27;2017//4//26&#x27;</span></span><br><span class="line">    stage(<span class="string">&#x27;postprocess&#x27;</span>) &#123;</span><br><span class="line">        <span class="comment">//要使用$&#123;&#125;访问string，需要用&quot;&quot;</span></span><br><span class="line">        echo <span class="string">&quot;Date = $&#123;Date&#125;&quot;</span></span><br><span class="line">        echo <span class="string">&quot;Current platform is $&#123;params.Platform&#125;&quot;</span></span><br><span class="line">        echo <span class="string">&#x27;postprocess....&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    stage(<span class="string">&#x27;build&#x27;</span>) &#123;</span><br><span class="line">        echo <span class="string">&#x27;build....&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    stage(<span class="string">&#x27;deploy&#x27;</span>) &#123;</span><br><span class="line">        echo <span class="string">&#x27;deploy....&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Note:</p>
+<ol>
+<li>指定使用版本管理后，Jenkinsfile必须放到版本管理里才能找到。</li>
+<li>Jenkinsfile必需放到前面设置的本机相对路径下才能找到。</li>
+</ol>
+<h6 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h6><ol>
+<li>构建参数一旦通过代码指定添加后，代码删除了依然存在</li>
+<li>No valid crumb was included in the request</li>
+</ol>
+<p>Solutions:</p>
+<ol>
+<li>通过Pipeline -&gt; Setting的UI界面手动删除参数</li>
+<li>在系统管理 –&gt; Configure Global Security<br>取消“防止跨站点请求伪造（Prevent Cross Site Request Forgery exploits）”的勾选。</li>
+</ol>
+<h5 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h5><h6 id="Pipeline-Tools"><a href="#Pipeline-Tools" class="headerlink" title="Pipeline Tools"></a>Pipeline Tools</h6><p><a target="_blank" rel="noopener" href="http://localhost:8080/pipeline-syntax/">Snippet Generator</a><br><img src="/img/Unity/PipelineSnippetGenerator.PNG" alt="PipelineSnippetGenerator"><br>这是一个很有用帮助快速编写Pipeline的工具,他可以帮助我们把我们熟悉的自动化脚本转换成Pipeline格式的语句，也可以快速生成一些特定功能的脚本(比如邮件功能等)。(Jenkins提供)</p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8080/pipeline-syntax/globals">Pipiline全局环境变量</a></p>
+<h6 id="Email-Plugin"><a href="#Email-Plugin" class="headerlink" title="Email Plugin"></a>Email Plugin</h6><p>利用现有的SMTP(腾讯，网易等)服务进行搭建邮件提醒，详情参见如下：<br><a target="_blank" rel="noopener" href="http://blog.csdn.net/houyefeng/article/details/50914582">Jenkins——应用篇——插件使用——Mailer Plugin</a><br>Jenkins自带Email配置如下:<br>Manage Jenkins -&gt; Configure System -&gt; E-mail Notification<br><img src="/img/Unity/EmailNotificationSetting.png" alt="EmailNotificationSetting"><br>Jenkins自带的Mailer提供的功能很有限，为了提供更多更广的功能，这里我们需要用到<a href="wiki.jenkins-ci.org/display/JENKINS/Email-ext+plugin">Jenkins Email Extension Plugin</a><br><a target="_blank" rel="noopener" href="http://m.v4.cc/News-966281.html">Jenkins进阶系列之——01使用email-ext替换Jenkins的默认邮件通知</a><br>Email Extension Plugin配置详情参见如下：<br>Manage Jenkins -&gt; Configure System -&gt; Extended E-mail Notification<br><img src="/img/Unity/ExtendedEmailNotificationPart1.png" alt="ExtendedEmailNotificationPart1"><br>针对workspace自定义邮件内容配置如下：<br><img src="/img/Unity/WorkspaceExtendedEmailSetting.png" alt="WorkspaceExtendedEmailSetting"><br>最终收到Email提醒:<br><img src="/img/Unity/EmailResult.PNG" alt="EmailResult"></p>
+<h6 id="Unity3D-Plugin"><a href="#Unity3D-Plugin" class="headerlink" title="Unity3D Plugin"></a>Unity3D Plugin</h6><p>管理插件-&gt;<a target="_blank" rel="noopener" href="https://plugins.jenkins.io/unity3d-plugin">Unity3d Plugin</a><br>Unity本身是支持从命令行启动U3D，执行Editor特定方法的。<br>但Unity3D Plugin是一个针对Jenkins集成Unity命令行的插件，可以帮助我们直接在Jenkins上编写U3D命令，对于Jenkins更加友好。<br>好处如下:</p>
+<ol>
+<li>Log file redirection(Log重定位到Jenkins界面)</li>
+<li>Distributed builds(分布式编译)</li>
+</ol>
+<p><strong>Unity3D Plugin实战配置</strong></p>
+<ol>
+<li>Configure Unity Installation Path<br>System Setting -&gt; Global Tool Configuration<br><img src="/img/Unity/JenkinsUnityPathConfiguration.PNG" alt="JenkinsUnityPathConfiguration"></li>
+<li>编写Unity下可通过命令行调用的代码</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UnityBuild</span> &#123;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">MenuItem(<span class="string">&quot;Custom/UnityBuild/OneKeyBuild&quot;</span>)</span>]</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">OneKeyBuild</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;OneKeyBuild() Called!&quot;</span>);   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>配置Unity命令行运行启动以及参数<br><img src="/img/Unity/JenkinsUnityMethodCall.PNG" alt="JenkinsUnityMethodCall"><br><img src="/img/Unity/JenkinsUnityMethodCallOutput.PNG" alt="JenkinsUnityMethodCallOutput"><br>从上面可以看出我们成功的配置了Jenkins以及对于Unity打包方法的调用(在这一步我们可以做很多我们自己对于Unity打包的流程设置，资源打包或者其他的预处理等)</li>
+<li>编写完整的打包设置以及相关预处理代码<br>待续…….<br>接下来是为了在IOS进行Jenkins自动化打包而设置的步骤</li>
+<li>在IOS搭配SmartSVN拉VisualSVN上的文件(Windows上用TortoiseSVN作为SVN客户端即可)</li>
+<li>在IOS上配置Jenkins(和Windows上类似，需要下载Java支持Jenkins运行)<br>这里讲几个配置搭建Mac OSX的Jenkins时遇到的坑：<ol>
+<li>配置Unity插件Unity安装路径问题<br>Windows上是到Editor上一层即可。IOS是到Unity.app这一层(Unity.app(e.g. &#x2F;Applications&#x2F;Unity&#x2F;Unity.app&#x2F;)在命令行里可以往里访问)</li>
+<li>指定IOS Subversion URL(e.g. <a target="_blank" rel="noopener" href="https://192.168.1.3/svn/***)%E6%97%B6%E6%98%BE%E7%A4%BA%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E6%88%96%E8%80%85%E4%B8%8D%E6%AD%A3%E7%A1%AE%E7%9A%84credential">https://192.168.1.3/svn/***)时显示无法访问或者不正确的credential</a>(这里是因为默认的Mac SVN版本过低需要更新Mac OSX自带的SVN)</li>
+<li>更新Mac OSX自带SVN时在添加新装的SVN到环境变量里后依然显示是老版的SVN<br>在~&#x2F;目录下touch .bash_profile(创建.bash_profile)<br>然后添加环境变量路径export PATH&#x3D;”&#x2F;opt&#x2F;subversion&#x2F;bin;$PATH”<br>使其环境变量路径设置生效source .bash_profile<br>查看当前SVN版本svn –version<br>如果上一步依然显示是旧版SVN且当前系统是10.11<br>那么我们就需要删除Mac OSX上原本的SVN以实现更新SVN的目的<br>查看旧版SVN路径which svn<br>删除旧版SVN(sudo -s rm -rf &#x2F;svnpath&#x2F;svn*)(此时如果出现No Permission to remove，那么恭喜，你是用的10.11系统。10.11推出了SIP(System Integrity Protection)机制去防止root用户对于部分文件的操作权限限制用于防止病毒破坏或修改重要文件)<br>为了能够删除旧版SVN，这里我们需要进到Recover Mode去临时关闭SIP(重启电脑一直按住cmd+R，然后在terminal里执行csrutil disable，关闭成功后就可以重启电脑去删除旧版svn了)<br>然后将新版SVN链接到旧版SVN执行路径(sudo -s ln -s &#x2F;opt&#x2F;subversion&#x2F;bin&#x2F;svn* &#x2F;svnpath)<br>最后到Recover Mode里恢复SIP(csrutil enable)</li>
+<li>打包IOS时报错：_RegisterApplication(), FAILED TO establish the default connection to the WindowServer, _CGSDefaultConnection() is NULL.<br>这是因为Jenkins默认安装时是以Jenkins作为用户和组。开机自启动时也是以Jenkins用户和组来运行的。而Unity我是默认安装在我自己的用户apple和admin组下。所以在Jenkins需要启动Unity时应该是没有权限调用 Unity Editor 的命令行。所以我们要做的就是确保Unity和Jenkins运行在同一个User和Group下。<br>以下采用把Jenkins改到apple和wheel下运行以支持Unity的命令行运行。<br>详情参见<a target="_blank" rel="noopener" href="http://7dot9.com/2016/11/18/macos-jenkins-ci-unity-setup-config-guide/">macOS 安装配置 Jenkins 持续集成 Unity 项目指南</a></li>
+<li>指定Custom Workspace(自定义到桌面特定目录后每次都报Failed to mkdir，这个跟第四个问题是同一个问题，默认Jenkins用户权限问题)</li>
+</ol>
+</li>
+</ol>
+<p>Note:<br>很多文件是Unity自动生成的(比如Library目录)，我们无需加入版本管理(SVN只要不加入版本管理即可)</p>
+<p>Note:<br>Unity3d Plugin不支持在Pipeline里添加。<br>同时Unity3d Plugin只在3.4.2 to 5.0.1的版本下测试过。(经本人测试在Unity5.4.0f3的版本也能正常使用)</p>
+<h4 id="Jenkins从零搭建"><a href="#Jenkins从零搭建" class="headerlink" title="Jenkins从零搭建"></a>Jenkins从零搭建</h4><p>这里的从零搭建，在借助Jenkins插件的基础上，尽量采用Pipeline编写为主，插件UI为辅的方式来实现一整套完整的Jenkins自动化。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line">#!groovy</span><br><span class="line">pipeline &#123;</span><br><span class="line">    //agent指定jenkins从哪里以及如何执行pipeline</span><br><span class="line">    //any表示从any available agent处执行</span><br><span class="line">    agent any</span><br><span class="line">    </span><br><span class="line">    //看定义在那一层，就只针对那一层起作用(pipeline一层针对pipeline。stage一层针对特定stage)</span><br><span class="line">    //也可以修改已定义的环境变量值</span><br><span class="line">    environment &#123;</span><br><span class="line">        UNITY_PROJECT_PATH = &#x27;E:\\TonyTang\\Work\\Projects\\MyGitHubProjects\\GitStudy2&#x27;</span><br><span class="line">        GIT_URL = &#x27;git@github.com:TonyTang1990/GitStudy.git&#x27;</span><br><span class="line">        GIT_AUTH = &#x27;7d947f92-1e9c-44ba-9a80-9744f92f2ff6&#x27;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //自定义参数</span><br><span class="line">    //可以通过pipeline代码编写，也可以直接在web UI界面上添加</span><br><span class="line">    parameters&#123;</span><br><span class="line">        string(name: &#x27;Platform&#x27;, defaultValue: &#x27;Android&#x27;, description: &#x27;Which plaftform is using?&#x27;)</span><br><span class="line">        booleanParam(name: &#x27;DEBUG_BUILD&#x27;, defaultValue: true, description: &#x27;Is debug version?&#x27;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&#x27;postprocess&#x27;)&#123;</span><br><span class="line">            //when表示执行条件判断</span><br><span class="line">            //决定stage是否应该执行</span><br><span class="line">            when&#123;</span><br><span class="line">                expression</span><br><span class="line">                &#123;</span><br><span class="line">                    return params.DEBUG_BUILD</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            steps&#123;</span><br><span class="line">                //params是访问pipeline里定义的所有parameters入口</span><br><span class="line">                echo &quot;Current platform is $&#123;params.Platform&#125;&quot;</span><br><span class="line">                echo &#x27;postprocess&#x27;</span><br><span class="line">                echo &quot;$&#123;env.UNITY_PROJECT_PATH&#125;&quot;</span><br><span class="line">                echo &quot;$&#123;env.GIT_URL&#125;&quot;</span><br><span class="line">                echo &quot;$&#123;env.GIT_AUTH&#125;&quot;</span><br><span class="line">                //env是jenkins定义的全局的环境变量</span><br><span class="line">                //http://localhost:8080/job/TonyTangPipeline/pipeline-syntax/globals</span><br><span class="line">                echo env.WORKSPACE</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&#x27;Git&#x27;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &#x27;Git operation&#x27;</span><br><span class="line">                checkout([$class: &#x27;GitSCM&#x27;, </span><br><span class="line">                        userRemoteConfigs: [[url: &quot;$&#123;env.GIT_URL&#125;&quot;, credentialsId: &quot;$&#123;env.GIT_AUTH&#125;&quot;]],</span><br><span class="line">                        extensions: [[$class: &#x27;CleanBeforeCheckout&#x27;, $class: &#x27;GitLFSPull&#x27;]]</span><br><span class="line">                        ])</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&#x27;build&#x27;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                //Windows调用bat</span><br><span class="line">                //Mac Linux采用sh</span><br><span class="line">                bat &#x27;BatAutomation&#x27;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&#x27;deploy&#x27;)&#123;</span><br><span class="line">            steps&#123;</span><br><span class="line">                echo &#x27;deploy&#x27;</span><br><span class="line">                //支持调用python</span><br><span class="line">                bat &#x27;python PythonAutomation.py&#x27;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //post表示Pipeline执行完之后执行，做一些clean up操作</span><br><span class="line">    post &#123;</span><br><span class="line">        //根据pipeline的结果做特定操作</span><br><span class="line">        always&#123;</span><br><span class="line">            echo &#x27;Always!&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">        success &#123;</span><br><span class="line">            echo &#x27;Success!&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">        failure&#123;</span><br><span class="line">            echo &#x27;Failed!&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Script Pipeline(Optional)</span><br><span class="line">//在pipeline执行完成之后执行</span><br><span class="line">//支持大部分Groovy</span><br><span class="line">//Script Pipeline的参数定义需要在properties里</span><br><span class="line">properties([parameters([string(defaultValue: &#x27;Android&#x27;, description: &#x27;Which platform is using?&#x27;, name: &#x27;Platform&#x27;)])])</span><br><span class="line"></span><br><span class="line">node &#123;</span><br><span class="line">    //定义字符串</span><br><span class="line">    def Date = &#x27;2017//4//26&#x27;</span><br><span class="line">    stage(&#x27;postprocess&#x27;) &#123;</span><br><span class="line">        //要使用$&#123;&#125;访问string，需要用&quot;&quot;</span><br><span class="line">        echo &quot;Date = $&#123;Date&#125;&quot;</span><br><span class="line">        echo &quot;Current platform is $&#123;params.Platform&#125;&quot;</span><br><span class="line">        echo &#x27;postprocess....&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    stage(&#x27;build&#x27;) &#123;</span><br><span class="line">        echo &#x27;build....&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    stage(&#x27;deploy&#x27;) &#123;</span><br><span class="line">        echo &#x27;deploy....&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h4 id="脚本语言"><a href="#脚本语言" class="headerlink" title="脚本语言"></a>脚本语言</h4><p>为了快速编写一些自动化任务，我们往往需要用到脚本语言。</p>
+<h5 id="bat"><a href="#bat" class="headerlink" title="bat"></a>bat</h5><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%89%B9%E6%AC%A1%E6%AA%94">批处理文件（英语：Batch file），又称批次档，在DOS、OS&#x2F;2、微软视窗系统中，是一种用来当成脚本语言运作程序的文件。它本身是文本文件，其中包含了一系列让具备命令行界面的解释器读取并运行的指令。它相当于是类Unix系统下的Shell script。</a></p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">:: 关闭命令输出打印</span><br><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line">:: UTF8</span><br><span class="line"><span class="built_in">chcp</span> <span class="number">65001</span></span><br><span class="line">:: 清除命令行界面内容</span><br><span class="line"><span class="built_in">CLS</span></span><br><span class="line">:: 输出打印信息</span><br><span class="line"><span class="built_in">echo</span> Tony Tang bat study</span><br><span class="line">:: 设置打印传入参数</span><br><span class="line"><span class="built_in">set</span> par1=%<span class="number">1</span></span><br><span class="line"><span class="built_in">set</span> par2=%<span class="number">2</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">%par1%</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">%par2%</span></span><br><span class="line">:: 输出打印当前目录路径</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">%cd%</span></span><br><span class="line">:: 切换到上一层路径</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">:: 输出打印当前目录路径</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">%cd%</span></span><br><span class="line">:: 切换到BatStudy目录</span><br><span class="line"><span class="built_in">cd</span> BatStudy</span><br><span class="line">:: 输出打印当前目录路径</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">%cd%</span></span><br><span class="line">:: 打印帮助信息</span><br><span class="line">::<span class="built_in">HELP</span></span><br><span class="line">:: 自定义变量(定义变量时=号两边不能有空格)</span><br><span class="line"><span class="built_in">set</span> batvariable=tonytang</span><br><span class="line">:: 打印自定义变量</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">%batvariable%</span></span><br><span class="line">:: 自定义数字变量</span><br><span class="line"><span class="built_in">set</span> number=<span class="number">3</span></span><br><span class="line">:: 打印自定义数字变量</span><br><span class="line"><span class="built_in">echo</span> number = <span class="variable">%number%</span></span><br><span class="line">:: 条件语句</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%number%</span>==<span class="number">2</span> (<span class="built_in">echo</span> <span class="variable">%number%</span>==<span class="number">2</span>) <span class="keyword">else</span> (<span class="built_in">echo</span> <span class="variable">%number%</span>!=<span class="number">2</span>)</span><br><span class="line">:: 检查文件是否存在</span><br><span class="line"><span class="built_in">set</span> filename=batcontent.txt</span><br><span class="line"><span class="built_in">echo</span> filename=<span class="variable">%filename%</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">EXIST</span> ./<span class="variable">%filename%</span> (<span class="built_in">echo</span> <span class="variable">%filename%</span> exits) <span class="keyword">else</span> (<span class="built_in">echo</span> <span class="variable">%filename%</span> <span class="keyword">not</span> <span class="keyword">exist</span>)</span><br><span class="line">:: 普通循环语句</span><br><span class="line"><span class="keyword">for</span> <span class="variable">%%i</span> <span class="keyword">in</span> (<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>) <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">%%i</span></span><br><span class="line">:: 当前目录文件循环遍历语句</span><br><span class="line"><span class="keyword">for</span> <span class="variable">%%f</span> <span class="keyword">in</span> (*) <span class="keyword">do</span> @<span class="built_in">echo</span> <span class="variable">%%f</span></span><br><span class="line">:: 启用变量执行时解析</span><br><span class="line"><span class="built_in">SetLocal</span> EnableDelayedExpansion</span><br><span class="line"><span class="keyword">for</span> <span class="variable">%%i</span> <span class="keyword">in</span> (<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>) <span class="keyword">do</span> (</span><br><span class="line">	<span class="built_in">set</span> numberVariable=<span class="variable">%%i</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">!numberVariable!</span></span><br><span class="line">	<span class="built_in">set</span> numberVariable=<span class="variable">!numberVariable!</span>+<span class="variable">!numberVariable!</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">!numberVariable!</span></span><br><span class="line">)</span><br><span class="line">:: 暂停等待输入</span><br><span class="line"><span class="built_in">pause</span></span><br><span class="line">:: 退出命令界面 <span class="number">0</span>代表正常退出</span><br><span class="line"><span class="keyword">EXIT</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Bash/BatStudyOutput.png" alt="BatStudyOutput"></p>
+<p>这里只列举一些常用基础的，详细Windows Batch学习参考:<br><a target="_blank" rel="noopener" href="http://www.trytoprogram.com/batch-file/">Batch file – Programming tutorial</a><br><a target="_blank" rel="noopener" href="https://www.tutorialspoint.com/batch_script/index.htm">Batch Script Tutorial</a></p>
+<h5 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h5><p>Windows上的bat，power shell<br>Linux上的shell<br>好处：<br>简单快速的编写一些系统相关的任务(比如文件复制等)<br>缺点：<br>有平台差异</p>
+<p>在正式学习Shell之前，让我们依然从What，How，Why，When这四个问题着手：<br>What?<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Unix_shell">Unix shell，一种壳层与命令行界面，是UNIX操作系统下传统的用户和计算机的交互界面。第一个用户直接输入命令来执行各种各样的任务。</a></p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Unix_shell">第一个Unix shell是由肯·汤普逊，仿效Multic上的shell所实现出来，称为sh。</a></p>
+<p>后续出了其他的Shell:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Bash">Bourne-Again shell - bash</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Debian_Almquist_shell">Debian Almquist shell - dash</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Korn_shell">Korn shell - ksh</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Z_shell">Z shell - zsh</a></li>
+</ol>
+<p>上面的几个Shell都可以看作是后续发展功能越来越强大的Shell解析器，至于具体分别包含些什么功能就不在本文讨论的范围内了。这里我们主要以bash和shell作为解析器来学习编写shell脚本。</p>
+<p>How?<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Shell%E8%84%9A%E6%9C%AC">Shell脚本（英语：Shell script），又称Shell命令稿、程序化脚本，是一种计算机程序与文本文件，内容由一连串的shell命令组成，经由Unix Shell直译其内容后运作。被当成是一种脚本语言来设计，其运作方式与解释型语言相当，由Unix shell扮演命令行解释器的角色，在读取shell脚本之后，依序运行其中的shell命令，之后输出结果。利用shell脚本可以进行系统管理，文件操作等。</a></p>
+<p>可以看出Shell脚本是被当做脚本语言来解释执行，通过调用系统内核的一些工具来实现特定功能任务的。</p>
+<p>Why?<br>Shell并不适合编写复杂的程序任务，因为他只提供了一些比较基础的工具，并且不具备面向对象编程等高级语言的特性。<br>既然如此那我们为何还要坚持使用Shell了？为何不直接选择Python，Ruby，Perl这些相对高级一点的解释性语言了？<br>理论上是可以的，但Shell属于原生就具备提供的工具，可以很快捷的编写出一些看似简单但却方便的工具脚本。即使Python可以实现，但针对特定的功能可能没有Shell来的那么快捷方便，根据需求选择合适的脚本语言也是很重要的。后续我会结合Python夸平台的特性，使用Python结合Shell编写一些自动化相关的工具。</p>
+<p>Note:<br>Shell跟操作系统紧密相关，原本并非跨系统平台的，但通过移植很多shell具备了跨系统平台的能力(Windows上通过Cygwin与MinGW可以模拟执行Unix Shell)。</p>
+<p>When?<br>那么什么时候适合用Shell了？从前面三个问题不难看出，Shell只适合用于一些不复杂的功能任务里，无论是语言特性还是跨平台都没有Python那些高级语言支持的好。如果需要实现复杂的且跨平台，需要高级语言特性(面向对象等)时，不应该考虑Shell而是Python，Perl，Ruby这些。 </p>
+<p>Note:<br>这里所说的shell和Window的batch并不是同一个东西。</p>
+<h6 id="bash"><a href="#bash" class="headerlink" title="bash"></a>bash</h6><ul>
+<li>指定解析器</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># Proper header for a Bash script</span><br></pre></td></tr></table></figure>
+
+<p>**#!**是two-byte的magic number<br>表示这个文本是executable shell script，后面紧跟的&#x2F;bin&#x2F;bash表示shell解析器是用的bash</p>
+<ul>
+<li>输出打印<br>学程序，最初开始的地方肯定是Hello World。<br>在bash里打印输出是通过<strong>echo</strong>指令。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># Proper header for a Bash script</span><br><span class="line">echo &quot;Hello World&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Bash/BashEcho.png" alt="Bash echo"></p>
+<ul>
+<li>特殊符号</li>
+</ul>
+<ol>
+<li>井号(#) – 注释符号</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># Proper header for a Bash script(这一行#号开头表示注释)</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>; – 命令分隔符(允许同一行多个指令)</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#! /bin.bash</span><br><span class="line">echo &quot;Hello&quot;; echo &quot;World&quot;</span><br></pre></td></tr></table></figure>
+
+<pre><code>![CommandSeparator](/img/Bash/CommandSeparator.png)
+</code></pre>
+<ol start="3">
+<li>;; – 跳出case语句</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#! /bin/bash</span><br><span class="line">variable=&quot;TonyTang&quot;</span><br><span class="line">case &quot;$variable&quot; in</span><br><span class="line">    TonyTang) echo &quot;TonyTang1&quot;;;</span><br><span class="line">    TonyTang) echo &quot;TonyTang2&quot;;;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+
+<pre><code>![TerminateCommand](/img/Bash/TerminateCommand.png)
+</code></pre>
+<ol start="4">
+<li>.<ul>
+<li>表示文件是隐藏的</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#! /bin/bash</span><br><span class="line">touch .hidden-file</span><br><span class="line">ls -l</span><br><span class="line">ls -al</span><br></pre></td></tr></table></figure>
+
+<pre><code>![HidenProfileCommand](/img/Bash/HidenProfileCommand.png)
+- 表示当前目录
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pwd</span><br><span class="line">cd .</span><br><span class="line">pwd</span><br></pre></td></tr></table></figure>
+
+<pre><code>![CurrentDirectoryCommand](/img/Bash/CurrentDirectoryCommand.png)
+- 正则里面表示匹配单个字母
+</code></pre>
+<ol start="5">
+<li>“” - 字符串(保留大部分特殊符号)</li>
+<li>‘’ - 字符串(保留所有特殊符号)</li>
+<li>,</li>
+<li>\ - 反斜杠，忽略特殊符号</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#! /bin/bash</span><br><span class="line">echo &quot;\&quot;Hello World&quot;\&quot;</span><br></pre></td></tr></table></figure>
+
+<pre><code>![Backslash](/img/Bash/Backslash.png)
+</code></pre>
+<ol start="9">
+<li>&#x2F; - 文件路径分隔符</li>
+<li>: - 相当于内置true</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">while :</span><br><span class="line">do</span><br><span class="line">    echo &quot;Number 1&quot;</span><br><span class="line">    echo &quot;Number 2&quot;</span><br><span class="line">    echo &quot;Number 3&quot;</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<pre><code>![ColonOperator](/img/Bash/ColonOperator.png)
+</code></pre>
+<ol start="11">
+<li>! - 取反</li>
+<li>星号(*) - 通配符或者乘法</li>
+<li>? - 三目运算符或者表示测试条件</li>
+<li>$<ul>
+<li>$ 变量取值符号</li>
+<li>$? 退出状态码</li>
+<li>$$ 进程号</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#! /bin/bash</span><br><span class="line">var1=100</span><br><span class="line">echo &quot;var1 = $var1&quot;</span><br><span class="line">echo $?</span><br><span class="line">echo $$</span><br></pre></td></tr></table></figure>
+
+<pre><code>![VariableSubstitution](/img/Bash/VariableSubstitution.png)
+</code></pre>
+<ol start="15">
+<li><blockquote>
+<p>&amp;&gt; &gt;&amp; &gt;&gt; &lt; &lt;&gt; </p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>&amp;&gt; 重定向输出到指定文件</p>
+</blockquote>
+</li>
+<li><p>&lt;&gt; 文件读取</p>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#! /bin/bash</span><br><span class="line">ls -l</span><br><span class="line">echo &quot;Hello World&quot; &gt;HelloWorldFile.txt</span><br><span class="line">ls -l</span><br><span class="line">cat HelloWorldFile.txt</span><br></pre></td></tr></table></figure>
+
+<pre><code>![RedirectionCommand](/img/Bash/RedirectionCommand.png)
+</code></pre>
+<ol start="16">
+<li>~ ~+ - home目录和当前目录</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">echo ~</span><br><span class="line">echo $HOME</span><br><span class="line">echo ~+</span><br><span class="line">echo $PWD</span><br></pre></td></tr></table></figure>
+
+<pre><code>![FolderCommands](/img/Bash/FolderCommands.png)
+</code></pre>
+<ol start="17">
+<li>&#96; - 命令执行符号(可以用于快速执行命令并将结果复制)</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Date=`date +%Y%m%d%H%M%S`</span><br><span class="line">echo $Date</span><br></pre></td></tr></table></figure>
+
+<pre><code>![CommandsSubstitution](/img/Bash/CommandsSubstitution.png)
+</code></pre>
+<ul>
+<li>Shell小知识</li>
+</ul>
+<ol>
+<li><p>$0 - $9<br>$0表示Shell文件名<br>$1-$9表示Shell的第一个到第九个参数</p>
+</li>
+<li><p>ls -l<br>查看文件详细信息(比如读写权限等)<br><img src="/img/Bash/LSCommand.png" alt="LSCommand"><br>具体如何理解最前面的权限信息，参考<a target="_blank" rel="noopener" href="http://cn.linux.vbird.org/linux_basic/0210filepermission.php">第六章、Linux 的文件权限与目录配置</a></p>
+</li>
+<li><p>chmod<br>修改文件权限</p>
+</li>
+<li><p>cd<br>切换目录</p>
+</li>
+<li><p>pwd or ~+<br>当前所在目录</p>
+</li>
+<li><p>echo<br>输出信息</p>
+</li>
+<li><p>exit<br>退出shell</p>
+</li>
+<li><p>$?<br>前一段shell的返回输出值</p>
+</li>
+<li><p>$ or ${}<br>去变量值</p>
+</li>
+<li><p><br>多行shell支持</p>
+</li>
+<li><p>$SHELL<br>从当前Shell执行结束的地方打开一个新的terminal窗口(能保持之前所有的输出信息都在)</p>
+</li>
+</ol>
+<p>待续……</p>
+<h5 id="Python-严格意义上不算脚本语言"><a href="#Python-严格意义上不算脚本语言" class="headerlink" title="Python(严格意义上不算脚本语言)"></a>Python(严格意义上不算脚本语言)</h5><p>好处：</p>
+<ol>
+<li>跨平台</li>
+<li>解释性语言，开发方便快速</li>
+<li>库丰富<br>待续……</li>
+</ol>
+<h4 id="IOS自动化打包"><a href="#IOS自动化打包" class="headerlink" title="IOS自动化打包"></a>IOS自动化打包</h4><h5 id="IOS打包准备"><a href="#IOS打包准备" class="headerlink" title="IOS打包准备"></a>IOS打包准备</h5><ol>
+<li><p>Apple Account(发布到IOS设备上需要)<br>任何账号都可以发布到自己的设备测试，但是如果要使用GC or In-App Purchases或者发布到App Store的话需要注册Apple Developer Program。</p>
+</li>
+<li><p>Xcode(up-to-date version)<br>因为Xcode是Mac上的软件，所以这里需要Mac电脑或者是黑苹果。(开发所需的SDK，IDE套装都在这)</p>
+</li>
+<li><p>Adding your Apple ID to Xcode<br>Open Xcode -&gt; Xcode -&gt; Preferences -&gt; Account -&gt; </p>
+</li>
+<li><p>在开发之前，Mac需要获得IOS Certificartes(用于对Mac开发授权，程序签名等)<br>登陆Apple Developer Program -&gt; Certificates ,identifiers &amp; Profiles -&gt; Certificate Signing Request<br>Create CSR(Certificate Signing Request):</p>
+<ol>
+<li>Folder -&gt; Utilities Folder -&gt; Keychain Access</li>
+<li>Keychain Access -&gt; Certificate Assistant -&gt; Request a Certificate from a Certificate Authority -&gt; 填完内容存储到本地<br>CSR里包含了public key和private key。<br>当CSR创建以后，需要使用CSR去请求一个Certificate:</li>
+<li>上传CSR</li>
+<li>下载Certificate</li>
+<li>运行安装Certificate<br>安装Certificate后public和private key pair就生成了(在Keychain Access下可以查看)<a target="_blank" rel="noopener" href="http://www.cnblogs.com/zhaoyang/p/3582436.html">而我们的应用程序签名是使用私钥来签名用公钥来进行验证,  而苹果生成的Certificate 只包含了公钥,当你用自己的私钥签名后,苹果会用公钥来进行验证,确保是你自己对程序签名而不是别人冒充的</a><br>通过导出共享公钥和私钥，可以实现共同开发(Mac开发授权，程序签名等)。</li>
+</ol>
+</li>
+<li><p>设置App ID(相当于Android包名，用于识别App)<br>App ID包含以下组成部分：</p>
+<ol>
+<li>Prefix – 作为Team ID</li>
+<li>Suffix – 作为Build ID的搜索字符串(可指定通配符)</li>
+<li>AppServices – 指定包含的Service(比如Game Center， IAP， iCloud等服务)，只有指定了这些，使用包含了此APP ID的Provision Profile才能使用特定服务</li>
+</ol>
+</li>
+<li><p>添加设备列表(只有被添加了的设备列表才能用于安装和测试程序)<br>需要通过Itunes查看UDID，然后添加到设备列表。</p>
+</li>
+<li><p>用上述我们创建的Certificate, Apple ID, Devices List等生成我们的Provision Profile(Unity Cloud Build的时候需要指定)<br>不同的Provision Profile有不同的用处，比如iPhone Developer证书用于测试设备上运行，iPhone Distribution证书用于提交应用到App Store。<br>让我们来理解一些相关概念，下文引用至<a target="_blank" rel="noopener" href="http://www.cnblogs.com/zhaoyang/p/3582436.html">IOS开发 证书总结</a><br> Identifier:<br> 顾名思义App ID（application id, not apple id）, 对于你的一个或者一组app他们的唯一标识, 这个App ID跟你Xcode中的Targets —–&gt; General—–&gt; Identity中的Bundle Identifier是匹配的,(其余的那些推送服务啊什么的都是配置在APP ID下面的) 如下图:</p>
+<p> Provisioning Profile<br> 一个Provisioning Profile包含了上述所有内容 Certificate &amp;&amp; App ID &amp;&amp; Device, 这个Provisioning Profile文件会在打包时嵌入到.ipa的包里,如下图: </p>
+<p> 所以一台设备上运行应用程序的过程如下(以Developer Provisioning Profile为例):<br> 1 检查app 的 bunld ID 是否 matches Provisioning Profile 的 App ID<br> 2 检查 app 的 entitements 是否 matches Provisioning Profile 的 entitements<br> 3 用Certificate来验证签名签名<br> 4 检查此设备的UDID是否存在于 Provisioning Profiles中 （仅在 非发布证书中）</p>
+<p> 如何创建?<br> 在 Provisioning Profiles 中点加号,然后依次选择App ID, Certificate, Devices(development),再指定名称,最后下载, 双击则安装到Xcode中</p>
+<p> Xcode中的配置<br> Project &amp;&amp; Target 的 build settings 中搜索Code sign…<br> 然后分别选好对应的证书,如果选择列表中没有刚才创建的证书可以双击直接复制名字上去 </p>
+<p> 关于推送服务<br> 基于上面的操作，如果需要推送服务我们还需要申请一个推送证书<br> 依次进入 Certificates —&gt;Production —&gt;Apple Push Notification service SSL (Production)<br> 然后选择需要推送服务的App ID<br> 再选择前面创建的.cerSigningRequest文件<br> 最后点击generated生成推送证书<br>IOS开发流程大致如下：<br><img src="/img/Unity/IOSAppDistributionWorkflows.PNG" alt="IOSAppDistributionWorkflows"></p>
+</li>
+</ol>
+<h5 id="XUPorter-or-Unity-API-PBXFroject"><a href="#XUPorter-or-Unity-API-PBXFroject" class="headerlink" title="XUPorter or Unity API(PBXFroject)"></a>XUPorter or Unity API(PBXFroject)</h5><p>PBXFroject是Unity 5.X版本加进来的。因为5.X以前没有关于XCode自动化修改的相关接口，所以以前的版本用的都是XUPoter这个第三方插件工具来实现自动化修改info.plist文件，自动添加library之类的功能。</p>
+<p>本人只使用过XUPoter还没详细使用PBXProject，但XUPoter的作者在Unity 5.X开始已经不在更新支持了，因为有了PBXProject，所以可以这样说，Unity 5.X版本开始可以直接使用Unity 5.X不需要再使用XUPoter了。</p>
+<h6 id="XUPoter"><a href="#XUPoter" class="headerlink" title="XUPoter"></a>XUPoter</h6><p>这里直接给出作者工具链接，就不详细讲解如何集成使用了，具体参考官方作者网站。<br><a target="_blank" rel="noopener" href="https://github.com/onevcat/XUPorter">onevcat&#x2F;XUPorter</a></p>
+<h6 id="PBXProject"><a href="#PBXProject" class="headerlink" title="PBXProject"></a>PBXProject</h6><p>对IOS的打包后的XCode工程做后处理，我们需要在代码里实现IPostProcessBuild接口的OnPostProcessBuild方法。</p>
+<p>XcodePostProcess.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line">UnityEditor.iOS.Xcode</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">XCodePostProcess</span> : <span class="title">IPostprocessBuild</span></span><br><span class="line"></span><br><span class="line">    <span class="title">public</span> <span class="title">void</span> <span class="title">OnPostprocessBuild</span>(<span class="title">BuildTarget</span> <span class="title">target</span>, <span class="title">string</span> <span class="title">path</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;XCodePostProcess.OnPostprocessBuild for target &quot;</span> + target + <span class="string">&quot; at path &quot;</span> + path);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//通过PBXProject访问并修改XCode工程相关的设置</span></span><br><span class="line">        <span class="built_in">string</span> projpath = path + <span class="string">&quot;/Unity-iPhone.xcodeproj/project.pbxproj&quot;</span>;</span><br><span class="line">        PBXProject proj = <span class="keyword">new</span> PBXProject();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//读取XCode项目的数据</span></span><br><span class="line">        proj.ReadFromString(File.ReadAllText(projPath));</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取XCode项目的Unity Target名字</span></span><br><span class="line">        <span class="built_in">string</span> nativetargetname = PBXProject.GetUnityTargetName();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取XCode项目的Unity Target的GUID</span></span><br><span class="line">        <span class="built_in">string</span> nativeTarget = proj.TargetGuidByName(nativetargetname);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取XCode项目的Test Target名字</span></span><br><span class="line">        <span class="built_in">string</span> testTarget = proj.TargetGuidByName(PBXProject.GetUnityTestTargetName());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置需要设定的target列表</span></span><br><span class="line">        <span class="built_in">string</span>[] buildTargets = <span class="keyword">new</span> <span class="built_in">string</span>[] &#123; nativeTarget, testTarget &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//BitCode是用于提交AppStore后优化数据用的，IOS上是optional，但watchOS和tvOS是必须的。动态设置BitCode值</span></span><br><span class="line">        proj.SetBuildProperty(buildTargets, <span class="string">&quot;ENABLE_BITCODE&quot;</span>, <span class="string">&quot;NO&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//动态修改UnityAppController.mm文件的arc编译参数</span></span><br><span class="line">        ArcOnFileByProjectPath(proj, nativetargetname, <span class="string">&quot;Classes/UnityAppController.mm&quot;</span>, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//自动化删除ReleaseForProfiling和ReleaseForRunning两个Configuration</span></span><br><span class="line">        proj.RemoveBuildConfig(<span class="string">&quot;ReleaseForProfiling&quot;</span>);</span><br><span class="line">        proj.RemoveBuildConfig(<span class="string">&quot;ReleaseForRunning&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//整个XCode项目数据写回去</span></span><br><span class="line">        File.WriteAllText(projPath, proj.WriteToString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 开启或关闭指定target的指定文件的arc(Automatic Reference Counting)</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;proj&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;targetname&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;filepath&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;isenablearc&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ArcOnFileByProjectPath</span>(<span class="params">PBXProject proj, <span class="built_in">string</span> targetname, <span class="built_in">string</span> filepath, <span class="built_in">bool</span> isenablearc</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> targetguid = proj.TargetGuidByName(targetname);</span><br><span class="line">        <span class="keyword">var</span> fileguid = proj.FindFileGuidByProjectPath(filepath);</span><br><span class="line">        Debug.Log(<span class="string">&quot;targetguid = &quot;</span> + targetguid);</span><br><span class="line">        Debug.Log(<span class="string">&quot;fileguid = &quot;</span> + fileguid);</span><br><span class="line">        <span class="keyword">var</span> compileflaglist = <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line">        <span class="keyword">if</span>(isenablearc)</span><br><span class="line">        &#123;</span><br><span class="line">            compileflaglist.Add(<span class="string">&quot;-fobjc-arc&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            compileflaglist.Add(<span class="string">&quot;-fno-objc-arc&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        proj.SetCompileFlagsForFile(targetguid, fileguid, compileflaglist);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里就不一一截Mac对应的图了，示例代码对XCode的各种参数设置都进行了修改，注释也很清楚了，具体详细的使用，请参考官网API解释。</p>
+<h4 id="IOS自动化签包"><a href="#IOS自动化签包" class="headerlink" title="IOS自动化签包"></a>IOS自动化签包</h4><p><a target="_blank" rel="noopener" href="https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/xcodebuild.1.html">Xcodebuild</a>是XCode上编译Xcode工程的工具。</p>
+<p>所以接下来我们主要是要学习的是使用Xcodebuild去编写自动化签包的工具。</p>
+<p>学习XCode Project项目里的一些相关概念。<br>一下概念来源<a target="_blank" rel="noopener" href="https://www.cnblogs.com/cy568searchx/p/5781717.html">iOS系统提供开发环境下命令行编译工具：xcodebuild</a>:</p>
+<ol>
+<li>Workspace：简单来说，Workspace就是一个容器，在该容器中可以存放多个你创建的Xcode Project， 以及其他的项目中需要使用到的文件。<br>使用Workspace的好处有：<ul>
+<li>扩展项目的可视域，即可以在多个项目之间跳转，重构，一个项目可以使用另一个项目的输出。Workspace会负责各个Project之间提供各种相互依赖的关系;</li>
+<li>多个项目之间共享Build目录。</li>
+</ul>
+</li>
+<li>Project：指一个项目，该项目会负责管理生成一个或者多个软件产品的全部文件和配置，一个Project可以包含多个Target。</li>
+<li>Target：一个Target是指在一个Project中构建的一个产品，它包含了构建该产品的所有文件，以及如何构建该产品的配置。</li>
+<li>Scheme：一个定义好构建过程的Target成为一个Scheme。可在Scheme中定义的Target的构建过程有：Build&#x2F;Run&#x2F;Test&#x2F;Profile&#x2F;Analyze&#x2F;Archive</li>
+<li>BuildSetting：配置产品的Build设置，比方说，使用哪个Architectures？使用哪个版本的SDK？。在Xcode Project中，有Project级别的Build Setting，也有Target级别的Build Setting。Build一个产品时一定是针对某个Target的，因此，XCode中总是优先选择Target的Build Setting，如果Target没有配置，则会使用Project的Build Setting。</li>
+</ol>
+<p>了解了XCode Project中的一些概念，让我们看看Xcodebuild到底是什么样的工具了？<br><a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/technotes/tn2339/_index.html">xcodebuild is a command-line tool that allows you to perform build, query, analyze, test, and archive operations on your Xcode projects and workspaces from the command line. It operates on one or more targets contained in your project, or a scheme contained in your project or workspace. </a></p>
+<p>如果想查看xcodebuild的详细说明，我们可以通过命令行输入:man xcodebuild查看即可:<br><img src="/img/Bash/XcodebuildManualPage.png" alt="XcodebuildManualPage"></p>
+<p>首先以XcodeProject为例，我们来看看上面的概念在实际操作过程中对应的东西:<br><img src="/img/Bash/XcodeProjectDemo.png" alt="XcodeProjectDemo"><br>从上面可以看出，我们的Demo Xcode Project是没有workspace的，只有一个叫做Unity-iPhone.xcodeproj的Xcode工程文件，而这个文件对应的就是我们前面提到的Project的概念。</p>
+<p>如果我们想查看Xcode Project里面的相关schemes或者target信息，我们可以通过命令行切换到Xcode Project目录下然后输入xcodebuild -list -project *.xcodeproj命令来查看:<br><img src="/img/Bash/XcodeProjectListInfo.png" alt="XcodeProjectListInfo"><br>从上面的信息我们可以看到，我们的Unity-iPhone.xcodeproj项目里有两个Targets分别为:Unity-iPhone和Unity-iPhone Tests以及一个Schemes:Unity-iPhone。这些都分别对应了我们前面最初所了解的相关Xcode Project的概念。</p>
+<p>如果想要查看Xcode Project的详细Build Setting设置信息，我们可以通过输入xcodebuild -showBuildSettings来查看：<br><img src="/img/Bash/XcodeProjectBuildSettingsInfo.png" alt="XcodeProjectBuildSettingsInfo"><br>-showBuildSettings有不少东西，很多概念需要对比着Xcode工程里的设置来看，这里暂时不深究每一个代表什么意思。</p>
+<p>了解了Workspace,Project,Target,Scheme,BuildSetting等等概念以及如何通过xcodebuild工具查看Xcode工程相关信息后，接下来我们看一下xcodebuild是如何编译打包导出IPA的。</p>
+<p>这里参考网上，我发现Xcode9以后有两种方式来实现自动化打包。</p>
+<ol>
+<li>Automatic</li>
+<li>Manual</li>
+</ol>
+<p>这里我先以Manual的形式来学习打包，后续再学习了解Automatic的形式打包。</p>
+<p>首先我们来看看官方对xcodebuild工具的介绍:<br><a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/technotes/tn2339/_index.html">xcodebuild is a command-line tool that allows you to perform build, query, analyze, test, and archive operations on your Xcode projects and workspaces from the command line.</a><br>可以看出xcodebuild正式苹果官方给出的通过命令行触发打包编译导出一系列操作的工具。</p>
+<p>具体想知道xcodebuild的详细使用介绍，可以在shell里输入man xcodebuild查看即可：<br><img src="/img/XcodeAutoSign/ManXcodeBuild.png" alt="ManXcodebuild"></p>
+<p>Manual:<br>手动打包之前，我们要用到下面几个比较重要的xcodebuild命令参数:</p>
+<ol>
+<li>clean – Remove build products and intermediate files from the build root(SYMROOT)(清楚通过build触发编译的所有中间文件)</li>
+<li>build – Build the target in the build root(SYMROOT). This is the default action, and is used if no action is given.(build指定target)</li>
+<li>archive – Archive a scheme from the build root(SYMROOT). This requires specifying a scheme.(打包指定scheme)</li>
+<li>exportArchive – Specifies that an archive should be exported. Requires -archivePath, -exportPath, and -exportOptionsPlist.  Cannot be passed along with an action.(指定Archive文件导出IPA)</li>
+</ol>
+<p>下面以工作中完整的命令行编译打包导出IPA为例来讲解学习(敏感信息中文代替):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br></pre></td><td class="code"><pre><span class="line">#! /bin/bash</span><br><span class="line"># 检查并创建文件夹</span><br><span class="line">CheckAndCreateFolder()</span><br><span class="line">&#123;</span><br><span class="line">    echo &quot;CheckOrCreateFolder parameter1 : $1&quot;</span><br><span class="line">    if [ -d $1 ]</span><br><span class="line">    then </span><br><span class="line">        echo &quot;$1 exits!&quot;</span><br><span class="line">    else</span><br><span class="line">        echo &quot;$1 not exits!&quot;</span><br><span class="line">        mkdir -p $1</span><br><span class="line">    fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">currentfolder=~+</span><br><span class="line">homefolderpath=~</span><br><span class="line">xcodeexportoptionfolderpath=&quot;$&#123;homefolderpath&#125;/Desktop/XcodeAutoSign/&quot;</span><br><span class="line">currentdatetime=`date +%Y%m%d%H%M%S`</span><br><span class="line"></span><br><span class="line">#签包相关信息(默认大陆Appstore)</span><br><span class="line"># 包名</span><br><span class="line">bundleid=&quot;对应包名&quot;</span><br><span class="line"># 大陆</span><br><span class="line">areas=&quot;dalu&quot;</span><br><span class="line">#证书类型</span><br><span class="line">provisionprofiletype=&quot;AppStore&quot;</span><br><span class="line"># 证书名字</span><br><span class="line">codesignidentity=&quot;对应证书名字&quot;</span><br><span class="line"># 描述文件名字</span><br><span class="line">provisioningprofile=&quot;对应描述文件名字&quot;</span><br><span class="line"># Deployment最低版本指定</span><br><span class="line">deploymenttarget=&quot;对应最低IOS支持版本&quot;</span><br><span class="line"># 打包导出配置文件</span><br><span class="line"># 最终签名相关信息都是以配置文件为准</span><br><span class="line">exportoptionsplist=&quot;对应签名配置文件&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;--------------------&quot;</span><br><span class="line">echo &quot;1. 大陆Appstore&quot;</span><br><span class="line">echo &quot;2. 大陆AdHoc&quot;</span><br><span class="line">echo &quot;3. 台湾Appstore&quot;</span><br><span class="line">echo &quot;4. 台湾AdHoc&quot;</span><br><span class="line">echo &quot;--------------------&quot;</span><br><span class="line">echo &quot;输入打包类型数字id(默认不输入是大陆AppStore):&quot;</span><br><span class="line">read countrynumber</span><br><span class="line"># 默认大陆</span><br><span class="line">echo &quot;countrynumber = $&#123;countrynumber:=1&#125;&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;输入工程文件夹全路径:&quot;</span><br><span class="line">read xcodeprojectfolderpath</span><br><span class="line">xcodeprojectfullpath=&quot;$&#123;xcodeprojectfolderpath&#125;/Unity-iPhone.xcodeproj&quot;</span><br><span class="line">echo &quot;xcodeprojectfullpath : $&#123;xcodeprojectfullpath&#125;&quot;</span><br><span class="line"></span><br><span class="line"># 检查工程Xcode项目文件是否存在</span><br><span class="line">if [ -d $&#123;xcodeprojectfullpath&#125; ]</span><br><span class="line">then</span><br><span class="line">    echo &quot;Xcode项目文件存在!&quot;</span><br><span class="line">else</span><br><span class="line">    echo &quot;Xcode项目:$&#123;xcodeprojectfullpath&#125;文件不存在!签包IPA失败!&quot; &gt; ErrorLog.txt</span><br><span class="line">    exit 0</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">if [ $countrynumber -eq 1 ]</span><br><span class="line">then    </span><br><span class="line">    #大陆Appstore</span><br><span class="line">    echo &quot;大陆AppStore&quot;</span><br><span class="line">    areas=&quot;dalu&quot;</span><br><span class="line">    provisionprofiletype=&quot;AppStore&quot;</span><br><span class="line">    bundleid=&quot;对应包名&quot;</span><br><span class="line">    codesignidentity=&quot;对应证书名字&quot;</span><br><span class="line">    provisioningprofile=&quot;对应描述文件名&quot;</span><br><span class="line">    deploymenttarget=&quot;对应最低IOS支持版本&quot;</span><br><span class="line">    exportoptionsplist=&quot;对应签名配置文件&quot;</span><br><span class="line">elif [ $countrynumber -eq 2 ]</span><br><span class="line">then</span><br><span class="line">    #大陆Ad Hoc</span><br><span class="line">    echo &quot;大陆AdHoc&quot;</span><br><span class="line">    areas=&quot;dalu&quot;</span><br><span class="line">    provisionprofiletype=&quot;AdHoc&quot;</span><br><span class="line">    bundleid=&quot;对应包名&quot;</span><br><span class="line">    codesignidentity=&quot;对应证书名字&quot;</span><br><span class="line">    provisioningprofile=&quot;对应描述文件名&quot;</span><br><span class="line">    deploymenttarget=&quot;对应最低IOS支持版本&quot;</span><br><span class="line">    exportoptionsplist=&quot;对应签名配置文件&quot;</span><br><span class="line">elif [ $countrynumber -eq 3 ]</span><br><span class="line">then</span><br><span class="line">    #台湾Appstore</span><br><span class="line">    echo &quot;台湾Appstore&quot;</span><br><span class="line">    areas=&quot;taiwan&quot;</span><br><span class="line">    provisionprofiletype=&quot;AppStore&quot;</span><br><span class="line">    bundleid=&quot;对应包名&quot;</span><br><span class="line">    codesignidentity=&quot;对应证书名字&quot;</span><br><span class="line">    provisioningprofile=&quot;对应描述文件名&quot;</span><br><span class="line">    deploymenttarget=&quot;对应最低IOS支持版本&quot;</span><br><span class="line">    exportoptionsplist=&quot;对应签名配置文件&quot;</span><br><span class="line">elif [ $countrynumber -eq 4 ]</span><br><span class="line">then</span><br><span class="line">    #台湾AdHoc</span><br><span class="line">    echo &quot;台湾AdHoc&quot;</span><br><span class="line">    areas=&quot;taiwan&quot;</span><br><span class="line">    provisionprofiletype=&quot;AdHoc&quot;</span><br><span class="line">    bundleid=&quot;对应包名&quot;</span><br><span class="line">    codesignidentity=&quot;对应证书名字&quot;</span><br><span class="line">    provisioningprofile=&quot;对应描述文件名&quot;</span><br><span class="line">    deploymenttarget=&quot;对应最低IOS支持版本&quot;</span><br><span class="line">    exportoptionsplist=&quot;对应签名配置文件&quot;</span><br><span class="line">else</span><br><span class="line">    echo &quot;请输入1或者2或者3或者4!签包失败!&quot; &gt; ErrorLog.txt</span><br><span class="line">    exit 0</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"># IPA文件名</span><br><span class="line">ipadname=&quot;$&#123;areas&#125;_$&#123;provisionprofiletype&#125;_$currentdatetime&quot;</span><br><span class="line"># IPA输出目录全路径</span><br><span class="line">ipaexportpath=&quot;/Users/Shared/build-ios/$&#123;areas&#125;/$&#123;provisionprofiletype&#125;/$&#123;currentdatetime&#125;&quot;</span><br><span class="line"># Archive文件名</span><br><span class="line">archivefilename=&quot;$&#123;xcodeprojectfolderpath&#125;/$&#123;areas&#125;_archive.xcarchive&quot;</span><br><span class="line"></span><br><span class="line"># 切换到对应工程目录下</span><br><span class="line">cd $xcodeprojectfolderpath</span><br><span class="line">echo &quot;切换到对应工程目录后当前目录:&quot;</span><br><span class="line">echo ~+</span><br><span class="line"></span><br><span class="line"># 检查输出目录是否存在，不存在则创建一个</span><br><span class="line">CheckAndCreateFolder $ipaexportpath</span><br><span class="line"></span><br><span class="line">#检查导出配置文件是否路径正确且存在</span><br><span class="line">echo &quot;导出配置文件路径:&quot;</span><br><span class="line">echo &quot;$&#123;xcodeexportoptionfolderpath&#125;/$&#123;exportoptionsplist&#125;&quot;</span><br><span class="line">if [ -f $&#123;xcodeexportoptionfolderpath&#125;/$&#123;exportoptionsplist&#125; ]</span><br><span class="line">then</span><br><span class="line">    echo &quot;导出配置文件存在!&quot;</span><br><span class="line">else</span><br><span class="line">    echo &quot;导出配置文件不存在!签包IPA失败!&quot; &gt; ErrorLog.txt</span><br><span class="line">    exit 0</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"># 判定符合条件的Archive文件是否存在，</span><br><span class="line"># 存在则直接Export，</span><br><span class="line"># 不存在则完全重新签包</span><br><span class="line">if [ ! -d $&#123;archivefilename&#125; ]</span><br><span class="line">then</span><br><span class="line">    echo &quot;$&#123;archivefilename&#125;文件不存在!&quot;</span><br><span class="line">    #clean下工程</span><br><span class="line">    echo &quot;开始清理工程&quot;</span><br><span class="line">    xcodebuild  clean \</span><br><span class="line">                -project Unity-iPhone.xcodeproj \</span><br><span class="line">                -configuration Release -alltargets \</span><br><span class="line">                PRODUCT_BUNDLE_IDENTIFIER=&quot;$bundleid&quot;</span><br><span class="line"></span><br><span class="line">    #开始编译</span><br><span class="line">    echo &quot;开始编译打包&quot;</span><br><span class="line">    xcodebuild -project Unity-iPhone.xcodeproj \</span><br><span class="line">                -scheme Unity-iPhone \</span><br><span class="line">                -configuration Release \</span><br><span class="line">                PRODUCT_BUNDLE_IDENTIFIER=&quot;$bundleid&quot; \</span><br><span class="line">                CODE_SIGN_STYLE=&quot;Manual&quot; \</span><br><span class="line">                CODE_SIGN_IDENTITY=&quot;$codesignidentity&quot; \</span><br><span class="line">                PROVISIONING_PROFILE=&quot;$provisioningprofile&quot; \</span><br><span class="line">                IPHONEOS_DEPLOYMENT_TARGET=&quot;$deploymenttarget&quot; \</span><br><span class="line">                -archivePath &quot;$&#123;archivefilename&#125;&quot; \</span><br><span class="line">                archive</span><br><span class="line">else</span><br><span class="line">    echo &quot;$&#123;archivefilename&#125;文件存在!&quot;</span><br><span class="line">fi</span><br><span class="line">            </span><br><span class="line">#开始打包Archive</span><br><span class="line">echo &quot;开始导出IPA&quot;</span><br><span class="line">xcodebuild -exportArchive \</span><br><span class="line">           -archivePath &quot;$&#123;archivefilename&#125;&quot; \</span><br><span class="line">           -exportOptionsPlist &quot;$&#123;xcodeexportoptionfolderpath&#125;/$&#123;exportoptionsplist&#125;&quot; \</span><br><span class="line">           -exportPath &quot;$&#123;ipaexportpath&#125;&quot;</span><br><span class="line"></span><br><span class="line">#修改最终输出的ipa文件名</span><br><span class="line">mv -f &quot;$&#123;ipaexportpath&#125;/Unity-iPhone.ipa&quot; &quot;$&#123;ipaexportpath&#125;/$&#123;ipadname&#125;.ipa&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;xcodeprojectfolderpath : $xcodeprojectfolderpath&quot;</span><br><span class="line">echo &quot;homefolderpath : $homefolderpath&quot;</span><br><span class="line">echo &quot;ipaexportpath : $ipaexportpath&quot;</span><br><span class="line">echo &quot;bundleid : $bundleid&quot;</span><br><span class="line">echo &quot;codesignidentity : $codesignidentity&quot;</span><br><span class="line">echo &quot;provisioningprofile : $provisioningprofile&quot;</span><br><span class="line">echo &quot;deploymenttarget : $deploymenttarget&quot;</span><br><span class="line">echo &quot;exportoptionsplist : $exportoptionsplist&quot;</span><br><span class="line">echo &quot;xcodeexportoptionfolderpath : $xcodeexportoptionfolderpath&quot;</span><br><span class="line">echo &quot;currentdatetime : $currentdatetime&quot;</span><br><span class="line">echo &quot;ipadname : $ipadname&quot;</span><br><span class="line">echo &quot;archivefilename : $archivefilename&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;签包结束.&quot;</span><br><span class="line">$SHELL</span><br></pre></td></tr></table></figure>
+
+<p>这里针对上面的自动化签包脚本，我们需要理解几个关键概念：</p>
+<ol>
+<li>包名 – 我们平时说的包名，Unity里平台设置那里设置的包名<br>Xcode里显示参考下图：<br> <img src="/img/XcodeAutoSign/XcodeBundleId.png" alt="XcodeBundleId"></li>
+<li>证书名字 – IOS开发打包需要的证书文件(比如:Development,Distribution证书)<br>因为Apple Developer Account最近刚到期，无法截后台账号的图，这里只放一张Keychain里面显示已经安装在本地的Certificate图:<br><img src="/img/XcodeAutoSign/KeyChainCertificates.png" alt="KeyChainCertificates"><br>证书名字通过右键对应Certificate后选择Get Info可查看:<br> <img src="/img/XcodeAutoSign/CertificateDetail.png" alt="CertificateDetail"></li>
+<li>描述文件 – 是指后台指定了Certificate,Apple Id, Device List等信息的描述文件<br><img src="/img/XcodeAutoSign/ProvisioningProfile.png" alt="ProvisioningProfile"><br>如果想详细查看里面的信息，可以通过下面这个命令:</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">security cmd -D -i *.mobileprovision</span><br></pre></td></tr></table></figure>
+
+<p>这里面就包含了很多信息，这里我们暂时需要通过这个找到描述文件的名字:<br>    <img src="/img/XcodeAutoSign/ProvisionProfileName.png" alt="ProvisionProfileName"></p>
+<ol start="4">
+<li>IOS最低版本支持 – 这个是对应Xcode里设置Deployment Target的那个参数，表示打包支持的最低IOS版本<br><img src="/img/XcodeAutoSign/DeploymentTarget.png" alt="DeploymentTarget"></li>
+<li>签名配置文件 – 关于导出IPA时的签名信息以及相关参数等的配置文件<br><img src="/img/XcodeAutoSign/ExportOptionFile.png" alt="ExportOptionFile"><br>让我们看下里面的详细信息:</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span><br><span class="line">&lt;plist version=&quot;1.0&quot;&gt;</span><br><span class="line">&lt;dict&gt;</span><br><span class="line">    &lt;key&gt;method&lt;/key&gt;</span><br><span class="line">    &lt;string&gt;app-store&lt;/string&gt;</span><br><span class="line">    &lt;key&gt;provisioningProfiles&lt;/key&gt;</span><br><span class="line">    &lt;dict&gt;</span><br><span class="line">        &lt;key&gt;对应包名&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;对应描述文件名&lt;/string&gt;</span><br><span class="line">    &lt;/dict&gt;</span><br><span class="line">    &lt;key&gt;signingCertificate&lt;/key&gt;</span><br><span class="line">    &lt;string&gt;***&lt;/string&gt;</span><br><span class="line">    &lt;key&gt;signingStyle&lt;/key&gt;</span><br><span class="line">    &lt;string&gt;manual&lt;/string&gt;</span><br><span class="line">    &lt;key&gt;stripSwiftSymbols&lt;/key&gt;</span><br><span class="line">    &lt;true/&gt;</span><br><span class="line">    &lt;key&gt;teamID&lt;/key&gt;</span><br><span class="line">    &lt;string&gt;***&lt;/string&gt;</span><br><span class="line">    &lt;key&gt;uploadSymbols&lt;/key&gt;</span><br><span class="line">    &lt;false/&gt;</span><br><span class="line">&lt;/dict&gt;</span><br><span class="line">&lt;/plist&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到签名配置文件里面指定了导出类型(app-store or development等)，证书名以及包名，描述文件信息等信息。<br>那么这个配置文件哪里来的了？<br>手动Archive后，我们会在*.ipa的同层文件目录下得到一个叫ExportOption.plist的文件，这个就是那个配置文件。</p>
+<p>Note：<br>如果我们的程序开启了苹果相关的服务，比如Apple Wallet等，那这些服务会以参数的信息显示在上面的配置文件里，如果后台证书配置了使用特定服务，但该配置文件里没有，就会提示特定字段信息对不上或者遗漏而报错。</p>
+<p>可以看出通过上面的自动化，我们可以命令行指定以下内容:</p>
+<ol>
+<li>包名</li>
+<li>证书</li>
+<li>描述文件</li>
+<li>IOS最低支持版本号</li>
+<li>签名证书</li>
+</ol>
+<p>接下来我们看看xcodebuild编译里是如何指定这些信息并成功导出IPA的:</p>
+<ol>
+<li>清理工程</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild  clean \                              # 指定了清理工程</span><br><span class="line">            -project Unity-iPhone.xcodeproj \    # 指定清理哪一个project</span><br><span class="line">            -configuration Release -alltargets \ # 指定清理Release下的所有targets</span><br><span class="line">            PRODUCT_BUNDLE_IDENTIFIER=&quot;$bundleid&quot;# 指定了包名(这一个可能不需要)</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>编译打包</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild -project Unity-iPhone.xcodeproj \                # 指定打包哪个project</span><br><span class="line">            -scheme Unity-iPhone \                          # 指定打包哪个scheme</span><br><span class="line">            -configuration Release \                        # 指定编译Release</span><br><span class="line">            PRODUCT_BUNDLE_IDENTIFIER=&quot;$bundleid&quot; \         # 指定包名</span><br><span class="line">            CODE_SIGN_STYLE=&quot;Manual&quot; \                      # 指定手动签名</span><br><span class="line">            CODE_SIGN_IDENTITY=&quot;$codesignidentity&quot; \        # 指定证书</span><br><span class="line">            PROVISIONING_PROFILE=&quot;$provisioningprofile&quot; \   # 指定描述文件</span><br><span class="line">            IPHONEOS_DEPLOYMENT_TARGET=&quot;$deploymenttarget&quot; \# 指定IOS最低版本</span><br><span class="line">            -archivePath &quot;$&#123;archivefilename&#125;&quot; \             # 指定生成的Archive文件路径</span><br><span class="line">            archive                                         # 指定编译打包</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>导出IPA</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild -exportArchive \                                         # 指定导出IPA</span><br><span class="line">           -archivePath &quot;$&#123;archivefilename&#125;&quot; \                      # 指定Archive文件路径</span><br><span class="line">           -exportOptionsPlist &quot;$&#123;xcodeexportoptionfolderpath&#125;/$&#123;exportoptionsplist&#125;&quot; \ # 指定签名配置文件路径</span><br><span class="line">           -exportPath &quot;$&#123;ipaexportpath&#125;&quot;                           # 指定IPA输出路径</span><br></pre></td></tr></table></figure>
+
+<p>上面的注释已经很详细了，这里就不在详细讲解了。<br>通过archive命令，我们得到了一个*.xcarchive的文件。<br><img src="/img/XcodeAutoSign/ArchiveFile.png" alt="ArchiveFile"><br>通过这个*.xcarchive文件，我们可以通过指定签名配置文件导出我们想要的IPA文件。</p>
+<p>Automatic:<br>待续……</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p><a target="_blank" rel="noopener" href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001374027586935cf69c53637d8458c9aec27dd546a6cd6000">http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001374027586935cf69c53637d8458c9aec27dd546a6cd6000</a>)</p>
+<h2 id="Jenkins-Part"><a href="#Jenkins-Part" class="headerlink" title="Jenkins Part"></a>Jenkins Part</h2><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Groovy">Groovy</a><br><a target="_blank" rel="noopener" href="https://wiki.jenkins-ci.org/display/JENKINS/Unity3dBuilder+Plugin#Unity3dBuilderPlugin-Usageguide">Uniy3d Plugin</a><br><a target="_blank" rel="noopener" href="http://blog.csdn.net/houyefeng/article/details/50914582">Jenkins——应用篇——插件使用——Mailer Plugin</a><br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/zz0412/p/jenkins_jj_01.html">Jenkins进阶系列之——01使用email-ext替换Jenkins的默认邮件通知</a><br><a target="_blank" rel="noopener" href="http://7dot9.com/2016/11/18/macos-jenkins-ci-unity-setup-config-guide/">macOS 安装配置 Jenkins 持续集成 Unity 项目指南</a><br><a target="_blank" rel="noopener" href="http://www.it610.com/article/3905365.htm">MAC EI Capitan上更新系统自带SVN版本(关闭SIP方能sudo rm)</a><br><a target="_blank" rel="noopener" href="https://support.apple.com/en-us/HT204899">About System Integrity Protection on your Mac</a><br><a target="_blank" rel="noopener" href="https://wiki.jenkins-ci.org/display/JENKINS/Email-ext+plugin#Email-extplugin-TemplateExamples">Email-ext plugin</a></p>
+<h2 id="Shell-Part"><a href="#Shell-Part" class="headerlink" title="Shell Part"></a>Shell Part</h2><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Unix_shell">Unix shell</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Shell%E8%84%9A%E6%9C%AC">Shell脚本</a><br><a target="_blank" rel="noopener" href="http://tldp.org/LDP/abs/html/">Advanced Bash-Scripting Guide</a></p>
+<h2 id="Xcodebuild-Part"><a href="#Xcodebuild-Part" class="headerlink" title="Xcodebuild Part"></a>Xcodebuild Part</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e691a81d576c">Xcode 9 最新 最准确 的自动化打包</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cy568searchx/p/5781717.html">iOS系统提供开发环境下命令行编译工具：xcodebuild</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/technotes/tn2339/_index.html">Building from the Command Line with Xcode FAQ</a><br><a target="_blank" rel="noopener" href="https://help.apple.com/xcode/mac/current/#/itcaec37c2a6">Build settings reference</a></p>
+<h2 id="Other-Part"><a href="#Other-Part" class="headerlink" title="Other Part"></a>Other Part</h2><p><a href=""></a><br><a href=""></a><br><a href=""></a><br><a href=""></a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/02/17/SublimeText3%E4%BD%BF%E7%94%A8/" rel="prev" title="SublimeText3使用">
+                  <i class="fa fa-angle-left"></i> SublimeText3使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/06/12/Python%E4%BD%BF%E7%94%A8/" rel="next" title="Python使用">
+                  Python使用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

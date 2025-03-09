@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言本篇文章是为了记录学习Unity官方一些好的第三方插件，作为基础的学习了解，为未来遇到问题思考解决方案时拓宽思路。 Sprite Atlas依然从What，Why，How三个角度了学习了解Sprite Atlas。 WhatSprite Atlas是官方Sprite Packer的升级版本，是为了更好的解决图集打包加载问题而开发的，而图集是为了解决Draw Call问题。 Why老版Unity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity官方插件">
+<meta property="og:url" content="http://example.com/2019/11/25/Unity%E5%AE%98%E6%96%B9%E6%8F%92%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本篇文章是为了记录学习Unity官方一些好的第三方插件，作为基础的学习了解，为未来遇到问题思考解决方案时拓宽思路。 Sprite Atlas依然从What，Why，How三个角度了学习了解Sprite Atlas。 WhatSprite Atlas是官方Sprite Packer的升级版本，是为了更好的解决图集打包加载问题而开发的，而图集是为了解决Draw Call问题。 Why老版Unity">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/Unity/SpriteAtlas/EnableSpriteAtlas.png">
+<meta property="og:image" content="http://example.com/img/Unity/SpriteAtlas/SpriteAtlasSetting.png">
+<meta property="og:image" content="http://example.com/img/Unity/SpriteAtlas/PackPreview.png">
+<meta property="og:image" content="http://example.com/img/Unity/SpriteAtlas/IncludeInBuildCauseRedundancySpriteAtlasTexture.png">
+<meta property="og:image" content="http://example.com/img/Unity/SpriteAtlas/SpriteAtlasVariants.png">
+<meta property="og:image" content="http://example.com/img/Unity/SpriteAtlas/SpriteAtlasAssetBundlePreview.png">
+<meta property="og:image" content="http://example.com/img/Unity/SpriteAtlas/UIPrefabReferenceNotIncludeBuildSpriteAtlas.png">
+<meta property="og:image" content="http://example.com/img/Unity/SpriteAtlas/UIPrefabSpriteMissing.png">
+<meta property="og:image" content="http://example.com/img/Unity/SpriteAtlas/UIPrefabDepencency.png">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/TimelineAssetHierachy.png">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/TimelineComponent.png">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/TimelineCustomPlayable.png">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/TimelinePlayableDirectorInspector.png">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/PlayableOutputPreview.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/PlayableGraphVisualizerPreview.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/AnimationClipMixPreview.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/MultipleAnimationInputAndOutputPreview.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/MultipleAnimationBlendAndSetPlayableState.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/TimelineCinemachineTrack.png">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/CustomTimelinePrefabHierachyPreview.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/CustomAudioTrackPreview.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/CustomAudioAssetBGMInspector.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/CustomAudioAssetSoundInspector.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/CustomAudioTrackWithAudioSourceBindingPreview.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/CinemachineBrain.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/CinemachineVirtualCamera.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/CinemachineBodyProperties.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/CinemachineAimProperties.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/CinemachineZone.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/Timeline_Cinemachine/CinemachineCameraTypes.PNG">
+<meta property="og:image" content="http://example.com/img/Unity/TextMeshPro/FontAssetCreatePanel.png">
+<meta property="og:image" content="http://example.com/img/Unity/TextMeshPro/SpriteAssetCreatePanel.png">
+<meta property="og:image" content="http://example.com/img/Unity/TextMeshPro/TextMeshProAssignFontAssetAndSpriteAsset.png">
+<meta property="og:image" content="http://example.com/img/Unity/TextMeshPro/TextMeshProUsing.png">
+<meta property="og:image" content="http://example.com/img/Unity/TextMeshPro/CreateFontAssetMaterial.png">
+<meta property="og:image" content="http://example.com/img/Unity/TextMeshPro/FontAssetMaterialChosen.png">
+<meta property="og:image" content="http://example.com/img/Unity/TextMeshPro/TMPSettings.png">
+<meta property="article:published_time" content="2019-11-25T13:27:18.000Z">
+<meta property="article:modified_time" content="2022-07-31T07:22:07.383Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/Unity/SpriteAtlas/EnableSpriteAtlas.png">
+
+
+<link rel="canonical" href="http://example.com/2019/11/25/Unity%E5%AE%98%E6%96%B9%E6%8F%92%E4%BB%B6/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2019/11/25/Unity%E5%AE%98%E6%96%B9%E6%8F%92%E4%BB%B6/","path":"2019/11/25/Unity官方插件/","title":"Unity官方插件"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Unity官方插件 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sprite-Atlas"><span class="nav-number">1.1.</span> <span class="nav-text">Sprite Atlas</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What"><span class="nav-number">1.1.1.</span> <span class="nav-text">What</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why"><span class="nav-number">1.1.2.</span> <span class="nav-text">Why</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How"><span class="nav-number">1.1.3.</span> <span class="nav-text">How</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E3%80%81%E7%BC%96%E8%BE%91%E5%9B%BE%E9%9B%86%E4%BB%A5%E5%8F%8A%E8%AE%BE%E5%AE%9A%E5%9B%BE%E9%9B%86%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">创建、编辑图集以及设定图集参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%9B%BE%E9%9B%86Variant%EF%BC%88%E5%8F%98%E7%A7%8D%EF%BC%89"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">添加图集Variant（变种）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E8%AE%BF%E9%97%AE%E5%9B%BE%E9%9B%86"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">运行时访问图集</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Later-Bind"><span class="nav-number">1.1.3.3.1.</span> <span class="nav-text">Later Bind</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">1.1.3.3.2.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.3.3.3.</span> <span class="nav-text">相关概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Bug%E8%AE%B0%E5%BD%95"><span class="nav-number">1.1.3.3.4.</span> <span class="nav-text">Bug记录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">1.1.3.3.5.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Timeline"><span class="nav-number">1.2.</span> <span class="nav-text">Timeline</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Timeline-Asset"><span class="nav-number">1.2.1.</span> <span class="nav-text">Timeline Asset</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">分类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Playable-Track"><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">Playable Track</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Timeline-instance"><span class="nav-number">1.2.2.</span> <span class="nav-text">Timeline instance</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D-1"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">介绍</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Timeline%E7%B1%BB%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.2.3.</span> <span class="nav-text">Timeline类设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Playable"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">Playable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PlayableGraph"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">PlayableGraph</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PlayableAsset"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">PlayableAsset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PlayableBehaviour"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">PlayableBehaviour</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PlayableOutput"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">PlayableOutput</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PlayableBinding"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">PlayableBinding</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ExposedReference"><span class="nav-number">1.2.3.7.</span> <span class="nav-text">ExposedReference</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7-GraphVisualizer"><span class="nav-number">1.2.3.8.</span> <span class="nav-text">辅助工具(GraphVisualizer)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8D%95AnimationClip%E5%8D%95AniamtionOuput%E7%9A%84%E5%8A%A8%E7%94%BB%E6%92%AD%E6%94%BE"><span class="nav-number">1.2.3.8.1.</span> <span class="nav-text">单AnimationClip单AniamtionOuput的动画播放</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9AAnimationClip%E6%B7%B7%E5%90%88"><span class="nav-number">1.2.3.8.2.</span> <span class="nav-text">多AnimationClip混合</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9AAnimationClip%E5%A4%9AAnimationOuput"><span class="nav-number">1.2.3.8.3.</span> <span class="nav-text">多AnimationClip多AnimationOuput</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9AAnimationClip%E6%B7%B7%E5%90%88%E5%B9%B6%E6%8E%A7%E5%88%B6%E6%9D%83%E9%87%8D%E5%8A%A0%E6%92%AD%E6%94%BE%E7%8A%B6%E6%80%81"><span class="nav-number">1.2.3.8.4.</span> <span class="nav-text">多AnimationClip混合并控制权重加播放状态</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Timeline%E5%AE%9E%E6%88%98"><span class="nav-number">1.2.4.</span> <span class="nav-text">Timeline实战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6"><span class="nav-number">1.2.5.</span> <span class="nav-text">进阶</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cinemachine"><span class="nav-number">1.3.</span> <span class="nav-text">Cinemachine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cinemachine-Brain"><span class="nav-number">1.3.1.</span> <span class="nav-text">Cinemachine Brain</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Virtual-Cameras"><span class="nav-number">1.3.2.</span> <span class="nav-text">Virtual Cameras</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Virtual-Camera-States"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">Virtual Camera States</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Virtual-Camera-Params"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">Virtual Camera Params</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cinemachine-Camera-Types"><span class="nav-number">1.3.3.</span> <span class="nav-text">Cinemachine Camera Types</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Virtual-Camera"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Virtual Camera</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FreeLook-Camera"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">FreeLook Camera</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#State-Driven-Camera"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">State-Driven Camera</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Collision-Avoidance-and-Shot-Evaluation"><span class="nav-number">1.3.4.</span> <span class="nav-text">Collision Avoidance and Shot Evaluation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CinemachineCollider"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">CinemachineCollider</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CinemachineConfiner"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">CinemachineConfiner</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E6%88%98"><span class="nav-number">1.3.5.</span> <span class="nav-text">实战</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TextMeshPro"><span class="nav-number">1.4.</span> <span class="nav-text">TextMeshPro</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">What</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-1"><span class="nav-number">1.4.2.</span> <span class="nav-text">Why</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-1"><span class="nav-number">1.4.3.</span> <span class="nav-text">How</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">引用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sprite-Atlas-1"><span class="nav-number">2.1.</span> <span class="nav-text">Sprite Atlas</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Timeline-1"><span class="nav-number">2.2.</span> <span class="nav-text">Timeline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TextMesh-Pro"><span class="nav-number">2.3.</span> <span class="nav-text">TextMesh Pro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cinemachine-1"><span class="nav-number">2.4.</span> <span class="nav-text">Cinemachine</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/11/25/Unity%E5%AE%98%E6%96%B9%E6%8F%92%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Unity官方插件 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity官方插件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-11-25 21:27:18" itemprop="dateCreated datePublished" datetime="2019-11-25T21:27:18+08:00">2019-11-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-07-31 15:22:07" itemprop="dateModified" datetime="2022-07-31T15:22:07+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇文章是为了记录学习Unity官方一些好的第三方插件，作为基础的学习了解，为未来遇到问题思考解决方案时拓宽思路。</p>
+<h2 id="Sprite-Atlas"><a href="#Sprite-Atlas" class="headerlink" title="Sprite Atlas"></a>Sprite Atlas</h2><p>依然从What，Why，How三个角度了学习了解Sprite Atlas。</p>
+<h3 id="What"><a href="#What" class="headerlink" title="What"></a>What</h3><p>Sprite Atlas是官方Sprite Packer的升级版本，是为了更好的解决图集打包加载问题而开发的，而图集是为了解决Draw Call问题。</p>
+<h3 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h3><p>老版Unity的时候，图集打包功能(SpritePacker,打Tag的方式)并不完善，更多的是采用第三方好比TexturePacker打包图集在放到Unity项目里的工作流。</p>
+<p>Sprite Atlas主要提供了以下三个功能:<br>1.创建、编辑图集以及设定图集参数<br>2.添加图集Variant（变种）<br>3.运行时访问图集</p>
+<p>新版Sprite Atals已经很完善了，考虑到以下几个原因，决定学习官方的打包图集工具跟着官方走:</p>
+<ol>
+<li>TexturePacker是付费的,Sprite Atlas免费</li>
+<li>Sprite Atlas是官方的，跟官方走一般来说不会错</li>
+<li>Spritre Atlas已经成熟可以商用的级别</li>
+</ol>
+<h3 id="How"><a href="#How" class="headerlink" title="How"></a>How</h3><p>使用Sprite Atlas之前，我们需要打开Sprite Atlas功能开关：<br>Edit -&gt; Project Setting -&gt; Editor -&gt; Sprite Packer -&gt; Mode(Always Enable)<br><img src="/img/Unity/SpriteAtlas/EnableSpriteAtlas.png" alt="EnableSpriteAtlas"></p>
+<h4 id="创建、编辑图集以及设定图集参数"><a href="#创建、编辑图集以及设定图集参数" class="headerlink" title="创建、编辑图集以及设定图集参数"></a>创建、编辑图集以及设定图集参数</h4><p>在Sprite Atlas里Sprite Atlas是作为一种资源(Asset)存在。<br>创建Sprite Atlas：<br>右键 -&gt; Sprite Atlas</p>
+<p>选中创建的Sprite Atlas我们能看到相关设置:<br><img src="/img/Unity/SpriteAtlas/SpriteAtlasSetting.png" alt="SpriteAtlasSetting"><br>这里的设置基本都和图集打包相关，这里就不一一详解了。<br>详情参见官网:<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/class-SpriteAtlas.html">Sprite Atlas</a></p>
+<p>点击Sprite Atlas -&gt; Pack Preview即可查看打包后的结果:<br><img src="/img/Unity/SpriteAtlas/PackPreview.png" alt="PackPreview"></p>
+<p>这里关于Include in Build这个参数要详细说明一下，这个参数会决定一下几方面:</p>
+<ol>
+<li>影响使用SpriteAtlas图集资源的资源是如何关联SpriteAtlas的(会决定使用该SpriteAtlas资源加载时加载哪一个图集资源–这里指的是有图集Variant的情况)</li>
+<li>影响SpriteAtlas是否需要采用Later Bind(触不触发SpriteAtlasManager.atlasRequested接口,通过这个接口结合图集Variant我们可以做到例如不同平台加载不同图集的适配)。反之勾选Include in Build在依赖使用时会自动加载依赖的Sprite Atlas。<br><strong>这里貌似有些Unity版本有个Bug，勾选Include in Build会导致资源打包冗余</strong><br><img src="/img/Unity/SpriteAtlas/IncludeInBuildCauseRedundancySpriteAtlasTexture.png" alt="IncludeInBuildCauseRedundancySpriteAtlasTexture"></li>
+</ol>
+<p>针对第一条详情参考:<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/SpriteAtlasScenarios.html">Resolving different Sprite Atlas scenarios</a></p>
+<p>Note:</p>
+<ol>
+<li><strong>Sprite Atlas支持Objects for Packing设置文件夹</strong></li>
+<li><strong>参与打包的图片必须设置成Sprite(2D and UI)格式</strong></li>
+<li><strong>Include in Build会影响SpriteAtlas的选择(比如是否要使用Later Bind等)</strong></li>
+</ol>
+<h4 id="添加图集Variant（变种）"><a href="#添加图集Variant（变种）" class="headerlink" title="添加图集Variant（变种）"></a>添加图集Variant（变种）</h4><p>什么是图集Variant?<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/VariantSpriteAtlas.html">A Variant Sprite Atlas is a type of Sprite Atlas that does not contain its own list of selected Textures as it has no Objects for Packing list in its properties. Instead, it receives a copy of the content from the Sprite Atlas set as its Master Atlas.</a><br>图集Variant是指不能指定打包内容的图集，图集Variant内容来源于复制指定的Master图集。</p>
+<p>图集Variant的适用场景?<br>图集Variant的主要目的是为了用于不同分辨率设备适配不同图集来实现，内存和效果的可控。</p>
+<p>图集Variant设置适用：<br><img src="/img/Unity/SpriteAtlas/SpriteAtlasVariants.png" alt="SpriteAtlasVariants"><br>可以看到我们创建一个SpriteAtlas把Type设置成Variant后，然后指定Master Atlas，最后通过调节Scale为0.5我们得到了比playerpreview图集小一倍大小的图集效果。</p>
+<p>结论:</p>
+<p>图集变体是类似Mipmap的东西，通过多打包多个不同大小的图集到游戏里，Unity自动帮我们选择合适的图集来加载，从而做到高分辨率机型加载高分辨率的，低分辨率机型加载低分辨率的，<strong>典型的空间换时间做法</strong>。</p>
+<p>Note:</p>
+<ol>
+<li><strong>要想只打包使用图集Variant，需要把图集Variant的Include in Build打开，把图集Master的Include in Build关闭</strong></li>
+</ol>
+<h4 id="运行时访问图集"><a href="#运行时访问图集" class="headerlink" title="运行时访问图集"></a>运行时访问图集</h4><p><a target="_blank" rel="noopener" href="https://gameinstitute.qq.com/community/detail/127434">Sprite Atlas作为一种资源开放给用户，支持在脚本中直接访问，还可以通过名字获取图集中的精灵。</a></p>
+<p><strong>这里我们采用设置不勾选Include in Build的设置打包SpriteAtlas</strong></p>
+<p>接下来我们通过SpriteAtlas接口访问打包AB后的Sprite Atlas里的图片资源试试：<br>首先让我们看看SpriteAtlas打包AB后的的资源数据：<br><img src="/img/Unity/SpriteAtlas/SpriteAtlasAssetBundlePreview.png" alt="SpriteAtlasAssetBundlePreview"><br>可以看到SpriteAtlas作为资源参与AB打包，里面包含了SpriteAtlas，图集Texture2D以及Sprite数据。</p>
+<p>这里我们看看UI预制件引用SpriteAtlas看看依赖打包的情况：<br><img src="/img/Unity/SpriteAtlas/UIPrefabReferenceNotIncludeBuildSpriteAtlas.png" alt="UIPrefabReferenceNotIncludeBuildSpriteAtlas"><br>从上面可以看出UI窗口预制件包含了依赖的Sprite(这里和以前不一样，以前是不会包含依赖的Sprite的，会直接通过依赖关系加载依赖AB实现自动还原)，个人猜测这个和后续讲到的SpriteAtlas的Later Bind有关。</p>
+<p>加载UI窗口预制件后发现Sprite Missing了:<br><img src="/img/Unity/SpriteAtlas/UIPrefabSpriteMissing.png" alt="UIPrefabSpriteMissing"><br>通过查看依赖文件我发现依赖信息是没有对SpriteAtlas的依赖信息的。<strong>不知道这算不算是一个Bug还是设计如此，因为没有依赖信息对资源加载管理会造成问题，忘知道的朋友告知。</strong><br><img src="/img/Unity/SpriteAtlas/UIPrefabDepencency.png" alt="UIPrefabDepencency"></p>
+<p>问题:</p>
+<ol>
+<li><strong>加载使用SpriteAtlas的UI Prefab，SpriteAtlas会自动加载进内存且没有依赖信息。但如果此时主动加载了Sprite Atlas并主动强制卸载该Sprite Atlas的AB会导致UI Prefab使用的Sprite Atlas也跟随被清除。从这里看出UI Prefab对Sprite Atlas的依赖信息是有必要的，不然没法正确的管理资源加载。</strong></li>
+</ol>
+<p>这里引申出了SpriteAtlas一个很重要的功能，<strong>Later Bind</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>图集的被动(依赖)加载管理会有使用该图集的资源所决定(比如UI Prefab使用了SpriteAtlas，两个分别打包AB，这时加载UI Prefab后SpriteAtlas会自动加载进内存，而UI Prefab卸载以后，SpriteAtlas没有其他主动加载该SpriteAtlas的会自动卸载。)</strong></li>
+</ol>
+<h5 id="Later-Bind"><a href="#Later-Bind" class="headerlink" title="Later Bind"></a>Later Bind</h5><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80584461">SpritePacker时代“图集”我们是看不到的，因为设计者的初衷是想让开发者完全不用考虑图集的事。但是，这跟游戏开发时的动态加载图集时矛盾的！我们要动态加载就必须要知道atlas名字和sprite名，这样才能在 运行时动态的找到一张sprite！所以U3D程序员必须要清楚的知道你当前界面用的是哪atlas的哪个sprite。但是按照SpritePacker的做法他的初衷应该是想把图集干掉（干掉的意思让开发者不用关心），只需要考虑sprite即可，但是这是行不通的！<br>**SpriteAtlas其实就是为了解决上面说的问题而发布的功能。通过它我们可以将atlas和UIprefab“解耦”。同时，在Unity编辑器状态下我们仍然可以利用未打成SpriteAtlas的Sprite进行开发。等开发完成我们再发布成SpriteAtlas。**Unity提供了所谓“延迟绑定”（late bind）的技术来让我们实现这个功能。</a></p>
+<p>AtlasManager.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AtlasManager</span> : <span class="title">SingletonTemplate</span>&lt;<span class="title">AtlasManager</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AtlasManager</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        DIYLog.Log(<span class="string">&quot;添加SpriteAtals图集延时绑定回调!&quot;</span>);</span><br><span class="line">        SpriteAtlasManager.atlasRequested += onAtlasRequested;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 响应SpriteAtlas图集加载回调</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;atlasname&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;callback&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onAtlasRequested</span>(<span class="params"><span class="built_in">string</span> atlasname, Action&lt;SpriteAtlas&gt; callback</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        DIYLog.Log(<span class="string">$&quot;加载SpriteAtlas:<span class="subst">&#123;atlasname&#125;</span>&quot;</span>);</span><br><span class="line">        <span class="comment">// Later Bind -- 依赖使用SpriteAtlas的加载都会触发这里</span></span><br><span class="line">        ResourceModuleManager.Singleton.requstResource(</span><br><span class="line">        atlasname,</span><br><span class="line">        (abi) =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            DIYLog.Log(<span class="string">$&quot;Later Bind加载SpriteAtlas:<span class="subst">&#123;atlasname&#125;</span>&quot;</span>);</span><br><span class="line">            <span class="keyword">var</span> sa = abi.loadAsset&lt;SpriteAtlas&gt;(atlasname);</span><br><span class="line">            callback(sa);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在加载使用SpriteAtlas(<strong>仅当设置成不勾选Include in Build</strong>)的相关资源时(比如UI Prefab)上诉回调会被触发完成对SpriteAtlas的加载，确保引用的Sprite能正确显示。同时这一机制就允许我们做到不同平台的不同图集资源加载适配这样的功能。</p>
+<p>疑问:</p>
+<ol>
+<li>Later Bind只是加载SpriteAtlas提供的一个回调接口(无论是主动还是被动(依赖)加载)，回调接口内只知道加载了指定的SpriteAtlas却不知道具体的详细用法，这样一来基于对象绑定和索引计数的资源管理系统就无法正确的加载管理了(因为被动(依赖)加载得不到SpriteAtlas的依赖信息)。</li>
+</ol>
+<p>个人方案：</p>
+<ol>
+<li>当前这套基于对象绑定和索引计数的方案暂时没想到好的方案，可能需要对SpriteAtals的资源管理单独做一套管理策略来支持Later Bind的用法。有更好方案的朋友，望告知。</li>
+</ol>
+<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><ol>
+<li>开启Sprite Packer的设置Sprite Packer -&gt; Mode(Always Enable)只决定图集合成时机(比如是运行时还是打包时还是编辑器时)。</li>
+<li>Sprite Atlas支持Objects for Packing设置文件夹</li>
+<li>参与打包的图片必须设置成Sprite(2D and UI)格式</li>
+<li><strong>Include in Build会影响SpriteAtlas图集资源的资源是如何关联SpriteAtlas(比如影响是否需要使用Later Bind,不勾选需要使用Later Bind否则会报警告)</strong></li>
+</ol>
+<h5 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h5><ol>
+<li>Sprite Atlas把图集打包的概念延迟到特定时刻(比如打包或者打包AB)而编辑模式依然可以使用原始Sprite工作，总的来说就是延时自动化打包图集时机+允许使用原始Sprite的概念。</li>
+<li>Include in Build设置主要是看有没有动态适配加载图集需求，有的话就建议不勾选，然后结合Later Bind来做动态图集加载适配。反之勾选Include in Build在依赖使用时会自动加载依赖使用的Sprite Atals。</li>
+<li>Include in Build其次还会影响Sprite Atlas变体使用的选择。</li>
+<li>SpriteAtlas到了Unity 2018 LTS版本感觉才稳定些，建议使用稳定版本的SpriteAtlas</li>
+<li>Later Bind不会区分主动加载还是被动(依赖)加载SpriteAtlas,都会统一回调，要使用Later Bind机制的需要取消勾选Include in Build并解决SpriteAtlas的资源加载管理问题(在沿用原来的对象绑定和索引计数的资源管理方案基础上本人暂时没有好的方案)</li>
+<li><strong>Sprite Atlas无论够不够选Include in Build打包AB都得不到Sprite Atlas的依赖信息，感觉这是一个bug</strong></li>
+</ol>
+<h5 id="Bug记录"><a href="#Bug记录" class="headerlink" title="Bug记录"></a>Bug记录</h5><ol>
+<li><strong>勾选Include in Build会导致资源打包冗余(部分Unity版本比如Unity2018.4.1f1)，建议升级到LTS版本</strong></li>
+</ol>
+<h5 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h5><p>SpriteAtlas虽然解决了Atlas和UIPrefab的解耦，同时提供了图集变体的概念来解决适配图集适配方案，但也带来了一些新的问题要解决(e.g. 要解决没有依赖信息的SpriteAtals基础上做到正确的资源加载管理)。</p>
+<p><strong>——————————–2021&#x2F;20&#x2F;12更新开始————————————–</strong></p>
+<p>正确使用姿势参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/msxh/p/14194756.html">【Unity游戏开发】SpriteAtlas与AssetBundle最佳食用方案</a></p>
+<p>简单来说:</p>
+<ol>
+<li><strong>SpriteAtlas 勾选Include in build</strong></li>
+<li><strong>SpriteAtlas不设置AB打包</strong></li>
+<li><strong>直接当做单Sprite一样加载</strong></li>
+</ol>
+<p><strong>——————————–2021&#x2F;20&#x2F;12更新结束————————————–</strong></p>
+<h2 id="Timeline"><a href="#Timeline" class="headerlink" title="Timeline"></a>Timeline</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/TimelineSection.html"> <strong>Timeline</strong> to create cinematic content, game-play sequences, audio sequences, and complex particle effects. </a></p>
+<p>官方介绍Timeline可以用于制作类似电影过场表现的工具。</p>
+<p>Timeline分为两个部分：</p>
+<ol>
+<li>Timeline Asset(数据)</li>
+<li>Timeline instance(数据关联实体对象)</li>
+</ol>
+<h3 id="Timeline-Asset"><a href="#Timeline-Asset" class="headerlink" title="Timeline Asset"></a>Timeline Asset</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/TimelineOverview.html"> <strong>Timeline Asset</strong>: Stores the tracks, clips, and recorded animations without links to the specific GameObjects being animated.</a></p>
+<p>通过介绍可以看出Timeline Asset是类似于Animation Clip一样的资源文件可以用于录制动画<strong>但不需要关联到特定的物体上</strong></p>
+<p>Timeline Asset记录的动画数据是以子节点资源的形式挂载在Timeline Asset下的：</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/TimelineAssetHierachy.png" alt="TimelineAssetHierachy"></p>
+<p>Note:<br>前面说的不需要关联到特定的物体上是指不需要像AnimationClip那样动画是针对指定物体制作的(挂给其他物体用不了该动画)，Timeline可以通过PlayableDirector动态关联动画对象。</p>
+<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><p>Timeline Asset是以Track为最小单位。</p>
+<p>主要支持以下几种Track:</p>
+<ol>
+<li>Track Group(仅分层管理用)</li>
+<li>Activation Track(激活物体Track)</li>
+<li>Animation Track(动画Track)</li>
+<li>Audio Track(音频Track)</li>
+<li>Control Track(时间相关的控制)</li>
+<li>Playable Track(<strong>自定义Track</strong>)</li>
+</ol>
+<p><img src="/img/Unity/Timeline_Cinemachine/TimelineComponent.png" alt="TimelineComponent"></p>
+<p>这里我们着重学习Playable Track,自定义的一些表现行为都是通过Playable Track来做的。其他几个就不一一讲解了。</p>
+<h5 id="Playable-Track"><a href="#Playable-Track" class="headerlink" title="Playable Track"></a>Playable Track</h5><p>自定义Playable Track需要知道两个东西：</p>
+<ol>
+<li>PlayableAsset(用于支持Timeline创建和显示自定义PlayableAsset数据定义)</li>
+<li>PlayableBehaviour(用于Playable实际的生命周期等逻辑实现)</li>
+</ol>
+<p>示例:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 枚举事件定义</span></span><br><span class="line"><span class="keyword">public</span> <span class="built_in">enum</span> EEventId</span><br><span class="line">&#123;</span><br><span class="line">    DefaultEvent = <span class="number">1</span>,				<span class="comment">// 默认事件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 事件分发器Asset</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">System.Serializable</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EventDispatcherAsset</span> : <span class="title">PlayableAsset</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 事件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> EEventId EventId = EEventId.DefaultEvent;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Factory method that generates a playable based on this asset</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> Playable <span class="title">CreatePlayable</span>(<span class="params">PlayableGraph graph, GameObject go</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> playable = ScriptPlayable&lt;EventDispatcherPlayable&gt;.Create(graph);</span><br><span class="line">        playable.GetBehaviour().EventId = EventId;</span><br><span class="line">        <span class="keyword">return</span> playable;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 事件分发器Playable</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EventDispatcherPlayable</span> : <span class="title">PlayableBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 事件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">Header(<span class="string">&quot;事件&quot;</span>)</span>]</span><br><span class="line">    <span class="keyword">public</span> EEventId EventId = EEventId.DefaultEvent;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the owning graph starts playing</span></span><br><span class="line">    <span class="comment">// Playable开始执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnGraphStart</span>(<span class="params">Playable playable</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the owning graph stops playing</span></span><br><span class="line">    <span class="comment">// Playable停止执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnGraphStop</span>(<span class="params">Playable playable</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the state of the playable is set to Play</span></span><br><span class="line">    <span class="comment">// 触发Playable执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnBehaviourPlay</span>(<span class="params">Playable playable, FrameData info</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="built_in">string</span>.Format(<span class="string">&quot;OnBehaviourPlay() 分发事件 : &#123;0&#125;&quot;</span>, EventId));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the state of the playable is set to Paused</span></span><br><span class="line">    <span class="comment">// Playable暂停执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnBehaviourPause</span>(<span class="params">Playable playable, FrameData info</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called each frame while the state is set to Play</span></span><br><span class="line">    <span class="comment">// Playable更新执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">PrepareFrame</span>(<span class="params">Playable playable, FrameData info</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Unity/Timeline_Cinemachine/TimelineCustomPlayable.png" alt="TimelineCustomPlayable"></p>
+<p>代码不复杂就不详细介绍了。通过上面的代码，我们支持了一个创建自定义分发事件的Playable Track，而这个自定义的事件分发就可以用作我们Timeline和游戏逻辑之间的一个桥梁，帮助我们在Timeline播放的过程中自定义响应做一些表现。</p>
+<h3 id="Timeline-instance"><a href="#Timeline-instance" class="headerlink" title="Timeline instance"></a>Timeline instance</h3><h4 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/TimelineOverview.html"> <strong>Timeline instance</strong>: Stores links to the specific GameObjects being animated or affected by the Timeline Asset. These links, referred to as <strong>bindings</strong>, are saved to the Scene. </a></p>
+<p>要想关联场景物体和Timeline Asset让我们制作的电影过场动起来，我们需要创建Timeline instance(这里指的Playable Director组件)。</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/TimelinePlayableDirectorInspector.png" alt="TimelinePlayableDirectorInspector"></p>
+<p>可以看到我们通过Timeline Asset录制的动画是通过Playable Director的Bindings动态关联到了场景物体上。</p>
+<p>Note:<br><strong>因为Timeline Asset是纯数据，Timeline instance决定了数据关联的对象，所以我们可以重用Timeline Asset对不同的物体做动画表现。</strong></p>
+<h3 id="Timeline类设计"><a href="#Timeline类设计" class="headerlink" title="Timeline类设计"></a>Timeline类设计</h3><h4 id="Playable"><a href="#Playable" class="headerlink" title="Playable"></a>Playable</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Playables.html">The <strong>Playables</strong> API provides a way to create tools, effects or other gameplay mechanisms by organizing and evaluating data sources in a tree-like structure known as the PlayableGraph. The PlayableGraph allows you to mix, blend, and modify multiple data sources, and play them through a single output.</a></p>
+<p>从介绍个人的理解，Playable是一套可自定义数据处理流程成树状结构的工具。而自定义出来的树状结构数据就叫做PlayableGraph(后续会讲到)。而Timeline的核心正是Playable。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Playables.html">使用Playables API的好处:</a></p>
+<ul>
+<li>The Playables API allows for dynamic animation blending. This means that objects in the <strong>scenes</strong><br>could provide their own animations. For example, animations for weapons, chests, and traps could be dynamically added to the PlayableGraph and used for a certain duration.</li>
+<li>The Playables API allows you to easily play a single animation without the overhead involved in creating and managing an AnimatorController asset.</li>
+<li>The Playables API allows users to dynamically create blending graphs and control the blending weights directly frame by frame.</li>
+<li>A PlayableGraph can be created at runtime, adding playable node as needed, based on conditions. Instead of having a huge “one-size-fit-all” graph where nodes are enabled and disabled, the PlayableGraph can be tailored to fit the requirements of the current situation.</li>
+</ul>
+<p>官网上介绍了Playable的不少好处，从介绍可以看出最大的好处就是运行时自定义组装数据处理流程，避免离线构建一套过于臃肿的数据定义(比如AnimatorController)</p>
+<p>Note:</p>
+<ol>
+<li><strong>Playable是Struct而非Class，为了避免内存分配导致GC</strong></li>
+<li><strong>Playable和PlayableOutput没有提供太多方法，而是通过PlayableExtension和PlayableOutputExtension用扩展方法的方式来提供的方法</strong></li>
+</ol>
+<h4 id="PlayableGraph"><a href="#PlayableGraph" class="headerlink" title="PlayableGraph"></a>PlayableGraph</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Playables-Graph.html">The PlayableGraph defines a set of playable outputs that are bound to a <strong>GameObject</strong> or component. The PlayableGraph also defines a set of <strong>playables</strong> and their relationships. Figure 1 provides an example.</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Playables-Graph.html">The PlayableGraph is responsible for the life cycle of its playables and their outputs. Use the PlayableGraph to create, connect, and destroy playables.</a></p>
+<p>从上面的介绍，个人理解，PlayableGraph是一个自定义数据处理流程的完整单位，负责自定义数据处理流程里的节点定义，关联，以及生命周期。PlayableGraph是由Plyable(e.g.Playable,MixPlayable)+PlayableOuput组成。</p>
+<h4 id="PlayableAsset"><a href="#PlayableAsset" class="headerlink" title="PlayableAsset"></a>PlayableAsset</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html">A base class for assets that can be used to instantiate a Playable at runtime.</a></p>
+<p>PlayableAsset是自定义Playable时定义数据Asset的基类。</p>
+<h4 id="PlayableBehaviour"><a href="#PlayableBehaviour" class="headerlink" title="PlayableBehaviour"></a>PlayableBehaviour</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Playables.PlayableBehaviour.html">PlayableBehaviour is the base class from which every custom playable script derives.</a></p>
+<p>PlayableBehaviour是自定义Playable时定义行为实现的脚本基类。</p>
+<h4 id="PlayableOutput"><a href="#PlayableOutput" class="headerlink" title="PlayableOutput"></a>PlayableOutput</h4><p>个人理解是定义Playable里面的输出节点。所有的输入节点最后连接成树状结构后连到输出节点上，执行出自定义行为的输出表现。</p>
+<p>参考下图:</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/PlayableOutputPreview.PNG" alt="PlayableOutputPreview"></p>
+<h4 id="PlayableBinding"><a href="#PlayableBinding" class="headerlink" title="PlayableBinding"></a>PlayableBinding</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Playables.PlayableBinding.html">Struct that holds information regarding an output of a PlayableAsset. PlayableAssets specify the type of outputs it supports using PlayableBindings.</a></p>
+<p>看介绍PlayableBinding是用于定义并持有PlayableAsset的数据输出信息。</p>
+<h4 id="ExposedReference"><a href="#ExposedReference" class="headerlink" title="ExposedReference"></a>ExposedReference</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/ExposedReference_1.html">Creates a type whos value is resolvable at runtime. ExposedReference is a generic type that can be used to create references to Scene objects and resolve their actual values at runtime and by using a context object. This can be used by assets, such as a ScriptableObject or PlayableAsset to create references to Scene objects.</a></p>
+<p>从介绍可以看出，ExposedReference是用于创建一个类型(其值在运行时处理绑定的)。用于解决PlayableAsset引用场景对象组件数据等问题。</p>
+<h4 id="辅助工具-GraphVisualizer"><a href="#辅助工具-GraphVisualizer" class="headerlink" title="辅助工具(GraphVisualizer)"></a>辅助工具(GraphVisualizer)</h4><p><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/graph-visualizer">The PlayableGraph Visualizer is a tool that displays the PlayableGraphs in the scene. It can be used in both Play and Edit mode and will always reflect the current state of the graph. </a></p>
+<p>因为Playable的设计很庞大，里面有很多类和概念，为了方便理解Playable设计和使用可视化的查看构建出来的PlayableGraph显得额外有用，而PlayableGraph Visualizer正是这么一款工具。</p>
+<p>接下来我们结合GraphVisualizer动态通过代码创建模拟用Playable API实现动画Animator Controller里的动画状态机类似的效果，从而深入学习理解Playable里各个类的设计和使用。</p>
+<h5 id="单AnimationClip单AniamtionOuput的动画播放"><a href="#单AnimationClip单AniamtionOuput的动画播放" class="headerlink" title="单AnimationClip单AniamtionOuput的动画播放"></a>单AnimationClip单AniamtionOuput的动画播放</h5><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建动画播放PlayableGraph</span></span><br><span class="line">mCustomGraph = PlayableGraph.Create(<span class="string">&quot;DIYAnimationPlayableGraph&quot;</span>);</span><br><span class="line"><span class="comment">// 创建动画播放PlyableGraph的PlayableOutput</span></span><br><span class="line"><span class="keyword">var</span> animoutput = AnimationPlayableOutput.Create(mCustomGraph, <span class="string">&quot;AnimationOutput&quot;</span>, CustomAnimator1);</span><br><span class="line"><span class="comment">// 创建动画播放PlyableGraph的动画Playable</span></span><br><span class="line"><span class="keyword">var</span> animationclipplayable = AnimationClipPlayable.Create(mCustomGraph, CustomAnimationClip1);</span><br><span class="line"><span class="comment">// 设置动画播放PlayableOutput的关联Playable</span></span><br><span class="line">animoutput.SetSourcePlayable(animationclipplayable);</span><br><span class="line"><span class="comment">// 播放创建的PlayableGraph</span></span><br><span class="line">mCustomGraph.Play();</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的代码我们动态创建了1个PlayableGraph，1个动画Plyable，1个动画PlayableOutput作为动画播放输出，并设置他们之间的关联，运行代码打开PlayableGraphVisualizer就可以查看到生成的单动画Clip播放PlayableGraph图了。</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/PlayableGraphVisualizerPreview.PNG" alt="PlayableGraphVisualizerPreview"></p>
+<h5 id="多AnimationClip混合"><a href="#多AnimationClip混合" class="headerlink" title="多AnimationClip混合"></a>多AnimationClip混合</h5><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建动画播放PlayableGraph</span></span><br><span class="line">mCustomGraph = PlayableGraph.Create(<span class="string">&quot;DIYAnimationPlayableGraph&quot;</span>);</span><br><span class="line"><span class="comment">// 创建动画播放PlyableGraph的PlayableOutput</span></span><br><span class="line"><span class="keyword">var</span> animationOutput = AnimationPlayableOutput.Create(mCustomGraph, <span class="string">&quot;AnimationOutput&quot;</span>, CustomAnimator1);</span><br><span class="line"><span class="comment">// 创建动画播放混合Playable(设置两个输入Playable)</span></span><br><span class="line">mAnimationMixerPlayable = AnimationMixerPlayable.Create(mCustomGraph, <span class="number">2</span>);</span><br><span class="line"><span class="comment">// 关联动画混合Playable到PlaybleOutput作为唯一输入</span></span><br><span class="line">animationOutput.SetSourcePlayable(mAnimationMixerPlayable);</span><br><span class="line"><span class="comment">// 创建动画播放PlyableGraph的动画播放Playable1和Playable2</span></span><br><span class="line"><span class="keyword">var</span> animationClipPlayable1 = AnimationClipPlayable.Create(mCustomGraph, CustomAnimationClip1);</span><br><span class="line"><span class="keyword">var</span> animationClipPlayable2 = AnimationClipPlayable.Create(mCustomGraph, CustomAnimationClip2);</span><br><span class="line"><span class="comment">// 关联动画播放Playable1和Playable2作为动画混合Playable的输入连接(分别连接输入0和输入1接口)</span></span><br><span class="line">mCustomGraph.Connect(animationClipPlayable1, <span class="number">0</span>, mAnimationMixerPlayable, <span class="number">0</span>);</span><br><span class="line">mCustomGraph.Connect(animationClipPlayable2, <span class="number">0</span>, mAnimationMixerPlayable, <span class="number">1</span>);</span><br><span class="line"><span class="comment">// 播放创建的PlayableGraph</span></span><br><span class="line">mCustomGraph.Play();</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的代码我们动态创建了一个PlayableGraph，2个动画Plyable作为基础输入，1个动画混合Playable作为混合节点，1个动画PlayableOutput作为动画播放输出，并设置他们之间的关联，运行代码打开PlayableGraphVisualizer就可以查看到生成的动画混合播放PlayableGraph图了。</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/AnimationClipMixPreview.PNG" alt="AnimationClipMixPreview"></p>
+<h5 id="多AnimationClip多AnimationOuput"><a href="#多AnimationClip多AnimationOuput" class="headerlink" title="多AnimationClip多AnimationOuput"></a>多AnimationClip多AnimationOuput</h5><p><strong>一个PlayableGraph是可以拥有多个PlayableOutput输出的</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建动画播放PlayableGraph</span></span><br><span class="line">mCustomGraph = PlayableGraph.Create(<span class="string">&quot;DIYAnimationPlayableGraph&quot;</span>);</span><br><span class="line"><span class="comment">// 创建动画播放PlyableGraph的PlayableOutput1和PlayableOutput2</span></span><br><span class="line"><span class="keyword">var</span> animationOutput1 = AnimationPlayableOutput.Create(mCustomGraph, <span class="string">&quot;AnimationOutput1&quot;</span>, CustomAnimator1);</span><br><span class="line"><span class="keyword">var</span> animationOutput2 = AnimationPlayableOutput.Create(mCustomGraph, <span class="string">&quot;AnimationOutput2&quot;</span>, CustomAnimator2);</span><br><span class="line"><span class="comment">// 创建动画播放PlyableGraph的动画播放Playable1和Playable2</span></span><br><span class="line"><span class="keyword">var</span> animationClipPlayable1 = AnimationClipPlayable.Create(mCustomGraph, CustomAnimationClip1);</span><br><span class="line"><span class="keyword">var</span> animationClipPlayable2 = AnimationClipPlayable.Create(mCustomGraph, CustomAnimationClip2);</span><br><span class="line"><span class="comment">// 关联动画播放Playable1到动画播放PlaybleOutput1</span></span><br><span class="line"><span class="comment">// 关联动画播放Playable2到动画播放PlaybleOutput2</span></span><br><span class="line">animationOutput1.SetSourcePlayable(animationClipPlayable1);</span><br><span class="line">animationOutput2.SetSourcePlayable(animationClipPlayable2);</span><br><span class="line"><span class="comment">// 播放创建的PlayableGraph</span></span><br><span class="line">mCustomGraph.Play();</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的代码我们动态创建了一个PlayableGraph，2个动画Plyable对应2个动画PlayableOutput动画播放输出的输入，并设置他们之间的关联，运行代码打开PlayableGraphVisualizer就可以查看到生成的动画混合播放PlayableGraph图了。</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/MultipleAnimationInputAndOutputPreview.PNG" alt="MultipleAnimationInputAndOutputPreview"></p>
+<h5 id="多AnimationClip混合并控制权重加播放状态"><a href="#多AnimationClip混合并控制权重加播放状态" class="headerlink" title="多AnimationClip混合并控制权重加播放状态"></a>多AnimationClip混合并控制权重加播放状态</h5><p><strong>不同的Playable是可以设置混合权重加播放状态的</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建动画播放PlayableGraph</span></span><br><span class="line">mCustomGraph = PlayableGraph.Create(<span class="string">&quot;DIYAnimationPlayableGraph&quot;</span>);</span><br><span class="line"><span class="comment">// 创建动画播放PlyableGraph的PlayableOutput</span></span><br><span class="line"><span class="keyword">var</span> animationOutput = AnimationPlayableOutput.Create(mCustomGraph, <span class="string">&quot;AnimationOutput1&quot;</span>, CustomAnimator1);</span><br><span class="line"><span class="comment">// 创建动画混合Playable</span></span><br><span class="line">mAnimationMixerPlayable = AnimationMixerPlayable.Create(mCustomGraph, <span class="number">2</span>);</span><br><span class="line"><span class="comment">// 设置动画混合Playalbe作为动画播放输出Playable</span></span><br><span class="line">animationOutput.SetSourcePlayable(mAnimationMixerPlayable);</span><br><span class="line"><span class="comment">// 创建动画播放PlyableGraph的动画播放Playable1和Playable2</span></span><br><span class="line"><span class="keyword">var</span> animationClipPlayable1 = AnimationClipPlayable.Create(mCustomGraph, CustomAnimationClip1);</span><br><span class="line"><span class="keyword">var</span> animationClipPlayable2 = AnimationClipPlayable.Create(mCustomGraph, CustomAnimationClip2);</span><br><span class="line"><span class="comment">// 设置动画混合输入和权重</span></span><br><span class="line">mCustomGraph.Connect(animationClipPlayable1, <span class="number">0</span>, mAnimationMixerPlayable, <span class="number">0</span>);</span><br><span class="line">mCustomGraph.Connect(animationClipPlayable2, <span class="number">0</span>, mAnimationMixerPlayable, <span class="number">1</span>);</span><br><span class="line">mAnimationMixerPlayable.SetInputWeight(<span class="number">0</span>, <span class="number">1.0f</span>);</span><br><span class="line">mAnimationMixerPlayable.SetInputWeight(<span class="number">1</span>, <span class="number">1.0f</span>);</span><br><span class="line"><span class="comment">// 暂停动画播放Playable1</span></span><br><span class="line">animationClipPlayable1.Pause();</span><br><span class="line"><span class="comment">// 播放创建的PlayableGraph</span></span><br><span class="line">mCustomGraph.Play();</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的代码我们动态创建了一个PlayableGraph，2个动画Plyable作为动画混合Playable的输入,1个动画混合Playable作为动画播放输出的输入,1个PlayableOutput作为动画播放输出，并设置他们之间的关联和权重，并把其中一个动画播放Playable设置成暂停状态，运行代码打开PlayableGraphVisualizer就可以查看到生成的动画混合播放PlayableGraph图了。</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/MultipleAnimationBlendAndSetPlayableState.PNG" alt="MultipleAnimationBlendAndSetPlayableState"></p>
+<p>Note:</p>
+<ol>
+<li><strong>父Playable的播放状态设置会影响所有子节点Playable播放状态</strong></li>
+</ol>
+<h3 id="Timeline实战"><a href="#Timeline实战" class="headerlink" title="Timeline实战"></a>Timeline实战</h3><p>通过上面有了基础的知识后，接下来我们以实战的方式深入学习Timeline。</p>
+<ul>
+<li>目标</li>
+</ul>
+<ol>
+<li>人物模型移动(Timeline自带)+人物模型动画播放(Timeline自带)+镜头移动(Cinemachine+Timeline)+2D对话+3D气泡对话的剧情表现+特效播放(Timeline自带)+音乐播放控制(扩展自定义Track，方便走自己的音效播放接口)</li>
+<li>支持Timeline Editor拖拽预览+运行时播放预览</li>
+</ol>
+<ul>
+<li>功能开发</li>
+</ul>
+<ol>
+<li>音乐播放控制(扩展自定义Track，方便走自己的音效播放接口)</li>
+<li>Timeline模型移动控制Track(TimeLine支持)</li>
+<li>学习Cinemachine扩展Timeline的Track使用控制镜头移动表现</li>
+<li>实现2D气泡对话+3D对话功能</li>
+<li>扩展Timneline实现2D气泡对话Track+3D对话Track</li>
+<li>动态创建实体对象的自定义Track绑定控制(如何实现?)</li>
+</ol>
+<ul>
+<li>准备工作</li>
+</ul>
+<ol>
+<li>Package Manager里安装Cinemachine模块</li>
+<li>下载导入模型特效音效等相关资源</li>
+</ol>
+<p>安装好Cinemachine后，打开Timeline里面就会看到多了Cinemachine的Track，从而就可以在Timeline里使用Cinemachine相关的扩展功能了:</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/TimelineCinemachineTrack.png" alt="TimelineCinemachineTrack"></p>
+<p>首先我们先放一下我们自定义制作的Timeline的预制件结构:</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/CustomTimelinePrefabHierachyPreview.PNG" alt="CustomTimelinePrefabHierachyPreview"></p>
+<hr>
+<p><strong>音乐播放控制Track</strong></p>
+<p>CustomAduioTrack.cs(自定义音乐播放Track)</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CustomAudioTrack.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 自定义音效Track</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">TrackClipType(typeof(CustomAudioAsset))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomAudioTrack</span> : <span class="title">PlayableTrack</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>CustomAudioAsset.cs(自定义音乐播放Asset数据结构)</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CustomAudioAsset.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 自定义音效播放Asset</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomAudioAsset</span> : <span class="title">BaseGameAsset</span>, <span class="title">ITimelineClipAsset</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 音效类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">enum</span> AudioType</span><br><span class="line">    &#123;</span><br><span class="line">        Bgm = <span class="number">1</span>,            <span class="comment">// 背景音乐</span></span><br><span class="line">        Sound = <span class="number">2</span>,          <span class="comment">// 音效</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 音效播放组件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> ExposedReference&lt;AudioSource&gt; SourceAudio;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 播放的音效类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> AudioType PlayedAudioType = AudioType.Bgm;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 音效资源路径</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> AudioPath;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 不支持重叠</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> ClipCaps clipCaps</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> ClipCaps.None; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> Playable <span class="title">CreatePlayable</span>(<span class="params">PlayableGraph graph, GameObject owner</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> playable = ScriptPlayable&lt;CustomAudioBehaviour&gt;.Create(graph);</span><br><span class="line">        <span class="keyword">var</span> audiobehaviour = playable.GetBehaviour();</span><br><span class="line">        audiobehaviour.Name = Name;</span><br><span class="line">        audiobehaviour.SourceAudio = SourceAudio.Resolve(graph.GetResolver());</span><br><span class="line">        audiobehaviour.PlayedAudioType = PlayedAudioType;</span><br><span class="line">        audiobehaviour.AudioPath = AudioPath;</span><br><span class="line">        <span class="keyword">return</span> playable;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>CustomAudioBehaviour.cs(自定义音乐播放行为)</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CustomAudioBehaviour.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 自定义音效播放Behaviour</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomAudioBehaviour</span> : <span class="title">BaseGameBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 音效播放组件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> AudioSource SourceAudio;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 播放的音效类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> CustomAudioAsset.AudioType PlayedAudioType;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 音效资源路径</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> AudioPath;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 是否正在播放音乐</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> mIsPlayingAudio;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnBehaviourPlay</span>(<span class="params">Playable playable, FrameData info</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">$&quot;AudioBehaviour:OnBehaviourPlay() 执行指令:<span class="subst">&#123;Name&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called each frame while the state is set to Play</span></span><br><span class="line">    <span class="comment">// Playable更新执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">ProcessFrame</span>(<span class="params">Playable playable, FrameData info, <span class="built_in">object</span> playerData</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">		TryPlayAudio();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the state of the playable is set to Paused</span></span><br><span class="line">    <span class="comment">// Playable暂停执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnBehaviourPause</span>(<span class="params">Playable playable, FrameData info</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">$&quot;AudioBehaviour:OnBehaviourPause() 执行指令:<span class="subst">&#123;Name&#125;</span>&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span>(SourceAudio != <span class="literal">null</span> &amp;&amp; SourceAudio.clip != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            SourceAudio.clip = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        mIsPlayingAudio = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 尝试执行音乐播放</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TryPlayAudio</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(mIsPlayingAudio == <span class="literal">false</span> &amp;&amp; SourceAudio != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (PlayedAudioType == CustomAudioAsset.AudioType.Bgm)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// <span class="doctag">TODO:</span> 走背景音乐播放接口</span></span><br><span class="line">                SourceAudio.clip = Resources.Load&lt;AudioClip&gt;(AudioPath);</span><br><span class="line">                SourceAudio.Play();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (PlayedAudioType == CustomAudioAsset.AudioType.Sound)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// <span class="doctag">TODO:</span> 走音效播放接口</span></span><br><span class="line">                SourceAudio.clip = Resources.Load&lt;AudioClip&gt;(AudioPath);</span><br><span class="line">                SourceAudio.Play();</span><br><span class="line">            &#125;</span><br><span class="line">            mIsPlayingAudio = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来看下我们自定义的音效播放Track和音乐Asset的使用面板效果:</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/CustomAudioTrackPreview.PNG" alt="CustomAudioTrackPreview"></p>
+<p><img src="/img/Unity/Timeline_Cinemachine/CustomAudioAssetBGMInspector.PNG" alt="CustomAudioAssetBGMInspector"></p>
+<p><img src="/img/Unity/Timeline_Cinemachine/CustomAudioAssetSoundInspector.PNG" alt="CustomAudioAssetSoundInspector"></p>
+<p>从上面可以看到，我们通过ExposedReference<AudioSource>的方式，挂载绑定了场景里的AudioSource作为背景音乐和音效播放组件。</p>
+<p>接下来为了避免每一个CustomAudioAsset都自己去指定AudioSource绑定组件，我们可以通过在CustomAudioTrack来支持在Track统一指定AudioSource。</p>
+<p>CustomAudioTrack.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CustomAudioTrack.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 自定义音效Track</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">TrackClipType(typeof(CustomAudioAsset))</span>]</span><br><span class="line">[<span class="meta">TrackBindingType(typeof(AudioSource))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomAudioTrack</span> : <span class="title">PlayableTrack</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>CustomAudioBehaviour.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CustomAudioBehaviour.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 自定义音效播放Behaviour</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomAudioBehaviour</span> : <span class="title">BaseGameBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">        </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 音效播放组件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> AudioSource mSourceAudio;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called each frame while the state is set to Play</span></span><br><span class="line">    <span class="comment">// Playable更新执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">ProcessFrame</span>(<span class="params">Playable playable, FrameData info, <span class="built_in">object</span> playerData</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(mSourceAudio == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mSourceAudio = playerData <span class="keyword">as</span> AudioSource;</span><br><span class="line">        &#125;</span><br><span class="line">        TryPlayAudio();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">	******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>CustomAudioTrack通过声明TrackBindingType(typeof(AudioSource))指定Track可以绑定AudioSource组件。</p>
+<p>CustomAudioBehaviour通过在运行时ProcessFrame里动态使用Track上指定的AudioSource组件作为音乐播放组件来实现CustomAudioBehaviour采用Track统一绑定组件的的效果。</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/CustomAudioTrackWithAudioSourceBindingPreview.PNG" alt="CustomAudioTrackWithAudioSourceBindingPreview"></p>
+<h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/69e60a27bccb">Unity使用Cinemachine和Timeline入门</a><br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineTimeline.html">Cinemachine and Timeline</a></p>
+<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/cinemachine">Cinemachine</a></p>
+<p>Timeline可以看做是自定义展示效果的工具，而Cinemachine可以看做是多摄像机的一套完整控制表现的工具。</p>
+<p>更多的Cinemachine学习见后面</p>
+<h2 id="Cinemachine"><a href="#Cinemachine" class="headerlink" title="Cinemachine"></a>Cinemachine</h2><p><a target="_blank" rel="noopener" href="https://unity.com/unity/features/editor/art-and-design/cinemachine">Powering cameras for films and games</a></p>
+<p>根据官网的简单介绍可以看出，Cinemachine是官方出的一款摄像机强大的控制系统，通过该系统，我们可以轻松的做到电影或者游戏级别的摄像机功能以及表现。</p>
+<p>博主这里考虑学习使用Cinemachine的一个重大原因是，做赛车游戏，希望有一个稳定(不抖动)跟随的摄像机。(自己写的效果有抖动问题)</p>
+<p>Cinemachine里有两个重要的组件和概念:</p>
+<ol>
+<li>Cinemachine Brain</li>
+<li>Virtual Cameras</li>
+</ol>
+<h3 id="Cinemachine-Brain"><a href="#Cinemachine-Brain" class="headerlink" title="Cinemachine Brain"></a>Cinemachine Brain</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineOverview.html">The Cinemachine Brain is a component in the Unity Camera itself. Cinemachine Brain monitors all active Virtual Cameras in the Scene. To specify the next live Virtual Camera, you <a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/DeactivatingGameObjects.html">activate or deactivate</a> the desired Virtual Camera’s game object. </a></p>
+<p>从上面的介绍可以看出，Cinemachine Brain组件式挂载在摄像机对象上的一个组件，负责管理所有Virual Camera，同一时间只有一个Virtual Camera起作用用于主摄像机，优先选择Priority高的已激活Virutal Camera作为当前起作用的摄像机，优先级相同的情况下看哪个Virtual Camera后激活优先。</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/CinemachineBrain.PNG" alt="CinemachineBrain"></p>
+<p>关于Cinemachine Brain的详细参数介绍，这里就不深入探讨了，感兴趣的朋友参考文档去自行了解。</p>
+<p>Note:</p>
+<ol>
+<li>Timeline重写了Cinemachine Brain的Priority系统可以更好的控制摄像机达到更精准的摄像机控制。</li>
+</ol>
+<h3 id="Virtual-Cameras"><a href="#Virtual-Cameras" class="headerlink" title="Virtual Cameras"></a>Virtual Cameras</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineOverview.html">Cinemachine does not create new cameras. Instead, it directs a single Unity camera for multiple shots. You compose these shots with <strong>Virtual Cameras</strong>. Virtual Cameras move and rotate the Unity camera and control its settings.</a></p>
+<p>从上面的介绍可以知道，Cinemachine里的Virtual Cameras并非真正的Camera组件，而是一个抽象概念，而这个抽象的Virtuel Cameras会去负责控制真正的摄像机达到预定的效果。</p>
+<p>每一个Virtual Cameras都会对应一个GameObject和一个CinemachineVirtualCamera组件脚本:</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/CinemachineVirtualCamera.PNG" alt="CinemachineVirtualCamera"></p>
+<h4 id="Virtual-Camera-States"><a href="#Virtual-Camera-States" class="headerlink" title="Virtual Camera States"></a>Virtual Camera States</h4><p>Virtual Camera有三种状态:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.1/manual/index.html"><strong>Live</strong>:The virtual camera is actively controlling the Unity Camera. The virtual camera is tracking its targets and being updated every frame.</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.1/manual/index.html"><strong>Standby</strong>: The virtual camera is tracking its targets and being updated every frame, but no Unity Camera is actively being controlled by it. This is the state of a virtual camera that is enabled in the scene but perhaps at a lower priority than the Live virtual camera.</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.1/manual/index.html"><strong>Disabled</strong>: The virtual camera is present but disabled in the scene. It is not actively tracking its targets and so consumes no processing power. However, the virtual camera can be made live from the Timeline.</a></li>
+</ol>
+<p>从介绍可以看到Live是指当前Virtual Camera优先级最高起作用的那个。而Standby是优先级低于当前起作用的Virtual Camera但没有Disable的Virtual Camera，这些摄像机逻辑上依然会更新跟随自己设定的对象，但不会影响真实摄像机运作。最后Disabled是即低于当前最高优先级Virtual Camera也没有激活的Virtual Camera，这类摄像机不会有任何运行开销，逻辑层面也不会在继续跟随自己的目标对象。</p>
+<h4 id="Virtual-Camera-Params"><a href="#Virtual-Camera-Params" class="headerlink" title="Virtual Camera Params"></a>Virtual Camera Params</h4><p>关于Virtual Camera的细节参数学习，接下来学习几个重要的参数，更多的细节参考:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineOverview.html">Cinemachine overview</a></p>
+<p><strong>Priority</strong>正如前面提到的，决定了Virtual Camera在Cinemachine Brain里的选择优先级。</p>
+<p><strong>Follow</strong>和<strong>Look At</strong>两个参数分别决定了摄像机的跟随对象和对焦对象，这两个参数是常规游戏类型里都需要的概念，好比博主当前要做的赛车游戏，Follow和Look At对象都是赛车就能做到跟随和聚焦赛车的效果。</p>
+<p><strong>Body</strong>属性提供了Virtual Camera对于摄像机移动的算法选择，从而达到适配各种游戏类型的摄像机镜头移动要求。</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/CinemachineBodyProperties.PNG" alt="CinemachineBodyProperties"></p>
+<p>这里博主的赛车游戏默认选择Transposer来达到平滑跟随效果。</p>
+<p><strong>Aim</strong>属性提供了Virtual Camera对于佘香即旋转的算法选择，从而达到适配各种游戏类型的摄像机镜头选择要求。</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/CinemachineAimProperties.PNG" alt="CinemachineAimProperties"></p>
+<p><strong>Body</strong>和<strong>Aim</strong>通过细节的参数调整能实现各种角度以及各种游戏类型需求的摄像机跟随聚焦效果，这里博主暂时就不深入学习讨论了，有兴趣的可以参考文档去了解细节。</p>
+<p>那么Virtual Camera的聚焦效果是如何实现的了？</p>
+<p>了解聚焦效果之前有几个重钙的概念需要了解:</p>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineOverview.html"><strong>Dead zone</strong>: The area of the frame that Cinemachine keeps the target in.</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineOverview.html"><strong>Soft zone</strong>: If the target enters this region of the frame, the camera will re-orient to put it back in the dead zone. It will do this slowly or quickly, according to the time specified in the Damping settings.</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineOverview.html"><strong>Screen</strong>: The screen position of the center of the dead zone. 0.5 is the center of the screen.</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineOverview.html"><strong>Damping</strong>: Simulates the lag that a real camera operator introduces while operating a heavy physical camera. Damping specifies quickly or slowly the camera reacts when the target enters the <strong>soft zone</strong> while the camera tracks the target. Use small numbers to simulate a more responsive camera, rapidly moving or aiming the camera to keep the target in the <strong>dead zone</strong>. Larger numbers simulate heavier cameras, The larger the value, the more Cinemachine allows the target to enter the soft zone.</a></p>
+</li>
+</ol>
+<p><img src="/img/Unity/Timeline_Cinemachine/CinemachineZone.PNG" alt="CinemachineZone"></p>
+<p>Dead Zone, Soft Zone, Screen参数在Body和Aim的属性面板上有体现，他们决定了摄像机是如何应对Look At对象走出指定区域时响应变化以及如何确保Look At对象在指定区域内的。</p>
+<h3 id="Cinemachine-Camera-Types"><a href="#Cinemachine-Camera-Types" class="headerlink" title="Cinemachine Camera Types"></a>Cinemachine Camera Types</h3><p>Unity Cinemachine自带了很多种摄像机用于不同的游戏种类:</p>
+<p><img src="/img/Unity/Timeline_Cinemachine/CinemachineCameraTypes.PNG" alt="CinemachineCameraTypes"></p>
+<p>不同的摄像机种类适用于不同的游戏类型。</p>
+<h4 id="Virtual-Camera"><a href="#Virtual-Camera" class="headerlink" title="Virtual Camera"></a>Virtual Camera</h4><p>Virtual Camera在前面的介绍已经提过了，这里就不再重复了，后续的摄像机类型大部分也是基于Virtual Camera的，只是在Virtual Camera的基础上实现了一套各自摄像机管理方式从而达到不同的摄像机类型效果。</p>
+<h4 id="FreeLook-Camera"><a href="#FreeLook-Camera" class="headerlink" title="FreeLook Camera"></a>FreeLook Camera</h4><p>此类摄像机没有基于Virtual Camera而是单独挂载了一个Cinemachine Free Look的脚本实现的。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.1/manual/index.html#collision-avoidance-and-shot-evaluation">A Cinemachine Camera geared towards a 3rd person camera experience. The camera orbits around its subject with three separate camera rigs defining rings around the target. Each rig has its own radius, height offset, composer, and lens settings. Depending on the camera’s position along the spline connecting these three rigs, these settings are interpolated to give the final camera position and state.</a></p>
+<p>从介绍可以看出，FreeLook Camera是用于第三人称围绕目标对象旋转控制的一套摄像机类型(比如第三人称RPG等游戏，有围绕主角相关的摄像机旋转控制等)。</p>
+<h4 id="State-Driven-Camera"><a href="#State-Driven-Camera" class="headerlink" title="State-Driven Camera"></a>State-Driven Camera</h4><p>这里的State指的是Animator里的State，通过State-Drive Camera我们可以轻易的实现Animator State和Virtual Camera选择的绑定。这样就能轻易实现Walk状态用什么Virtual Camera，Idle状态使用什么Virtual Camera的效果。</p>
+<p>更多的摄像机类型参考:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.1/manual/index.html">About Cinemachine</a></p>
+<p>这里还值得一提的是摄像机限定移动范围和摄像机被障碍物主档导致目标对象不可见时Cinemachine提供的一种解决方案：</p>
+<h3 id="Collision-Avoidance-and-Shot-Evaluation"><a href="#Collision-Avoidance-and-Shot-Evaluation" class="headerlink" title="Collision Avoidance and Shot Evaluation"></a>Collision Avoidance and Shot Evaluation</h3><h4 id="CinemachineCollider"><a href="#CinemachineCollider" class="headerlink" title="CinemachineCollider"></a>CinemachineCollider</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.1/manual/index.html#collision-avoidance-and-shot-evaluation">An add-on module for Cinemachine Virtual Camera that post-processes the final position of the virtual camera. Based on the supplied settings, the Collider will attempt to preserve the line of sight with the LookAt target of the virtual camera by moving away from objects that will obstruct the view.</a></p>
+<p>简单来说CinemachineCollider是通过相关设置，通过射线检测评估出当前摄像机最优的位置，从而避免被障碍物遮挡视线等问题。</p>
+<p>Note:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.1/manual/index.html#collision-avoidance-and-shot-evaluation">The collider uses Physics Raycasts to do these things, hence obstacles in the scene must have collider volumes in order to be visible to the CinemachineCollider.</a></li>
+</ol>
+<h4 id="CinemachineConfiner"><a href="#CinemachineConfiner" class="headerlink" title="CinemachineConfiner"></a>CinemachineConfiner</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.1/manual/index.html#collision-avoidance-and-shot-evaluation">An add-on module for Cinemachine Virtual Camera that post-processes the final position of the virtual camera. It will confine the virtual camera’s position to the volume specified in the Bounding Volume field.</a></p>
+<p>从介绍可以看出CinemachineConfiner相比CinemachineCollider，这是一个单纯限制摄像机运动范围的组件，更加轻量，没有过多多射线检测评估等过程，用于简单的限制摄像机运动范围，此组件更佳。</p>
+<p>Note:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.1/manual/index.html#collision-avoidance-and-shot-evaluation">This is less resource-intensive than CinemachineCollider, but it does not perform shot evaluation.</a></li>
+</ol>
+<h3 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h3><p>实战前，先让我们明确下个人的摄像机需求，需求明确了才能更加正确的使用Cinemachine达到效果。</p>
+<p>摄像机需求:</p>
+<ol>
+<li>支持相机单独控制操作</li>
+<li>支持相机限定移动范围操作</li>
+<li>支持相机锁定目标操作</li>
+<li>支持相机锁定目标和自由操作自由切换操作</li>
+<li>支持相机锁定目标操作回调上层逻辑(用于配合逻辑层做事情)</li>
+<li>场景摄像机支持多个摄像机同时控制(比如:MainCamera和3D UI Camera)</li>
+</ol>
+<p>待续……</p>
+<h2 id="TextMeshPro"><a href="#TextMeshPro" class="headerlink" title="TextMeshPro"></a>TextMeshPro</h2><h3 id="What-1"><a href="#What-1" class="headerlink" title="What"></a>What</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/com.unity.textmeshpro.html">TextMesh Pro is the ultimate text solution for Unity. It’s the perfect replacement for Unity’s UI Text and the legacy Text Mesh.</a></p>
+<p>TextMeshPro原本是第三方个人编写的一款更优的Unity文本替代方案，后被Unity官方收购。</p>
+<h3 id="Why-1"><a href="#Why-1" class="headerlink" title="Why"></a>Why</h3><p>使用TextMeshPro替代原生文本的原因有很多：</p>
+<ol>
+<li>TMP使用了SDF(<strong>Signed Distance Field</strong>)技术达到不失真的放大缩小渲染</li>
+<li>TMP自带实现了图文混排(通过富文本打Tag的形式)以及很多文本所需的功能(e.g. 字间距，自定义字体大小，段落格式，对齐方式等)</li>
+<li>TMP使用Shader去实现更好的文本表现效果(类似PS的一些效果)满足文本需求</li>
+</ol>
+<p>缺点:</p>
+<ol>
+<li>不支持动态字体(看网上说是TMP1.4支持动态字体(Generating Settings)，但我在Unity2018.4.1.f1上导入的TMP没有找到动态字体设置的入口，望知道的朋友告知一声在哪里设置)，需要生成对应的字体纹理库(对于文字多的比如中文来说有很大的内存压力)</li>
+</ol>
+<p>SDF(<strong>Signed Distance Field</strong>)介绍:<br><a target="_blank" rel="noopener" href="http://www.sardinefish.com/blog/?pid=296">一个空间区域的SDF函数定义为，从空间中任意给定的一点到该区域边界的距离，SDF函数值的符号取决于该点在区域的内部还是外部，外部为正，内部为负。</a></p>
+<p>这里可以简单的理解成TMP通过函数式的定义方式(类似矢量图的定义方式)来解决像素图放大模糊的问题来渲染出可动态放大缩小不模糊的图像。深入理解参考下面的链接：<a target="_blank" rel="noopener" href="http://www.sardinefish.com/blog/?pid=296">函数式编程与 Signed Distance Field</a></p>
+<h3 id="How-1"><a href="#How-1" class="headerlink" title="How"></a>How</h3><p>TMP需要通过TMP提供的字体库制作工具制作所需的对应字体文件：<br><img src="/img/Unity/TextMeshPro/FontAssetCreatePanel.png" alt="FontAssetCreatePanel"><br>如果想要使用图文混排还需要自己制作SpriteAsset:<br><img src="/img/Unity/TextMeshPro/SpriteAssetCreatePanel.png" alt="SpriteAssetCreatePanel"><br>制作好后创建TextMeshPro组件后指定需要使用的Font Asset和Sprite Asset即可:<br><img src="/img/Unity/TextMeshPro/TextMeshProAssignFontAssetAndSpriteAsset.png" alt="TextMeshProAssignFontAssetAndSpriteAsset"></p>
+<p>最终效果：<br><img src="/img/Unity/TextMeshPro/TextMeshProUsing.png" alt="TextMeshProUsing"><br>TextMeshPro同一个Font Asset需要制作不同的渲染效果需要通过制作不同的Material来实现：<br><img src="/img/Unity/TextMeshPro/CreateFontAssetMaterial.png" alt="CreateFontAssetMaterial"></p>
+<p>然后在针对新创建的Material Asset调整Shader和具体效果即可，创建完成后就可以在Font Asset的材质下拉列表里选择需要使用的效果：<br><img src="/img/Unity/TextMeshPro/FontAssetMaterialChosen.png" alt="FontAssetMaterialChosen"></p>
+<p>关于TextMeshPro的默认相关设置(e.g. 默认创建的Font Asset，默认Fallback到的Font Asset等)是通过TMP Settings文件里的设置来完成的:<br><img src="/img/Unity/TextMeshPro/TMPSettings.png" alt="TMPSettings"></p>
+<p>Note:</p>
+<ol>
+<li>TMP的Fallback的使用是在原始设定的Font Asset里找不到对应文字时的一种回退安全机制，官方的建议是真正使用的Font Asset采用高分率图集，Fallback的Font Asset采用低分辨率图集。</li>
+</ol>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><h2 id="Sprite-Atlas-1"><a href="#Sprite-Atlas-1" class="headerlink" title="Sprite Atlas"></a>Sprite Atlas</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/class-SpriteAtlas.html">Sprite Atlas</a><br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/MasterVariantAtlases.html">Master and Variant Sprite Atlases</a><br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/VariantSpriteAtlas.html">Variant Sprite Atlas</a><br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/SpriteAtlasWorkflow.html">Sprite Atlas workflow</a><br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/SpriteAtlasDistribution.html">Preparing Sprite Atlases for distribution</a><br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/SpritePackerModes.html">Sprite Packer Modes</a><br><a target="_blank" rel="noopener" href="https://gameinstitute.qq.com/community/detail/127434">Unity2017新功能之Sprite Atlas详解</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80584461">UGUI的图集处理方式-SpriteAtlas的前世今生</a></p>
+<h2 id="Timeline-1"><a href="#Timeline-1" class="headerlink" title="Timeline"></a>Timeline</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq826364410/article/details/80511057">Unity–Timeline自定义PlayableTrack</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/beihuanlihe130/article/details/79233320">Unity2017中Timeline的简单使用方法</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/69e60a27bccb">Unity使用Cinemachine和Timeline入门</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/graph-visualizer">graph-visualizer</a></p>
+<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/timeline#">Timeline</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.unity.com/technology/extending-timeline-a-practical-guide"><strong>xtending Timeline: A Practical Guide</strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.unity.com/technology/creative-scripting-for-timeline"><strong>Creative Scripting for Timeline</strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzU5MjQ1NTEwOA==&mid=2247493316&idx=1&sn=7e4fef834a8066faca3d2f1f1a090bb4&chksm=fe1dd26fc96a5b79856840f556cf65026facb83520ac1891605e42d5e777d30a0d5219060e21&mpshare=1&scene=1&srcid=0606YJLYnfprk9UjpPQCnre1#rd">Playable API：定制你的动画系统</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Playables.html">Playables API</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Playables-Graph.html">The PlayableGraph</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Playables-ScriptPlayable.html">ScriptPlayable and PlayableBehaviour</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Playables-Examples.html">Playables Examples</a></p>
+<h2 id="TextMesh-Pro"><a href="#TextMesh-Pro" class="headerlink" title="TextMesh Pro"></a>TextMesh Pro</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/com.unity.textmeshpro.html">TextMesh Pro</a><br><a target="_blank" rel="noopener" href="http://www.sardinefish.com/blog/?pid=296">函数式编程与 Signed Distance Field</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/84700094">Unity游戏开发——TextMeshPro的使用</a><br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzU5MjQ1NTEwOA==&mid=2247495323&idx=1&sn=3100249c5c4a88c20435d129d23eb727&chksm=fe1dda30c96a53267a53ed2bc0dd47bc73273f4e76f3a0d8f0ce322992e2e7e0b284d9a1df32&mpshare=1&scene=1&srcid=102134Bhmm1T67EKpzswm7mz#rd">在Unity 2018中充分使用TextMesh Pro</a><br><a target="_blank" rel="noopener" href="https://blogs.unity3d.com/2018/10/16/making-the-most-of-textmesh-pro-in-unity-2018/">Making the most of TextMesh Pro in Unity 2018</a></p>
+<h2 id="Cinemachine-1"><a href="#Cinemachine-1" class="headerlink" title="Cinemachine"></a>Cinemachine</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineOverview.html">Cinemachine overview</a></p>
+<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/cinemachine#">Cinemachine Learn</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/20/SQLite%E5%AD%A6%E4%B9%A0/" rel="prev" title="SQLite学习">
+                  <i class="fa fa-angle-left"></i> SQLite学习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/02/01/Unity%E5%B5%8C%E5%A5%97%E9%A2%84%E5%88%B6%E4%BB%B6/" rel="next" title="Unity嵌套预制件">
+                  Unity嵌套预制件 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
