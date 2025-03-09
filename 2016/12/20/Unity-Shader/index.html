@@ -1,251 +1,145 @@
-<!DOCTYPE html>
-<html lang="en">
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+  
+    <title>Unity Shader | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-
+    
     <meta name="description" content="参考书籍《Unity Shader 入门精要》 – 冯乐乐(一位在图形渲染方面很厉害的女生) 使用的Unity版本：Unity 5.4.0f3 Rendering关于图形渲染相关知识以及OpenGL相关学习参见：Computer_Graphic_StudyOpenGL_Study Unity Shader首先让我们通过官网的一张图来看看Unity Shader里面占据重要地位的3D Model,M">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity Shader">
-<meta property="og:url" content="http://example.com/2016/12/20/Unity-Shader/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="http://tonytang1990.github.io/2016/12/20/Unity-Shader/index.html">
+<meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content="参考书籍《Unity Shader 入门精要》 – 冯乐乐(一位在图形渲染方面很厉害的女生) 使用的Unity版本：Unity 5.4.0f3 Rendering关于图形渲染相关知识以及OpenGL相关学习参见：Computer_Graphic_StudyOpenGL_Study Unity Shader首先让我们通过官网的一张图来看看Unity Shader里面占据重要地位的3D Model,M">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/Unity/UnityShaderFundamention.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/UnityShaderProperty.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SurfaceShaderFlowChart.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SurfaceShaderWithAlbedoSetting.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SurfaceShaderWithTexture.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SurfaceShaderMaterialEditorWithTexture.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SurfaceShaderWithNormalMap.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SurfaceShaderWithTexture.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SurfaceShaderWithEmssion.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SurfaceShaderWithNegativeExtrusion.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SurfaceShaderWithPositiveExtrusion.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SurfaceShaderWithFinalColorFunction.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/UnityShaderSettingPanel.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/UnityBuildInShaderFolderStructure.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/LightModelShader.JPG">
-<meta property="og:image" content="http://example.com/img/Unity/LightmapChart.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/MultipleUVShells.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SingleUIShell.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/UVChart.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SpecificObjectUVChart.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/UVChartDistortionAnalysi.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ClusterPicture.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/LightMapParameter.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/LightmapBake.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/LightMapData.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/LightMapRestore.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/TextureMaxSize.JPG">
-<meta property="og:image" content="http://example.com/img/Unity/SimpleTextureShader.JPG">
-<meta property="og:image" content="http://example.com/img/Unity/TextureMipmapImportSetting.JPG">
-<meta property="og:image" content="http://example.com/img/Unity/NormalMappingTextureShader.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/RampTexture.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/MaskTexture.PNG">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UnityShaderFundamention.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UnityShaderProperty.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SurfaceShaderFlowChart.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SurfaceShaderWithAlbedoSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SurfaceShaderWithTexture.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SurfaceShaderMaterialEditorWithTexture.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SurfaceShaderWithNormalMap.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SurfaceShaderWithTexture.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SurfaceShaderWithEmssion.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SurfaceShaderWithNegativeExtrusion.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SurfaceShaderWithPositiveExtrusion.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SurfaceShaderWithFinalColorFunction.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UnityShaderSettingPanel.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UnityBuildInShaderFolderStructure.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/LightModelShader.JPG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/LightmapChart.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MultipleUVShells.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SingleUIShell.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UVChart.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpecificObjectUVChart.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UVChartDistortionAnalysi.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ClusterPicture.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/LightMapParameter.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/LightmapBake.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/LightMapData.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/LightMapRestore.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextureMaxSize.JPG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SimpleTextureShader.JPG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextureMipmapImportSetting.JPG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NormalMappingTextureShader.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RampTexture.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MaskTexture.PNG">
 <meta property="article:published_time" content="2016-12-19T16:35:50.000Z">
 <meta property="article:modified_time" content="2022-07-31T08:02:53.135Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="Rendering">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/img/Unity/UnityShaderFundamention.PNG">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/Unity/UnityShaderFundamention.PNG">
 
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
 
-<link rel="canonical" href="http://example.com/2016/12/20/Unity-Shader/">
+<meta name="generator" content="Hexo 7.3.0"></head>
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2016/12/20/Unity-Shader/","path":"2016/12/20/Unity-Shader/","title":"Unity Shader"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Unity Shader | Hexo</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Hexo</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-    </div>
-  </div>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
 </div>
-
-
-
-
-
-
-
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/12/20/Unity-Shader/" title="Unity Shader" itemprop="url">Unity Shader</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2016-12-19T16:35:50.000Z" itemprop="datePublished"> 发表于 2016-12-20</time>
+    
+  </p>
 </header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rendering"><span class="nav-number">1.</span> <span class="nav-text">Rendering</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unity-Shader"><span class="nav-number">2.</span> <span class="nav-text">Unity Shader</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Surface-Shaders"><span class="nav-number">2.1.</span> <span class="nav-text">Surface Shaders</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vertex-and-Fragment-Shaders"><span class="nav-number">2.2.</span> <span class="nav-text">Vertex and Fragment Shaders</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unity-Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81"><span class="nav-number">3.</span> <span class="nav-text">Unity Shader入门精要</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF"><span class="nav-number">3.1.</span> <span class="nav-text">渲染管线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unity-Shader%E5%9F%BA%E7%A1%80"><span class="nav-number">3.2.</span> <span class="nav-text">Unity Shader基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%90%E8%B4%A8%E5%92%8CUnity-Shader"><span class="nav-number">3.2.1.</span> <span class="nav-text">材质和Unity Shader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ShaderLab"><span class="nav-number">3.2.2.</span> <span class="nav-text">ShaderLab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity-Shader%E7%BB%93%E6%9E%84"><span class="nav-number">3.2.3.</span> <span class="nav-text">Unity Shader结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86"><span class="nav-number">3.3.</span> <span class="nav-text">数学相关知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unity-Shader%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85"><span class="nav-number">3.4.</span> <span class="nav-text">Unity Shader学习之旅</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E9%A1%B6%E7%82%B9-%E7%89%87%E5%85%83%E7%9D%80%E8%89%B2%E5%99%A8"><span class="nav-number">3.4.1.</span> <span class="nav-text">一个最简单的顶点&#x2F;片元着色器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity%E5%86%85%E7%BD%AE%E6%96%87%E4%BB%B6%E5%92%8C%E5%8F%98%E9%87%8F"><span class="nav-number">3.4.2.</span> <span class="nav-text">Unity内置文件和变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CG-HLSL%E8%AF%AD%E4%B9%89"><span class="nav-number">3.4.3.</span> <span class="nav-text">CG&#x2F;HLSL语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shader-Debugger"><span class="nav-number">3.4.4.</span> <span class="nav-text">Shader Debugger</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Color-Info"><span class="nav-number">3.4.4.1.</span> <span class="nav-text">Color Info</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Unity-Frame-Debugger"><span class="nav-number">3.4.4.2.</span> <span class="nav-text">Unity Frame Debugger</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VS-Graphics-Debugger"><span class="nav-number">3.4.4.3.</span> <span class="nav-text">VS Graphics Debugger</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NVIDIA-NSight"><span class="nav-number">3.4.5.</span> <span class="nav-text">NVIDIA NSight</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unity%E4%B8%AD%E7%9A%84%E5%9F%BA%E7%A1%80%E5%85%89%E7%85%A7"><span class="nav-number">3.5.</span> <span class="nav-text">Unity中的基础光照</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%89%E7%85%A7%E7%9F%A5%E8%AF%86%E5%9B%9E%E9%A1%BE"><span class="nav-number">3.5.1.</span> <span class="nav-text">光照知识回顾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.5.2.</span> <span class="nav-text">标准光照模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BC%AB%E5%8F%8D%E5%B0%84%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.5.2.1.</span> <span class="nav-text">漫反射光照模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B0%E4%BC%AF%E7%89%B9%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.5.2.1.1.</span> <span class="nav-text">兰伯特光照模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8D%8A%E5%85%B0%E4%BC%AF%E7%89%B9-Half-Lambert-%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.5.2.1.2.</span> <span class="nav-text">半兰伯特(Half Lambert)光照模型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AB%98%E5%85%89%E5%8F%8D%E5%B0%84%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.5.2.2.</span> <span class="nav-text">高光反射光照模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lighting-in-Unity"><span class="nav-number">3.5.3.</span> <span class="nav-text">Lighting in Unity</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Realtime-Lighting"><span class="nav-number">3.5.3.1.</span> <span class="nav-text">Realtime Lighting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Precomputed-Lighting"><span class="nav-number">3.5.3.2.</span> <span class="nav-text">Precomputed Lighting</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Bake-Realtime-Lighting%E5%AE%9E%E6%88%98"><span class="nav-number">3.5.3.2.1.</span> <span class="nav-text">Bake Realtime Lighting实战</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Render-Path"><span class="nav-number">3.5.3.3.</span> <span class="nav-text">Render Path</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Color-Space"><span class="nav-number">3.5.3.4.</span> <span class="nav-text">Color Space</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#High-Dynamic-Range"><span class="nav-number">3.5.4.</span> <span class="nav-text">High Dynamic Range</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%BA%B9%E7%90%86"><span class="nav-number">3.6.</span> <span class="nav-text">基础纹理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E7%B1%BB%E5%9E%8B%E5%88%86%E7%B1%BB"><span class="nav-number">3.6.1.</span> <span class="nav-text">纹理类型分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Delfaut-Advanced"><span class="nav-number">3.6.1.1.</span> <span class="nav-text">Delfaut(Advanced)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Normal-Map"><span class="nav-number">3.6.1.2.</span> <span class="nav-text">Normal Map</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Sprite"><span class="nav-number">3.6.1.3.</span> <span class="nav-text">Sprite</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lightmap"><span class="nav-number">3.6.1.4.</span> <span class="nav-text">Lightmap</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E5%A4%A7%E5%B0%8F"><span class="nav-number">3.6.2.</span> <span class="nav-text">纹理大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E6%A0%BC%E5%BC%8F"><span class="nav-number">3.6.3.</span> <span class="nav-text">图片格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F"><span class="nav-number">3.6.4.</span> <span class="nav-text">纹理压缩方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity%E7%BA%B9%E7%90%86%E4%BD%BF%E7%94%A8"><span class="nav-number">3.6.5.</span> <span class="nav-text">Unity纹理使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E7%9A%84%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"><span class="nav-number">3.6.5.1.</span> <span class="nav-text">纹理的基础使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mipmap"><span class="nav-number">3.6.5.2.</span> <span class="nav-text">Mipmap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%B9%E5%87%B8%E6%98%A0%E5%B0%84"><span class="nav-number">3.6.5.3.</span> <span class="nav-text">凹凸映射</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Height-Map"><span class="nav-number">3.6.5.3.1.</span> <span class="nav-text">Height Map</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Normal-Mapping"><span class="nav-number">3.6.5.3.2.</span> <span class="nav-text">Normal Mapping</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Ramp-Texture-%E6%B8%90%E5%8F%98%E7%BA%B9%E7%90%86"><span class="nav-number">3.6.5.3.3.</span> <span class="nav-text">Ramp Texture(渐变纹理)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Mask-Texture-%E9%81%AE%E7%BD%A9%E7%BA%B9%E7%90%86"><span class="nav-number">3.6.5.3.4.</span> <span class="nav-text">Mask Texture(遮罩纹理)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C"><span class="nav-number">3.7.</span> <span class="nav-text">透明效果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference-Website"><span class="nav-number">4.</span> <span class="nav-text">Reference Website</span></a></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">50</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">22</span>
-        <span class="site-state-item-name">categories</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">33</span>
-        <span class="site-state-item-name">tags</span>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2016/12/20/Unity-Shader/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Unity Shader | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Unity Shader
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2016-12-20 00:35:50" itemprop="dateCreated datePublished" datetime="2016-12-20T00:35:50+08:00">2016-12-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-07-31 16:02:53" itemprop="dateModified" datetime="2022-07-31T16:02:53+08:00">2022-07-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Rendering/" itemprop="url" rel="index"><span itemprop="name">Rendering</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><p>参考书籍《Unity Shader 入门精要》 – 冯乐乐(一位在图形渲染方面很厉害的女生)</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Rendering"><span class="toc-number">1.</span> <span class="toc-text">Rendering</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity-Shader"><span class="toc-number">2.</span> <span class="toc-text">Unity Shader</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Surface-Shaders"><span class="toc-number">2.1.</span> <span class="toc-text">Surface Shaders</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vertex-and-Fragment-Shaders"><span class="toc-number">2.2.</span> <span class="toc-text">Vertex and Fragment Shaders</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity-Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81"><span class="toc-number">3.</span> <span class="toc-text">Unity Shader入门精要</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF"><span class="toc-number">3.1.</span> <span class="toc-text">渲染管线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Shader%E5%9F%BA%E7%A1%80"><span class="toc-number">3.2.</span> <span class="toc-text">Unity Shader基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%90%E8%B4%A8%E5%92%8CUnity-Shader"><span class="toc-number">3.2.1.</span> <span class="toc-text">材质和Unity Shader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ShaderLab"><span class="toc-number">3.2.2.</span> <span class="toc-text">ShaderLab</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity-Shader%E7%BB%93%E6%9E%84"><span class="toc-number">3.2.3.</span> <span class="toc-text">Unity Shader结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86"><span class="toc-number">3.3.</span> <span class="toc-text">数学相关知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Shader%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85"><span class="toc-number">3.4.</span> <span class="toc-text">Unity Shader学习之旅</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E9%A1%B6%E7%82%B9-%E7%89%87%E5%85%83%E7%9D%80%E8%89%B2%E5%99%A8"><span class="toc-number">3.4.1.</span> <span class="toc-text">一个最简单的顶点&#x2F;片元着色器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity%E5%86%85%E7%BD%AE%E6%96%87%E4%BB%B6%E5%92%8C%E5%8F%98%E9%87%8F"><span class="toc-number">3.4.2.</span> <span class="toc-text">Unity内置文件和变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CG-HLSL%E8%AF%AD%E4%B9%89"><span class="toc-number">3.4.3.</span> <span class="toc-text">CG&#x2F;HLSL语义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shader-Debugger"><span class="toc-number">3.4.4.</span> <span class="toc-text">Shader Debugger</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Color-Info"><span class="toc-number">3.4.4.1.</span> <span class="toc-text">Color Info</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Unity-Frame-Debugger"><span class="toc-number">3.4.4.2.</span> <span class="toc-text">Unity Frame Debugger</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#VS-Graphics-Debugger"><span class="toc-number">3.4.4.3.</span> <span class="toc-text">VS Graphics Debugger</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NVIDIA-NSight"><span class="toc-number">3.4.5.</span> <span class="toc-text">NVIDIA NSight</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity%E4%B8%AD%E7%9A%84%E5%9F%BA%E7%A1%80%E5%85%89%E7%85%A7"><span class="toc-number">3.5.</span> <span class="toc-text">Unity中的基础光照</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%89%E7%85%A7%E7%9F%A5%E8%AF%86%E5%9B%9E%E9%A1%BE"><span class="toc-number">3.5.1.</span> <span class="toc-text">光照知识回顾</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.5.2.</span> <span class="toc-text">标准光照模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%AB%E5%8F%8D%E5%B0%84%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.5.2.1.</span> <span class="toc-text">漫反射光照模型</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B0%E4%BC%AF%E7%89%B9%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.5.2.1.1.</span> <span class="toc-text">兰伯特光照模型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8D%8A%E5%85%B0%E4%BC%AF%E7%89%B9-Half-Lambert-%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.5.2.1.2.</span> <span class="toc-text">半兰伯特(Half Lambert)光照模型</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%AB%98%E5%85%89%E5%8F%8D%E5%B0%84%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.5.2.2.</span> <span class="toc-text">高光反射光照模型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lighting-in-Unity"><span class="toc-number">3.5.3.</span> <span class="toc-text">Lighting in Unity</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Realtime-Lighting"><span class="toc-number">3.5.3.1.</span> <span class="toc-text">Realtime Lighting</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Precomputed-Lighting"><span class="toc-number">3.5.3.2.</span> <span class="toc-text">Precomputed Lighting</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Bake-Realtime-Lighting%E5%AE%9E%E6%88%98"><span class="toc-number">3.5.3.2.1.</span> <span class="toc-text">Bake Realtime Lighting实战</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Render-Path"><span class="toc-number">3.5.3.3.</span> <span class="toc-text">Render Path</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Color-Space"><span class="toc-number">3.5.3.4.</span> <span class="toc-text">Color Space</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#High-Dynamic-Range"><span class="toc-number">3.5.4.</span> <span class="toc-text">High Dynamic Range</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%BA%B9%E7%90%86"><span class="toc-number">3.6.</span> <span class="toc-text">基础纹理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E7%B1%BB%E5%9E%8B%E5%88%86%E7%B1%BB"><span class="toc-number">3.6.1.</span> <span class="toc-text">纹理类型分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Delfaut-Advanced"><span class="toc-number">3.6.1.1.</span> <span class="toc-text">Delfaut(Advanced)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Normal-Map"><span class="toc-number">3.6.1.2.</span> <span class="toc-text">Normal Map</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sprite"><span class="toc-number">3.6.1.3.</span> <span class="toc-text">Sprite</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Lightmap"><span class="toc-number">3.6.1.4.</span> <span class="toc-text">Lightmap</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E5%A4%A7%E5%B0%8F"><span class="toc-number">3.6.2.</span> <span class="toc-text">纹理大小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E6%A0%BC%E5%BC%8F"><span class="toc-number">3.6.3.</span> <span class="toc-text">图片格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F"><span class="toc-number">3.6.4.</span> <span class="toc-text">纹理压缩方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity%E7%BA%B9%E7%90%86%E4%BD%BF%E7%94%A8"><span class="toc-number">3.6.5.</span> <span class="toc-text">Unity纹理使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E7%9A%84%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"><span class="toc-number">3.6.5.1.</span> <span class="toc-text">纹理的基础使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Mipmap"><span class="toc-number">3.6.5.2.</span> <span class="toc-text">Mipmap</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%B9%E5%87%B8%E6%98%A0%E5%B0%84"><span class="toc-number">3.6.5.3.</span> <span class="toc-text">凹凸映射</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Height-Map"><span class="toc-number">3.6.5.3.1.</span> <span class="toc-text">Height Map</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Normal-Mapping"><span class="toc-number">3.6.5.3.2.</span> <span class="toc-text">Normal Mapping</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Ramp-Texture-%E6%B8%90%E5%8F%98%E7%BA%B9%E7%90%86"><span class="toc-number">3.6.5.3.3.</span> <span class="toc-text">Ramp Texture(渐变纹理)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Mask-Texture-%E9%81%AE%E7%BD%A9%E7%BA%B9%E7%90%86"><span class="toc-number">3.6.5.3.4.</span> <span class="toc-text">Mask Texture(遮罩纹理)</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C"><span class="toc-number">3.7.</span> <span class="toc-text">透明效果</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference-Website"><span class="toc-number">4.</span> <span class="toc-text">Reference Website</span></a></li></ol>
+		
+		</div>
+		
+		<p>参考书籍《Unity Shader 入门精要》 – 冯乐乐(一位在图形渲染方面很厉害的女生)</p>
 <p>使用的Unity版本：<br>Unity 5.4.0f3</p>
-<h1 id="Rendering"><a href="#Rendering" class="headerlink" title="Rendering"></a>Rendering</h1><p>关于图形渲染相关知识以及OpenGL相关学习参见：<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/29/Computer-Graphic-Study/">Computer_Graphic_Study</a><br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/">OpenGL_Study</a></p>
+<h1 id="Rendering"><a href="#Rendering" class="headerlink" title="Rendering"></a>Rendering</h1><p>关于图形渲染相关知识以及OpenGL相关学习参见：<br><a href="http://tonytang1990.github.io/2015/08/29/Computer-Graphic-Study/">Computer_Graphic_Study</a><br><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/">OpenGL_Study</a></p>
 <h1 id="Unity-Shader"><a href="#Unity-Shader" class="headerlink" title="Unity Shader"></a>Unity Shader</h1><p>首先让我们通过官网的一张图来看看Unity Shader里面占据重要地位的3D Model,Material,Shader之间的关系：<br><img src="/img/Unity/UnityShaderFundamention.PNG" alt="UnityShaderFundamention"><br>可以看出Material会决定使用哪些Texture和Shader去渲染Model。<br>Shader是针对Texture和Model去做运算的地方。</p>
 <p>Unity Shader最主要的有两种(还有Image Effect Shader,Computer Shader等后续会学习)：</p>
 <ol>
@@ -302,7 +196,7 @@ Surface Shader的Code是包含在SubShader里的并且必须写在CGPROGRAM和EN
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">&quot;Custom/TonyShader&quot;</span> &#123;</span><br><span class="line">    SubShader &#123;</span><br><span class="line">        <span class="comment">// 定义渲染顺序 - RenderType</span></span><br><span class="line">        Tags &#123; <span class="string">&quot;RenderType&quot;</span>=<span class="string">&quot;Opaque&quot;</span> &#125;</span><br><span class="line">        </span><br><span class="line">        CGPROGRAM</span><br><span class="line">        <span class="comment">// #pragma surface指明是surface shader</span></span><br><span class="line">        <span class="comment">// surf Lambert指明用的光照模式是Lambert(会决定光照是如何计算的)</span></span><br><span class="line">        <span class="meta">#<span class="keyword">pragma</span> surface surf Lambert</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">struct</span> Input &#123;</span><br><span class="line">            float2 color : COLOR;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">surf</span> (<span class="params">Input IN, inout SurfaceOutput o</span>)</span> &#123;</span><br><span class="line">            o.Albedo = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ENDCG</span><br><span class="line">    &#125; </span><br><span class="line">    FallBack <span class="string">&quot;Diffuse&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="/img/Unity/SurfaceShaderWithAlbedoSetting.PNG" alt="SurfaceShaderWithAlbedoSetting"><br><strong>接下来让我们给Hellephant加上纹理图案：</strong></p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">&quot;Custom/TonyShader&quot;</span> &#123;</span><br><span class="line">    Properties&#123;</span><br><span class="line">        <span class="comment">// 为了在编辑器里提供控制纹理输入，Properties必须和struct Input里的uv_MainTex对应</span></span><br><span class="line">        _MainTex(<span class="string">&quot;Texture&quot;</span>, <span class="number">2</span>D) = <span class="string">&quot;white&quot;</span> &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    SubShader&#123;</span><br><span class="line">        Tags&#123; <span class="string">&quot;RenderType&quot;</span> = <span class="string">&quot;Opaque&quot;</span>&#125;</span><br><span class="line">        CGPROGRAM</span><br><span class="line">        <span class="meta">#<span class="keyword">pragma</span> surface surf Lambert</span></span><br><span class="line">        <span class="comment">// 提供纹理输入</span></span><br><span class="line">        <span class="keyword">struct</span> Input&#123;</span><br><span class="line">            float2 uv_MainTex</span><br><span class="line">        &#125;;</span><br><span class="line">        sampler2D _MainTex;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">surf</span> (<span class="params">Input IN, inout SurfaceOutputStandard o</span>)</span> &#123;</span><br><span class="line">            o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb;</span><br><span class="line">        &#125;</span><br><span class="line">        ENDCG</span><br><span class="line">    &#125;</span><br><span class="line">    Fallback <span class="string">&quot;Diffuse&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/img/Unity/SurfaceShaderWithTexture.PNG" alt="SurfaceShaderWithTexture"><br>让我们看看现在对应的Unity Material Editor：<br><img src="/img/Unity/SurfaceShaderMaterialEditorWithTexture.PNG" alt="SurfaceShaderMaterialEditorWithTexture"><br><strong>图像看起来还不真实，没有深度感，接下来我们添加<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Light_and_Shadow">Normal Mapping 参见</a>：</strong></p>
+<p><img src="/img/Unity/SurfaceShaderWithTexture.PNG" alt="SurfaceShaderWithTexture"><br>让我们看看现在对应的Unity Material Editor：<br><img src="/img/Unity/SurfaceShaderMaterialEditorWithTexture.PNG" alt="SurfaceShaderMaterialEditorWithTexture"><br><strong>图像看起来还不真实，没有深度感，接下来我们添加<a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Light_and_Shadow">Normal Mapping 参见</a>：</strong></p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">&quot;Custom/TonyShader&quot;</span> &#123;</span><br><span class="line">    Properties&#123;</span><br><span class="line">        .....</span><br><span class="line">        _BumpMap(<span class="string">&quot;Bumpmap&quot;</span>, <span class="number">2</span>D) = <span class="string">&quot;bump&quot;</span> &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    SubShader&#123;</span><br><span class="line">        ......</span><br><span class="line"></span><br><span class="line">        <span class="keyword">struct</span> Input&#123;</span><br><span class="line">            ......</span><br><span class="line">            float2 uv_BumpMap;</span><br><span class="line">        &#125;;</span><br><span class="line">        ......</span><br><span class="line">        sampler2D _BumpMap;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">surf</span> (<span class="params">Input IN, inout SurfaceOutputStandard o</span>)</span> &#123;</span><br><span class="line">            ......</span><br><span class="line">            o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_Bumpmap));</span><br><span class="line">        &#125;</span><br><span class="line">        ENDCG</span><br><span class="line">    &#125;</span><br><span class="line">    Fallback <span class="string">&quot;Diffuse&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>UnpackNormal接受一个fixed4的输入，并将其转换为所对应的法线值（fixed3）<br>比较有无Normal map的效果，见如下：<br><img src="/img/Unity/SurfaceShaderWithNormalMap.PNG" alt="SurfaceShaderWithNormalMap"><br><img src="/img/Unity/SurfaceShaderWithTexture.PNG" alt="SurfaceShaderWithTexture"><br><strong>接下来让我们通过计算Normal和Viedir的情况去高亮物体：</strong><br>这里需要用到build-in variable viewDir(代表观察者看顶点的方向)</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">&quot;Custom/TonyShader&quot;</span> &#123;</span><br><span class="line">    Properties&#123;</span><br><span class="line">        ......</span><br><span class="line">        _RimColor(<span class="string">&quot;Rim Color&quot;</span>, Color) = (<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)</span><br><span class="line">        _RimPower(<span class="string">&quot;Rim Power&quot;</span>, Range(<span class="number">0.5</span>, <span class="number">8.0</span>)) = <span class="number">3.0</span></span><br><span class="line">    &#125;</span><br><span class="line">    SubShader &#123;</span><br><span class="line">        ......</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">struct</span> Input &#123;</span><br><span class="line">            .....</span><br><span class="line">            float3 viewDir;</span><br><span class="line">        &#125;;</span><br><span class="line">        ......</span><br><span class="line">        float4 _RimColor;</span><br><span class="line">        <span class="built_in">float</span> _RimPower;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">surf</span> (<span class="params">Input IN, inout SurfaceOutput o</span>)</span> &#123;</span><br><span class="line">            ......</span><br><span class="line">            half rim = <span class="number">1.0</span> - saturate(dot(normalize(IN.viewDir), o.Normal));</span><br><span class="line">            o.Emission = _RimColor.rgb * pow(rim, _RimPower);</span><br><span class="line">        &#125;</span><br><span class="line">        ENDCG</span><br><span class="line">    &#125; </span><br><span class="line">    FallBack <span class="string">&quot;Diffuse&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -312,7 +206,7 @@ Surface Shader的Code是包含在SubShader里的并且必须写在CGPROGRAM和EN
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">&quot;Custom/TonyShader&quot;</span> &#123;</span><br><span class="line">    Properties&#123;</span><br><span class="line">        ......</span><br><span class="line">        _ColorTint(<span class="string">&quot;Tint&quot;</span>, Color) = (<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    SubShader &#123;</span><br><span class="line">        Tags &#123; <span class="string">&quot;RenderType&quot;</span>=<span class="string">&quot;Opaque&quot;</span> &#125;</span><br><span class="line">        </span><br><span class="line">        CGPROGRAM</span><br><span class="line">        <span class="comment">// finalcolor:mycolor定义final function name</span></span><br><span class="line">        <span class="meta">#<span class="keyword">pragma</span> surface surf Lambert vertex:vert finalcolor:mycolor</span></span><br><span class="line"></span><br><span class="line">        ......</span><br><span class="line"></span><br><span class="line">        fixed4 _ColorTint;</span><br><span class="line">        <span class="comment">// final color function格式， color会影响所有lightmaps,light probes等的颜色信息</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">mycolor</span>(<span class="params">Input IN, SurfaceOutput o, inout fixed4 color</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            color *= _ColorTint;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">surf</span> (<span class="params">Input IN, inout SurfaceOutput o</span>)</span> &#123;</span><br><span class="line">            ......</span><br><span class="line">        &#125;</span><br><span class="line">        ENDCG</span><br><span class="line">    &#125; </span><br><span class="line">    FallBack <span class="string">&quot;Diffuse&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="/img/Unity/SurfaceShaderWithFinalColorFunction.PNG" alt="SurfaceShaderWithFinalColorFunction"></p>
 <h2 id="Vertex-and-Fragment-Shaders"><a href="#Vertex-and-Fragment-Shaders" class="headerlink" title="Vertex and Fragment Shaders"></a>Vertex and Fragment Shaders</h2><p>见后续Shader学习</p>
-<h1 id="Unity-Shader入门精要"><a href="#Unity-Shader入门精要" class="headerlink" title="Unity Shader入门精要"></a>Unity Shader入门精要</h1><h2 id="渲染管线"><a href="#渲染管线" class="headerlink" title="渲染管线"></a>渲染管线</h2><p>参考以前的学习：<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/29/Computer-Graphic-Study/">Computer_Graphic_Study</a><br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/">OpenGL_Study</a></p>
+<h1 id="Unity-Shader入门精要"><a href="#Unity-Shader入门精要" class="headerlink" title="Unity Shader入门精要"></a>Unity Shader入门精要</h1><h2 id="渲染管线"><a href="#渲染管线" class="headerlink" title="渲染管线"></a>渲染管线</h2><p>参考以前的学习：<br><a href="http://tonytang1990.github.io/2015/08/29/Computer-Graphic-Study/">Computer_Graphic_Study</a><br><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/">OpenGL_Study</a></p>
 <h2 id="Unity-Shader基础"><a href="#Unity-Shader基础" class="headerlink" title="Unity Shader基础"></a>Unity Shader基础</h2><h3 id="材质和Unity-Shader"><a href="#材质和Unity-Shader" class="headerlink" title="材质和Unity Shader"></a>材质和Unity Shader</h3><p>结合前面的学习，我们知道了在Unity里Material会决定使用那些Texture和Shader去渲染Model。</p>
 <p>这里再简单梳理下他们之间的关系：</p>
 <ol>
@@ -344,7 +238,7 @@ Surface Shader的Code是包含在SubShader里的并且必须写在CGPROGRAM和EN
 <li>4<em>4矩阵<br>| M(3</em>3)  t(3<em>1)|<br>|  0(1</em>3)    1  |<br>M(3<em>3)代表线性变换(e.g. 旋转，缩放，错切，径向，正交投影…..)<br>t(3</em>1)代表平移变换<br>0(1*3)代表零矩阵<br>1代表标量1</li>
 <li>纹理坐标<br>OpenGL中(0,0)是左下角<br>DX中(0,0)是左上角</li>
 </ol>
-<p>关于渲染流程里的坐标系转换相关知识参考之前的学习:<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Coordinate_Transformations_&_Perspective_Projection">Coordinate Transformations &amp; Perspective Projection</a></p>
+<p>关于渲染流程里的坐标系转换相关知识参考之前的学习:<br><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Coordinate_Transformations_&_Perspective_Projection">Coordinate Transformations &amp; Perspective Projection</a></p>
 <p>Unity Shader的内置变量参考:<br>UnityShaderVariables.cginc</p>
 <h2 id="Unity-Shader学习之旅"><a href="#Unity-Shader学习之旅" class="headerlink" title="Unity Shader学习之旅"></a>Unity Shader学习之旅</h2><p>本人使用的Unity版本为5.4.0f3 Personal</p>
 <h3 id="一个最简单的顶点-片元着色器"><a href="#一个最简单的顶点-片元着色器" class="headerlink" title="一个最简单的顶点&#x2F;片元着色器"></a>一个最简单的顶点&#x2F;片元着色器</h3><p>依然采用代码实战，跟之前Unity Shader结构讲的类似，但更细节一些，相关解释都写在注释里了:</p>
@@ -379,7 +273,7 @@ Surface Shader的Code是包含在SubShader里的并且必须写在CGPROGRAM和EN
 <p>具体调试方法参考：<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/SL-DebuggingD3D11ShadersWithVS.html">Implementing Fixed Function TexGen in Shaders Debugging DirectX 11 shaders with Visual Studio</a></p>
 <p>Note:<br>Frames can only be captured if Unity is running under DirectX 11(只能基于DX11)</p>
 <h3 id="NVIDIA-NSight"><a href="#NVIDIA-NSight" class="headerlink" title="NVIDIA NSight"></a>NVIDIA NSight</h3><p>NVIDIA公司提供的基于渲染API层面的调试器。<br>之前了解过，好像只支持N卡。具体没有使用过。</p>
-<h2 id="Unity中的基础光照"><a href="#Unity中的基础光照" class="headerlink" title="Unity中的基础光照"></a>Unity中的基础光照</h2><h3 id="光照知识回顾"><a href="#光照知识回顾" class="headerlink" title="光照知识回顾"></a>光照知识回顾</h3><p>关于光照的基本学习参考之前OpenGL中的学习：<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Light_and_Shadow">Light and Shadow</a></p>
+<h2 id="Unity中的基础光照"><a href="#Unity中的基础光照" class="headerlink" title="Unity中的基础光照"></a>Unity中的基础光照</h2><h3 id="光照知识回顾"><a href="#光照知识回顾" class="headerlink" title="光照知识回顾"></a>光照知识回顾</h3><p>关于光照的基本学习参考之前OpenGL中的学习：<br><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Light_and_Shadow">Light and Shadow</a></p>
 <p>从上面可以看出Light影响着每一个物体最终颜色的成像计算。</p>
 <ol>
 <li>环境光(Ambient) – 环境光与光照方向无关，只需考虑方向光的颜色和方向光所占比重，决定着物体的基本颜色。</li>
@@ -417,7 +311,7 @@ Surface Shader的Code是包含在SubShader里的并且必须写在CGPROGRAM和EN
 <p>Note:<br>半兰伯特光照模型没有对漫反射辐射度负值做max处理，而是通过a倍缩放加上b偏移量得出最终的漫反射辐射度，这样一来背面漫反射辐射度也会被映射到不同的值，从而拥有不同的漫反射效果。</p>
 <h4 id="高光反射光照模型"><a href="#高光反射光照模型" class="headerlink" title="高光反射光照模型"></a>高光反射光照模型</h4><p>c(light) – 光源颜色信息<br>m(specular) – 材质高光反射系数<br>v – 视角方向<br>r – 反射方向<br>n – 顶点法线<br>l – 光源方向<br>m(gloss) – 发光系数</p>
 <p>r可以通过n和l计算出来：<br>r &#x3D; 2 * dot(-n,l) * n + l<br>跟OpenGL一样，Unity提供了直接计算反射光线方向的API:reflect(i,n)</p>
-<p>c(specular) &#x3D; (c(light) * m(specular)) * pow(max(0,dot(v,r)), m(gloss))<br>上面这个公式和之前在OpenGL之前学习的高光反射并没有太多出入，<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Light_and_Shadow">详情参考</a></p>
+<p>c(specular) &#x3D; (c(light) * m(specular)) * pow(max(0,dot(v,r)), m(gloss))<br>上面这个公式和之前在OpenGL之前学习的高光反射并没有太多出入，<a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Light_and_Shadow">详情参考</a></p>
 <p>这里主要要区分Phong光照模型和Blinn-Phong光照模型：</p>
 <ol>
 <li>Phong光照模型<br>c(specular) &#x3D; (c(light) * m(specular)) * pow(max(0,dot(v,r)), m(gloss))<br>dot(v,r) – 是指观察者所在位置和完美反射光线之间夹角</li>
@@ -557,14 +451,14 @@ Surface Shader的Code是包含在SubShader里的并且必须写在CGPROGRAM和EN
 <li>Wrap Mode(用于设置处理在tiled纹理图片时的方式)</li>
 </ol>
 <h4 id="Normal-Map"><a href="#Normal-Map" class="headerlink" title="Normal Map"></a>Normal Map</h4><p>在之前的OpenGL学习中已经接触过Normal Map了，这里只是简单说一下什么是和为什么需要Normal Map。</p>
-<p>什么是Normal Map?<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Normal_Mapping">Normal Mapping也叫做Dot3 Bump Mapping,它也是Bump Mapping的一种，区别在于Normal Mapping技术直接把Normal存到一张NormalMap里面，从NormalMap里面采回来的值就是Normal，不需要像HeightMap那样再经过额外的计算。<br>值得注意的是，NormalMap存的Normal是基于切线空间的，因此要进行光照计算时，需要把Normal,Light Direction,View direction统一到同一坐标空间中。</a></p>
-<p>至于什么是Bump Mapping，为什么normal map的normal值是存在tangent space，什么是tangent space，详情参考：<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Normal_Mapping">Normal Map</a></p>
-<p>为什么需要Normal Map？<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Normal_Mapping">如果要在几何体表面表现出凹凸不平的细节，那么在建模的时候就会需要很多的三角面，如果用这样的模型去实时渲染，出来的效果是非常好，只是性能上很有可能无法忍受。Bump Mapping不需要增加额外的几何信息,就可以达到增强被渲染物体的表面细节的效果，可以大大地提高渲染速度，因此得到了广泛的应用。</a></p>
+<p>什么是Normal Map?<br><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Normal_Mapping">Normal Mapping也叫做Dot3 Bump Mapping,它也是Bump Mapping的一种，区别在于Normal Mapping技术直接把Normal存到一张NormalMap里面，从NormalMap里面采回来的值就是Normal，不需要像HeightMap那样再经过额外的计算。<br>值得注意的是，NormalMap存的Normal是基于切线空间的，因此要进行光照计算时，需要把Normal,Light Direction,View direction统一到同一坐标空间中。</a></p>
+<p>至于什么是Bump Mapping，为什么normal map的normal值是存在tangent space，什么是tangent space，详情参考：<br><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Normal_Mapping">Normal Map</a></p>
+<p>为什么需要Normal Map？<br><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Normal_Mapping">如果要在几何体表面表现出凹凸不平的细节，那么在建模的时候就会需要很多的三角面，如果用这样的模型去实时渲染，出来的效果是非常好，只是性能上很有可能无法忍受。Bump Mapping不需要增加额外的几何信息,就可以达到增强被渲染物体的表面细节的效果，可以大大地提高渲染速度，因此得到了广泛的应用。</a></p>
 <h4 id="Sprite"><a href="#Sprite" class="headerlink" title="Sprite"></a>Sprite</h4><p>这个是我们制作UI和2D游戏最常用的格式。</p>
 <p>这里也将几个Sprite比较重要的设置：</p>
 <ol>
 <li>Packing Tag(Unity自带的打包图集工具所使用用于决定哪些图片时打在同一个图集里的标识。采用TexturePacker单独处理图片格式以及图集见后面)</li>
-<li>Pixels Per Unit(用于决定图片在屏幕上的映射显示大小，这个以及Camera Orthographic Size会影响我们制作Sprite时的大小标准以及Pixel Perfect显示。详情参考之前的学习<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#Unity_Unit_&_Pixel_Per_Unit">Unity Unit &amp; Pixel Per Unit</a>和<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2016/12/11/Unity-Plugins/#NGUI_2-7%E5%B1%8F%E5%B9%95%E8%87%AA%E9%80%82%E5%BA%94">NGUI 2.7屏幕自适应</a>)</li>
+<li>Pixels Per Unit(用于决定图片在屏幕上的映射显示大小，这个以及Camera Orthographic Size会影响我们制作Sprite时的大小标准以及Pixel Perfect显示。详情参考之前的学习<a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#Unity_Unit_&_Pixel_Per_Unit">Unity Unit &amp; Pixel Per Unit</a>和<a href="http://tonytang1990.github.io/2016/12/11/Unity-Plugins/#NGUI_2-7%E5%B1%8F%E5%B9%95%E8%87%AA%E9%80%82%E5%BA%94">NGUI 2.7屏幕自适应</a>)</li>
 <li>Generate Mip Maps(这个概念和前面Default提到的一样，但大部分时候UI和2D游戏都不需要设置这个，因为UI一般不会有太大的大小变化，2D游戏里的图片同理)</li>
 </ol>
 <h4 id="Lightmap"><a href="#Lightmap" class="headerlink" title="Lightmap"></a>Lightmap</h4><p>待学习</p>
@@ -600,7 +494,7 @@ Surface Shader的Code是包含在SubShader里的并且必须写在CGPROGRAM和EN
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Upgrade <span class="doctag">NOTE:</span> replaced &#x27;_Object2World&#x27; with &#x27;unity_ObjectToWorld&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Upgrade <span class="doctag">NOTE:</span> replaced &#x27;_Object2World&#x27; with &#x27;unity_ObjectToWorld&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Blinn-Phong光照模型结合单独的纹理使用Shader</span></span><br><span class="line">Shader <span class="string">&quot;Custom/Texture/SingleTextureShader&quot;</span></span><br><span class="line">&#123;</span><br><span class="line">    Properties</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 给Material面板暴露高光反射系数</span></span><br><span class="line">        _Specular(<span class="string">&quot;Specular&quot;</span>, Color) = (<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">        <span class="comment">// 给Material面板暴露高光范围</span></span><br><span class="line">        _Gloss(<span class="string">&quot;Gloss&quot;</span>, Range(<span class="number">8.0</span>, <span class="number">256</span>)) = <span class="number">20</span></span><br><span class="line">        <span class="comment">// 给Material面板暴露纹理图片</span></span><br><span class="line">        _MainTex (<span class="string">&quot;Texture&quot;</span>, <span class="number">2</span>D) = <span class="string">&quot;white&quot;</span> &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    SubShader</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 指定Pass用于Forward Rendering中的Light计算</span></span><br><span class="line">        Tags&#123; <span class="string">&quot;LightMode&quot;</span> = <span class="string">&quot;ForwardBase&quot;</span> &#125;</span><br><span class="line"></span><br><span class="line">        Pass</span><br><span class="line">        &#123;</span><br><span class="line">            CGPROGRAM</span><br><span class="line">            <span class="meta">#<span class="keyword">pragma</span> vertex vert</span></span><br><span class="line">            <span class="meta">#<span class="keyword">pragma</span> fragment frag</span></span><br><span class="line">            </span><br><span class="line">            <span class="meta">#include &quot;UnityCG.cginc&quot;</span></span><br><span class="line">            <span class="meta">#include &quot;Lighting.cginc&quot;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">struct</span> a2v</span><br><span class="line">            &#123;</span><br><span class="line">                float4 vertex : POSITION;       <span class="comment">// 物体坐标系顶点位置</span></span><br><span class="line">                float3 normal : NORMAL;         <span class="comment">// 物体坐标系法线</span></span><br><span class="line">                float4 texcoord : TEXCOORD0;    <span class="comment">// 纹理</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">struct</span> v2f</span><br><span class="line">            &#123;</span><br><span class="line">                float4 pos : SV_POSITION;       <span class="comment">// 投影坐标系顶点位置</span></span><br><span class="line">                float3 worldnormal : TEXCOORD0; <span class="comment">// 世界坐标系法线</span></span><br><span class="line">                float3 worldpos : TEXCOORD1;    <span class="comment">// 世界坐标系顶点位置</span></span><br><span class="line">                float2 uv : TEXCOORD2;          <span class="comment">// 纹理映射信息</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 对应材质面板的高光反射系数</span></span><br><span class="line">            fixed4 _Specular;</span><br><span class="line">            <span class="comment">// 对应材质面板的高光范围</span></span><br><span class="line">            <span class="built_in">float</span> _Gloss; </span><br><span class="line">            <span class="comment">// 对应材质面板的纹理贴图</span></span><br><span class="line">            sampler2D _MainTex;</span><br><span class="line">            <span class="comment">// 纹理材质的纹理属性(e.g. 纹理缩放值，偏移值)</span></span><br><span class="line">            float4 _MainTex_ST;</span><br><span class="line">            </span><br><span class="line">            <span class="function">v2f <span class="title">vert</span> (<span class="params">a2v v</span>)</span></span><br><span class="line">            &#123;</span><br><span class="line">                v2f o;</span><br><span class="line">                o.pos = mul(UNITY_MATRIX_MVP, v.vertex);</span><br><span class="line">                o.worldnormal = normalize(UnityObjectToWorldNormal(v.normal));</span><br><span class="line">                o.worldpos = mul(unity_ObjectToWorld, v.vertex).xyz;</span><br><span class="line">                <span class="comment">// 通过纹理基础信息和纹理属性得出纹理映射UV坐标</span></span><br><span class="line">                <span class="comment">// TRANSFORM_TEX() == (tex.xy * name##_ST.xy + name##_ST.zw)</span></span><br><span class="line">                o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);</span><br><span class="line">                <span class="keyword">return</span> o;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="function">fixed4 <span class="title">frag</span> (<span class="params">v2f i</span>) : SV_Target</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 使用纹理贴图的颜色信息作为漫反射系数</span></span><br><span class="line">                fixed3 albedo = tex2D(_MainTex, i.uv).rgb;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 环境光</span></span><br><span class="line">                fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;</span><br><span class="line">                </span><br><span class="line">                <span class="comment">//漫反射</span></span><br><span class="line">                <span class="comment">// 顶点光线入射向量</span></span><br><span class="line">                fixed3 worldlightdir = normalize(UnityWorldSpaceLightDir(i.worldpos.xyz));</span><br><span class="line">                <span class="comment">// 得到世界坐标系的顶点法线和direction light方向后可以开始计算漫反射</span></span><br><span class="line">                <span class="comment">// _LightColor0代表全局唯一的direction light光照的颜色信息</span></span><br><span class="line">                <span class="comment">// 点乘世界坐标系的法线和光源方向得到漫反射辐射度</span></span><br><span class="line">                <span class="comment">// saturate防止负值</span></span><br><span class="line">                fixed3 diffuse = _LightColor0.rgb * albedo * saturate(dot(i.worldnormal, worldlightdir));</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 高光反射</span></span><br><span class="line">                <span class="comment">// 世界坐标系下的从顶点到观察点的观察方向v</span></span><br><span class="line">                fixed3 viewdir = normalize(UnityWorldSpaceViewDir(i.worldpos.xyz));</span><br><span class="line">                <span class="comment">// h = (v + l) / |v + l| v和l向量归一化后的向量</span></span><br><span class="line">                fixed3 halfdir = normalize(worldlightdir + viewdir);</span><br><span class="line">                <span class="comment">// 计算高光反射的颜色信息</span></span><br><span class="line">                <span class="comment">// c(specular) = (c(light) * m(specular)) * pow(max(0, dot(n,h)), m(gloss))</span></span><br><span class="line">                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(saturate(dot(i.worldnormal, halfdir)), _Gloss);</span><br><span class="line">                <span class="comment">// 将高光反射的颜色信息输出到最终的顶点颜色</span></span><br><span class="line">                <span class="keyword">return</span> fixed4(ambient + diffuse + specular, <span class="number">1.0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            ENDCG</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    Fallback <span class="string">&quot;Specular&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><img src="/img/Unity/SimpleTextureShader.JPG" alt="BlinnPhong光照模型的纹理使用"></p>
-<h4 id="Mipmap"><a href="#Mipmap" class="headerlink" title="Mipmap"></a>Mipmap</h4><p>说到纹理的使用，这里不得不提的就是Mipmap的应用：<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Texture_Mapping">mipmap主要是由于物体在场景中因为距离的缘故会在屏幕显示的大小有变化，如果我们在物体很远，只需要显示很小一块的时候还依然采用很大的纹理贴图，最终显示在屏幕上的纹理会很不清晰（失真）。为了解决这个问题，mipmap应运而生，通过事先生成或指定多个级别的同一纹理贴图，然后在程序运作的过程中通过计算算出应该使用哪一个等级的纹理贴图来避免大纹理小色块失真的问题。</a></p>
+<h4 id="Mipmap"><a href="#Mipmap" class="headerlink" title="Mipmap"></a>Mipmap</h4><p>说到纹理的使用，这里不得不提的就是Mipmap的应用：<br><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Texture_Mapping">mipmap主要是由于物体在场景中因为距离的缘故会在屏幕显示的大小有变化，如果我们在物体很远，只需要显示很小一块的时候还依然采用很大的纹理贴图，最终显示在屏幕上的纹理会很不清晰（失真）。为了解决这个问题，mipmap应运而生，通过事先生成或指定多个级别的同一纹理贴图，然后在程序运作的过程中通过计算算出应该使用哪一个等级的纹理贴图来避免大纹理小色块失真的问题。</a></p>
 <p>在Unity为Texture开启Mipmap，我们需要把纹理类型设置成Advanced，然后勾选Generate Mip Map即可：<br><img src="/img/Unity/TextureMipmapImportSetting.JPG" alt="TextureMipmapImportSetting"></p>
 <p>需要注意的是，Unity开启Mipmap后会导致资源纹理内存占用增加。关于Advanced纹理的各个详细参数信息参考<a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/TextureTypes.html">Texture Import Setting</a></p>
 <p>Note:<br>注意纹理在DX和OpenGL里的起点不一样，DX是左上角(0,0)，OpenGL和Unity是左下角(0,0)。</p>
@@ -612,7 +506,7 @@ Surface Shader的Code是包含在SubShader里的并且必须写在CGPROGRAM和EN
 <li>存储的法线信息是基于切线空间的，需要转换计算位于世界坐标系的法线信息。</li>
 <li>纹理贴图的信息范围是[0,1]，而法线信息时[-1,1]需要通过映射转换。</li>
 </ol>
-<p><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Normal_Mapping">Normal Mapping详细信息参考</a></p>
+<p><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/#Normal_Mapping">Normal Mapping详细信息参考</a></p>
 <p>这里直接给出使用Unity编写Normal Mapping的使用代码和效果(以下代码采用的是将切线空间的法线转换到世界坐标系参与光照计算的方法)：</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Upgrade <span class="doctag">NOTE:</span> replaced &#x27;_Object2World&#x27; with &#x27;unity_ObjectToWorld&#x27;</span></span><br><span class="line"></span><br><span class="line">Shader <span class="string">&quot;Custom/Texture/NormalMappingShader&quot;</span></span><br><span class="line">&#123;</span><br><span class="line">    Properties</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 给Material面板暴露主纹理</span></span><br><span class="line">        _MainTex(<span class="string">&quot;Texture&quot;</span>, <span class="number">2</span>D) = <span class="string">&quot;white&quot;</span> &#123;&#125;</span><br><span class="line">        <span class="comment">// 给Material面板暴露法线贴图</span></span><br><span class="line">        <span class="comment">// bump是Unity自带的法线纹理</span></span><br><span class="line">        _NormalMap(<span class="string">&quot;Normal Map&quot;</span>, <span class="number">2</span>D) = <span class="string">&quot;bump&quot;</span> &#123;&#125;</span><br><span class="line">        <span class="comment">// 法线贴图的有效程度，用于控制凹凸程度</span></span><br><span class="line">        _BumpScale(<span class="string">&quot;Bump Scale&quot;</span>, Float) = <span class="number">1.0</span></span><br><span class="line">        <span class="comment">// 给Material面板暴露高光反射系数</span></span><br><span class="line">        _Specular(<span class="string">&quot;Specular&quot;</span>, Color) = (<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">        <span class="comment">// 给Material面板暴露高光范围</span></span><br><span class="line">        _Gloss(<span class="string">&quot;Gloss&quot;</span>, Range(<span class="number">8.0</span>, <span class="number">256</span>)) = <span class="number">20</span></span><br><span class="line">    &#125;</span><br><span class="line">    SubShader</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 指定Pass用于Forward Rendering中的Light计算</span></span><br><span class="line">        Tags&#123; <span class="string">&quot;LightMode&quot;</span> = <span class="string">&quot;ForwardBase&quot;</span> &#125;</span><br><span class="line"></span><br><span class="line">        Pass</span><br><span class="line">        &#123;</span><br><span class="line">            CGPROGRAM</span><br><span class="line">            <span class="meta">#<span class="keyword">pragma</span> vertex vert</span></span><br><span class="line">            <span class="meta">#<span class="keyword">pragma</span> fragment frag</span></span><br><span class="line"></span><br><span class="line">            <span class="meta">#include &quot;UnityCG.cginc&quot;</span></span><br><span class="line">            <span class="meta">#include &quot;Lighting.cginc&quot;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">struct</span> a2v</span><br><span class="line">            &#123;</span><br><span class="line">                float4 vertex : POSITION;       <span class="comment">// 物体坐标系顶点位置</span></span><br><span class="line">                float3 normal : NORMAL;         <span class="comment">// 物体坐标系法线</span></span><br><span class="line">                float4 tangent : TANGENT;       <span class="comment">// 切线空间的顶点切线(用于计算切线空间的坐标系)</span></span><br><span class="line">                float4 texcoord : TEXCOORD0;    <span class="comment">// 纹理位置信息(用于通过采样获取纹理的UV信息)</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">struct</span> v2f</span><br><span class="line">            &#123;</span><br><span class="line">                float4 pos : SV_POSITION;       <span class="comment">// 投影坐标系顶点位置</span></span><br><span class="line">                float4 uv : TEXCOORD0;          <span class="comment">// 主纹理和法线纹理的UV坐标信息(xy为主纹理的UV，zw为法线纹理的UV，用于后续的纹理采样)</span></span><br><span class="line">                float4 ttow0 : TEXCOORD1;       <span class="comment">// 切线空间y轴转换到世界坐标系后的y轴</span></span><br><span class="line">                float4 ttow1 : TEXCOORD2;       <span class="comment">// 切线空间x轴转换到世界坐标系后的x轴</span></span><br><span class="line">                float4 ttow2 : TEXCOORD3;       <span class="comment">// 切线空间z轴转换到到世界坐标系后的z轴</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 对应材质面板的纹理贴图</span></span><br><span class="line">            sampler2D _MainTex;</span><br><span class="line">            <span class="comment">// 纹理材质的纹理属性(e.g. 纹理缩放值，偏移值)</span></span><br><span class="line">            float4 _MainTex_ST;</span><br><span class="line">            <span class="comment">// 对应材质面板法线贴图</span></span><br><span class="line">            sampler2D _NormalMap;</span><br><span class="line">            <span class="comment">// 法线贴图材质的纹理属性(e.g. 纹理缩放值，偏移值)</span></span><br><span class="line">            float4 _NormalMap_ST;</span><br><span class="line">            <span class="comment">// 对应材质面板法线贴图有效程度参数</span></span><br><span class="line">            <span class="built_in">float</span> _BumpScale;</span><br><span class="line">            <span class="comment">// 对应材质面板的高光反射系数</span></span><br><span class="line">            fixed4 _Specular;</span><br><span class="line">            <span class="comment">// 对应材质面板的高光范围</span></span><br><span class="line">            <span class="built_in">float</span> _Gloss;</span><br><span class="line"></span><br><span class="line">            <span class="function">v2f <span class="title">vert</span>(<span class="params">a2v v</span>)</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 通过tangent和normal值计算出将tangent转换到世界坐标系的矩阵(世界坐标系下的XYZ轴)</span></span><br><span class="line">                v2f o;</span><br><span class="line">                o.pos = mul(UNITY_MATRIX_MVP, v.vertex);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// **_ST</span></span><br><span class="line">                <span class="comment">// x contains X tiling value</span></span><br><span class="line">                <span class="comment">// y contains Y tiling value</span></span><br><span class="line">                <span class="comment">// z contains X offset value</span></span><br><span class="line">                <span class="comment">// w contains Y offset value</span></span><br><span class="line">                <span class="comment">// 主纹理的UV信息</span></span><br><span class="line">                o.uv.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;</span><br><span class="line">                <span class="comment">// 法线纹理的UV信息</span></span><br><span class="line">                o.uv.zw = v.texcoord.xy * _NormalMap_ST.xy + _NormalMap_ST.zw;</span><br><span class="line"></span><br><span class="line">                float3 worldpos = mul(unity_ObjectToWorld, v.vertex).xyz;</span><br><span class="line">                <span class="comment">// 世界坐标系下的normal(相当于y轴)</span></span><br><span class="line">                fixed3 worldnormal = UnityObjectToWorldNormal(v.normal);</span><br><span class="line">                <span class="comment">// 世界坐标系下的tangent(相当于x轴)</span></span><br><span class="line">                fixed3 worldtangent = UnityObjectToWorldDir(v.tangent.xyz);</span><br><span class="line">                <span class="comment">// 世界坐标系下的normal和tangent计算出binormal</span></span><br><span class="line">                <span class="comment">// 世界坐标系下的binormal(相当于z轴)</span></span><br><span class="line">                fixed3 worldbinormal = cross(worldnormal, worldtangent) * v.tangent.w;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 填充从tangent space转换到world space的矩阵</span></span><br><span class="line">                <span class="comment">// 注意因为是列向量，所以注意填充方式</span></span><br><span class="line">                <span class="comment">// worldpos填充在w后续使用</span></span><br><span class="line">                o.ttow0 = float4(worldtangent.x, worldbinormal.x, worldnormal.x, worldpos.x);</span><br><span class="line">                o.ttow1 = float4(worldtangent.y, worldbinormal.y, worldnormal.y, worldpos.y);</span><br><span class="line">                o.ttow2 = float4(worldtangent.z, worldbinormal.z, worldnormal.z, worldpos.z);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> o;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function">fixed4 <span class="title">frag</span>(<span class="params">v2f i</span>) : SV_Target</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 世界坐标系顶点位置</span></span><br><span class="line">                fixed3 worldpos = float3(i.ttow0.w,i.ttow1.w,i.ttow2.w);</span><br><span class="line">                </span><br><span class="line">                <span class="comment">// 计算世界坐标系的法线信息</span></span><br><span class="line">                <span class="comment">// bump为切线空间的法线信息</span></span><br><span class="line">                fixed3 bump = UnpackNormal(tex2D(_NormalMap, i.uv.zw));</span><br><span class="line"></span><br><span class="line">                bump.xy *= _BumpScale;</span><br><span class="line">                bump.z = sqrt(<span class="number">1.0</span> - saturate(dot(bump.xy, bump.xy)));</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 将切线空间空间的法线信息转换到世界坐标系下</span></span><br><span class="line">                bump = normalize(half3(dot(i.ttow0.xyz, bump), dot(i.ttow1.xyz, bump), dot(i.ttow2.xyz, bump)));</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 利用转换到世界坐标系的法线信息，正式开始光照计算</span></span><br><span class="line">                <span class="comment">// 使用纹理贴图的颜色信息作为漫反射系数</span></span><br><span class="line">                fixed3 albedo = tex2D(_MainTex, i.uv).rgb;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 环境光</span></span><br><span class="line">                fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 漫反射</span></span><br><span class="line">                <span class="comment">// 顶点光线入射向量</span></span><br><span class="line">                fixed3 worldlightdir = normalize(UnityWorldSpaceLightDir(worldpos));</span><br><span class="line">                <span class="comment">// 得到世界坐标系的顶点法线和direction light方向后可以开始计算漫反射</span></span><br><span class="line">                <span class="comment">// _LightColor0代表全局唯一的direction light光照的颜色信息</span></span><br><span class="line">                <span class="comment">// 点乘世界坐标系的法线和光源方向得到漫反射辐射度</span></span><br><span class="line">                <span class="comment">// saturate防止负值</span></span><br><span class="line">                fixed3 diffuse = _LightColor0.rgb * albedo * saturate(dot(bump, worldlightdir));</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 高光反射</span></span><br><span class="line">                <span class="comment">// 世界坐标系下的从顶点到观察点的观察方向v</span></span><br><span class="line">                fixed3 viewdir = normalize(UnityWorldSpaceViewDir(worldpos));</span><br><span class="line">                <span class="comment">// h = (v + l) / |v + l| v和l向量归一化后的向量</span></span><br><span class="line">                fixed3 halfdir = normalize(worldlightdir + viewdir);</span><br><span class="line">                <span class="comment">// 计算高光反射的颜色信息</span></span><br><span class="line">                <span class="comment">// c(specular) = (c(light) * m(specular)) * pow(max(0, dot(n,h)), m(gloss))</span></span><br><span class="line">                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(saturate(dot(bump, halfdir)), _Gloss);</span><br><span class="line">                <span class="comment">// 将高光反射的颜色信息输出到最终的顶点颜色</span></span><br><span class="line">                <span class="keyword">return</span> fixed4(ambient + diffuse + specular, <span class="number">1.0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            ENDCG</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    Fallback <span class="string">&quot;Specular&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -626,94 +520,538 @@ Surface Shader的Code是包含在SubShader里的并且必须写在CGPROGRAM和EN
 
 <p><img src="/img/Unity/MaskTexture.PNG" alt="高光遮罩纹理"><br>可以看到我们利用遮罩纹理的R颜色信息作为高光的过滤依据，也就是说遮罩纹理里R信息为0的顶点将不会计算高光反射。</p>
 <h2 id="透明效果"><a href="#透明效果" class="headerlink" title="透明效果"></a>透明效果</h2><h1 id="Reference-Website"><a href="#Reference-Website" class="headerlink" title="Reference Website"></a>Reference Website</h1><p><a target="_blank" rel="noopener" href="http://www.alanzucconi.com/2015/06/17/surface-shaders-in-unity3d/">Surface shaders in Unity3D</a><br>[Unity Shader内置文件官网下载地址](<a target="_blank" rel="noopener" href="http://unity3d.com/cn/get-unity/download/">http://unity3d.com/cn/get-unity/download/</a><br>archive)<br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/SL-ShaderSemantics.html">Shader semantics官网查询</a><br><a target="_blank" rel="noopener" href="http://candycat1992.github.io/unity_shaders_book/unity_shaders_book_corrigenda.html">Unity Shader入门精要勘误</a><br><a target="_blank" rel="noopener" href="https://github.com/candycat1992/Unity_Shaders_Book">Unity Shader入门级你要源代码</a><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gouraud_shading">Gouraud Shading</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
 
-    </div>
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Rendering/">Rendering</a>
+</div>
 
-    
-    
-    
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Rendering/" rel="tag"># Rendering</a>
-          </div>
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Rendering/">Rendering</a>
+  </div>
 
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2016/12/20/Unity-Shader/" data-title="Unity Shader | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/02/17/SublimeText3使用/" title="SublimeText3使用">
+  <strong>上一篇：</strong><br/>
+  <span>
+  SublimeText3使用</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/12/11/Unity原生/"  title="Unity原生">
+ <strong>下一篇：</strong><br/> 
+ <span>Unity原生
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Rendering"><span class="toc-number">1.</span> <span class="toc-text">Rendering</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity-Shader"><span class="toc-number">2.</span> <span class="toc-text">Unity Shader</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Surface-Shaders"><span class="toc-number">2.1.</span> <span class="toc-text">Surface Shaders</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vertex-and-Fragment-Shaders"><span class="toc-number">2.2.</span> <span class="toc-text">Vertex and Fragment Shaders</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity-Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81"><span class="toc-number">3.</span> <span class="toc-text">Unity Shader入门精要</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF"><span class="toc-number">3.1.</span> <span class="toc-text">渲染管线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Shader%E5%9F%BA%E7%A1%80"><span class="toc-number">3.2.</span> <span class="toc-text">Unity Shader基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%90%E8%B4%A8%E5%92%8CUnity-Shader"><span class="toc-number">3.2.1.</span> <span class="toc-text">材质和Unity Shader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ShaderLab"><span class="toc-number">3.2.2.</span> <span class="toc-text">ShaderLab</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity-Shader%E7%BB%93%E6%9E%84"><span class="toc-number">3.2.3.</span> <span class="toc-text">Unity Shader结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86"><span class="toc-number">3.3.</span> <span class="toc-text">数学相关知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Shader%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85"><span class="toc-number">3.4.</span> <span class="toc-text">Unity Shader学习之旅</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E9%A1%B6%E7%82%B9-%E7%89%87%E5%85%83%E7%9D%80%E8%89%B2%E5%99%A8"><span class="toc-number">3.4.1.</span> <span class="toc-text">一个最简单的顶点&#x2F;片元着色器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity%E5%86%85%E7%BD%AE%E6%96%87%E4%BB%B6%E5%92%8C%E5%8F%98%E9%87%8F"><span class="toc-number">3.4.2.</span> <span class="toc-text">Unity内置文件和变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CG-HLSL%E8%AF%AD%E4%B9%89"><span class="toc-number">3.4.3.</span> <span class="toc-text">CG&#x2F;HLSL语义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shader-Debugger"><span class="toc-number">3.4.4.</span> <span class="toc-text">Shader Debugger</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Color-Info"><span class="toc-number">3.4.4.1.</span> <span class="toc-text">Color Info</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Unity-Frame-Debugger"><span class="toc-number">3.4.4.2.</span> <span class="toc-text">Unity Frame Debugger</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#VS-Graphics-Debugger"><span class="toc-number">3.4.4.3.</span> <span class="toc-text">VS Graphics Debugger</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NVIDIA-NSight"><span class="toc-number">3.4.5.</span> <span class="toc-text">NVIDIA NSight</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity%E4%B8%AD%E7%9A%84%E5%9F%BA%E7%A1%80%E5%85%89%E7%85%A7"><span class="toc-number">3.5.</span> <span class="toc-text">Unity中的基础光照</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%89%E7%85%A7%E7%9F%A5%E8%AF%86%E5%9B%9E%E9%A1%BE"><span class="toc-number">3.5.1.</span> <span class="toc-text">光照知识回顾</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.5.2.</span> <span class="toc-text">标准光照模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%AB%E5%8F%8D%E5%B0%84%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.5.2.1.</span> <span class="toc-text">漫反射光照模型</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B0%E4%BC%AF%E7%89%B9%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.5.2.1.1.</span> <span class="toc-text">兰伯特光照模型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8D%8A%E5%85%B0%E4%BC%AF%E7%89%B9-Half-Lambert-%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.5.2.1.2.</span> <span class="toc-text">半兰伯特(Half Lambert)光照模型</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%AB%98%E5%85%89%E5%8F%8D%E5%B0%84%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.5.2.2.</span> <span class="toc-text">高光反射光照模型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lighting-in-Unity"><span class="toc-number">3.5.3.</span> <span class="toc-text">Lighting in Unity</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Realtime-Lighting"><span class="toc-number">3.5.3.1.</span> <span class="toc-text">Realtime Lighting</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Precomputed-Lighting"><span class="toc-number">3.5.3.2.</span> <span class="toc-text">Precomputed Lighting</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Bake-Realtime-Lighting%E5%AE%9E%E6%88%98"><span class="toc-number">3.5.3.2.1.</span> <span class="toc-text">Bake Realtime Lighting实战</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Render-Path"><span class="toc-number">3.5.3.3.</span> <span class="toc-text">Render Path</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Color-Space"><span class="toc-number">3.5.3.4.</span> <span class="toc-text">Color Space</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#High-Dynamic-Range"><span class="toc-number">3.5.4.</span> <span class="toc-text">High Dynamic Range</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%BA%B9%E7%90%86"><span class="toc-number">3.6.</span> <span class="toc-text">基础纹理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E7%B1%BB%E5%9E%8B%E5%88%86%E7%B1%BB"><span class="toc-number">3.6.1.</span> <span class="toc-text">纹理类型分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Delfaut-Advanced"><span class="toc-number">3.6.1.1.</span> <span class="toc-text">Delfaut(Advanced)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Normal-Map"><span class="toc-number">3.6.1.2.</span> <span class="toc-text">Normal Map</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sprite"><span class="toc-number">3.6.1.3.</span> <span class="toc-text">Sprite</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Lightmap"><span class="toc-number">3.6.1.4.</span> <span class="toc-text">Lightmap</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E5%A4%A7%E5%B0%8F"><span class="toc-number">3.6.2.</span> <span class="toc-text">纹理大小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E6%A0%BC%E5%BC%8F"><span class="toc-number">3.6.3.</span> <span class="toc-text">图片格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E5%8E%8B%E7%BC%A9%E6%96%B9%E5%BC%8F"><span class="toc-number">3.6.4.</span> <span class="toc-text">纹理压缩方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity%E7%BA%B9%E7%90%86%E4%BD%BF%E7%94%A8"><span class="toc-number">3.6.5.</span> <span class="toc-text">Unity纹理使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E7%9A%84%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"><span class="toc-number">3.6.5.1.</span> <span class="toc-text">纹理的基础使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Mipmap"><span class="toc-number">3.6.5.2.</span> <span class="toc-text">Mipmap</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%B9%E5%87%B8%E6%98%A0%E5%B0%84"><span class="toc-number">3.6.5.3.</span> <span class="toc-text">凹凸映射</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Height-Map"><span class="toc-number">3.6.5.3.1.</span> <span class="toc-text">Height Map</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Normal-Mapping"><span class="toc-number">3.6.5.3.2.</span> <span class="toc-text">Normal Mapping</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Ramp-Texture-%E6%B8%90%E5%8F%98%E7%BA%B9%E7%90%86"><span class="toc-number">3.6.5.3.3.</span> <span class="toc-text">Ramp Texture(渐变纹理)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Mask-Texture-%E9%81%AE%E7%BD%A9%E7%BA%B9%E7%90%86"><span class="toc-number">3.6.5.3.4.</span> <span class="toc-text">Mask Texture(遮罩纹理)</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C"><span class="toc-number">3.7.</span> <span class="toc-text">透明效果</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference-Website"><span class="toc-number">4.</span> <span class="toc-text">Reference Website</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Plugin/" title="Plugin">Plugin<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
         
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2016/12/11/Unity%E5%8E%9F%E7%94%9F/" rel="prev" title="Unity原生">
-                  <i class="fa fa-angle-left"></i> Unity原生
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2017/02/17/SublimeText3%E4%BD%BF%E7%94%A8/" rel="next" title="SublimeText3使用">
-                  SublimeText3使用 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
 
-
-
-
-
+</aside>
 </div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2025</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">John Doe</span>
-  </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
-
     </div>
-  </footer>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
 
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2025 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
 
 
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
 
-  
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
 
 
 
-  
 
 
 
 
 
-</body>
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
 </html>

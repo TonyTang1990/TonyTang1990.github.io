@@ -1,270 +1,164 @@
-<!DOCTYPE html>
-<html lang="en">
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+  
+    <title>Unity学习 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-
+    
     <meta name="description" content="Unity Introduction因为后期发现目录越来越长导致前面的一些代码模块不具可读性，所以在这里加很多…过度符……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity学习">
-<meta property="og:url" content="http://example.com/2015/07/15/Unity%E5%AD%A6%E4%B9%A0/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="http://tonytang1990.github.io/2015/07/15/Unity%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content="Unity Introduction因为后期发现目录越来越长导致前面的一些代码模块不具可读性，所以在这里加很多…过度符……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………………………………..……………………">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/Unity/Roll_A_Ball_Game_Play.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/Roll_A_Ball_Game_Win.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/Space_Shooter_Game_Play.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/Space_Shooter_Game_Win.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/Survival_Shooter_Game.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/2DRogueLike_Game_Start.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/2DRogueLike_Game_Play.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/2DRogueLike_Game_Lose.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ParticleSystemExample.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ParticleSystemRendererModule.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/NetworkManagerAndHUD.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/NetworkManagerHUD.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/NetworkIdentity.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/RegisterPlayerPrefab.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/StartHost.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/TestOnlineMove.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/MultiplayerNetworkingMovement.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ChangeLocalPlayerColor.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/PlayerWithFunAndBullet.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/MultiplayerNetworkingWithBullet.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SpawnableBullet.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/RemoteActions.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/PlayerSpawning.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ServerOnly.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/Mono.png">
-<meta property="og:image" content="http://example.com/img/Unity/IL2CPP.png">
-<meta property="og:image" content="http://example.com/img/CSharp/EmitStudy.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ConstantPixelSizeScaleFactor.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ConstantPixelSizeScaleFactor2.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ConstantPhysicalSize.png">
-<meta property="og:image" content="http://example.com/img/Unity/RectTransform.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ThickBorder.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/EventSystem.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SystemInfo.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ButtonUINavigation.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/GraphicRaycast.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/UGUISpriteEditor.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SpritePackerSetting.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/UGUISpritePacker.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ProfilerDrawCall.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/HLAPIHostAndClientRelationShip.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/HLAPILayerStructureOnNetwork.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ExcelReaderDLL.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AccountPasswordAndGameSettingSheet1.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AccountPasswordAndGameSettingSheet2.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ExcelReaderOutput.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/Perssistence_PlayerPrefs_Serialization.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/EditorWindow_ScriptableObject.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/Unity_Coroutine_LifeTime.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/Unity_Coroutine_LifeTime_Monobehaviour.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/Coroutine_Study.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ForEachCall.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ForCall.PNG">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Roll_A_Ball_Game_Play.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Roll_A_Ball_Game_Win.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Space_Shooter_Game_Play.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Space_Shooter_Game_Win.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Survival_Shooter_Game.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/2DRogueLike_Game_Start.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/2DRogueLike_Game_Play.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/2DRogueLike_Game_Lose.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ParticleSystemExample.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ParticleSystemRendererModule.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NetworkManagerAndHUD.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NetworkManagerHUD.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NetworkIdentity.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RegisterPlayerPrefab.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/StartHost.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TestOnlineMove.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MultiplayerNetworkingMovement.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ChangeLocalPlayerColor.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PlayerWithFunAndBullet.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MultiplayerNetworkingWithBullet.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpawnableBullet.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RemoteActions.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PlayerSpawning.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ServerOnly.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Mono.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/IL2CPP.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/EmitStudy.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ConstantPixelSizeScaleFactor.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ConstantPixelSizeScaleFactor2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ConstantPhysicalSize.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RectTransform.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ThickBorder.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/EventSystem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SystemInfo.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ButtonUINavigation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/GraphicRaycast.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UGUISpriteEditor.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpritePackerSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UGUISpritePacker.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ProfilerDrawCall.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/HLAPIHostAndClientRelationShip.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/HLAPILayerStructureOnNetwork.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ExcelReaderDLL.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AccountPasswordAndGameSettingSheet1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AccountPasswordAndGameSettingSheet2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ExcelReaderOutput.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Perssistence_PlayerPrefs_Serialization.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/EditorWindow_ScriptableObject.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Unity_Coroutine_LifeTime.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Unity_Coroutine_LifeTime_Monobehaviour.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Coroutine_Study.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ForEachCall.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ForCall.PNG">
 <meta property="article:published_time" content="2015-07-15T15:48:26.000Z">
 <meta property="article:modified_time" content="2023-08-10T12:17:05.390Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/img/Unity/Roll_A_Ball_Game_Play.PNG">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/Unity/Roll_A_Ball_Game_Play.PNG">
 
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
 
-<link rel="canonical" href="http://example.com/2015/07/15/Unity%E5%AD%A6%E4%B9%A0/">
+<meta name="generator" content="Hexo 7.3.0"></head>
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2015/07/15/Unity%E5%AD%A6%E4%B9%A0/","path":"2015/07/15/Unity学习/","title":"Unity学习"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Unity学习 | Hexo</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Hexo</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-    </div>
-  </div>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
 </div>
-
-
-
-
-
-
-
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/07/15/Unity学习/" title="Unity学习" itemprop="url">Unity学习</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2015-07-15T15:48:26.000Z" itemprop="datePublished"> 发表于 2015-07-15</time>
+    
+  </p>
 </header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Unity-Introduction"><span class="nav-number">1.</span> <span class="nav-text">Unity Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-Unity"><span class="nav-number">1.1.</span> <span class="nav-text">What is Unity?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-should-we-study-Unity"><span class="nav-number">1.2.</span> <span class="nav-text">Why should we study Unity?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Which-programming-language-are-we-using"><span class="nav-number">1.3.</span> <span class="nav-text">Which programming language are we using?</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unity-Tutorial-Study"><span class="nav-number">2.</span> <span class="nav-text">Unity Tutorial Study</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ROLL-A-BALL"><span class="nav-number">2.1.</span> <span class="nav-text">ROLL-A-BALL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SPACE-SHOOTER"><span class="nav-number">2.2.</span> <span class="nav-text">SPACE SHOOTER</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2D-ROGUELIKE-TUTORIAL"><span class="nav-number">2.3.</span> <span class="nav-text">2D-ROGUELIKE-TUTORIAL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Particle-System"><span class="nav-number">2.4.</span> <span class="nav-text">Particle System</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What"><span class="nav-number">2.4.1.</span> <span class="nav-text">What</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why"><span class="nav-number">2.4.2.</span> <span class="nav-text">Why</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How"><span class="nav-number">2.4.3.</span> <span class="nav-text">How</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Using-in-AB"><span class="nav-number">2.4.4.</span> <span class="nav-text">Using in AB</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Animation-System"><span class="nav-number">2.5.</span> <span class="nav-text">Animation System</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multiplayer-Networking"><span class="nav-number">2.6.</span> <span class="nav-text">Multiplayer Networking</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E7%95%8C%E9%9D%A2"><span class="nav-number">3.</span> <span class="nav-text">编辑器界面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">4.</span> <span class="nav-text">工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MonoDevelop"><span class="nav-number">4.1.</span> <span class="nav-text">MonoDevelop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ILSpy"><span class="nav-number">4.2.</span> <span class="nav-text">ILSpy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ildasm-%E5%AE%89%E8%A3%85VS%E8%87%AA%E5%B8%A6%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="nav-number">4.3.</span> <span class="nav-text">ildasm(安装VS自带的工具)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Blender"><span class="nav-number">4.4.</span> <span class="nav-text">Blender</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VSTU"><span class="nav-number">4.5.</span> <span class="nav-text">VSTU</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E5%AD%A6%E4%B9%A0"><span class="nav-number">5.</span> <span class="nav-text">相关概念学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unity-Engine"><span class="nav-number">5.1.</span> <span class="nav-text">Unity Engine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-Sharp"><span class="nav-number">5.1.1.</span> <span class="nav-text">C Sharp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mono"><span class="nav-number">5.1.2.</span> <span class="nav-text">Mono</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IL2CPP"><span class="nav-number">5.1.3.</span> <span class="nav-text">IL2CPP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Why-do-we-need-IL2CPP"><span class="nav-number">5.1.3.1.</span> <span class="nav-text">Why do we need IL2CPP?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IL2CPP-Components"><span class="nav-number">5.1.3.2.</span> <span class="nav-text">IL2CPP Components</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mono-and-IL2CPP-compile-and-execution-process"><span class="nav-number">5.1.3.3.</span> <span class="nav-text">Mono and IL2CPP compile and execution process</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOT-JIT"><span class="nav-number">5.1.4.</span> <span class="nav-text">AOT &amp; JIT</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AOT"><span class="nav-number">5.1.4.1.</span> <span class="nav-text">AOT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JIT"><span class="nav-number">5.1.4.2.</span> <span class="nav-text">JIT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IOS-AOT-Limitations"><span class="nav-number">5.1.4.3.</span> <span class="nav-text">IOS AOT Limitations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Protocol-Buffers"><span class="nav-number">5.1.4.4.</span> <span class="nav-text">Protocol Buffers</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unity-Using"><span class="nav-number">5.2.</span> <span class="nav-text">Unity Using</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%AD%A6%E4%B9%A0"><span class="nav-number">6.</span> <span class="nav-text">快捷键学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BC%96%E8%AF%91%E5%8F%91%E5%B8%83"><span class="nav-number">7.</span> <span class="nav-text">项目编译发布</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PC"><span class="nav-number">7.1.</span> <span class="nav-text">PC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IOS"><span class="nav-number">7.2.</span> <span class="nav-text">IOS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Native-Code-Compilation"><span class="nav-number">7.2.1.</span> <span class="nav-text">Native Code Compilation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prepare-XCode-Project"><span class="nav-number">7.2.2.</span> <span class="nav-text">Prepare XCode Project</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Compile-XCode-Project"><span class="nav-number">7.2.3.</span> <span class="nav-text">Compile XCode Project</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%88%E5%9D%97%E5%AD%A6%E4%B9%A0"><span class="nav-number">8.</span> <span class="nav-text">版块学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#UGUI"><span class="nav-number">8.1.</span> <span class="nav-text">UGUI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Coordinates-System"><span class="nav-number">8.1.1.</span> <span class="nav-text">Coordinates System</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity-Unit-Pixel-Per-Unit"><span class="nav-number">8.1.2.</span> <span class="nav-text">Unity Unit &amp; Pixel Per Unit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Canvas"><span class="nav-number">8.1.3.</span> <span class="nav-text">Canvas</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EventSystem"><span class="nav-number">8.1.4.</span> <span class="nav-text">EventSystem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UGUI-Atlas"><span class="nav-number">8.1.5.</span> <span class="nav-text">UGUI Atlas</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multiplayer-Networking-1"><span class="nav-number">8.2.</span> <span class="nav-text">Multiplayer Networking</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Hight-Level-API"><span class="nav-number">8.2.1.</span> <span class="nav-text">The Hight Level API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Using-The-Transport-Layer-API"><span class="nav-number">8.2.2.</span> <span class="nav-text">Using The Transport Layer API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unity-Shader"><span class="nav-number">8.3.</span> <span class="nav-text">Unity Shader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Excel%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96"><span class="nav-number">8.4.</span> <span class="nav-text">Excel数据读取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86"><span class="nav-number">8.5.</span> <span class="nav-text">资源管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Plugins"><span class="nav-number">9.</span> <span class="nav-text">Plugins</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E8%84%9A%E6%9C%AC"><span class="nav-number">10.</span> <span class="nav-text">C#脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Persistence-Saving-and-Loading-Data"><span class="nav-number">10.1.</span> <span class="nav-text">Persistence - Saving and Loading Data</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PlayerPrefs"><span class="nav-number">10.1.1.</span> <span class="nav-text">PlayerPrefs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Seralization"><span class="nav-number">10.1.2.</span> <span class="nav-text">Seralization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#What-is-seralization"><span class="nav-number">10.1.2.1.</span> <span class="nav-text">What is seralization?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C-Serialization"><span class="nav-number">10.1.2.2.</span> <span class="nav-text">C# Serialization</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity-Editor-Window-Menu-Item-ScriptableObject"><span class="nav-number">10.1.3.</span> <span class="nav-text">Unity Editor Window, Menu Item &amp; ScriptableObject</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Coroutine"><span class="nav-number">10.2.</span> <span class="nav-text">Coroutine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-are-we-using-coroutines"><span class="nav-number">10.2.1.</span> <span class="nav-text">Why are we using coroutines?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-a-coroutine"><span class="nav-number">10.2.2.</span> <span class="nav-text">What is a coroutine?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-long-is-the-life-cycle-When-does-coroutine-get-called"><span class="nav-number">10.2.3.</span> <span class="nav-text">How long is the life cycle? &amp; When does coroutine get called?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-stop-coroutines"><span class="nav-number">10.2.4.</span> <span class="nav-text">How to stop coroutines?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go-depth-in-Coroutine"><span class="nav-number">10.2.5.</span> <span class="nav-text">Go depth in Coroutine</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unity%E4%BC%98%E5%8C%96%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">11.</span> <span class="nav-text">Unity优化注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-number">11.1.</span> <span class="nav-text">Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Use-For-or-while-instead-of-foreach"><span class="nav-number">11.1.1.</span> <span class="nav-text">Use For or while instead of foreach</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rendering"><span class="nav-number">11.2.</span> <span class="nav-text">Rendering</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Physic"><span class="nav-number">11.3.</span> <span class="nav-text">Physic</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Close-Unnecessary-Collision"><span class="nav-number">11.3.1.</span> <span class="nav-text">Close Unnecessary Collision</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Memory"><span class="nav-number">11.4.</span> <span class="nav-text">Memory</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Avoid-Uneccessary-GC"><span class="nav-number">11.4.1.</span> <span class="nav-text">Avoid Uneccessary GC</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3"><span class="nav-number">12.</span> <span class="nav-text">游戏相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Shuffle-Bag"><span class="nav-number">12.1.</span> <span class="nav-text">Shuffle Bag</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E5%AD%A6%E4%B9%A0"><span class="nav-number">13.</span> <span class="nav-text">C#学习</span></a></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">50</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">22</span>
-        <span class="site-state-item-name">categories</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">33</span>
-        <span class="site-state-item-name">tags</span>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2015/07/15/Unity%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Unity学习 | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Unity学习
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2015-07-15 23:48:26" itemprop="dateCreated datePublished" datetime="2015-07-15T23:48:26+08:00">2015-07-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-08-10 20:17:05" itemprop="dateModified" datetime="2023-08-10T20:17:05+08:00">2023-08-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><h1 id="Unity-Introduction"><a href="#Unity-Introduction" class="headerlink" title="Unity Introduction"></a>Unity Introduction</h1><p>因为后期发现目录越来越长导致前面的一些代码模块不具可读性，所以在这里加很多…过度符<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity-Introduction"><span class="toc-number">1.</span> <span class="toc-text">Unity Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-Unity"><span class="toc-number">1.1.</span> <span class="toc-text">What is Unity?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-should-we-study-Unity"><span class="toc-number">1.2.</span> <span class="toc-text">Why should we study Unity?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Which-programming-language-are-we-using"><span class="toc-number">1.3.</span> <span class="toc-text">Which programming language are we using?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity-Tutorial-Study"><span class="toc-number">2.</span> <span class="toc-text">Unity Tutorial Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ROLL-A-BALL"><span class="toc-number">2.1.</span> <span class="toc-text">ROLL-A-BALL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SPACE-SHOOTER"><span class="toc-number">2.2.</span> <span class="toc-text">SPACE SHOOTER</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2D-ROGUELIKE-TUTORIAL"><span class="toc-number">2.3.</span> <span class="toc-text">2D-ROGUELIKE-TUTORIAL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Particle-System"><span class="toc-number">2.4.</span> <span class="toc-text">Particle System</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What"><span class="toc-number">2.4.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">2.4.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How"><span class="toc-number">2.4.3.</span> <span class="toc-text">How</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-in-AB"><span class="toc-number">2.4.4.</span> <span class="toc-text">Using in AB</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Animation-System"><span class="toc-number">2.5.</span> <span class="toc-text">Animation System</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multiplayer-Networking"><span class="toc-number">2.6.</span> <span class="toc-text">Multiplayer Networking</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E7%95%8C%E9%9D%A2"><span class="toc-number">3.</span> <span class="toc-text">编辑器界面</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">4.</span> <span class="toc-text">工具</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MonoDevelop"><span class="toc-number">4.1.</span> <span class="toc-text">MonoDevelop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ILSpy"><span class="toc-number">4.2.</span> <span class="toc-text">ILSpy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ildasm-%E5%AE%89%E8%A3%85VS%E8%87%AA%E5%B8%A6%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="toc-number">4.3.</span> <span class="toc-text">ildasm(安装VS自带的工具)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Blender"><span class="toc-number">4.4.</span> <span class="toc-text">Blender</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VSTU"><span class="toc-number">4.5.</span> <span class="toc-text">VSTU</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E5%AD%A6%E4%B9%A0"><span class="toc-number">5.</span> <span class="toc-text">相关概念学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Engine"><span class="toc-number">5.1.</span> <span class="toc-text">Unity Engine</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-Sharp"><span class="toc-number">5.1.1.</span> <span class="toc-text">C Sharp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mono"><span class="toc-number">5.1.2.</span> <span class="toc-text">Mono</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IL2CPP"><span class="toc-number">5.1.3.</span> <span class="toc-text">IL2CPP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Why-do-we-need-IL2CPP"><span class="toc-number">5.1.3.1.</span> <span class="toc-text">Why do we need IL2CPP?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IL2CPP-Components"><span class="toc-number">5.1.3.2.</span> <span class="toc-text">IL2CPP Components</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Mono-and-IL2CPP-compile-and-execution-process"><span class="toc-number">5.1.3.3.</span> <span class="toc-text">Mono and IL2CPP compile and execution process</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOT-JIT"><span class="toc-number">5.1.4.</span> <span class="toc-text">AOT &amp; JIT</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#AOT"><span class="toc-number">5.1.4.1.</span> <span class="toc-text">AOT</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JIT"><span class="toc-number">5.1.4.2.</span> <span class="toc-text">JIT</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IOS-AOT-Limitations"><span class="toc-number">5.1.4.3.</span> <span class="toc-text">IOS AOT Limitations</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Protocol-Buffers"><span class="toc-number">5.1.4.4.</span> <span class="toc-text">Protocol Buffers</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Using"><span class="toc-number">5.2.</span> <span class="toc-text">Unity Using</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%AD%A6%E4%B9%A0"><span class="toc-number">6.</span> <span class="toc-text">快捷键学习</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BC%96%E8%AF%91%E5%8F%91%E5%B8%83"><span class="toc-number">7.</span> <span class="toc-text">项目编译发布</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PC"><span class="toc-number">7.1.</span> <span class="toc-text">PC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IOS"><span class="toc-number">7.2.</span> <span class="toc-text">IOS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Native-Code-Compilation"><span class="toc-number">7.2.1.</span> <span class="toc-text">Native Code Compilation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Prepare-XCode-Project"><span class="toc-number">7.2.2.</span> <span class="toc-text">Prepare XCode Project</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Compile-XCode-Project"><span class="toc-number">7.2.3.</span> <span class="toc-text">Compile XCode Project</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%88%E5%9D%97%E5%AD%A6%E4%B9%A0"><span class="toc-number">8.</span> <span class="toc-text">版块学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UGUI"><span class="toc-number">8.1.</span> <span class="toc-text">UGUI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Coordinates-System"><span class="toc-number">8.1.1.</span> <span class="toc-text">Coordinates System</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity-Unit-Pixel-Per-Unit"><span class="toc-number">8.1.2.</span> <span class="toc-text">Unity Unit &amp; Pixel Per Unit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Canvas"><span class="toc-number">8.1.3.</span> <span class="toc-text">Canvas</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EventSystem"><span class="toc-number">8.1.4.</span> <span class="toc-text">EventSystem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UGUI-Atlas"><span class="toc-number">8.1.5.</span> <span class="toc-text">UGUI Atlas</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multiplayer-Networking-1"><span class="toc-number">8.2.</span> <span class="toc-text">Multiplayer Networking</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-Hight-Level-API"><span class="toc-number">8.2.1.</span> <span class="toc-text">The Hight Level API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-The-Transport-Layer-API"><span class="toc-number">8.2.2.</span> <span class="toc-text">Using The Transport Layer API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Shader"><span class="toc-number">8.3.</span> <span class="toc-text">Unity Shader</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Excel%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96"><span class="toc-number">8.4.</span> <span class="toc-text">Excel数据读取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86"><span class="toc-number">8.5.</span> <span class="toc-text">资源管理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Plugins"><span class="toc-number">9.</span> <span class="toc-text">Plugins</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E8%84%9A%E6%9C%AC"><span class="toc-number">10.</span> <span class="toc-text">C#脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Persistence-Saving-and-Loading-Data"><span class="toc-number">10.1.</span> <span class="toc-text">Persistence - Saving and Loading Data</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PlayerPrefs"><span class="toc-number">10.1.1.</span> <span class="toc-text">PlayerPrefs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seralization"><span class="toc-number">10.1.2.</span> <span class="toc-text">Seralization</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#What-is-seralization"><span class="toc-number">10.1.2.1.</span> <span class="toc-text">What is seralization?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-Serialization"><span class="toc-number">10.1.2.2.</span> <span class="toc-text">C# Serialization</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity-Editor-Window-Menu-Item-ScriptableObject"><span class="toc-number">10.1.3.</span> <span class="toc-text">Unity Editor Window, Menu Item &amp; ScriptableObject</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Coroutine"><span class="toc-number">10.2.</span> <span class="toc-text">Coroutine</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Why-are-we-using-coroutines"><span class="toc-number">10.2.1.</span> <span class="toc-text">Why are we using coroutines?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-a-coroutine"><span class="toc-number">10.2.2.</span> <span class="toc-text">What is a coroutine?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-long-is-the-life-cycle-When-does-coroutine-get-called"><span class="toc-number">10.2.3.</span> <span class="toc-text">How long is the life cycle? &amp; When does coroutine get called?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-to-stop-coroutines"><span class="toc-number">10.2.4.</span> <span class="toc-text">How to stop coroutines?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Go-depth-in-Coroutine"><span class="toc-number">10.2.5.</span> <span class="toc-text">Go depth in Coroutine</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity%E4%BC%98%E5%8C%96%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">11.</span> <span class="toc-text">Unity优化注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Code"><span class="toc-number">11.1.</span> <span class="toc-text">Code</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Use-For-or-while-instead-of-foreach"><span class="toc-number">11.1.1.</span> <span class="toc-text">Use For or while instead of foreach</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rendering"><span class="toc-number">11.2.</span> <span class="toc-text">Rendering</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Physic"><span class="toc-number">11.3.</span> <span class="toc-text">Physic</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Close-Unnecessary-Collision"><span class="toc-number">11.3.1.</span> <span class="toc-text">Close Unnecessary Collision</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Memory"><span class="toc-number">11.4.</span> <span class="toc-text">Memory</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Avoid-Uneccessary-GC"><span class="toc-number">11.4.1.</span> <span class="toc-text">Avoid Uneccessary GC</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3"><span class="toc-number">12.</span> <span class="toc-text">游戏相关</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Shuffle-Bag"><span class="toc-number">12.1.</span> <span class="toc-text">Shuffle Bag</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E5%AD%A6%E4%B9%A0"><span class="toc-number">13.</span> <span class="toc-text">C#学习</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="Unity-Introduction"><a href="#Unity-Introduction" class="headerlink" title="Unity Introduction"></a>Unity Introduction</h1><p>因为后期发现目录越来越长导致前面的一些代码模块不具可读性，所以在这里加很多…过度符<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..<br>……………………………………………..</p>
 <h2 id="What-is-Unity"><a href="#What-is-Unity" class="headerlink" title="What is Unity?"></a>What is Unity?</h2><p>Unity is a cross-platform game engine developed by Unity Technologies and used to develop video games for PC, consoles, mobile devices and websites. First released on June 8, 2005<br>(<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Unity_(game_engine)">from wiki</a>)</p>
 <h2 id="Why-should-we-study-Unity"><a href="#Why-should-we-study-Unity" class="headerlink" title="Why should we study Unity?"></a>Why should we study Unity?</h2><ol>
 <li>Cross-platform</li>
@@ -529,9 +423,9 @@ OnStartServer在Server端启动的时候调用，这里用来初始化敌人。
 <li>Unity的错误，警告等信息显示在VS的error list里</li>
 </ol>
 <h1 id="相关概念学习"><a href="#相关概念学习" class="headerlink" title="相关概念学习"></a>相关概念学习</h1><h2 id="Unity-Engine"><a href="#Unity-Engine" class="headerlink" title="Unity Engine"></a>Unity Engine</h2><p><a target="_blank" rel="noopener" href="http://inpla.net/thread-8197-1-1.html">参考文章</a></p>
-<h3 id="C-Sharp"><a href="#C-Sharp" class="headerlink" title="C Sharp"></a>C Sharp</h3><p>Unity支持C#的作为编程语言，这里不得不了解下C#的历史。<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/C%E2%99%AF">C#是微软推出的一种基于.NET框架的、面向对象的高级编程语言。C#的发音为“C sharp”，模仿音乐上的音名“C♯”（C调升），是C语言的升级的意思。其正确写法应和音名一样为“C♯”[来源请求]，但大多数情况下“♯”符号被井号“#”所混用；两者差别是：“♯”的笔画是上下偏斜的，而“#”的笔画是左右偏斜。C♯由C语言和C++派生而来，继承了其强大的性能，同时又以.NET框架类库作为基础，拥有类似Visual Basic的快速开发能力。C#由安德斯·海尔斯伯格主持开发，微软在2000年发布了这种语言。</a><br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/15/CSharp-Study/">相关C#学习</a></p>
+<h3 id="C-Sharp"><a href="#C-Sharp" class="headerlink" title="C Sharp"></a>C Sharp</h3><p>Unity支持C#的作为编程语言，这里不得不了解下C#的历史。<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/C%E2%99%AF">C#是微软推出的一种基于.NET框架的、面向对象的高级编程语言。C#的发音为“C sharp”，模仿音乐上的音名“C♯”（C调升），是C语言的升级的意思。其正确写法应和音名一样为“C♯”[来源请求]，但大多数情况下“♯”符号被井号“#”所混用；两者差别是：“♯”的笔画是上下偏斜的，而“#”的笔画是左右偏斜。C♯由C语言和C++派生而来，继承了其强大的性能，同时又以.NET框架类库作为基础，拥有类似Visual Basic的快速开发能力。C#由安德斯·海尔斯伯格主持开发，微软在2000年发布了这种语言。</a><br><a href="http://tonytang1990.github.io/2015/08/15/CSharp-Study/">相关C#学习</a></p>
 <h3 id="Mono"><a href="#Mono" class="headerlink" title="Mono"></a>Mono</h3><p><a target="_blank" rel="noopener" href="http://inpla.net/thread-8197-1-1.html">C#虽好，但是只能在Windows上运行，微软那时候也没有将其开源，所以总是会有人说不能跨平台，光就这点，C#和Java就不能比呀。微软公司已经向ECMA申请将C#作为一种标准。在2001年12月，ECMA发布了ECMA-334 C#语言规范。C#在2003年成为一个ISO标准（ISO&#x2F;IEC 23270）。这意味着只要你遵守CLI（Common Language Infrastructure），第三方可以将任何一种语言实现到.Net平台之上。Mono就是在这种环境下诞生的。Mono是一个由Xamarin公司（先前是Novell,最早为Ximian）所主持的自由开放源代码项目。该项目的目标是创建一系列符合ECMA标准（Ecma-334和Ecma-335）的.NET工具，包括C#编译器和通用语言架构。与微软的.NET Framework（共通语言运行平台）不同，Mono项目不仅可以运行于Windows系统上，还可以运行于Linux，FreeBSD，Unix，OS X和Solaris，甚至一些游戏平台，例如：Playstation 3，Wii或XBox 360之上。Mono使得C#这门语言有了很好的跨平台能力。相对于微软的.Net Framework运行时库Mono使用自己的Mono VM作为运行时库。</a></p>
-<p>——————–2018&#x2F;04&#x2F;22————————————-<br>突然找到一篇讲述.Net，Mono以及Unity之间关系的好文，里面详细梳理了.Net,C#,Mono和Unity之前的关系和概念，结合<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/15/CSharp-Study/#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5">.Net Framework相关概念</a>可以加深理解，这里给出这篇好文的链接:<a target="_blank" rel="noopener" href="https://blog.csdn.net/myqtmacc/article/details/70500099">扒一扒.net、.net framework、mono和Unity</a><br>——————–2018&#x2F;04&#x2F;22————————————-</p>
+<p>——————–2018&#x2F;04&#x2F;22————————————-<br>突然找到一篇讲述.Net，Mono以及Unity之间关系的好文，里面详细梳理了.Net,C#,Mono和Unity之前的关系和概念，结合<a href="http://tonytang1990.github.io/2015/08/15/CSharp-Study/#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5">.Net Framework相关概念</a>可以加深理解，这里给出这篇好文的链接:<a target="_blank" rel="noopener" href="https://blog.csdn.net/myqtmacc/article/details/70500099">扒一扒.net、.net framework、mono和Unity</a><br>——————–2018&#x2F;04&#x2F;22————————————-</p>
 <h3 id="IL2CPP"><a href="#IL2CPP" class="headerlink" title="IL2CPP"></a>IL2CPP</h3><p>既然Mono这么好，那么为什么还需要IL2CPP了？</p>
 <h4 id="Why-do-we-need-IL2CPP"><a href="#Why-do-we-need-IL2CPP" class="headerlink" title="Why do we need IL2CPP?"></a>Why do we need IL2CPP?</h4><ol>
 <li>C# runtime performance still lags behind C&#x2F;C++(C#运行效率没有C&#x2F;C++好)</li>
@@ -558,7 +452,7 @@ OnStartServer在Server端启动的时候调用，这里用来初始化敌人。
 <p>Note:<br>IL2CPP支持了arm64机器架构(Mono不支持, Apple新出的设备大多基于arm64)</p>
 <h3 id="AOT-JIT"><a href="#AOT-JIT" class="headerlink" title="AOT &amp; JIT"></a>AOT &amp; JIT</h3><p>之前有讲到过AOT和JIT，那么这里为什么还要再次提他了？<br>主要原因是在IOS平台开发中，Mono .NET只支持AOT(Ahead of Time预编译生成所有对应机器代码)，而不是通过JIT在运行时去编译成对应的机器代码。在IOS上采用full-AOT模式。<br>在这一限制下，我们必须明白什么是AOT什么是JIT，并且要知道哪些特性会使用到JIT导致IOS不支持。</p>
 <h4 id="AOT"><a href="#AOT" class="headerlink" title="AOT"></a>AOT</h4><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Ahead-of-time_compilation">AOT详细介绍</a><br>AOT大概意思就是预编译所有的IL到系统相关的机器代码。 C# -&gt; IL -&gt; C++ -&gt; Machine code</p>
-<h4 id="JIT"><a href="#JIT" class="headerlink" title="JIT"></a>JIT</h4><p>JIT:<br>在<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/15/CSharp-Study/#Executing_Assembly_Code">C# Study</a>中有讲到JIT是在执行Assembly Code(也就是C#编译的CIL中间程序)运行时编译成本地机器代码。<br>Full-AOT模式可以看出Mono .NET在IOS上不支持动态生成代码。<br>那么具体哪些特性不被IOS支持，哪些用法会触发动态生成代码了？</p>
+<h4 id="JIT"><a href="#JIT" class="headerlink" title="JIT"></a>JIT</h4><p>JIT:<br>在<a href="http://tonytang1990.github.io/2015/08/15/CSharp-Study/#Executing_Assembly_Code">C# Study</a>中有讲到JIT是在执行Assembly Code(也就是C#编译的CIL中间程序)运行时编译成本地机器代码。<br>Full-AOT模式可以看出Mono .NET在IOS上不支持动态生成代码。<br>那么具体哪些特性不被IOS支持，哪些用法会触发动态生成代码了？</p>
 <h4 id="IOS-AOT-Limitations"><a href="#IOS-AOT-Limitations" class="headerlink" title="IOS AOT Limitations"></a>IOS AOT Limitations</h4><p><a target="_blank" rel="noopener" href="https://developer.xamarin.com/guides/ios/advanced_topics/limitations/#.NET.c2.a0API.c2.a0Limitations">IOS AOT limitations</a></p>
 <ol>
 <li>Profiler</li>
@@ -593,7 +487,7 @@ OnStartServer在Server端启动的时候调用，这里用来初始化敌人。
 <pre><code>![ValueTypeComparerForDictionary](/img/CSharp/ValueTypeComparerForDictionary.PNG)
 </code></pre>
 <ol start="3">
-<li>System.Reflection.Emit<br><a target="_blank" rel="noopener" href="https://msdn.microsoft.com/en-us/library/system.reflection.emit(v=vs.110).aspx">The System.Reflection.Emit namespace contains classes that allow a compiler or tool to emit metadata and Microsoft intermediate language (MSIL) and optionally generate a PE file on disk.</a><br>可以看出System.Reflection.Emit是用于动态生成代码，这一点明显违背了Full-AOT的原则。<br>在了解Emit是如何动态生成代码之前，可以先了解一下<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/15/CSharp-Study/#Platform_Invoke">AppDomain的概念</a><br>AppDomain负责Assebmly的加载和隔离，代码是加载在AppDomain里执行的。<br>接下来让我们看看System.Reflection.Emit是如何动态生成代码的：<br>先来看下MSDN官网介绍<br><a target="_blank" rel="noopener" href="https://msdn.microsoft.com/en-us/library/system.reflection.emit(v=vs.110).aspx">The System.Reflection.Emit namespace contains classes that allow a compiler or tool to emit metadata and Microsoft intermediate language (MSIL) and optionally generate a PE file on disk.</a></li>
+<li>System.Reflection.Emit<br><a target="_blank" rel="noopener" href="https://msdn.microsoft.com/en-us/library/system.reflection.emit(v=vs.110).aspx">The System.Reflection.Emit namespace contains classes that allow a compiler or tool to emit metadata and Microsoft intermediate language (MSIL) and optionally generate a PE file on disk.</a><br>可以看出System.Reflection.Emit是用于动态生成代码，这一点明显违背了Full-AOT的原则。<br>在了解Emit是如何动态生成代码之前，可以先了解一下<a href="http://tonytang1990.github.io/2015/08/15/CSharp-Study/#Platform_Invoke">AppDomain的概念</a><br>AppDomain负责Assebmly的加载和隔离，代码是加载在AppDomain里执行的。<br>接下来让我们看看System.Reflection.Emit是如何动态生成代码的：<br>先来看下MSDN官网介绍<br><a target="_blank" rel="noopener" href="https://msdn.microsoft.com/en-us/library/system.reflection.emit(v=vs.110).aspx">The System.Reflection.Emit namespace contains classes that allow a compiler or tool to emit metadata and Microsoft intermediate language (MSIL) and optionally generate a PE file on disk.</a></li>
 </ol>
 <p>可以看出System.Reflection.Emit包含了很多可以动态创建程序集，类，方法的类。<br>以下学习主要参考<a target="_blank" rel="noopener" href="http://www.cnblogs.com/hui088/p/4571484.html">C#反射发出System.Reflection.Emit学习</a><br>这位博主对Emit研究的很透侧，讲解的也通熟易懂。<br>Emit生成代码的基本流程：</p>
 <ol>
@@ -620,7 +514,7 @@ OnStartServer在Server端启动的时候调用，这里用来初始化敌人。
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Environment.SetEnvironmentVariable(<span class="string">&quot;MONO_REFLECTION_SERIALIZER&quot;</span>, <span class="string">&quot;yes&quot;</span>);</span><br></pre></td></tr></table></figure>
 <p>但是反射很慢，如果频繁进行序列化反序列化的话，在IOS上并不是一种好的解决办法。<br><a target="_blank" rel="noopener" href="http://forum.unity3d.com/threads/protobuf-net-unity-is-it-worth-it.288007/">根据这里的讨论</a>，可以看出Google Protocol Buffers是一个不错的解决方案(当然我们得绕过默认使用JIT)。</p>
 <p>Note:<br>IOS只支持static code, Unlike traditional Mono&#x2F;.NET, code on the iPhone is statically compiled ahead of time instead of being compiled on demand by a JIT compiler(IOS只支持full aot，不支持JIT).所以有些动态特性没法被Full AOT支持。<br>But the entire Reflection API, including Type.GetType (“someClass”), listing methods, listing properties, fetching attributes and values works just fine.(反射依然在IOS可用)</p>
-<h4 id="Protocol-Buffers"><a href="#Protocol-Buffers" class="headerlink" title="Protocol Buffers"></a>Protocol Buffers</h4><p>详情参考:<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2018/03/18/Data-Config-Automation/">Data-Config-Automation</a></p>
+<h4 id="Protocol-Buffers"><a href="#Protocol-Buffers" class="headerlink" title="Protocol Buffers"></a>Protocol Buffers</h4><p>详情参考:<a href="http://tonytang1990.github.io/2018/03/18/Data-Config-Automation/">Data-Config-Automation</a></p>
 <h2 id="Unity-Using"><a href="#Unity-Using" class="headerlink" title="Unity Using"></a>Unity Using</h2><ol>
 <li><strong>Layout</strong> – 排版，可用于存储我们在Unity里面的面板排版设置，通过制定layout使用特定排版</li>
 <li><strong>Prefab</strong> – 原件，可在场景里重复利用，而且Prefab的改变可以通过点击Inspector界面的Apply影响到所有从该Prefab里创建出的对象</li>
@@ -774,7 +668,7 @@ SetNatieSize需要通过点击Image Component的Set Native Size触发。
 <p>Anchors(锚点):<br>主要用于UI的layout排版，根据Anchors的位置设置不同，UI会在父节点RectTransform变化的时候做出适当的变化(这里的Anchors相当于完成了NGUI里UIAnchor和UIStreach的任务)。Anchors能够保证以4个锚点设定的相对位置(可以相对屏幕比例，也可以相对特定像素值)。</p>
 <p>Layout System:<br>Layout System是基于RectTransform之上的系统，用自动调整一个或多个元素的大小，位置，间隔等。(用于UI布局很重要)<br>详细学习参考<a target="_blank" rel="noopener" href="http://k79k06k02k.com/blog/542/unity/unity-ugui-%E5%8E%9F%E7%90%86%E7%AF%87%E4%BA%94%EF%BC%9Aauto-layout-%E8%87%AA%E5%8B%95%E4%BD%88%E5%B1%80">Unity UGUI 原理篇(五)：Auto Layout 自動佈局</a></p>
 <p>结论：<br>UI Render Mode决定了UI的显示方式。<br>UI Scale Mode决定了UI的大方向(保持像素还是保持比例还是保持物理大小)自适应策略。<br>Pivot决定了自适应的基准点。<br>Anchors决定了自适应变化的参考物(比如我们把锚点都设置在父RectTransform的左上角，那么自适应的时候无论父RectTransform大小如何变化该UI都是相对于父RectTransform的位置都不会变化(但UI大小会变，因为我们可能设置了Scale With Screen Size使得Canvas会自适应屏幕变化(Canvas Scale值会变))，如果我们把锚点设置到父RectTranform的四个角，那么UI就会根据父RectTransform的大小的变化比例去适应(一般用于背景显示，保证背景铺满屏幕，可能会拉伸))</p>
-<p>在得出最终结论之前，让我们来看一个像素完美显示问题。<br>如何保证Pixel Perfect 2D？<br>参考文章<a target="_blank" rel="noopener" href="https://blogs.unity3d.com/cn/2015/06/19/pixel-perfect-2d/">Pixel Perfect 2D</a><br><a target="_blank" rel="noopener" href="https://blogs.unity3d.com/cn/2015/06/19/pixel-perfect-2d/">The secret to making your pixelated game look nice is to ensure that your sprite is rendered on a nice pixel boundary. In other words, ensure that each pixel of your sprite is rendered on one screen pixel (or any other round number). The trick to achieving this result is tweaking the camera’s orthographic size (and live with the consequences).</a><br>从上面可以看出要保证Pixel Perfect显示，我们需要保证Sprite的一个像素在屏幕上对应显示像素为整数倍(最好1:1)。要做到这一点通过修改Camera Orthographic Size可以做到。正如<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2016/12/11/Unity-Plugins/#NGUI_2-7%E5%B1%8F%E5%B9%95%E8%87%AA%E9%80%82%E5%BA%94">NGUI 2.7屏幕自适应</a>学习中提到的，我们要保证PPU &#x3D; Screen.height &#x2F; 2 &#x2F; Orthographic Size;<br>因为我们不可能修改物理的Screen.height，所以为了在不同设备上完美显示像素，我们能做的是动态修改Orthographic Size或制作多套PPU Asset去动态使用。<br>详情参考：</p>
+<p>在得出最终结论之前，让我们来看一个像素完美显示问题。<br>如何保证Pixel Perfect 2D？<br>参考文章<a target="_blank" rel="noopener" href="https://blogs.unity3d.com/cn/2015/06/19/pixel-perfect-2d/">Pixel Perfect 2D</a><br><a target="_blank" rel="noopener" href="https://blogs.unity3d.com/cn/2015/06/19/pixel-perfect-2d/">The secret to making your pixelated game look nice is to ensure that your sprite is rendered on a nice pixel boundary. In other words, ensure that each pixel of your sprite is rendered on one screen pixel (or any other round number). The trick to achieving this result is tweaking the camera’s orthographic size (and live with the consequences).</a><br>从上面可以看出要保证Pixel Perfect显示，我们需要保证Sprite的一个像素在屏幕上对应显示像素为整数倍(最好1:1)。要做到这一点通过修改Camera Orthographic Size可以做到。正如<a href="http://tonytang1990.github.io/2016/12/11/Unity-Plugins/#NGUI_2-7%E5%B1%8F%E5%B9%95%E8%87%AA%E9%80%82%E5%BA%94">NGUI 2.7屏幕自适应</a>学习中提到的，我们要保证PPU &#x3D; Screen.height &#x2F; 2 &#x2F; Orthographic Size;<br>因为我们不可能修改物理的Screen.height，所以为了在不同设备上完美显示像素，我们能做的是动态修改Orthographic Size或制作多套PPU Asset去动态使用。<br>详情参考：</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Vertical Resolution  |   PPU  |	PPU Scale |	Orthographics Size |	Size Change</span><br><span class="line">---------------------|--------|-----------|--------------------|----------------</span><br><span class="line"><span class="number">768</span>    	             |   <span class="number">32</span>   |	   <span class="number">1</span>x 	  |        <span class="number">12</span> 	       |       <span class="number">100</span>%</span><br><span class="line"><span class="number">1080</span> 	             |   <span class="number">32</span>   |	   <span class="number">1</span>x 	  |      <span class="number">16.875</span>        |       <span class="number">140</span>%</span><br><span class="line"><span class="number">1080</span> 	             |   <span class="number">48</span>   |    <span class="number">1</span>x     | 	  <span class="number">11.25</span>        | 	   <span class="number">93.75</span>%</span><br><span class="line"><span class="number">1080</span>  	             |   <span class="number">32</span>   |    <span class="number">2</span>x 	  |       <span class="number">8.4375</span>       |       <span class="number">70.31</span>%</span><br><span class="line"><span class="number">1440</span> 	             |   <span class="number">32</span>   |    <span class="number">2</span>x 	  |       <span class="number">11.25</span>        |       <span class="number">93.75</span>%</span><br><span class="line"><span class="number">1536</span> 	             |   <span class="number">32</span>   |    <span class="number">2</span>x 	  |         <span class="number">12</span>         |       <span class="number">100</span>%</span><br></pre></td></tr></table></figure>
 
 <p>但是由于修改Orthographic Size会导致Visible World Space变化，所以还需要根据项目实际情况做出修正。</p>
@@ -798,7 +692,7 @@ SetNatieSize需要通过点击Image Component的Set Native Size触发。
 </ol>
 <p>Note:<br><a target="_blank" rel="noopener" href="http://docs.unity3d.com/Manual/UICanvas.html">UI elements in the Canvas are drawn in the same order they appear in the Hierarchy.(UI成员的绘制顺序和UI在Canvas下的顺序一致) </a></p>
 <h3 id="UGUI-Atlas"><a href="#UGUI-Atlas" class="headerlink" title="UGUI Atlas"></a>UGUI Atlas</h3><p>以下学习参考<a target="_blank" rel="noopener" href="http://www.xuanyusong.com/archives/3304">UGUI研究院之全面理解图集与使用（三）</a><br>NGUI的Atlas是通过提前制作好，但UGUI里这一概念模糊了，我们通过设定Sprite的信息：<br><img src="/img/Unity/UGUISpriteEditor.PNG" alt="UGUISpriteEditor"><br>通过设置tag来决定图集tag。<br>然后在打包或主动使用Sprite Packer的时候会去打包图集，Sprite Packer设定Edit -&gt; Project Setting -&gt; Editor:<br><img src="/img/Unity/SpritePackerSetting.PNG" alt="SpritePackerSetting"><br>为了方便查看Sprite Packer打包和Draw call情况，我们采用Always Enable。<br>我们也可以通过打开Sprite Packer主动去查看图集的打包情况：<br><img src="/img/Unity/UGUISpritePacker.PNG" alt="UGUISpritePacker"><br>通过Profiler可以查看到当前Draw Call：<br><img src="/img/Unity/ProfilerDrawCall.PNG" alt="ProfilerDrawCall"><br>关于根据图片名字动态创建Sprite的方案(通过把小图片关联到Prefab上，然后通过Resources.load来加载来实现)以及图集在线更新方案(Assetbundle)参考<a target="_blank" rel="noopener" href="http://www.xuanyusong.com/archives/3304">UGUI研究院之全面理解图集与使用（三）</a><br>Note:<br>因为在同一个图集里所以，纹理图片只需加载一张，只需通过UV坐标切换就能实现渲染多个Sprite，所以在同一个图集里的Sprite渲染都放在一个Draw Call里就能完成。(关于Draw Call以后的学习再深入学习)<br>Resources下面的Sprite不会被打包到图集里。<br>图集的存放位置在Assets同级目录的Library&#x2F;AtlasCache下</p>
-<p>关于Font Atlas，UGUI采用<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#Font_Maker">动态字体</a>，我们直接导入.ttf等文件就能使用了。</p>
+<p>关于Font Atlas，UGUI采用<a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#Font_Maker">动态字体</a>，我们直接导入.ttf等文件就能使用了。</p>
 <h2 id="Multiplayer-Networking-1"><a href="#Multiplayer-Networking-1" class="headerlink" title="Multiplayer Networking"></a>Multiplayer Networking</h2><h3 id="The-Hight-Level-API"><a href="#The-Hight-Level-API" class="headerlink" title="The Hight Level API"></a>The Hight Level API</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UNetOverview.html?_ga=1.102545928.827985704.1454244920">Using this means you get access to commands which cover most of the common requirements for multiuser games without needing to worry about the “lower level” implementation details.</a><br>高层面的多人游戏网络传输的抽象，可以方便快速的用于制作简单的多人网络游戏。</p>
 <p>多人网络概念:<br>Server and Host:<br><img src="/img/Unity/HLAPIHostAndClientRelationShip.PNG" alt="HLAPIHostAndClientRelationShip"><br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UNetConcepts.html?_ga=1.102545928.827985704.1454244920">The host is a server and a client in the same process. The host uses a special kind of client called the LocalClient, while other clients are RemoteClients. The LocalClient communicates with the (local) server through direct function calls and message queues, since it is in the same process. It actually shares the scene with the server. RemoteClients communicate with the server over a regular network connection.</a><br>Host和Client运行在一个Process里。一个Host多个Client，Host相当于本地通信，其他的Clients通过network通信。</p>
 <p>支持实现如下功能：</p>
@@ -811,7 +705,7 @@ SetNatieSize需要通过点击Image Component的Set Native Size触发。
 <li>Make remote procedure calls (RPCs) from servers to clients.(servers到clients的远程程序调用)</li>
 <li>Send networked events from servers to clients.(从servers发送networed events到clients)</li>
 </ol>
-<p>实例学习参考<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#Multiplayer_Networking">Multiplayer Networking</a></p>
+<p>实例学习参考<a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#Multiplayer_Networking">Multiplayer Networking</a></p>
 <p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UNetUsingHLAPI.html">The HLAPI is a new set of networking commands built into Unity, within a new namespace: UnityEngine.Networking.</a><br>在UnityEngine.Networking下HLAPI提供了大量方便的接口方法用于开发多人游戏。<br>让我们看看Unity里网络编程的大体框架结构：<br><img src="/img/Unity/HLAPILayerStructureOnNetwork.PNG" alt="HLAPILayerStructureOnNetwork"><br>更多内容待学习</p>
 <h3 id="Using-The-Transport-Layer-API"><a href="#Using-The-Transport-Layer-API" class="headerlink" title="Using The Transport Layer API"></a>Using The Transport Layer API</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UNetUsingTransport.html">The Transport Layer is a thin layer working on top of the operating system’s sockets-based networking. It’s capable of sending and receiving messages represented as arrays of bytes, and offers a number of different “quality of service” options to suit different scenarios. It is focused on flexibility and performance, and exposes an API within the UnityEngine.Networking.NetworkTransport class.</a><br>基于Socket-based networking的底层接口，用于实现自定义的网络传输。</p>
 <p>Support two protocols:</p>
@@ -819,7 +713,7 @@ SetNatieSize需要通过点击Image Component的Set Native Size触发。
 <li>UDP for generic communications</li>
 <li>WebSockets for WebGL<br>更多内容待学习</li>
 </ol>
-<h2 id="Unity-Shader"><a href="#Unity-Shader" class="headerlink" title="Unity Shader"></a>Unity Shader</h2><p>详情参见<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2016/12/20/Unity-Shader/">Unity_Shader</a></p>
+<h2 id="Unity-Shader"><a href="#Unity-Shader" class="headerlink" title="Unity Shader"></a>Unity Shader</h2><p>详情参见<a href="http://tonytang1990.github.io/2016/12/20/Unity-Shader/">Unity_Shader</a></p>
 <h2 id="Excel数据读取"><a href="#Excel数据读取" class="headerlink" title="Excel数据读取"></a>Excel数据读取</h2><p>Unity官网给出TextAsset类用于读取下列格式的文件：<br>.txt, .html, .htm, .xml, .bytes, .json, .csv(<a target="_blank" rel="noopener" href="http://baike.baidu.com/link?url=k66qCiCo7dQ2gA3bS09xk_ZhFBldafez_7Ux64tJvvwAx2HcsLW3cFIaKoGua_HnlHV3nnDgHL5NdqwSKHEV_KHhRVEm-B0mYguaAcxSFDm">逗号分隔值（Comma-Separated Values，CSV，有时也称为字符分隔值，因为分隔字符也可以不是逗号），其文件以纯文本形式存储表格数据（数字和文本）</a>), .yaml, .fnt<br>从上面可以看出并不支持直接对excel(.xlsx，.xls等格式)的解析。<br>通过官网可以看出TextAsset是针对文本和二进制类型文件的读取，具体的解析还得自己去写。<br>所以并不是我想找的Excel解析的解决方案。<br>让我们来看看这篇文章<a target="_blank" rel="noopener" href="http://www.mamicode.com/info-detail-494944.html">Unity3D游戏开发之当游戏开发遇上Excel</a>。<br>作者对Excel解析下了不少功夫。<br>从上面可以看出，针对Excel解析作者找到了三中解决方案：</p>
 <ol>
 <li>Microsoft.Office.Interop.Excel<br><a target="_blank" rel="noopener" href="http://www.mamicode.com/info-detail-494944.html">基于微软提供的Office API,这组API以COM组件的形式给出，我们可以通过调用该API实现对Excel文件的解析。微软的Office API特点是使用起来方便，可以使用C#、Visual Basic等语言进行相关开发。可是这种解决方案的的缺点同样很明显，因为COM组件主要依赖于系统，因此使用COM组件需要在系统中注册，这将对代码的可移植性产生影响，而且受制于COM技术，这种解决方案只能运行在Windows平台上，无法实现跨平台，加之解析速度较慢，因此这种方案通常只适合在解析速度要求不高，运行环境为Windows平台的应用场景。</a><br>关键词：<br>不跨平台</li>
@@ -834,8 +728,8 @@ SetNatieSize需要通过点击Image Component的Set Native Size触发。
 </ol>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> Excel;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> System.Data;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">GameConfigurationManager</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> GameConfigurationManager mLMInstance = <span class="keyword">new</span> GameConfigurationManager();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> ConfigurationPath</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            mConfigurationPath = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> mConfigurationPath = <span class="string">&quot;/Configuration/AccountPasswordAndGameSetting.xlsx&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> mIsConfigurationComplete = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">GameConfigurationManager</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Init</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(!mIsConfigurationComplete)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">try</span></span><br><span class="line">            &#123;</span><br><span class="line">               ReadConfiguration();</span><br><span class="line">                mIsConfigurationComplete = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">catch</span>(Exception e)</span><br><span class="line">            &#123;</span><br><span class="line">                mIsConfigurationComplete = <span class="literal">false</span>;</span><br><span class="line">                Debug.Log(<span class="string">&quot;Exception &quot;</span> + e.ToString());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ReadConfiguration</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;Application.dataPath = &quot;</span> + Application.dataPath);</span><br><span class="line">        Debug.Log(<span class="string">&quot;mConfigurationPath = &quot;</span> + mConfigurationPath);</span><br><span class="line"></span><br><span class="line">        FileStream stream = File.Open(Application.dataPath + mConfigurationPath, FileMode.Open, FileAccess.Read);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Reading from a excel file</span></span><br><span class="line">        IExcelDataReader excelreader = ExcelReaderFactory.CreateOpenXmlReader(stream);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// DataSet -- the result of each spreadsheet will be created in the result tables</span></span><br><span class="line">        DataSet result = excelreader.AsDataSet();</span><br><span class="line"></span><br><span class="line">        <span class="built_in">int</span> sheetcount = result.Tables.Count;</span><br><span class="line">        Debug.Log(<span class="string">&quot;sheetcount = &quot;</span> + sheetcount);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">int</span> m = <span class="number">0</span>; m &lt; sheetcount; m++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">int</span> rows = result.Tables[m].Rows.Count;</span><br><span class="line">            <span class="built_in">int</span> columns = result.Tables[m].Columns.Count;</span><br><span class="line">            Debug.Log(<span class="built_in">string</span>.Format(<span class="string">&quot;Table[&#123;0&#125;] with row = &#123;1&#125; columns = &#123;2&#125;&quot;</span>, m, rows, columns));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; rows; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; columns; j++)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="built_in">string</span> <span class="keyword">value</span> = result.Tables[m].Rows[i][j].ToString();</span><br><span class="line">                    Debug.Log(<span class="built_in">string</span>.Format(<span class="string">&quot;result.Tables[&#123;0&#125;].Rows[&#123;1&#125;][&#123;2&#125;] = &#123;3&#125;&quot;</span>,m,i,j,<span class="keyword">value</span>));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        excelreader.Close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>通过上述方法我成功的打印出了AccountPasswordAndGameSetting.xlsx里2个sheet的数据，见下图：<br><img src="/img/Unity/AccountPasswordAndGameSettingSheet1.PNG" alt="AccountPasswordAndGameSettingSheet1"><br><img src="/img/Unity/AccountPasswordAndGameSettingSheet2.PNG" alt="AccountPasswordAndGameSettingSheet2"><br><img src="/img/Unity/ExcelReaderOutput.PNG" alt="ExcelReaderOutput"><br>Note:<br>上面有用到DataSet，DataSet类是属于System.Data.dll里的，所以我们还必须Copy存放在**\Unity\Editor\Data\Mono\lib\mono\2.0下的System.Data.dll到我们的Dlls目录。</p>
-<h2 id="资源管理"><a href="#资源管理" class="headerlink" title="资源管理"></a>资源管理</h2><p>详情参见<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2016/10/13/Unity%E8%B5%84%E6%BA%90/">Unity-Resource-Manager</a></p>
-<h1 id="Plugins"><a href="#Plugins" class="headerlink" title="Plugins"></a>Plugins</h1><p>详情参见<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2016/12/11/Unity%E5%8E%9F%E7%94%9F&%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8F%92%E4%BB%B6/#Unity_Plugins">Unity-Plugins</a></p>
+<h2 id="资源管理"><a href="#资源管理" class="headerlink" title="资源管理"></a>资源管理</h2><p>详情参见<a href="http://tonytang1990.github.io/2016/10/13/Unity%E8%B5%84%E6%BA%90/">Unity-Resource-Manager</a></p>
+<h1 id="Plugins"><a href="#Plugins" class="headerlink" title="Plugins"></a>Plugins</h1><p>详情参见<a href="http://tonytang1990.github.io/2016/12/11/Unity%E5%8E%9F%E7%94%9F&%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8F%92%E4%BB%B6/#Unity_Plugins">Unity-Plugins</a></p>
 <h1 id="C-脚本"><a href="#C-脚本" class="headerlink" title="C#脚本"></a>C#脚本</h1><p>public成员 – 编辑器可见可编辑<br>[System.Serializable] – 标志该类可以被序列化到Inspector<br>[HideInInspector] – 标志该成员在编辑器不可见<br>StartCoroutine（Function()） &amp;&amp;  yield &amp;&amp; WaitForSeconds – 联合使用可以实现对游戏逻辑的等待判断（多线程访问控制）<br>GameObject.FindGameObjectWithTag(Name) – 用于寻找特定tag的对象<br>Virtual Method – Virtual Method使该方法可以被重写<br>abstract – 定义该类是抽象类 &amp;&amp; 该方法是抽象方法（需要被子类实现）</p>
 <h2 id="Persistence-Saving-and-Loading-Data"><a href="#Persistence-Saving-and-Loading-Data" class="headerlink" title="Persistence - Saving and Loading Data"></a>Persistence - Saving and Loading Data</h2><h3 id="PlayerPrefs"><a href="#PlayerPrefs" class="headerlink" title="PlayerPrefs"></a>PlayerPrefs</h3><p>Stores and accesses player preferences between game sessions. (用于存储一些不重要的用户设定的数据，比如游戏分辨率，游戏难度等)</p>
 <p>IOS里面的.plist文件，Andoid里面的Preference(程序数据文件)</p>
@@ -906,94 +800,538 @@ SetNatieSize需要通过点击Image Component的Set Native Size触发。
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ShuffleBag</span>&lt;<span class="title">T</span>&gt; : <span class="title">ICollection</span>&lt;<span class="title">T</span>&gt;, <span class="title">IList</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;T&gt; mData = <span class="keyword">new</span> List&lt;T&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> mCursor = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> T last;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">Next</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mData.Count == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">default</span>(T);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mCursor &lt; <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mCursor = mData.Count - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (mData.Count &lt; <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">default</span>(T);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> mData[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">int</span> grab = Mathf.FloorToInt(Random.<span class="keyword">value</span> * (mCursor + <span class="number">1</span>));</span><br><span class="line">        T temp = mData[grab];</span><br><span class="line">        mData[grab] = mData[mCursor];</span><br><span class="line">        mData[mCursor] = temp;</span><br><span class="line">        mCursor--;</span><br><span class="line">        <span class="keyword">return</span> temp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//IList[T] implementation</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">IndexOf</span>(<span class="params">T item</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> mData.IndexOf(item);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Insert</span>(<span class="params"><span class="built_in">int</span> index, T item</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        mData.Insert(index, item);</span><br><span class="line">        mCursor = mData.Count - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveAt</span>(<span class="params"><span class="built_in">int</span> index</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        mData.RemoveAt(index);</span><br><span class="line">        mCursor = mData.Count - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> T <span class="keyword">this</span>[<span class="built_in">int</span> index]</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> mData[index];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            mData[index] = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//IEnumerable[T] implementation</span></span><br><span class="line">    IEnumerator&lt;T&gt; IEnumerable&lt;T&gt;.GetEnumerator()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> mData.GetEnumerator();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//ICollection[T] implementation</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Add</span>(<span class="params">T item</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        mData.Add(item);</span><br><span class="line">        mCursor = mData.Count - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Count</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> mData.Count;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Clear</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//mCursor = 0;</span></span><br><span class="line">        mData.Clear();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">Contains</span>(<span class="params">T item</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> mData.Contains(item);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">CopyTo</span>(<span class="params">T[] array, <span class="built_in">int</span> arrayindex</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">foreach</span> (T item <span class="keyword">in</span> mData)</span><br><span class="line">        &#123;</span><br><span class="line">            array.SetValue(item, arrayindex);</span><br><span class="line">            arrayindex++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">Remove</span>(<span class="params">T item</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">bool</span> removesuccess = mData.Remove(item);</span><br><span class="line">        mCursor = mData.Count - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> removesuccess;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">bool</span> IsReadOnly</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//IEnumerable implementation</span></span><br><span class="line">    IEnumerator IEnumerable.GetEnumerator()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> mData.GetEnumerator();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h1 id="C-学习"><a href="#C-学习" class="headerlink" title="C#学习"></a>C#学习</h1><p>Book down load link: <a target="_blank" rel="noopener" href="http://download.csdn.net/detail/baiyu9821179/4282298">c#入门经典第五版</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
 
-    </div>
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Unity/">Unity</a>
+</div>
 
-    
-    
-    
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Unity/" rel="tag"># Unity</a>
-          </div>
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Unity/">Unity</a>
+  </div>
 
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2015/07/15/Unity%E5%AD%A6%E4%B9%A0/" data-title="Unity学习 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/08/15/CS学习/" title="CS学习">
+  <strong>上一篇：</strong><br/>
+  <span>
+  CS学习</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/07/11/排序算法/"  title="排序算法学习">
+ <strong>下一篇：</strong><br/> 
+ <span>排序算法学习
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity-Introduction"><span class="toc-number">1.</span> <span class="toc-text">Unity Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-Unity"><span class="toc-number">1.1.</span> <span class="toc-text">What is Unity?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-should-we-study-Unity"><span class="toc-number">1.2.</span> <span class="toc-text">Why should we study Unity?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Which-programming-language-are-we-using"><span class="toc-number">1.3.</span> <span class="toc-text">Which programming language are we using?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity-Tutorial-Study"><span class="toc-number">2.</span> <span class="toc-text">Unity Tutorial Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ROLL-A-BALL"><span class="toc-number">2.1.</span> <span class="toc-text">ROLL-A-BALL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SPACE-SHOOTER"><span class="toc-number">2.2.</span> <span class="toc-text">SPACE SHOOTER</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2D-ROGUELIKE-TUTORIAL"><span class="toc-number">2.3.</span> <span class="toc-text">2D-ROGUELIKE-TUTORIAL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Particle-System"><span class="toc-number">2.4.</span> <span class="toc-text">Particle System</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What"><span class="toc-number">2.4.1.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">2.4.2.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How"><span class="toc-number">2.4.3.</span> <span class="toc-text">How</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-in-AB"><span class="toc-number">2.4.4.</span> <span class="toc-text">Using in AB</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Animation-System"><span class="toc-number">2.5.</span> <span class="toc-text">Animation System</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multiplayer-Networking"><span class="toc-number">2.6.</span> <span class="toc-text">Multiplayer Networking</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E7%95%8C%E9%9D%A2"><span class="toc-number">3.</span> <span class="toc-text">编辑器界面</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">4.</span> <span class="toc-text">工具</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MonoDevelop"><span class="toc-number">4.1.</span> <span class="toc-text">MonoDevelop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ILSpy"><span class="toc-number">4.2.</span> <span class="toc-text">ILSpy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ildasm-%E5%AE%89%E8%A3%85VS%E8%87%AA%E5%B8%A6%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="toc-number">4.3.</span> <span class="toc-text">ildasm(安装VS自带的工具)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Blender"><span class="toc-number">4.4.</span> <span class="toc-text">Blender</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VSTU"><span class="toc-number">4.5.</span> <span class="toc-text">VSTU</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E5%AD%A6%E4%B9%A0"><span class="toc-number">5.</span> <span class="toc-text">相关概念学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Engine"><span class="toc-number">5.1.</span> <span class="toc-text">Unity Engine</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-Sharp"><span class="toc-number">5.1.1.</span> <span class="toc-text">C Sharp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mono"><span class="toc-number">5.1.2.</span> <span class="toc-text">Mono</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IL2CPP"><span class="toc-number">5.1.3.</span> <span class="toc-text">IL2CPP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Why-do-we-need-IL2CPP"><span class="toc-number">5.1.3.1.</span> <span class="toc-text">Why do we need IL2CPP?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IL2CPP-Components"><span class="toc-number">5.1.3.2.</span> <span class="toc-text">IL2CPP Components</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Mono-and-IL2CPP-compile-and-execution-process"><span class="toc-number">5.1.3.3.</span> <span class="toc-text">Mono and IL2CPP compile and execution process</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOT-JIT"><span class="toc-number">5.1.4.</span> <span class="toc-text">AOT &amp; JIT</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#AOT"><span class="toc-number">5.1.4.1.</span> <span class="toc-text">AOT</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JIT"><span class="toc-number">5.1.4.2.</span> <span class="toc-text">JIT</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IOS-AOT-Limitations"><span class="toc-number">5.1.4.3.</span> <span class="toc-text">IOS AOT Limitations</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Protocol-Buffers"><span class="toc-number">5.1.4.4.</span> <span class="toc-text">Protocol Buffers</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Using"><span class="toc-number">5.2.</span> <span class="toc-text">Unity Using</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%AD%A6%E4%B9%A0"><span class="toc-number">6.</span> <span class="toc-text">快捷键学习</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BC%96%E8%AF%91%E5%8F%91%E5%B8%83"><span class="toc-number">7.</span> <span class="toc-text">项目编译发布</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PC"><span class="toc-number">7.1.</span> <span class="toc-text">PC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IOS"><span class="toc-number">7.2.</span> <span class="toc-text">IOS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Native-Code-Compilation"><span class="toc-number">7.2.1.</span> <span class="toc-text">Native Code Compilation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Prepare-XCode-Project"><span class="toc-number">7.2.2.</span> <span class="toc-text">Prepare XCode Project</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Compile-XCode-Project"><span class="toc-number">7.2.3.</span> <span class="toc-text">Compile XCode Project</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%88%E5%9D%97%E5%AD%A6%E4%B9%A0"><span class="toc-number">8.</span> <span class="toc-text">版块学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UGUI"><span class="toc-number">8.1.</span> <span class="toc-text">UGUI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Coordinates-System"><span class="toc-number">8.1.1.</span> <span class="toc-text">Coordinates System</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity-Unit-Pixel-Per-Unit"><span class="toc-number">8.1.2.</span> <span class="toc-text">Unity Unit &amp; Pixel Per Unit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Canvas"><span class="toc-number">8.1.3.</span> <span class="toc-text">Canvas</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EventSystem"><span class="toc-number">8.1.4.</span> <span class="toc-text">EventSystem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UGUI-Atlas"><span class="toc-number">8.1.5.</span> <span class="toc-text">UGUI Atlas</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multiplayer-Networking-1"><span class="toc-number">8.2.</span> <span class="toc-text">Multiplayer Networking</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-Hight-Level-API"><span class="toc-number">8.2.1.</span> <span class="toc-text">The Hight Level API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-The-Transport-Layer-API"><span class="toc-number">8.2.2.</span> <span class="toc-text">Using The Transport Layer API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Shader"><span class="toc-number">8.3.</span> <span class="toc-text">Unity Shader</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Excel%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96"><span class="toc-number">8.4.</span> <span class="toc-text">Excel数据读取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86"><span class="toc-number">8.5.</span> <span class="toc-text">资源管理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Plugins"><span class="toc-number">9.</span> <span class="toc-text">Plugins</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E8%84%9A%E6%9C%AC"><span class="toc-number">10.</span> <span class="toc-text">C#脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Persistence-Saving-and-Loading-Data"><span class="toc-number">10.1.</span> <span class="toc-text">Persistence - Saving and Loading Data</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PlayerPrefs"><span class="toc-number">10.1.1.</span> <span class="toc-text">PlayerPrefs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seralization"><span class="toc-number">10.1.2.</span> <span class="toc-text">Seralization</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#What-is-seralization"><span class="toc-number">10.1.2.1.</span> <span class="toc-text">What is seralization?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-Serialization"><span class="toc-number">10.1.2.2.</span> <span class="toc-text">C# Serialization</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity-Editor-Window-Menu-Item-ScriptableObject"><span class="toc-number">10.1.3.</span> <span class="toc-text">Unity Editor Window, Menu Item &amp; ScriptableObject</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Coroutine"><span class="toc-number">10.2.</span> <span class="toc-text">Coroutine</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Why-are-we-using-coroutines"><span class="toc-number">10.2.1.</span> <span class="toc-text">Why are we using coroutines?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-a-coroutine"><span class="toc-number">10.2.2.</span> <span class="toc-text">What is a coroutine?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-long-is-the-life-cycle-When-does-coroutine-get-called"><span class="toc-number">10.2.3.</span> <span class="toc-text">How long is the life cycle? &amp; When does coroutine get called?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-to-stop-coroutines"><span class="toc-number">10.2.4.</span> <span class="toc-text">How to stop coroutines?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Go-depth-in-Coroutine"><span class="toc-number">10.2.5.</span> <span class="toc-text">Go depth in Coroutine</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity%E4%BC%98%E5%8C%96%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">11.</span> <span class="toc-text">Unity优化注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Code"><span class="toc-number">11.1.</span> <span class="toc-text">Code</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Use-For-or-while-instead-of-foreach"><span class="toc-number">11.1.1.</span> <span class="toc-text">Use For or while instead of foreach</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rendering"><span class="toc-number">11.2.</span> <span class="toc-text">Rendering</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Physic"><span class="toc-number">11.3.</span> <span class="toc-text">Physic</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Close-Unnecessary-Collision"><span class="toc-number">11.3.1.</span> <span class="toc-text">Close Unnecessary Collision</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Memory"><span class="toc-number">11.4.</span> <span class="toc-text">Memory</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Avoid-Uneccessary-GC"><span class="toc-number">11.4.1.</span> <span class="toc-text">Avoid Uneccessary GC</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3"><span class="toc-number">12.</span> <span class="toc-text">游戏相关</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Shuffle-Bag"><span class="toc-number">12.1.</span> <span class="toc-text">Shuffle Bag</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E5%AD%A6%E4%B9%A0"><span class="toc-number">13.</span> <span class="toc-text">C#学习</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Plugin/" title="Plugin">Plugin<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
         
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2015/07/11/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="prev" title="排序算法学习">
-                  <i class="fa fa-angle-left"></i> 排序算法学习
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2015/08/15/CS%E5%AD%A6%E4%B9%A0/" rel="next" title="CS学习">
-                  CS学习 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
 
-
-
-
-
+</aside>
 </div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2025</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">John Doe</span>
-  </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
-
     </div>
-  </footer>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
 
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2025 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
 
 
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
 
-  
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
 
 
 
-  
 
 
 
 
 
-</body>
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
 </html>

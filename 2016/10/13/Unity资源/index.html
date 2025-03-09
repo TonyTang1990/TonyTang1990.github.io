@@ -1,277 +1,171 @@
-<!DOCTYPE html>
-<html lang="en">
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+  
+    <title>Unity资源管理 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-
+    
     <meta name="description" content="前言在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。本章节主要是对于Unity在资源管理方面的进一步学习了解。 这里简单提及正确的利用Unity资源管理的好处：  高效的管理资源 合理的分配内存(避免不必要的内存开销 – 比如同一个Asset被打包到多个AssetBundle里，然后分别被游戏加载) 做到增量更新(无需下载更新整个游戏程序，通过Patch的形式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity资源管理">
-<meta property="og:url" content="http://example.com/2016/10/13/Unity%E8%B5%84%E6%BA%90/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="http://tonytang1990.github.io/2016/10/13/Unity%E8%B5%84%E6%BA%90/index.html">
+<meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content="前言在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。本章节主要是对于Unity在资源管理方面的进一步学习了解。 这里简单提及正确的利用Unity资源管理的好处：  高效的管理资源 合理的分配内存(避免不必要的内存开销 – 比如同一个Asset被打包到多个AssetBundle里，然后分别被游戏加载) 做到增量更新(无需下载更新整个游戏程序，通过Patch的形式">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/Unity/AssetsDirectory.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ImportProjectilePNG.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ProjectilePNGImportSetting.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/UnityAssetInternalFormatInLibraryFolder.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AssetImportResult.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/CreateCubePrefabs.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/CreateCubeMaterials.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/BulletInspector.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/UnityAssembly.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ResourceManagerStudyScene.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ResourceManagerStudyIOSResource.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/globalgamemanagerassets.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/sharedassets0assets.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/resourcesassets.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SeneHierarchy.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ExportPackageWithoutDepedency.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/ExportPackage.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AssetPackageCompare.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundleDependencies.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundleUIBackgrnd1.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/BackgroundImagePrefabAssetBundle.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/UIBackgroundPrefabAssetBundle.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/BackgroundImageAssetBundleLoad.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundleUnload.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundleAfterUnloadFalse.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundleReload.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundleLoadObjectAgain.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundleManagerQuickMenu.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/AssetDependenciesBrowser.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/BuildInResourceReferenceAnalyze.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/BuildInResourceExtraction.png">
-<meta property="og:image" content="http://example.com/img/Unity/OpenGLES2TextureFormatDisplay.png">
-<meta property="og:image" content="http://example.com/img/Unity/OpenGLES2TextureFormatSupported.png">
-<meta property="og:image" content="http://example.com/img/Unity/CompresssionFormatSizeComparision.png">
-<meta property="og:image" content="http://example.com/img/Unity/OpenGLESOccupation.png">
-<meta property="og:image" content="http://example.com/img/Unity/TextureFormatComparision2.png">
-<meta property="og:image" content="http://example.com/img/Unity/TextureCompressionSprites.png">
-<meta property="og:image" content="http://example.com/img/Unity/UITextureImporterSetting.png">
-<meta property="og:image" content="http://example.com/img/Unity/TextureComppresionSizeInfoDisplay.png">
-<meta property="og:image" content="http://example.com/img/Unity/TextureMemorySizeIncreasing.png">
-<meta property="og:image" content="http://example.com/img/Unity/NPOT_PVRTC.png">
-<meta property="og:image" content="http://example.com/img/Unity/NPOT_ETC1.png">
-<meta property="og:image" content="http://example.com/img/Unity/NPOT_ETC1.png">
-<meta property="og:image" content="http://example.com/img/Unity/NPOT_ETC2.png">
-<meta property="og:image" content="http://example.com/img/Unity/ETC2SizeRequirement.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/ShaderVaraintNumber.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/MaterialDebugInspector.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/ShaderVariantAssetInspector.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/ShaderVariantsChoiceDetail.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/ShaderCustomVaraints.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/DIYShaderList.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/DIYMaterialList.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/UnityShaderVariantsCollection.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/CustomShaderVariantsCollection.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/ShaderVariantsCollectionAsset.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/PreloadAllShaderNoWarmUp.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/LoadActorWithoughtWarmUp.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/WarmUpShaderWithoughtLoadShader.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/LoadActorAfterWarmUpShader.png">
-<meta property="og:image" content="http://example.com/img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetsDirectory.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ImportProjectilePNG.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ProjectilePNGImportSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UnityAssetInternalFormatInLibraryFolder.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetImportResult.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CreateCubePrefabs.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CreateCubeMaterials.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/BulletInspector.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UnityAssembly.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ResourceManagerStudyScene.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ResourceManagerStudyIOSResource.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/globalgamemanagerassets.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/sharedassets0assets.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/resourcesassets.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SeneHierarchy.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ExportPackageWithoutDepedency.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ExportPackage.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetPackageCompare.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleDependencies.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleUIBackgrnd1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/BackgroundImagePrefabAssetBundle.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIBackgroundPrefabAssetBundle.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/BackgroundImageAssetBundleLoad.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleUnload.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleAfterUnloadFalse.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleReload.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleLoadObjectAgain.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundleManagerQuickMenu.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetDependenciesBrowser.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/BuildInResourceReferenceAnalyze.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/BuildInResourceExtraction.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/OpenGLES2TextureFormatDisplay.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/OpenGLES2TextureFormatSupported.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CompresssionFormatSizeComparision.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/OpenGLESOccupation.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextureFormatComparision2.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextureCompressionSprites.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UITextureImporterSetting.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextureComppresionSizeInfoDisplay.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TextureMemorySizeIncreasing.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NPOT_PVRTC.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NPOT_ETC1.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NPOT_ETC1.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NPOT_ETC2.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/ETC2SizeRequirement.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVaraintNumber.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/MaterialDebugInspector.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVariantAssetInspector.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVariantsChoiceDetail.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderCustomVaraints.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/DIYShaderList.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/DIYMaterialList.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/UnityShaderVariantsCollection.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/CustomShaderVariantsCollection.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVariantsCollectionAsset.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/PreloadAllShaderNoWarmUp.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/LoadActorWithoughtWarmUp.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/WarmUpShaderWithoughtLoadShader.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/LoadActorAfterWarmUpShader.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png">
 <meta property="article:published_time" content="2016-10-13T08:21:47.000Z">
 <meta property="article:modified_time" content="2022-07-31T07:31:00.339Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="Resource">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/img/Unity/AssetsDirectory.PNG">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/Unity/AssetsDirectory.PNG">
 
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
 
-<link rel="canonical" href="http://example.com/2016/10/13/Unity%E8%B5%84%E6%BA%90/">
+<meta name="generator" content="Hexo 7.3.0"></head>
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2016/10/13/Unity%E8%B5%84%E6%BA%90/","path":"2016/10/13/Unity资源/","title":"Unity资源管理"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Unity资源管理 | Hexo</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Hexo</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-    </div>
-  </div>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
 </div>
-
-
-
-
-
-
-
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/10/13/Unity资源/" title="Unity资源管理" itemprop="url">Unity资源管理</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2016-10-13T08:21:47.000Z" itemprop="datePublished"> 发表于 2016-10-13</time>
+    
+  </p>
 </header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">资源管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E5%BD%A2%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">资源形式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Asset"><span class="nav-number">2.1.1.</span> <span class="nav-text">Asset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object"><span class="nav-number">2.1.2.</span> <span class="nav-text">Object</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E6%9D%A5%E6%BA%90"><span class="nav-number">2.2.</span> <span class="nav-text">资源来源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85"><span class="nav-number">2.2.1.</span> <span class="nav-text">Unity自动打包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Resources"><span class="nav-number">2.2.2.</span> <span class="nav-text">Resources</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AssetBundle"><span class="nav-number">2.2.3.</span> <span class="nav-text">AssetBundle</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resource-LifeCycle"><span class="nav-number">2.3.</span> <span class="nav-text">Resource LifeCycle</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E7%BD%AE%E8%B5%84%E6%BA%90"><span class="nav-number">3.</span> <span class="nav-text">内置资源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unity-AB%E5%AE%9E%E6%88%98"><span class="nav-number">4.</span> <span class="nav-text">Unity AB实战</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%B9%E5%AE%9A%E8%B5%84%E6%BA%90%E6%89%93%E5%8C%85"><span class="nav-number">5.</span> <span class="nav-text">特定资源打包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E8%B4%B4%E5%9B%BE"><span class="nav-number">5.1.</span> <span class="nav-text">纹理贴图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8GPU"><span class="nav-number">5.1.1.</span> <span class="nav-text">移动GPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="nav-number">5.1.2.</span> <span class="nav-text">文件格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E6%A0%BC%E5%BC%8F"><span class="nav-number">5.1.3.</span> <span class="nav-text">纹理格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%8B%E7%BC%A9%E5%8E%8B%E7%BC%A9%E6%A0%BC%E5%BC%8F"><span class="nav-number">5.1.4.</span> <span class="nav-text">压缩压缩格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F%E5%8D%A0%E7%94%A8"><span class="nav-number">5.1.5.</span> <span class="nav-text">纹理内存大小占用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E6%80%BB%E7%BB%93"><span class="nav-number">5.1.6.</span> <span class="nav-text">纹理总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E6%A0%BC"><span class="nav-number">5.2.</span> <span class="nav-text">网格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB"><span class="nav-number">5.3.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%90%E8%B4%A8"><span class="nav-number">5.4.</span> <span class="nav-text">材质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%95%88"><span class="nav-number">5.5.</span> <span class="nav-text">特效</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shader"><span class="nav-number">5.6.</span> <span class="nav-text">Shader</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Shader%E9%A2%84%E5%8A%A0%E8%BD%BD"><span class="nav-number">5.6.1.</span> <span class="nav-text">Shader预加载</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E4%BD%93"><span class="nav-number">5.6.1.1.</span> <span class="nav-text">变体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E4%BD%93%E6%90%9C%E9%9B%86"><span class="nav-number">5.6.1.2.</span> <span class="nav-text">变体搜集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E6%88%98"><span class="nav-number">5.6.1.3.</span> <span class="nav-text">实战</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shader%E6%80%BB%E7%BB%93"><span class="nav-number">5.6.2.</span> <span class="nav-text">Shader总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">引用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unity-Conception-Part"><span class="nav-number">6.1.</span> <span class="nav-text">Unity Conception Part</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AssetBundle-Part"><span class="nav-number">6.2.</span> <span class="nav-text">AssetBundle Part</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Texture-Compression-Part"><span class="nav-number">6.3.</span> <span class="nav-text">Texture Compression Part</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shadere-Part"><span class="nav-number">6.4.</span> <span class="nav-text">Shadere Part</span></a></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">50</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">22</span>
-        <span class="site-state-item-name">categories</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">33</span>
-        <span class="site-state-item-name">tags</span>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2016/10/13/Unity%E8%B5%84%E6%BA%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Unity资源管理 | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Unity资源管理
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2016-10-13 16:21:47" itemprop="dateCreated datePublished" datetime="2016-10-13T16:21:47+08:00">2016-10-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-07-31 15:31:00" itemprop="dateModified" datetime="2022-07-31T15:31:00+08:00">2022-07-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Resource/" itemprop="url" rel="index"><span itemprop="name">Resource</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。<br>本章节主要是对于Unity在资源管理方面的进一步学习了解。</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">资源管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E5%BD%A2%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">资源形式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Asset"><span class="toc-number">2.1.1.</span> <span class="toc-text">Asset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object"><span class="toc-number">2.1.2.</span> <span class="toc-text">Object</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E6%9D%A5%E6%BA%90"><span class="toc-number">2.2.</span> <span class="toc-text">资源来源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85"><span class="toc-number">2.2.1.</span> <span class="toc-text">Unity自动打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Resources"><span class="toc-number">2.2.2.</span> <span class="toc-text">Resources</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AssetBundle"><span class="toc-number">2.2.3.</span> <span class="toc-text">AssetBundle</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Resource-LifeCycle"><span class="toc-number">2.3.</span> <span class="toc-text">Resource LifeCycle</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E7%BD%AE%E8%B5%84%E6%BA%90"><span class="toc-number">3.</span> <span class="toc-text">内置资源</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity-AB%E5%AE%9E%E6%88%98"><span class="toc-number">4.</span> <span class="toc-text">Unity AB实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%B9%E5%AE%9A%E8%B5%84%E6%BA%90%E6%89%93%E5%8C%85"><span class="toc-number">5.</span> <span class="toc-text">特定资源打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E8%B4%B4%E5%9B%BE"><span class="toc-number">5.1.</span> <span class="toc-text">纹理贴图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8GPU"><span class="toc-number">5.1.1.</span> <span class="toc-text">移动GPU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="toc-number">5.1.2.</span> <span class="toc-text">文件格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E6%A0%BC%E5%BC%8F"><span class="toc-number">5.1.3.</span> <span class="toc-text">纹理格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E5%8E%8B%E7%BC%A9%E6%A0%BC%E5%BC%8F"><span class="toc-number">5.1.4.</span> <span class="toc-text">压缩压缩格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F%E5%8D%A0%E7%94%A8"><span class="toc-number">5.1.5.</span> <span class="toc-text">纹理内存大小占用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E6%80%BB%E7%BB%93"><span class="toc-number">5.1.6.</span> <span class="toc-text">纹理总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E6%A0%BC"><span class="toc-number">5.2.</span> <span class="toc-text">网格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E7%94%BB"><span class="toc-number">5.3.</span> <span class="toc-text">动画</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%90%E8%B4%A8"><span class="toc-number">5.4.</span> <span class="toc-text">材质</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%95%88"><span class="toc-number">5.5.</span> <span class="toc-text">特效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shader"><span class="toc-number">5.6.</span> <span class="toc-text">Shader</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Shader%E9%A2%84%E5%8A%A0%E8%BD%BD"><span class="toc-number">5.6.1.</span> <span class="toc-text">Shader预加载</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%98%E4%BD%93"><span class="toc-number">5.6.1.1.</span> <span class="toc-text">变体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%98%E4%BD%93%E6%90%9C%E9%9B%86"><span class="toc-number">5.6.1.2.</span> <span class="toc-text">变体搜集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-number">5.6.1.3.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shader%E6%80%BB%E7%BB%93"><span class="toc-number">5.6.2.</span> <span class="toc-text">Shader总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E7%94%A8"><span class="toc-number">6.</span> <span class="toc-text">引用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Conception-Part"><span class="toc-number">6.1.</span> <span class="toc-text">Unity Conception Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AssetBundle-Part"><span class="toc-number">6.2.</span> <span class="toc-text">AssetBundle Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Texture-Compression-Part"><span class="toc-number">6.3.</span> <span class="toc-text">Texture Compression Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shadere-Part"><span class="toc-number">6.4.</span> <span class="toc-text">Shadere Part</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在最初学习Unity的时候，对于资源管理没有系统的概念，只知道放到Assets下即可。<br>本章节主要是对于Unity在资源管理方面的进一步学习了解。</p>
 <p>这里简单提及正确的利用Unity资源管理的好处：</p>
 <ol>
 <li>高效的管理资源</li>
@@ -585,7 +479,7 @@ StreamingAssets.manifest
 <li><strong>复制提取资源引用的Shader需要重新指定一次才能正确引用本地下载的Shader</strong></li>
 <li><strong>一开始导入下载好的内置Shader后，经过代码统计原来引用内置Shader的还是引用的内置的，但我将一个导入的内置Shader改名(这里指的改Shader “Mobile&#x2F;Diffuse” 后再改回来发现引用内置Shader的资源变成了引用最新导入的内置Shader了。</strong></li>
 </ol>
-<h1 id="Unity-AB实战"><a href="#Unity-AB实战" class="headerlink" title="Unity AB实战"></a>Unity AB实战</h1><p>以Unity5.0以后的版本作为学习对象。<br>打包以及加载管理这一套实战，单独提了一篇文章来写，详情查看:<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2018/10/24/AssetBundle-Framework">AssetBundle-Framework</a></p>
+<h1 id="Unity-AB实战"><a href="#Unity-AB实战" class="headerlink" title="Unity AB实战"></a>Unity AB实战</h1><p>以Unity5.0以后的版本作为学习对象。<br>打包以及加载管理这一套实战，单独提了一篇文章来写，详情查看:<br><a href="http://tonytang1990.github.io/2018/10/24/AssetBundle-Framework">AssetBundle-Framework</a></p>
 <h1 id="特定资源打包"><a href="#特定资源打包" class="headerlink" title="特定资源打包"></a>特定资源打包</h1><p>这里针对不同的资源类型进行深度学习了解，理解项目中为什么不同的资源格式不同的平台为什么要设置特定的格式或者导入设定等信息，从而优化资源的内存占用以及相关不必要的开销。</p>
 <h2 id="纹理贴图"><a href="#纹理贴图" class="headerlink" title="纹理贴图"></a>纹理贴图</h2><p>纹理贴图是游戏内存占用中的一个很大板块(含纹理，图集等)。</p>
 <p>首先让我们理解一下，纹理贴图里一些重要的概念:</p>
@@ -806,94 +700,538 @@ StreamingAssets.manifest
 <p><a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/USparkle_Shadervariant.html">一种Shader变体收集和打包编译优化的思路</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/RandomXM/article/details/88642534">对Shader Variant的研究(概念介绍、生成方式、打包策略) </a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/yimengfan/BDFramework.Core">BDFramework</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
 
-    </div>
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Resource/">Resource</a>
+</div>
 
-    
-    
-    
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Resource/" rel="tag"># Resource</a>
-          </div>
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Resource/">Resource</a>
+  </div>
 
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2016/10/13/Unity%E8%B5%84%E6%BA%90/" data-title="Unity资源管理 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/10/21/数据结构与算法/" title="数据结构与算法">
+  <strong>上一篇：</strong><br/>
+  <span>
+  数据结构与算法</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/08/21/经典2D小游戏/"  title="经典2D小游戏">
+ <strong>下一篇：</strong><br/> 
+ <span>经典2D小游戏
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">资源管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E5%BD%A2%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">资源形式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Asset"><span class="toc-number">2.1.1.</span> <span class="toc-text">Asset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object"><span class="toc-number">2.1.2.</span> <span class="toc-text">Object</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E6%9D%A5%E6%BA%90"><span class="toc-number">2.2.</span> <span class="toc-text">资源来源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85"><span class="toc-number">2.2.1.</span> <span class="toc-text">Unity自动打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Resources"><span class="toc-number">2.2.2.</span> <span class="toc-text">Resources</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AssetBundle"><span class="toc-number">2.2.3.</span> <span class="toc-text">AssetBundle</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Resource-LifeCycle"><span class="toc-number">2.3.</span> <span class="toc-text">Resource LifeCycle</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E7%BD%AE%E8%B5%84%E6%BA%90"><span class="toc-number">3.</span> <span class="toc-text">内置资源</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unity-AB%E5%AE%9E%E6%88%98"><span class="toc-number">4.</span> <span class="toc-text">Unity AB实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%B9%E5%AE%9A%E8%B5%84%E6%BA%90%E6%89%93%E5%8C%85"><span class="toc-number">5.</span> <span class="toc-text">特定资源打包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E8%B4%B4%E5%9B%BE"><span class="toc-number">5.1.</span> <span class="toc-text">纹理贴图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8GPU"><span class="toc-number">5.1.1.</span> <span class="toc-text">移动GPU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="toc-number">5.1.2.</span> <span class="toc-text">文件格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E6%A0%BC%E5%BC%8F"><span class="toc-number">5.1.3.</span> <span class="toc-text">纹理格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E5%8E%8B%E7%BC%A9%E6%A0%BC%E5%BC%8F"><span class="toc-number">5.1.4.</span> <span class="toc-text">压缩压缩格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F%E5%8D%A0%E7%94%A8"><span class="toc-number">5.1.5.</span> <span class="toc-text">纹理内存大小占用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B9%E7%90%86%E6%80%BB%E7%BB%93"><span class="toc-number">5.1.6.</span> <span class="toc-text">纹理总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E6%A0%BC"><span class="toc-number">5.2.</span> <span class="toc-text">网格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E7%94%BB"><span class="toc-number">5.3.</span> <span class="toc-text">动画</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%90%E8%B4%A8"><span class="toc-number">5.4.</span> <span class="toc-text">材质</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%95%88"><span class="toc-number">5.5.</span> <span class="toc-text">特效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shader"><span class="toc-number">5.6.</span> <span class="toc-text">Shader</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Shader%E9%A2%84%E5%8A%A0%E8%BD%BD"><span class="toc-number">5.6.1.</span> <span class="toc-text">Shader预加载</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%98%E4%BD%93"><span class="toc-number">5.6.1.1.</span> <span class="toc-text">变体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%98%E4%BD%93%E6%90%9C%E9%9B%86"><span class="toc-number">5.6.1.2.</span> <span class="toc-text">变体搜集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-number">5.6.1.3.</span> <span class="toc-text">实战</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shader%E6%80%BB%E7%BB%93"><span class="toc-number">5.6.2.</span> <span class="toc-text">Shader总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E7%94%A8"><span class="toc-number">6.</span> <span class="toc-text">引用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity-Conception-Part"><span class="toc-number">6.1.</span> <span class="toc-text">Unity Conception Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AssetBundle-Part"><span class="toc-number">6.2.</span> <span class="toc-text">AssetBundle Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Texture-Compression-Part"><span class="toc-number">6.3.</span> <span class="toc-text">Texture Compression Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shadere-Part"><span class="toc-number">6.4.</span> <span class="toc-text">Shadere Part</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Plugin/" title="Plugin">Plugin<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
         
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2016/08/21/%E7%BB%8F%E5%85%B82D%E5%B0%8F%E6%B8%B8%E6%88%8F/" rel="prev" title="经典2D小游戏">
-                  <i class="fa fa-angle-left"></i> 经典2D小游戏
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2016/10/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="next" title="数据结构与算法">
-                  数据结构与算法 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
 
-
-
-
-
+</aside>
 </div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2025</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">John Doe</span>
-  </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
-
     </div>
-  </footer>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
 
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2025 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
 
 
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
 
-  
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
 
 
 
-  
 
 
 
 
 
-</body>
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
 </html>

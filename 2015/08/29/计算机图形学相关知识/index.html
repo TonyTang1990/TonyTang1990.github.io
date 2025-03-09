@@ -1,228 +1,122 @@
-<!DOCTYPE html>
-<html lang="en">
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+  
+    <title>计算机图形学相关知识 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-
+    
     <meta name="description" content="参考书籍：《OpenGL Programming Guide 8th Edition》 – Addison Wesley《Fundamentals of Computer Graphics (3rd Edition)》 – Peter Shirley, Steve Marschnner《Real-Time Rendering, Third Edition》 – Tomas Akenine-Moll">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机图形学相关知识">
-<meta property="og:url" content="http://example.com/2015/08/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="http://tonytang1990.github.io/2015/08/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content="参考书籍：《OpenGL Programming Guide 8th Edition》 – Addison Wesley《Fundamentals of Computer Graphics (3rd Edition)》 – Peter Shirley, Steve Marschnner《Real-Time Rendering, Third Edition》 – Tomas Akenine-Moll">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/Graphic/Rendering_Stages.PNG">
-<meta property="og:image" content="http://example.com/img/Graphic/Geometry_Stage.PNG">
-<meta property="og:image" content="http://example.com/img/Graphic/Rasterize_Stage.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/OpenGL_Render_Pipeline.PNG">
-<meta property="og:image" content="http://example.com/img/Graphic/MIMD.PNG">
-<meta property="og:image" content="http://example.com/img/Graphic/SIMD.PNG">
-<meta property="og:image" content="http://example.com/img/Graphic/US.PNG">
-<meta property="og:image" content="http://example.com/img/Graphic/NThird.PNG">
-<meta property="og:image" content="http://example.com/img/Graphic/N_PE_RE.PNG">
-<meta property="og:image" content="http://example.com/img/Graphic/Shader_Core_Virtual_Machine_Architecture.PNG">
-<meta property="og:image" content="http://example.com/img/Graphic/Shader_Model_Comparision.PNG">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/Rendering_Stages.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/Geometry_Stage.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/Rasterize_Stage.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/OpenGL_Render_Pipeline.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/MIMD.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/SIMD.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/US.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/NThird.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/N_PE_RE.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/Shader_Core_Virtual_Machine_Architecture.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Graphic/Shader_Model_Comparision.PNG">
 <meta property="article:published_time" content="2015-08-29T10:28:18.000Z">
 <meta property="article:modified_time" content="2022-07-31T06:16:05.192Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="OpenGL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/img/Graphic/Rendering_Stages.PNG">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/Graphic/Rendering_Stages.PNG">
 
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
 
-<link rel="canonical" href="http://example.com/2015/08/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/">
+<meta name="generator" content="Hexo 7.3.0"></head>
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2015/08/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/","path":"2015/08/29/计算机图形学相关知识/","title":"计算机图形学相关知识"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>计算机图形学相关知识 | Hexo</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Hexo</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-    </div>
-  </div>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
 </div>
-
-
-
-
-
-
-
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/08/29/计算机图形学相关知识/" title="计算机图形学相关知识" itemprop="url">计算机图形学相关知识</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2015-08-29T10:28:18.000Z" itemprop="datePublished"> 发表于 2015-08-29</time>
+    
+  </p>
 </header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rendering-Knowledge"><span class="nav-number">1.</span> <span class="nav-text">Rendering Knowledge</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-Rendering"><span class="nav-number">1.1.</span> <span class="nav-text">What is Rendering?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-the-rendering-process-Graphic-Pipeline"><span class="nav-number">1.2.</span> <span class="nav-text">What is the rendering process(Graphic Pipeline)?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Rendering-Pipeline-Stages"><span class="nav-number">1.2.1.</span> <span class="nav-text">Rendering Pipeline Stages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E7%9A%84%E5%9B%BA%E5%AE%9A%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF"><span class="nav-number">1.2.2.</span> <span class="nav-text">传统的固定渲染管线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E7%BC%96%E7%A8%8B%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF"><span class="nav-number">1.2.3.</span> <span class="nav-text">可编程渲染管线</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%9E%B6%E6%9E%84%E4%B8%8EShader%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.3.</span> <span class="nav-text">计算机架构与Shader的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%90%8C%E4%B8%80%E6%9E%B6%E6%9E%84"><span class="nav-number">1.3.1.</span> <span class="nav-text">非同一架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E6%9E%B6%E6%9E%84"><span class="nav-number">1.3.2.</span> <span class="nav-text">统一架构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shader-Virtual-Machine-Shader-Model"><span class="nav-number">1.4.</span> <span class="nav-text">Shader Virtual Machine (Shader Model)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Input-Type"><span class="nav-number">1.4.1.</span> <span class="nav-text">Input Type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shader-Knowledge"><span class="nav-number">1.4.2.</span> <span class="nav-text">Shader Knowledge</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Shader"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">Shader</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MRT-Multiple-Render-Target"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">MRT(Multiple Render Target)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Effects"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">Effects</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFEffects%E6%96%87%E4%BB%B6%E4%BA%86%EF%BC%9F"><span class="nav-number">1.4.2.3.1.</span> <span class="nav-text">什么是Effects文件了？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81Effects%E6%96%87%E4%BB%B6%E4%BA%86%EF%BC%9F"><span class="nav-number">1.4.2.3.2.</span> <span class="nav-text">为什么需要Effects文件了？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Effects-Languages"><span class="nav-number">1.4.2.3.3.</span> <span class="nav-text">Effects Languages</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shader-Models-Comparision"><span class="nav-number">1.4.3.</span> <span class="nav-text">Shader Models Comparision</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">渲染总结</span></a></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">50</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">22</span>
-        <span class="site-state-item-name">categories</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">33</span>
-        <span class="site-state-item-name">tags</span>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2015/08/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="计算机图形学相关知识 | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          计算机图形学相关知识
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2015-08-29 18:28:18" itemprop="dateCreated datePublished" datetime="2015-08-29T18:28:18+08:00">2015-08-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-07-31 14:16:05" itemprop="dateModified" datetime="2022-07-31T14:16:05+08:00">2022-07-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Rendering/" itemprop="url" rel="index"><span itemprop="name">Rendering</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><p>参考书籍：<br>《OpenGL Programming Guide 8th Edition》 – Addison Wesley<br>《Fundamentals of Computer Graphics (3rd Edition)》 – Peter Shirley, Steve Marschnner<br>《Real-Time Rendering, Third Edition》 – Tomas Akenine-Moller, Eric Haines, Naty Hoffman</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Rendering-Knowledge"><span class="toc-number">1.</span> <span class="toc-text">Rendering Knowledge</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-Rendering"><span class="toc-number">1.1.</span> <span class="toc-text">What is Rendering?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-the-rendering-process-Graphic-Pipeline"><span class="toc-number">1.2.</span> <span class="toc-text">What is the rendering process(Graphic Pipeline)?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rendering-Pipeline-Stages"><span class="toc-number">1.2.1.</span> <span class="toc-text">Rendering Pipeline Stages</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E7%9A%84%E5%9B%BA%E5%AE%9A%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF"><span class="toc-number">1.2.2.</span> <span class="toc-text">传统的固定渲染管线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E7%BC%96%E7%A8%8B%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF"><span class="toc-number">1.2.3.</span> <span class="toc-text">可编程渲染管线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%9E%B6%E6%9E%84%E4%B8%8EShader%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.3.</span> <span class="toc-text">计算机架构与Shader的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E5%90%8C%E4%B8%80%E6%9E%B6%E6%9E%84"><span class="toc-number">1.3.1.</span> <span class="toc-text">非同一架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E6%9E%B6%E6%9E%84"><span class="toc-number">1.3.2.</span> <span class="toc-text">统一架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shader-Virtual-Machine-Shader-Model"><span class="toc-number">1.4.</span> <span class="toc-text">Shader Virtual Machine (Shader Model)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Input-Type"><span class="toc-number">1.4.1.</span> <span class="toc-text">Input Type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shader-Knowledge"><span class="toc-number">1.4.2.</span> <span class="toc-text">Shader Knowledge</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Shader"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">Shader</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MRT-Multiple-Render-Target"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">MRT(Multiple Render Target)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Effects"><span class="toc-number">1.4.2.3.</span> <span class="toc-text">Effects</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFEffects%E6%96%87%E4%BB%B6%E4%BA%86%EF%BC%9F"><span class="toc-number">1.4.2.3.1.</span> <span class="toc-text">什么是Effects文件了？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81Effects%E6%96%87%E4%BB%B6%E4%BA%86%EF%BC%9F"><span class="toc-number">1.4.2.3.2.</span> <span class="toc-text">为什么需要Effects文件了？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Effects-Languages"><span class="toc-number">1.4.2.3.3.</span> <span class="toc-text">Effects Languages</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shader-Models-Comparision"><span class="toc-number">1.4.3.</span> <span class="toc-text">Shader Models Comparision</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text">渲染总结</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>参考书籍：<br>《OpenGL Programming Guide 8th Edition》 – Addison Wesley<br>《Fundamentals of Computer Graphics (3rd Edition)》 – Peter Shirley, Steve Marschnner<br>《Real-Time Rendering, Third Edition》 – Tomas Akenine-Moller, Eric Haines, Naty Hoffman</p>
 <h1 id="Rendering-Knowledge"><a href="#Rendering-Knowledge" class="headerlink" title="Rendering Knowledge"></a>Rendering Knowledge</h1><p>在进入书籍内容的学习之前，先了解一些必要的知识</p>
 <h2 id="What-is-Rendering"><a href="#What-is-Rendering" class="headerlink" title="What is Rendering?"></a>What is Rendering?</h2><p>“Rendering is a process that takes as its input a set of objects and produces as its output an array of pixels.” – 《Fundamentals of Computer Graphics (3rd Edition)》</p>
 <p>既然Rendering是通过处理一系列的对象数据最终输出成一组一组的像素呈现出来，那接下来的问题就是What is the rendering process(Graphic Pipeline)?</p>
@@ -242,7 +136,7 @@
 <p><strong>Accumulation Buffer</strong> – Images can be accumulated using a set of operators. E,g, motion blur……</p>
 <p>让我们结合OpenGL Rendering Pipeline来学习理解：<br><img src="/img/OpenGL/OpenGL_Render_Pipeline.PNG" alt="OpenGL_Rendering_Pipeline"><br>从上图可以看出，OpenGL的第一个阶段Vertex Data相当于Application阶段所收集的数据</p>
 <p>不难看出从Vertex Shader到Clipping都属于从3D到2D Screen的顶点运算和顶点剔除，所以这一部分处于Geometry阶段(由于后来统一架构的(US)原因，Vertex Shader, Geometry Shader, Pixel Shader很多)</p>
-<p>而从Rasterization到最后的屏幕输出都是对像素的运算，所以是Rasterizer阶段<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/">OpenGL更多的学习了解</a></p>
+<p>而从Rasterization到最后的屏幕输出都是对像素的运算，所以是Rasterizer阶段<br><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/">OpenGL更多的学习了解</a></p>
 <p>了解了什么是Rendering Pipeline之后，让我们来看看什么是固定管线和可编程管线？他们之间的关系是怎样的？</p>
 <h3 id="传统的固定渲染管线"><a href="#传统的固定渲染管线" class="headerlink" title="传统的固定渲染管线"></a>传统的固定渲染管线</h3><p>什么叫做“像素渲染管线”了？<br>“<a target="_blank" rel="noopener" href="http://vga.zol.com.cn/238/2386200_all.html">传统的一条渲染管线是由包括Pixel Shader Unit（像素着色单元）+ TMU(纹理贴图单元) + ROP（光栅化引擎）三部分组成的。用公式表达可以简单写作：PS&#x3D;PSU+TMU+ROP 。从功能上看，PSU完成像素处理，TMU负责纹理渲染，而ROP则负责像素的最终输出。所以，一条完整的像素管线意味着在一个时钟周期完成至少进行1个PS运算，并输出一次纹理。</a>”</p>
 <p>那么什么是PSU(像素着色器单元)？什么是TMU(纹理贴图单元)？什么是ROP(光栅化引擎)了？<br>在统一渲染架构（US(Unified Shader)）出现之前有单独的<strong>顶点着色器单元</strong>和<strong>像素着色器单元</strong>，分别负责顶点数据和像素处理。</p>
@@ -287,95 +181,539 @@
 <h2 id="渲染总结"><a href="#渲染总结" class="headerlink" title="渲染总结"></a>渲染总结</h2><p>可编程管线的出现主要是由于固定管线能实现的渲染效果有限不够灵活，Shader的出现象征着可编程管线的诞生。</p>
 <p>统一渲染架构主要是为了提高ALU(算数逻辑运算器)利用率的问题。US(Unified Shader)单元的出现象征则统一渲染架构的开始，指令直接面向底层的ALU而非特定单元，流处理器的数量成为了性能的关键，流处理器的设计和架构紧密相关。（并行分块花渲染也随之出现）</p>
 <p>“<a target="_blank" rel="noopener" href="http://vga.zol.com.cn/238/2386200_all.html">DX9到DX10是一大转折点：结束管线时代，开启GPU统一渲染架构时代。在DX9时代，大家都是通过“(像素)管线”来衡量显卡的性能等级，而到了DX10时代，统一渲染架构的引入使得显卡不再区分“像素”和“顶点”，因此“管线”这种说法逐渐淡出了大家的视野，取而代之的是全新统一渲染架构的“流处理器”，“流处理器”的数量直接影响着显卡的性能。</a>”</p>
-<p><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/">OpenGL更多的学习了解</a></p>
+<p><a href="http://tonytang1990.github.io/2015/08/26/OpenGL-Study/">OpenGL更多的学习了解</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
 
-    </div>
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Rendering/">Rendering</a>
+</div>
 
-    
-    
-    
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
-          </div>
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/OpenGL/">OpenGL</a>
+  </div>
 
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2015/08/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-title="计算机图形学相关知识 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/08/29/装机相关知识/" title="装机相关知识">
+  <strong>上一篇：</strong><br/>
+  <span>
+  装机相关知识</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/08/26/OpenGL学习/"  title="OpenGL学习">
+ <strong>下一篇：</strong><br/> 
+ <span>OpenGL学习
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Rendering-Knowledge"><span class="toc-number">1.</span> <span class="toc-text">Rendering Knowledge</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-Rendering"><span class="toc-number">1.1.</span> <span class="toc-text">What is Rendering?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-the-rendering-process-Graphic-Pipeline"><span class="toc-number">1.2.</span> <span class="toc-text">What is the rendering process(Graphic Pipeline)?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rendering-Pipeline-Stages"><span class="toc-number">1.2.1.</span> <span class="toc-text">Rendering Pipeline Stages</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E7%9A%84%E5%9B%BA%E5%AE%9A%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF"><span class="toc-number">1.2.2.</span> <span class="toc-text">传统的固定渲染管线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E7%BC%96%E7%A8%8B%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF"><span class="toc-number">1.2.3.</span> <span class="toc-text">可编程渲染管线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%9E%B6%E6%9E%84%E4%B8%8EShader%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.3.</span> <span class="toc-text">计算机架构与Shader的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E5%90%8C%E4%B8%80%E6%9E%B6%E6%9E%84"><span class="toc-number">1.3.1.</span> <span class="toc-text">非同一架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E6%9E%B6%E6%9E%84"><span class="toc-number">1.3.2.</span> <span class="toc-text">统一架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shader-Virtual-Machine-Shader-Model"><span class="toc-number">1.4.</span> <span class="toc-text">Shader Virtual Machine (Shader Model)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Input-Type"><span class="toc-number">1.4.1.</span> <span class="toc-text">Input Type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shader-Knowledge"><span class="toc-number">1.4.2.</span> <span class="toc-text">Shader Knowledge</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Shader"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">Shader</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MRT-Multiple-Render-Target"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">MRT(Multiple Render Target)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Effects"><span class="toc-number">1.4.2.3.</span> <span class="toc-text">Effects</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFEffects%E6%96%87%E4%BB%B6%E4%BA%86%EF%BC%9F"><span class="toc-number">1.4.2.3.1.</span> <span class="toc-text">什么是Effects文件了？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81Effects%E6%96%87%E4%BB%B6%E4%BA%86%EF%BC%9F"><span class="toc-number">1.4.2.3.2.</span> <span class="toc-text">为什么需要Effects文件了？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Effects-Languages"><span class="toc-number">1.4.2.3.3.</span> <span class="toc-text">Effects Languages</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shader-Models-Comparision"><span class="toc-number">1.4.3.</span> <span class="toc-text">Shader Models Comparision</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text">渲染总结</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Plugin/" title="Plugin">Plugin<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
         
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2015/08/26/OpenGL%E5%AD%A6%E4%B9%A0/" rel="prev" title="OpenGL学习">
-                  <i class="fa fa-angle-left"></i> OpenGL学习
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2015/08/29/%E8%A3%85%E6%9C%BA%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" rel="next" title="装机相关知识">
-                  装机相关知识 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
 
-
-
-
-
+</aside>
 </div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2025</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">John Doe</span>
-  </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
-
     </div>
-  </footer>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
 
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2025 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
 
 
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
 
-  
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
 
 
 
-  
 
 
 
 
 
-</body>
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
 </html>

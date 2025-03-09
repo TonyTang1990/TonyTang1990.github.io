@@ -1,266 +1,160 @@
-<!DOCTYPE html>
-<html lang="en">
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+  
+    <title>CS学习 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-
+    
     <meta name="description" content=".Net FrameworkIntroduction.Net Framework是Microsoft为开发应用程序而创建创的一个具有革命意义的平台。 Content.Net Framework主要包含一个非常大的代码库，可以在客户语言中通过面向对象编程技术来使用这些代码。这个库分为多个不同的模块。 .Net Framework还包含.NET公共语言运行库(Common Language Runti">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS学习">
-<meta property="og:url" content="http://example.com/2015/08/15/CS%E5%AD%A6%E4%B9%A0/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="http://tonytang1990.github.io/2015/08/15/CS%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content=".Net FrameworkIntroduction.Net Framework是Microsoft为开发应用程序而创建创的一个具有革命意义的平台。 Content.Net Framework主要包含一个非常大的代码库，可以在客户语言中通过面向对象编程技术来使用这些代码。这个库分为多个不同的模块。 .Net Framework还包含.NET公共语言运行库(Common Language Runti">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/CSharp/CTSAndCLS.png">
-<meta property="og:image" content="http://example.com/img/CSharp/CSharp_Compile_Process1.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/CompileSourceIntoManagedModules.png">
-<meta property="og:image" content="http://example.com/img/CSharp/ManagedModulesComponents.png">
-<meta property="og:image" content="http://example.com/img/CSharp/RelationshipBetweenModulesAndAssemblies.png">
-<meta property="og:image" content="http://example.com/img/CSharp/CSharp_Compile_Process2.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/CodeExecution.png">
-<meta property="og:image" content="http://example.com/img/CSharp/CodeExecution2.png">
-<meta property="og:image" content="http://example.com/img/CSharp/CSharp_Compile_Process3.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/DelegateStudy.png">
-<meta property="og:image" content="http://example.com/img/CSharp/MulticastDelegate.png">
-<meta property="og:image" content="http://example.com/img/CSharp/MultipleDelegatePart1.png">
-<meta property="og:image" content="http://example.com/img/CSharp/MultipleDelegatePart2.png">
-<meta property="og:image" content="http://example.com/img/CSharp/MultipleDelegatePart3.png">
-<meta property="og:image" content="http://example.com/img/CSharp/MultipleDelegatePart4.png">
-<meta property="og:image" content="http://example.com/img/CSharp/DelegateStudyOutput.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/CSharp_Delegate.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/Static_Constructor_And_Static_Class.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/PriorityQueue_Study.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/ExtensionMethods.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/PartialMethods.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/Generic.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/Variance_Contravariance.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/CLRAppDomainProcessRelationship.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/CrossAppDomainCommunicationOutPut.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/ExportPublicAssemblyType.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/CreateGenericInstance.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/ClassHierchyOfReflection.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/PrintOutPublicMemberInfo.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/ReflectionClassHierarchical.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/ReflectionMethodInvoke.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/RuntimeHandlesUsing.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/RuntimeHandlesTestInBook.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/Serialization.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/PlatformInvokeDemo.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/EventTestResult.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/CharAndCultureInfoOutput.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/StringConstructOutput.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/StringCatenationOutput.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/StringConstructionWithMemorySave.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/BitWithFlag.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/BitWithoutFlag.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/CustomAttribute.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/ExceptionProperties.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/ExceptionWindow.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/StackAndHeapPart1.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/StackAndHeapPart2.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/StackAndHeapPart3.PNG">
-<meta property="og:image" content="http://example.com/img/CSharp/GCGenerations.png">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CTSAndCLS.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CSharp_Compile_Process1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CompileSourceIntoManagedModules.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/ManagedModulesComponents.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/RelationshipBetweenModulesAndAssemblies.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CSharp_Compile_Process2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CodeExecution.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CodeExecution2.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CSharp_Compile_Process3.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/DelegateStudy.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/MulticastDelegate.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/MultipleDelegatePart1.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/MultipleDelegatePart2.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/MultipleDelegatePart3.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/MultipleDelegatePart4.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/DelegateStudyOutput.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CSharp_Delegate.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/Static_Constructor_And_Static_Class.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/PriorityQueue_Study.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/ExtensionMethods.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/PartialMethods.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/Generic.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/Variance_Contravariance.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CLRAppDomainProcessRelationship.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CrossAppDomainCommunicationOutPut.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/ExportPublicAssemblyType.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CreateGenericInstance.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/ClassHierchyOfReflection.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/PrintOutPublicMemberInfo.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/ReflectionClassHierarchical.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/ReflectionMethodInvoke.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/RuntimeHandlesUsing.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/RuntimeHandlesTestInBook.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/Serialization.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/PlatformInvokeDemo.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/EventTestResult.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CharAndCultureInfoOutput.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/StringConstructOutput.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/StringCatenationOutput.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/StringConstructionWithMemorySave.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/BitWithFlag.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/BitWithoutFlag.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/CustomAttribute.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/ExceptionProperties.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/ExceptionWindow.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/StackAndHeapPart1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/StackAndHeapPart2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/StackAndHeapPart3.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/GCGenerations.png">
 <meta property="article:published_time" content="2015-08-15T06:30:53.000Z">
 <meta property="article:modified_time" content="2022-07-31T07:33:01.024Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="C#">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/img/CSharp/CTSAndCLS.png">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/CSharp/CTSAndCLS.png">
 
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
 
-<link rel="canonical" href="http://example.com/2015/08/15/CS%E5%AD%A6%E4%B9%A0/">
+<meta name="generator" content="Hexo 7.3.0"></head>
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2015/08/15/CS%E5%AD%A6%E4%B9%A0/","path":"2015/08/15/CS学习/","title":"CS学习"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>CS学习 | Hexo</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Hexo</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-    </div>
-  </div>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
 </div>
-
-
-
-
-
-
-
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/08/15/CS学习/" title="CS学习" itemprop="url">CS学习</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2015-08-15T06:30:53.000Z" itemprop="datePublished"> 发表于 2015-08-15</time>
+    
+  </p>
 </header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Net-Framework"><span class="nav-number">1.</span> <span class="nav-text">.Net Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Content"><span class="nav-number">1.2.</span> <span class="nav-text">Content</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Using-NET-Framework"><span class="nav-number">1.3.</span> <span class="nav-text">Using .NET Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Tools"><span class="nav-number">1.3.1.</span> <span class="nav-text">Tools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">1.3.2.</span> <span class="nav-text">相关概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#FCL-Framework-Class-Library"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">FCL(Framework Class Library)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Metadata"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">Metadata</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IL-Intermediate-Language"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">IL(Intermediate Language)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CLI-Common-Language-Infrastructure"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">CLI(Common Language Infrastructure)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CLR-Common-Language-Runtime"><span class="nav-number">1.3.2.5.</span> <span class="nav-text">CLR(Common Language Runtime)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CTS-Common-Type-System"><span class="nav-number">1.3.2.6.</span> <span class="nav-text">CTS(Common Type System)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CLS-Common-Language-Specification"><span class="nav-number">1.3.2.7.</span> <span class="nav-text">CLS(Common Language Specification)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Compile-process"><span class="nav-number">1.3.3.</span> <span class="nav-text">Compile process</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Managed-Module"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Managed Module</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Executing-Assembly-Code"><span class="nav-number">1.3.4.</span> <span class="nav-text">Executing Assembly Code</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%9B%86"><span class="nav-number">1.3.5.</span> <span class="nav-text">程序集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%98%E7%AE%A1%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.6.</span> <span class="nav-text">托管代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="nav-number">1.3.7.</span> <span class="nav-text">垃圾回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5"><span class="nav-number">1.3.8.</span> <span class="nav-text">链接</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CSharp-CLR-Via-C"><span class="nav-number">2.</span> <span class="nav-text">CSharp(CLR Via C#)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction-1"><span class="nav-number">2.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Features"><span class="nav-number">2.2.</span> <span class="nav-text">Features</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Development"><span class="nav-number">2.3.</span> <span class="nav-text">Development</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Language-Study"><span class="nav-number">2.4.</span> <span class="nav-text">Language Study</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#delegate"><span class="nav-number">2.4.1.</span> <span class="nav-text">delegate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class-interface"><span class="nav-number">2.4.2.</span> <span class="nav-text">Class &amp; interface</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Not-supported-multiple-inherit"><span class="nav-number">2.4.3.</span> <span class="nav-text">Not supported multiple inherit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class-member"><span class="nav-number">2.4.4.</span> <span class="nav-text">Class member</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Struct-Class"><span class="nav-number">2.4.5.</span> <span class="nav-text">Struct &amp; Class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Collection-class-System-Collection"><span class="nav-number">2.4.6.</span> <span class="nav-text">Collection class (System.Collection)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Method"><span class="nav-number">2.4.7.</span> <span class="nav-text">Method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Comparasion"><span class="nav-number">2.4.8.</span> <span class="nav-text">Comparasion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Conversion"><span class="nav-number">2.4.9.</span> <span class="nav-text">Conversion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generics"><span class="nav-number">2.4.10.</span> <span class="nav-text">Generics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hosting-AppDomain-Assembly-Reflection"><span class="nav-number">2.4.11.</span> <span class="nav-text">Hosting, AppDomain, Assembly, Reflection</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hosting"><span class="nav-number">2.4.11.1.</span> <span class="nav-text">Hosting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AppDomain"><span class="nav-number">2.4.11.2.</span> <span class="nav-text">AppDomain</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Assembly-Loading"><span class="nav-number">2.4.11.3.</span> <span class="nav-text">Assembly Loading</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reflection"><span class="nav-number">2.4.11.4.</span> <span class="nav-text">Reflection</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Runtime-Serialization"><span class="nav-number">2.4.12.</span> <span class="nav-text">Runtime Serialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Platform-Invoke"><span class="nav-number">2.4.13.</span> <span class="nav-text">Platform Invoke</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Event"><span class="nav-number">2.4.14.</span> <span class="nav-text">Event</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chars-Strings-and-Working-with-Text"><span class="nav-number">2.4.15.</span> <span class="nav-text">Chars, Strings, and Working with Text</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Enumerated-and-Bit-Flags"><span class="nav-number">2.4.16.</span> <span class="nav-text">Enumerated and Bit Flags</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Custom-Attributes"><span class="nav-number">2.4.17.</span> <span class="nav-text">Custom Attributes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exceptions-and-State-Management"><span class="nav-number">2.4.18.</span> <span class="nav-text">Exceptions and State Management</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Managed-Heap-and-Garbage-Collection"><span class="nav-number">2.4.19.</span> <span class="nav-text">The Managed Heap and Garbage Collection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Threading"><span class="nav-number">2.4.20.</span> <span class="nav-text">Threading</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Thread-Scheduling-and-Priorities"><span class="nav-number">2.4.20.1.</span> <span class="nav-text">Thread Scheduling and Priorities</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-In-Depth-third-edition"><span class="nav-number">3.</span> <span class="nav-text">C# In Depth(third edition)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-1"><span class="nav-number">3.1.</span> <span class="nav-text">C#1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Non-Generic-Collections"><span class="nav-number">3.1.1.</span> <span class="nav-text">Non Generic Collections</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sorting-an-ArrayList-using-IComparer"><span class="nav-number">3.1.2.</span> <span class="nav-text">Sorting an ArrayList using IComparer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-2"><span class="nav-number">3.2.</span> <span class="nav-text">C#2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sorting-an-List-using-IComparer-or-Comparision"><span class="nav-number">3.2.1.</span> <span class="nav-text">Sorting an List using IComparer or Comparision</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nullable-Value-Type"><span class="nav-number">3.2.2.</span> <span class="nav-text">Nullable Value Type</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-3"><span class="nav-number">3.3.</span> <span class="nav-text">C#3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Properties"><span class="nav-number">3.3.1.</span> <span class="nav-text">Properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sorting-using-Comparision-from-a-lambda-expression"><span class="nav-number">3.3.2.</span> <span class="nav-text">Sorting using Comparision from a lambda expression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Extension-Method"><span class="nav-number">3.3.3.</span> <span class="nav-text">Extension Method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LINQ-Language-Integrated-Query"><span class="nav-number">3.3.4.</span> <span class="nav-text">LINQ(Language-Integrated Query)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-4"><span class="nav-number">3.4.</span> <span class="nav-text">C#4</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Named-Arguments"><span class="nav-number">3.4.1.</span> <span class="nav-text">Named Arguments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Optional-Parameters"><span class="nav-number">3.4.2.</span> <span class="nav-text">Optional Parameters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DLR-Dynamic-Language-Runtime"><span class="nav-number">3.4.3.</span> <span class="nav-text">DLR(Dynamic Language Runtime)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSharp-Evolution"><span class="nav-number">3.5.</span> <span class="nav-text">CSharp Evolution</span></a></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">50</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">22</span>
-        <span class="site-state-item-name">categories</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">33</span>
-        <span class="site-state-item-name">tags</span>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2015/08/15/CS%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="CS学习 | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          CS学习
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2015-08-15 14:30:53" itemprop="dateCreated datePublished" datetime="2015-08-15T14:30:53+08:00">2015-08-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-07-31 15:33:01" itemprop="dateModified" datetime="2022-07-31T15:33:01+08:00">2022-07-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Programming-Language/" itemprop="url" rel="index"><span itemprop="name">Programming Language</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><h1 id="Net-Framework"><a href="#Net-Framework" class="headerlink" title=".Net Framework"></a>.Net Framework</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>.Net Framework是Microsoft为开发应用程序而创建创的一个具有革命意义的平台。</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Net-Framework"><span class="toc-number">1.</span> <span class="toc-text">.Net Framework</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Content"><span class="toc-number">1.2.</span> <span class="toc-text">Content</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Using-NET-Framework"><span class="toc-number">1.3.</span> <span class="toc-text">Using .NET Framework</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tools"><span class="toc-number">1.3.1.</span> <span class="toc-text">Tools</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.2.</span> <span class="toc-text">相关概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#FCL-Framework-Class-Library"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">FCL(Framework Class Library)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Metadata"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">Metadata</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IL-Intermediate-Language"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">IL(Intermediate Language)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CLI-Common-Language-Infrastructure"><span class="toc-number">1.3.2.4.</span> <span class="toc-text">CLI(Common Language Infrastructure)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CLR-Common-Language-Runtime"><span class="toc-number">1.3.2.5.</span> <span class="toc-text">CLR(Common Language Runtime)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CTS-Common-Type-System"><span class="toc-number">1.3.2.6.</span> <span class="toc-text">CTS(Common Type System)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CLS-Common-Language-Specification"><span class="toc-number">1.3.2.7.</span> <span class="toc-text">CLS(Common Language Specification)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Compile-process"><span class="toc-number">1.3.3.</span> <span class="toc-text">Compile process</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Managed-Module"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">Managed Module</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Executing-Assembly-Code"><span class="toc-number">1.3.4.</span> <span class="toc-text">Executing Assembly Code</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E9%9B%86"><span class="toc-number">1.3.5.</span> <span class="toc-text">程序集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%98%E7%AE%A1%E4%BB%A3%E7%A0%81"><span class="toc-number">1.3.6.</span> <span class="toc-text">托管代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-number">1.3.7.</span> <span class="toc-text">垃圾回收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5"><span class="toc-number">1.3.8.</span> <span class="toc-text">链接</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CSharp-CLR-Via-C"><span class="toc-number">2.</span> <span class="toc-text">CSharp(CLR Via C#)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction-1"><span class="toc-number">2.1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Features"><span class="toc-number">2.2.</span> <span class="toc-text">Features</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Development"><span class="toc-number">2.3.</span> <span class="toc-text">Development</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Language-Study"><span class="toc-number">2.4.</span> <span class="toc-text">Language Study</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#delegate"><span class="toc-number">2.4.1.</span> <span class="toc-text">delegate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class-interface"><span class="toc-number">2.4.2.</span> <span class="toc-text">Class &amp; interface</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Not-supported-multiple-inherit"><span class="toc-number">2.4.3.</span> <span class="toc-text">Not supported multiple inherit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class-member"><span class="toc-number">2.4.4.</span> <span class="toc-text">Class member</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Struct-Class"><span class="toc-number">2.4.5.</span> <span class="toc-text">Struct &amp; Class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Collection-class-System-Collection"><span class="toc-number">2.4.6.</span> <span class="toc-text">Collection class (System.Collection)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method"><span class="toc-number">2.4.7.</span> <span class="toc-text">Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Comparasion"><span class="toc-number">2.4.8.</span> <span class="toc-text">Comparasion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conversion"><span class="toc-number">2.4.9.</span> <span class="toc-text">Conversion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generics"><span class="toc-number">2.4.10.</span> <span class="toc-text">Generics</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hosting-AppDomain-Assembly-Reflection"><span class="toc-number">2.4.11.</span> <span class="toc-text">Hosting, AppDomain, Assembly, Reflection</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Hosting"><span class="toc-number">2.4.11.1.</span> <span class="toc-text">Hosting</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AppDomain"><span class="toc-number">2.4.11.2.</span> <span class="toc-text">AppDomain</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Assembly-Loading"><span class="toc-number">2.4.11.3.</span> <span class="toc-text">Assembly Loading</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reflection"><span class="toc-number">2.4.11.4.</span> <span class="toc-text">Reflection</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Runtime-Serialization"><span class="toc-number">2.4.12.</span> <span class="toc-text">Runtime Serialization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Platform-Invoke"><span class="toc-number">2.4.13.</span> <span class="toc-text">Platform Invoke</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Event"><span class="toc-number">2.4.14.</span> <span class="toc-text">Event</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Chars-Strings-and-Working-with-Text"><span class="toc-number">2.4.15.</span> <span class="toc-text">Chars, Strings, and Working with Text</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Enumerated-and-Bit-Flags"><span class="toc-number">2.4.16.</span> <span class="toc-text">Enumerated and Bit Flags</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Custom-Attributes"><span class="toc-number">2.4.17.</span> <span class="toc-text">Custom Attributes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Exceptions-and-State-Management"><span class="toc-number">2.4.18.</span> <span class="toc-text">Exceptions and State Management</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-Managed-Heap-and-Garbage-Collection"><span class="toc-number">2.4.19.</span> <span class="toc-text">The Managed Heap and Garbage Collection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Threading"><span class="toc-number">2.4.20.</span> <span class="toc-text">Threading</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Thread-Scheduling-and-Priorities"><span class="toc-number">2.4.20.1.</span> <span class="toc-text">Thread Scheduling and Priorities</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-In-Depth-third-edition"><span class="toc-number">3.</span> <span class="toc-text">C# In Depth(third edition)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#C-1"><span class="toc-number">3.1.</span> <span class="toc-text">C#1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Non-Generic-Collections"><span class="toc-number">3.1.1.</span> <span class="toc-text">Non Generic Collections</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sorting-an-ArrayList-using-IComparer"><span class="toc-number">3.1.2.</span> <span class="toc-text">Sorting an ArrayList using IComparer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-2"><span class="toc-number">3.2.</span> <span class="toc-text">C#2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sorting-an-List-using-IComparer-or-Comparision"><span class="toc-number">3.2.1.</span> <span class="toc-text">Sorting an List using IComparer or Comparision</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nullable-Value-Type"><span class="toc-number">3.2.2.</span> <span class="toc-text">Nullable Value Type</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-3"><span class="toc-number">3.3.</span> <span class="toc-text">C#3</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Properties"><span class="toc-number">3.3.1.</span> <span class="toc-text">Properties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sorting-using-Comparision-from-a-lambda-expression"><span class="toc-number">3.3.2.</span> <span class="toc-text">Sorting using Comparision from a lambda expression</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Extension-Method"><span class="toc-number">3.3.3.</span> <span class="toc-text">Extension Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LINQ-Language-Integrated-Query"><span class="toc-number">3.3.4.</span> <span class="toc-text">LINQ(Language-Integrated Query)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-4"><span class="toc-number">3.4.</span> <span class="toc-text">C#4</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Named-Arguments"><span class="toc-number">3.4.1.</span> <span class="toc-text">Named Arguments</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Optional-Parameters"><span class="toc-number">3.4.2.</span> <span class="toc-text">Optional Parameters</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DLR-Dynamic-Language-Runtime"><span class="toc-number">3.4.3.</span> <span class="toc-text">DLR(Dynamic Language Runtime)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSharp-Evolution"><span class="toc-number">3.5.</span> <span class="toc-text">CSharp Evolution</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="Net-Framework"><a href="#Net-Framework" class="headerlink" title=".Net Framework"></a>.Net Framework</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>.Net Framework是Microsoft为开发应用程序而创建创的一个具有革命意义的平台。</p>
 <h2 id="Content"><a href="#Content" class="headerlink" title="Content"></a>Content</h2><p>.Net Framework主要包含一个非常大的代码库，可以在客户语言中通过面向对象编程技术来使用这些代码。这个库分为多个不同的模块。</p>
 <p>.Net Framework还包含.NET公共语言运行库(Common Language Runtime, CLR)，它负责管理用.NET库开发的所有应用程序的执行</p>
 <h2 id="Using-NET-Framework"><a href="#Using-NET-Framework" class="headerlink" title="Using .NET Framework"></a>Using .NET Framework</h2><h3 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h3><ol>
@@ -364,7 +258,7 @@
 
 <p>Output:<br><img src="/img/CSharp/PriorityQueue_Study.PNG" alt="PriorityQueue_Study"></p>
 <p>堆排序构造有序堆的时间复杂度是O(N * Log(N))<br>但插入和移除操作都是O(Log(N))</p>
-<p><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/07/11/Sort-Algorithm/">排序算法参考</a></p>
+<p><a href="http://tonytang1990.github.io/2015/07/11/Sort-Algorithm/">排序算法参考</a></p>
 <h3 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h3><p>关于Method这里主要讲两点：</p>
 <ol>
 <li>Extension Methods<br>“It allows you to define a static method that you can invoke using instance method syntax.”(Extension Methods最主要的好处就在于当你无法给特定类或结构定义方法的时候，你可以通过定义extension method来为该类或结构添加方法，使用的时候就跟在类里定义方法一样，通过实例就能调用。)<br>定义Extension Method首先必须定义在一个静态类里，且方法为静态方法，并且第一个参数类型前要加this关键词，this后面跟的就是我们要extension的类。</li>
@@ -450,7 +344,7 @@
 <li>Cross-AppDomain Communication Using Non-Marshalable Types<br>最后一个是因为我们采用Marshal-by-Value但却没有把NonMarshalableType设置成[Serializable]导致在Serialize NonMarshalableType到Destination AppDomain的时候抛异常。<br>针对AppDomain问题我没有深入学习，如有不对之处欢迎指出，详情请参考《CLR via C#》<br>Hosting,CLR,AppDomain,Process,Assemly关系作用总结：<br>Hosting使我们可以去利用CLR的特性，通过Host可以设定很多CLR相关的设定(比如GC,Memory Manager……)。<br>当CLR初始化完成后，会创建出默认的AppDomain。<br>通过CLR去加载Assemly到AppDomain然后执行。<br>一个Process可以有多个AppDomian。<br>每个AppDomain有自己的Loader Heap去记录加载到AppDomain里的Type信息。<br>当调用Type的method的时候，IL code会被JIT运行时编译到对应的机器代码执行。<br>普通的AppDomain之间的Assembly是完全隔离的，所以就算多个AppDomain引用了同一个Assembly，他们也不会共享数据和内存。<br>但加载在这个Domain-Neutrl Assemblies AppDomian下的Assemblys可以被所有的AppDomains访问。<br>虽然Assembly在AppDomain之间是完全隔离的，但不同AppDomain创建的objects还是可以通过Marshal-by-Value和Marshal-by-Reference方式相互访问的。<br>关于AppDomain的更多内容参考《CLR via C#》 – CLR Hosting and AppDomains章节(e.g. AppDomain Monitoring, How Hosts Use AppDomians……)<br>Note:<br>在Windows上默认的AppDomain的名字是是***.exe(执行的程序)</li>
 </ol>
 <p>了解了AppDomain的基本概念，接下来让我们看看关于Assembly Loading:</p>
-<h4 id="Assembly-Loading"><a href="#Assembly-Loading" class="headerlink" title="Assembly Loading"></a>Assembly Loading</h4><p>Assembly是一个包含类型信息，方法信息，成员信息，程序名称，版本号，自我描述，文件关联关系和文件位置等信息的一个集合。<br>System.Reflection.Assembly.Load – 加载Assembly到AppDomain。(相比System.AppDomain.Load, Prefer use System.Reflection.Assembly)<br>System.Reflection.Assembly.LoadFrom – 加载指定路径的Assembly到AppDomain，这里也可以指定URL<br>System.Reflection.Assembly.ReflectionOnlyLoad or ReflectionOnlyLoadFrom – 确保只加载Assembly不会去执行里面的任何代码(只用于获取Assembly里的一些相关信息)。用这两个方法需要注册AppDomain’s ReflectionOnlyAssemblyResolve<br>event去手动加载索引的assemblies<br>既然我们知道了如何加载Assembly，也知道了Assembly包含了我们程序去创建实例所需要的所有信息，那么我们如何动态的使用Assembly里的信息去创建实例了，答案是反射。<br>System.Reflection给我们提供了很多方法可以去访问Assembly里的fields，methods，properties等信息。<br>通过这些信息，我们可以制作像ILDasm.exe这样的反编译工具，因为通过有些类我们可以得到方法的IL指令数据。<br>这也就是我们为什么能通过System.Reflection.Emit去动态创建类的原因(使用IL指令反向构建方法，类等)。参见<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#AOT_&_JIT">AOT &amp; JIT</a><br>那么接下来让我们看看Reflection：</p>
+<h4 id="Assembly-Loading"><a href="#Assembly-Loading" class="headerlink" title="Assembly Loading"></a>Assembly Loading</h4><p>Assembly是一个包含类型信息，方法信息，成员信息，程序名称，版本号，自我描述，文件关联关系和文件位置等信息的一个集合。<br>System.Reflection.Assembly.Load – 加载Assembly到AppDomain。(相比System.AppDomain.Load, Prefer use System.Reflection.Assembly)<br>System.Reflection.Assembly.LoadFrom – 加载指定路径的Assembly到AppDomain，这里也可以指定URL<br>System.Reflection.Assembly.ReflectionOnlyLoad or ReflectionOnlyLoadFrom – 确保只加载Assembly不会去执行里面的任何代码(只用于获取Assembly里的一些相关信息)。用这两个方法需要注册AppDomain’s ReflectionOnlyAssemblyResolve<br>event去手动加载索引的assemblies<br>既然我们知道了如何加载Assembly，也知道了Assembly包含了我们程序去创建实例所需要的所有信息，那么我们如何动态的使用Assembly里的信息去创建实例了，答案是反射。<br>System.Reflection给我们提供了很多方法可以去访问Assembly里的fields，methods，properties等信息。<br>通过这些信息，我们可以制作像ILDasm.exe这样的反编译工具，因为通过有些类我们可以得到方法的IL指令数据。<br>这也就是我们为什么能通过System.Reflection.Emit去动态创建类的原因(使用IL指令反向构建方法，类等)。参见<a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#AOT_&_JIT">AOT &amp; JIT</a><br>那么接下来让我们看看Reflection：</p>
 <h4 id="Reflection"><a href="#Reflection" class="headerlink" title="Reflection"></a>Reflection</h4><p>这里不得不提一个Reflection使用的典型案列，那就是Serialization，序列化反序列是通过reflection去获取类型信息去存储和构建实例的。<br>具体关于Serialization后续后讲到。<br>反射最强大的地方就在于可以在运行时动态创建和使用一些类型，但这些类型我们在编译时期是不可知的。<br>但缺点如下：</p>
 <ol>
 <li>Reflection prevents type safety at compile time(因为是运行时才动态创建，所以编译时期就无法确保类型安全)</li>
@@ -516,12 +410,12 @@
 <p>因为序列化底层是通过反射来实现的，但反射是很慢的，如何高效的序列化数据了？<br>前面我们提到，序列化和反序列化真正去填充或读取的序列化和反序列数据是在调用FormatterServices::GetObjectData方法里。而默认的GetObjectData的数据填充是通过反射来实现的，所以我们只要使支持序列化的类实现ISerializaable的GetObjectData去自定义数据填充就能避免数据填充式reflection的使用。<br>确保传入GetObjectData的数据安全，在GetObjectData定义前加上：<br>[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter &#x3D; true)]<br>还有就是需要定义一个特殊的构造函数，在Deserialization之前会被调用，这里会传入我们反序列化的SerializationInfo数据，然后我们通过IDeserializationCallback.OnDeserialization(Object sender)去填充数据完成反序列化。</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Serializable</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Map</span> : <span class="title">ISerializable</span>, <span class="title">IDeserializationCallback</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//Special construct(required by ISerializable) to control deserialization</span></span><br><span class="line">    [<span class="meta">SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)</span>]</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">Map</span>(<span class="params">SerializationInfo info, StreamingContext context</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;protected Map(SerializationInfo info, StreamingContext context) called!&quot;</span>);</span><br><span class="line">        m_SiInfo = info;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">GetObjectData</span>(<span class="params">SerializationInfo info, StreamingContext context</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;Map::GetObjectData() called!&quot;</span>);</span><br><span class="line">        info.AddValue(<span class="string">&quot;mID&quot;</span>, mID);</span><br><span class="line">        info.AddValue(<span class="string">&quot;mMapName&quot;</span>, mMapName);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> IDeserializationCallback.OnDeserialization(Object sender)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;Map::OnDeserialization() called!&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (m_SiInfo == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mID = m_SiInfo.GetInt32(<span class="string">&quot;mID&quot;</span>);</span><br><span class="line">        mMapName = m_SiInfo.GetString(<span class="string">&quot;mMapName&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> SerializationInfo m_SiInfo;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Map</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        mID = <span class="number">0</span>;</span><br><span class="line">        mMapName = <span class="string">&quot;DefaultMap&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> ID</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> mID;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            mID = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> mID;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> MapName</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> mMapName;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            mMapName = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> mMapName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">string</span> mMapSavePath = <span class="string">&quot;./mapInfo.dat&quot;</span>;</span><br><span class="line">    Map mMap = <span class="keyword">new</span> Map();</span><br><span class="line">    mMap.ID = <span class="number">110</span>;</span><br><span class="line">    mMap.MapName = <span class="string">&quot;TonyMap&quot;</span>;</span><br><span class="line">    BinaryFormatter bf = <span class="keyword">new</span> BinaryFormatter ();</span><br><span class="line">    <span class="keyword">if</span> (!File.Exists(mMapSavePath))</span><br><span class="line">    &#123;</span><br><span class="line">        FileStream fsc = File.Create(mMapSavePath);</span><br><span class="line">        fsc.Close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    FileStream fs = File.Open(mMapSavePath, FileMode.Open);</span><br><span class="line">    bf.Serialize(fs, mMap);</span><br><span class="line">    fs.Close();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Deserialization</span></span><br><span class="line">    Map mDSMap;</span><br><span class="line">    BinaryFormatter dsbf = <span class="keyword">new</span> BinaryFormatter ();</span><br><span class="line">    <span class="keyword">if</span> (File.Exists(mMapSavePath))</span><br><span class="line">    &#123;</span><br><span class="line">        FileStream dsfs = File.Open(mMapSavePath, FileMode.Open);</span><br><span class="line">        mDSMap = (Map)dsbf.Deserialize(dsfs);</span><br><span class="line">        dsfs.Close();</span><br><span class="line">        Console.WriteLine(<span class="built_in">string</span>.Format(<span class="string">&quot;Map.ID = &#123;0&#125;, Map.MapName = &#123;1&#125;&quot;</span>, mDSMap.ID, mDSMap.MapName));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="/img/CSharp/Serialization.PNG" alt="Serialization"><br>可以看到我们成功自定义了数据的填充和解析，避免了不必要的reflection调用。(</p>
-<p>—————————2018&#x2F;04&#x2F;22————————————-<br>但实际测试发现并没有加快序列化和反序列化的速度，反而增加了内存开销。详情参考:<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2018/03/18/Data-Config-Automation/">Data-Config-Automation</a>)<br>—————————2018&#x2F;04&#x2F;22————————————-</p>
+<p>—————————2018&#x2F;04&#x2F;22————————————-<br>但实际测试发现并没有加快序列化和反序列化的速度，反而增加了内存开销。详情参考:<a href="http://tonytang1990.github.io/2018/03/18/Data-Config-Automation/">Data-Config-Automation</a>)<br>—————————2018&#x2F;04&#x2F;22————————————-</p>
 <p>更多关于Serialization学习参考《CLR via C#》 – Runtime Serialization章节</p>
 <p>Note:<br>The .NET Framework also offers other serialization technologies that are designed<br>more for interoperating between CLR data types and non-CLR data types. (以下serialization技术支持CLR data type和non-CLR data types之间的交互，支持从XML序列化和反序列化，这里暂时没有深入学习了解)</p>
 <ol>
 <li>System.Xml.Serialization.XmlSerializer class</li>
-<li>System.Runtime.Serialization.DataContractSerializer class<br>还有一种方式序列化是通过SoapFormatter类，.soap格式。<br>还有一种高效的平台无关话的序列化反序列化方式，<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#Protocol_Buffers">参见Google Protocol Buffer学习</a><br>待续……</li>
+<li>System.Runtime.Serialization.DataContractSerializer class<br>还有一种方式序列化是通过SoapFormatter类，.soap格式。<br>还有一种高效的平台无关话的序列化反序列化方式，<a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#Protocol_Buffers">参见Google Protocol Buffer学习</a><br>待续……</li>
 </ol>
 <h3 id="Platform-Invoke"><a href="#Platform-Invoke" class="headerlink" title="Platform Invoke"></a>Platform Invoke</h3><p>跨语言的调用，比如managed的C#调用unmanaged的C++代码<br>DllImport – Allow reusing existing unmanaged code in a managed application.</p>
 <p>DllImport Attribute在DllImport的时候很重要，确保我们能找到正确的unmanaged function，传入正确的参数类型等。</p>
@@ -784,94 +678,538 @@
 
 <h3 id="DLR-Dynamic-Language-Runtime"><a href="#DLR-Dynamic-Language-Runtime" class="headerlink" title="DLR(Dynamic Language Runtime)"></a>DLR(Dynamic Language Runtime)</h3><h2 id="CSharp-Evolution"><a href="#CSharp-Evolution" class="headerlink" title="CSharp Evolution"></a>CSharp Evolution</h2><p><a href="/img/CSharp/CSharpEvolution1.PNG">CSharpEvolution1</a><br><a href="/img/CSharp/CSharpEvolution2.png">CSharpEvolution2</a><br><a href="/img/CSharp/CSharpEvolution3.PNG">CSharpEvolution3</a></p>
 <p>参考书籍下载：<br><a target="_blank" rel="noopener" href="http://download.csdn.net/download/baiyu9821179/4282298">《C#入门经典第五版》</a><br>《CLR Via C# Fourth Edition》 - Jeffrey Richter<br><a target="_blank" rel="noopener" href="http://down.51cto.com/data/982895">《C# in Depth 3rd Edition》</a> - Jon Skeet</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
 
-    </div>
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Programming-Language/">Programming Language</a>
+</div>
 
-    
-    
-    
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/C/" rel="tag"># C#</a>
-          </div>
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/C/">C#</a>
+  </div>
 
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2015/08/15/CS%E5%AD%A6%E4%B9%A0/" data-title="CS学习 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/08/26/OpenGL学习/" title="OpenGL学习">
+  <strong>上一篇：</strong><br/>
+  <span>
+  OpenGL学习</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/07/15/Unity学习/"  title="Unity学习">
+ <strong>下一篇：</strong><br/> 
+ <span>Unity学习
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Net-Framework"><span class="toc-number">1.</span> <span class="toc-text">.Net Framework</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Content"><span class="toc-number">1.2.</span> <span class="toc-text">Content</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Using-NET-Framework"><span class="toc-number">1.3.</span> <span class="toc-text">Using .NET Framework</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tools"><span class="toc-number">1.3.1.</span> <span class="toc-text">Tools</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.2.</span> <span class="toc-text">相关概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#FCL-Framework-Class-Library"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">FCL(Framework Class Library)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Metadata"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">Metadata</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IL-Intermediate-Language"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">IL(Intermediate Language)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CLI-Common-Language-Infrastructure"><span class="toc-number">1.3.2.4.</span> <span class="toc-text">CLI(Common Language Infrastructure)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CLR-Common-Language-Runtime"><span class="toc-number">1.3.2.5.</span> <span class="toc-text">CLR(Common Language Runtime)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CTS-Common-Type-System"><span class="toc-number">1.3.2.6.</span> <span class="toc-text">CTS(Common Type System)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CLS-Common-Language-Specification"><span class="toc-number">1.3.2.7.</span> <span class="toc-text">CLS(Common Language Specification)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Compile-process"><span class="toc-number">1.3.3.</span> <span class="toc-text">Compile process</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Managed-Module"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">Managed Module</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Executing-Assembly-Code"><span class="toc-number">1.3.4.</span> <span class="toc-text">Executing Assembly Code</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E9%9B%86"><span class="toc-number">1.3.5.</span> <span class="toc-text">程序集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%98%E7%AE%A1%E4%BB%A3%E7%A0%81"><span class="toc-number">1.3.6.</span> <span class="toc-text">托管代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-number">1.3.7.</span> <span class="toc-text">垃圾回收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5"><span class="toc-number">1.3.8.</span> <span class="toc-text">链接</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CSharp-CLR-Via-C"><span class="toc-number">2.</span> <span class="toc-text">CSharp(CLR Via C#)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction-1"><span class="toc-number">2.1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Features"><span class="toc-number">2.2.</span> <span class="toc-text">Features</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Development"><span class="toc-number">2.3.</span> <span class="toc-text">Development</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Language-Study"><span class="toc-number">2.4.</span> <span class="toc-text">Language Study</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#delegate"><span class="toc-number">2.4.1.</span> <span class="toc-text">delegate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class-interface"><span class="toc-number">2.4.2.</span> <span class="toc-text">Class &amp; interface</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Not-supported-multiple-inherit"><span class="toc-number">2.4.3.</span> <span class="toc-text">Not supported multiple inherit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class-member"><span class="toc-number">2.4.4.</span> <span class="toc-text">Class member</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Struct-Class"><span class="toc-number">2.4.5.</span> <span class="toc-text">Struct &amp; Class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Collection-class-System-Collection"><span class="toc-number">2.4.6.</span> <span class="toc-text">Collection class (System.Collection)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method"><span class="toc-number">2.4.7.</span> <span class="toc-text">Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Comparasion"><span class="toc-number">2.4.8.</span> <span class="toc-text">Comparasion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conversion"><span class="toc-number">2.4.9.</span> <span class="toc-text">Conversion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generics"><span class="toc-number">2.4.10.</span> <span class="toc-text">Generics</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hosting-AppDomain-Assembly-Reflection"><span class="toc-number">2.4.11.</span> <span class="toc-text">Hosting, AppDomain, Assembly, Reflection</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Hosting"><span class="toc-number">2.4.11.1.</span> <span class="toc-text">Hosting</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AppDomain"><span class="toc-number">2.4.11.2.</span> <span class="toc-text">AppDomain</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Assembly-Loading"><span class="toc-number">2.4.11.3.</span> <span class="toc-text">Assembly Loading</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reflection"><span class="toc-number">2.4.11.4.</span> <span class="toc-text">Reflection</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Runtime-Serialization"><span class="toc-number">2.4.12.</span> <span class="toc-text">Runtime Serialization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Platform-Invoke"><span class="toc-number">2.4.13.</span> <span class="toc-text">Platform Invoke</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Event"><span class="toc-number">2.4.14.</span> <span class="toc-text">Event</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Chars-Strings-and-Working-with-Text"><span class="toc-number">2.4.15.</span> <span class="toc-text">Chars, Strings, and Working with Text</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Enumerated-and-Bit-Flags"><span class="toc-number">2.4.16.</span> <span class="toc-text">Enumerated and Bit Flags</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Custom-Attributes"><span class="toc-number">2.4.17.</span> <span class="toc-text">Custom Attributes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Exceptions-and-State-Management"><span class="toc-number">2.4.18.</span> <span class="toc-text">Exceptions and State Management</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-Managed-Heap-and-Garbage-Collection"><span class="toc-number">2.4.19.</span> <span class="toc-text">The Managed Heap and Garbage Collection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Threading"><span class="toc-number">2.4.20.</span> <span class="toc-text">Threading</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Thread-Scheduling-and-Priorities"><span class="toc-number">2.4.20.1.</span> <span class="toc-text">Thread Scheduling and Priorities</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-In-Depth-third-edition"><span class="toc-number">3.</span> <span class="toc-text">C# In Depth(third edition)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#C-1"><span class="toc-number">3.1.</span> <span class="toc-text">C#1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Non-Generic-Collections"><span class="toc-number">3.1.1.</span> <span class="toc-text">Non Generic Collections</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sorting-an-ArrayList-using-IComparer"><span class="toc-number">3.1.2.</span> <span class="toc-text">Sorting an ArrayList using IComparer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-2"><span class="toc-number">3.2.</span> <span class="toc-text">C#2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sorting-an-List-using-IComparer-or-Comparision"><span class="toc-number">3.2.1.</span> <span class="toc-text">Sorting an List using IComparer or Comparision</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nullable-Value-Type"><span class="toc-number">3.2.2.</span> <span class="toc-text">Nullable Value Type</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-3"><span class="toc-number">3.3.</span> <span class="toc-text">C#3</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Properties"><span class="toc-number">3.3.1.</span> <span class="toc-text">Properties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sorting-using-Comparision-from-a-lambda-expression"><span class="toc-number">3.3.2.</span> <span class="toc-text">Sorting using Comparision from a lambda expression</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Extension-Method"><span class="toc-number">3.3.3.</span> <span class="toc-text">Extension Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LINQ-Language-Integrated-Query"><span class="toc-number">3.3.4.</span> <span class="toc-text">LINQ(Language-Integrated Query)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-4"><span class="toc-number">3.4.</span> <span class="toc-text">C#4</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Named-Arguments"><span class="toc-number">3.4.1.</span> <span class="toc-text">Named Arguments</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Optional-Parameters"><span class="toc-number">3.4.2.</span> <span class="toc-text">Optional Parameters</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DLR-Dynamic-Language-Runtime"><span class="toc-number">3.4.3.</span> <span class="toc-text">DLR(Dynamic Language Runtime)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSharp-Evolution"><span class="toc-number">3.5.</span> <span class="toc-text">CSharp Evolution</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Plugin/" title="Plugin">Plugin<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
         
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2015/07/15/Unity%E5%AD%A6%E4%B9%A0/" rel="prev" title="Unity学习">
-                  <i class="fa fa-angle-left"></i> Unity学习
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2015/08/26/OpenGL%E5%AD%A6%E4%B9%A0/" rel="next" title="OpenGL学习">
-                  OpenGL学习 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
 
-
-
-
-
+</aside>
 </div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2025</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">John Doe</span>
-  </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
-
     </div>
-  </footer>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
 
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2025 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
 
 
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
 
-  
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
 
 
 
-  
 
 
 
 
 
-</body>
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
 </html>

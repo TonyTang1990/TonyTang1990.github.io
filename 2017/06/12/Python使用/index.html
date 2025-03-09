@@ -1,266 +1,160 @@
-<!DOCTYPE html>
-<html lang="en">
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+  
+    <title>Python使用 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-
+    
     <meta name="description" content="Python StudyIntroductionWhenPython is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.Python第一版发布于1991年，由Guido van">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python使用">
-<meta property="og:url" content="http://example.com/2017/06/12/Python%E4%BD%BF%E7%94%A8/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="http://tonytang1990.github.io/2017/06/12/Python%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content="Python StudyIntroductionWhenPython is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.Python第一版发布于1991年，由Guido van">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/Python/PipPackageInstallation.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PipListInstalledPackages.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonPackageLocation.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonKeywords.PNG">
-<meta property="og:image" content="http://example.com/img/Python/DocString.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonInputAndOutput.PNG">
-<meta property="og:image" content="http://example.com/img/Python/ImoprtSearchPath.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonLogicalOperator.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonIdentityOperator.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonMemberOperator.PNG">
-<meta property="og:image" content="http://example.com/img/Python/FlowControlForUsing.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonFunctionDefinition.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonAnonymousFunction.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonModuleImportAndUsing.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonPackageUsing.PNG">
-<meta property="og:image" content="http://example.com/img/Python/DataTypeCheck.PNG">
-<meta property="og:image" content="http://example.com/img/Python/ComplexNumber.PNG">
-<meta property="og:image" content="http://example.com/img/Python/NumberSystem.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonList.PNG">
-<meta property="og:image" content="http://example.com/img/Python/TupleUsing.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonStrings.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonSet.PNG">
-<meta property="og:image" content="http://example.com/img/Python/SetStudy.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonDictionary.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonDataConversion.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonFileOperation.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonDirectory.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonNameOutput.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonName.PNG">
-<meta property="og:image" content="http://example.com/img/Python/TheZenOfPython.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonNamespaceHierarchical.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonScope.PNG">
-<meta property="og:image" content="http://example.com/img/Python/PythonClassDefinition.PNG">
-<meta property="og:image" content="http://example.com/img/Python/ClassSpecialFunctionsOutput.png">
-<meta property="og:image" content="http://example.com/img/Python/IteratorOuput.png">
-<meta property="og:image" content="http://example.com/img/Python/GeneratorOuput.png">
-<meta property="og:image" content="http://example.com/img/Python/PropertyKeywordDefinition.png">
-<meta property="og:image" content="http://example.com/img/Python/PropertyOutput.png">
-<meta property="og:image" content="http://example.com/img/Python/MultiProcessingOutput.png">
-<meta property="og:image" content="http://example.com/img/Python/EncodeAndDecode.png">
-<meta property="og:image" content="http://example.com/img/Python/DirectExecuteNameOuput.png">
-<meta property="og:image" content="http://example.com/img/Python/ImportNameOutput.png">
-<meta property="og:image" content="http://example.com/img/Python/PythonArgsOutput.png">
-<meta property="og:image" content="http://example.com/img/Python/ArgparseHelpInfo.png">
-<meta property="og:image" content="http://example.com/img/Python/ArgparseUsing.png">
-<meta property="og:image" content="http://example.com/img/Python/OSPathAPIOutput.png">
-<meta property="og:image" content="http://example.com/img/Python/UMLPathDesgin.png">
-<meta property="og:image" content="http://example.com/img/Python/PathLibAPIOutput.png">
-<meta property="og:image" content="http://example.com/img/Python/SystemInfoOutput.png">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PipPackageInstallation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PipListInstalledPackages.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonPackageLocation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonKeywords.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/DocString.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonInputAndOutput.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/ImoprtSearchPath.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonLogicalOperator.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonIdentityOperator.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonMemberOperator.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/FlowControlForUsing.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonFunctionDefinition.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonAnonymousFunction.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonModuleImportAndUsing.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonPackageUsing.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/DataTypeCheck.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/ComplexNumber.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/NumberSystem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonList.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/TupleUsing.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonStrings.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonSet.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/SetStudy.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonDictionary.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonDataConversion.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonFileOperation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonDirectory.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonNameOutput.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonName.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/TheZenOfPython.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonNamespaceHierarchical.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonScope.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonClassDefinition.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/ClassSpecialFunctionsOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/IteratorOuput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/GeneratorOuput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PropertyKeywordDefinition.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PropertyOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/MultiProcessingOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/EncodeAndDecode.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/DirectExecuteNameOuput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/ImportNameOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PythonArgsOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/ArgparseHelpInfo.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/ArgparseUsing.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/OSPathAPIOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/UMLPathDesgin.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/PathLibAPIOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Python/SystemInfoOutput.png">
 <meta property="article:published_time" content="2017-06-12T14:45:55.000Z">
 <meta property="article:modified_time" content="2021-09-25T14:43:34.387Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/img/Python/PipPackageInstallation.PNG">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/Python/PipPackageInstallation.PNG">
 
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
 
-<link rel="canonical" href="http://example.com/2017/06/12/Python%E4%BD%BF%E7%94%A8/">
+<meta name="generator" content="Hexo 7.3.0"></head>
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2017/06/12/Python%E4%BD%BF%E7%94%A8/","path":"2017/06/12/Python使用/","title":"Python使用"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Python使用 | Hexo</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Hexo</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-    </div>
-  </div>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
 </div>
-
-
-
-
-
-
-
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/06/12/Python使用/" title="Python使用" itemprop="url">Python使用</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2017-06-12T14:45:55.000Z" itemprop="datePublished"> 发表于 2017-06-12</time>
+    
+  </p>
 </header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-Study"><span class="nav-number">1.</span> <span class="nav-text">Python Study</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#When"><span class="nav-number">1.1.1.</span> <span class="nav-text">When</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What"><span class="nav-number">1.1.2.</span> <span class="nav-text">What</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why"><span class="nav-number">1.1.3.</span> <span class="nav-text">Why</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IDE-Editor"><span class="nav-number">1.2.</span> <span class="nav-text">IDE &amp; Editor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-Version-Choosen"><span class="nav-number">1.3.</span> <span class="nav-text">Python Version Choosen</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Useful-Package"><span class="nav-number">1.4.</span> <span class="nav-text">Useful Package</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pip"><span class="nav-number">1.4.1.</span> <span class="nav-text">Pip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#argparse"><span class="nav-number">1.4.2.</span> <span class="nav-text">argparse</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tutorial-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="nav-number">1.5.</span> <span class="nav-text">Tutorial(基础篇)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduction-1"><span class="nav-number">1.5.1.</span> <span class="nav-text">Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Keywords-and-Identifier"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">Keywords and Identifier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Statements-Comments"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">Statements &amp; Comments</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python-I-O-and-Import"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">Python I&#x2F;O and Import</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python-Operators"><span class="nav-number">1.5.1.4.</span> <span class="nav-text">Python Operators</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flow-Control"><span class="nav-number">1.5.2.</span> <span class="nav-text">Flow Control</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Function"><span class="nav-number">1.5.3.</span> <span class="nav-text">Function</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Modules"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">Modules</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Package"><span class="nav-number">1.5.3.2.</span> <span class="nav-text">Package</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Datatypes"><span class="nav-number">1.5.4.</span> <span class="nav-text">Datatypes</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Basic-Data-Types"><span class="nav-number">1.5.4.1.</span> <span class="nav-text">Basic Data Types</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#List"><span class="nav-number">1.5.4.1.1.</span> <span class="nav-text">List</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Tuple"><span class="nav-number">1.5.4.1.2.</span> <span class="nav-text">Tuple</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Strings"><span class="nav-number">1.5.4.1.3.</span> <span class="nav-text">Strings</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Set"><span class="nav-number">1.5.4.1.4.</span> <span class="nav-text">Set</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Dictionary"><span class="nav-number">1.5.4.1.5.</span> <span class="nav-text">Dictionary</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Conversion-between-data-types"><span class="nav-number">1.5.4.2.</span> <span class="nav-text">Conversion between data types</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Files"><span class="nav-number">1.5.5.</span> <span class="nav-text">Files</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#File-Operation"><span class="nav-number">1.5.5.1.</span> <span class="nav-text">File Operation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Directory"><span class="nav-number">1.5.5.2.</span> <span class="nav-text">Directory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exception"><span class="nav-number">1.5.5.3.</span> <span class="nav-text">Exception</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-Class"><span class="nav-number">1.5.6.</span> <span class="nav-text">Object &amp; Class</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Name"><span class="nav-number">1.5.6.1.</span> <span class="nav-text">Name</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Namepsace-Scope"><span class="nav-number">1.5.6.2.</span> <span class="nav-text">Namepsace &amp; Scope</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Class"><span class="nav-number">1.5.6.3.</span> <span class="nav-text">Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Inheritance"><span class="nav-number">1.5.6.4.</span> <span class="nav-text">Inheritance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Operator-Overloading"><span class="nav-number">1.5.6.5.</span> <span class="nav-text">Operator Overloading</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Iterator"><span class="nav-number">1.5.7.</span> <span class="nav-text">Iterator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generator"><span class="nav-number">1.5.8.</span> <span class="nav-text">Generator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Closure"><span class="nav-number">1.5.9.</span> <span class="nav-text">Closure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decorators"><span class="nav-number">1.5.10.</span> <span class="nav-text">Decorators</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Property"><span class="nav-number">1.5.11.</span> <span class="nav-text">Property</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RegEx"><span class="nav-number">1.5.12.</span> <span class="nav-text">RegEx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Date-and-Time"><span class="nav-number">1.5.13.</span> <span class="nav-text">Date and Time</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Process"><span class="nav-number">1.5.14.</span> <span class="nav-text">Process</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tips"><span class="nav-number">1.6.</span> <span class="nav-text">Tips</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#encode-and-decode"><span class="nav-number">1.6.1.</span> <span class="nav-text">encode and decode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main"><span class="nav-number">1.6.2.</span> <span class="nav-text">main</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Command-Line-Args"><span class="nav-number">1.6.3.</span> <span class="nav-text">Command Line Args</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#os-argv"><span class="nav-number">1.6.3.1.</span> <span class="nav-text">os.argv</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#argparse-1"><span class="nav-number">1.6.3.2.</span> <span class="nav-text">argparse</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Path"><span class="nav-number">1.6.4.</span> <span class="nav-text">Path</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#os-path"><span class="nav-number">1.6.4.1.</span> <span class="nav-text">os.path</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pathlib"><span class="nav-number">1.6.4.2.</span> <span class="nav-text">pathlib</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bat-and-Shell"><span class="nav-number">1.6.5.</span> <span class="nav-text">Bat and Shell</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-GUI"><span class="nav-number">1.7.</span> <span class="nav-text">Python GUI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TKinter"><span class="nav-number">1.7.1.</span> <span class="nav-text">TKinter</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Conception-Part"><span class="nav-number">2.1.</span> <span class="nav-text">Conception Part</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tutorial-Part"><span class="nav-number">2.2.</span> <span class="nav-text">Tutorial Part</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-Part"><span class="nav-number">2.3.</span> <span class="nav-text">Other Part</span></a></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">50</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">22</span>
-        <span class="site-state-item-name">categories</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">33</span>
-        <span class="site-state-item-name">tags</span>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/06/12/Python%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Python使用 | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Python使用
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-06-12 22:45:55" itemprop="dateCreated datePublished" datetime="2017-06-12T22:45:55+08:00">2017-06-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2021-09-25 22:43:34" itemprop="dateModified" datetime="2021-09-25T22:43:34+08:00">2021-09-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Programming-Language/" itemprop="url" rel="index"><span itemprop="name">Programming Language</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><h1 id="Python-Study"><a href="#Python-Study" class="headerlink" title="Python Study"></a>Python Study</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="When"><a href="#When" class="headerlink" title="When"></a>When</h3><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Python_(programming_language)">Python is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.</a><br>Python第一版发布于1991年，由<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Guido_van_Rossum">Guido van Rossum</a>编写。</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Python-Study"><span class="toc-number">1.</span> <span class="toc-text">Python Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#When"><span class="toc-number">1.1.1.</span> <span class="toc-text">When</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What"><span class="toc-number">1.1.2.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">1.1.3.</span> <span class="toc-text">Why</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IDE-Editor"><span class="toc-number">1.2.</span> <span class="toc-text">IDE &amp; Editor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python-Version-Choosen"><span class="toc-number">1.3.</span> <span class="toc-text">Python Version Choosen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Useful-Package"><span class="toc-number">1.4.</span> <span class="toc-text">Useful Package</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pip"><span class="toc-number">1.4.1.</span> <span class="toc-text">Pip</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#argparse"><span class="toc-number">1.4.2.</span> <span class="toc-text">argparse</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tutorial-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-number">1.5.</span> <span class="toc-text">Tutorial(基础篇)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Introduction-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Keywords-and-Identifier"><span class="toc-number">1.5.1.1.</span> <span class="toc-text">Keywords and Identifier</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Statements-Comments"><span class="toc-number">1.5.1.2.</span> <span class="toc-text">Statements &amp; Comments</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python-I-O-and-Import"><span class="toc-number">1.5.1.3.</span> <span class="toc-text">Python I&#x2F;O and Import</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python-Operators"><span class="toc-number">1.5.1.4.</span> <span class="toc-text">Python Operators</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flow-Control"><span class="toc-number">1.5.2.</span> <span class="toc-text">Flow Control</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Function"><span class="toc-number">1.5.3.</span> <span class="toc-text">Function</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Modules"><span class="toc-number">1.5.3.1.</span> <span class="toc-text">Modules</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Package"><span class="toc-number">1.5.3.2.</span> <span class="toc-text">Package</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Datatypes"><span class="toc-number">1.5.4.</span> <span class="toc-text">Datatypes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Basic-Data-Types"><span class="toc-number">1.5.4.1.</span> <span class="toc-text">Basic Data Types</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#List"><span class="toc-number">1.5.4.1.1.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Tuple"><span class="toc-number">1.5.4.1.2.</span> <span class="toc-text">Tuple</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Strings"><span class="toc-number">1.5.4.1.3.</span> <span class="toc-text">Strings</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Set"><span class="toc-number">1.5.4.1.4.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Dictionary"><span class="toc-number">1.5.4.1.5.</span> <span class="toc-text">Dictionary</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Conversion-between-data-types"><span class="toc-number">1.5.4.2.</span> <span class="toc-text">Conversion between data types</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Files"><span class="toc-number">1.5.5.</span> <span class="toc-text">Files</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#File-Operation"><span class="toc-number">1.5.5.1.</span> <span class="toc-text">File Operation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Directory"><span class="toc-number">1.5.5.2.</span> <span class="toc-text">Directory</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Exception"><span class="toc-number">1.5.5.3.</span> <span class="toc-text">Exception</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object-Class"><span class="toc-number">1.5.6.</span> <span class="toc-text">Object &amp; Class</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Name"><span class="toc-number">1.5.6.1.</span> <span class="toc-text">Name</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Namepsace-Scope"><span class="toc-number">1.5.6.2.</span> <span class="toc-text">Namepsace &amp; Scope</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Class"><span class="toc-number">1.5.6.3.</span> <span class="toc-text">Class</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Inheritance"><span class="toc-number">1.5.6.4.</span> <span class="toc-text">Inheritance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Operator-Overloading"><span class="toc-number">1.5.6.5.</span> <span class="toc-text">Operator Overloading</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Iterator"><span class="toc-number">1.5.7.</span> <span class="toc-text">Iterator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generator"><span class="toc-number">1.5.8.</span> <span class="toc-text">Generator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Closure"><span class="toc-number">1.5.9.</span> <span class="toc-text">Closure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Decorators"><span class="toc-number">1.5.10.</span> <span class="toc-text">Decorators</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Property"><span class="toc-number">1.5.11.</span> <span class="toc-text">Property</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RegEx"><span class="toc-number">1.5.12.</span> <span class="toc-text">RegEx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Date-and-Time"><span class="toc-number">1.5.13.</span> <span class="toc-text">Date and Time</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Process"><span class="toc-number">1.5.14.</span> <span class="toc-text">Process</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tips"><span class="toc-number">1.6.</span> <span class="toc-text">Tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#encode-and-decode"><span class="toc-number">1.6.1.</span> <span class="toc-text">encode and decode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#main"><span class="toc-number">1.6.2.</span> <span class="toc-text">main</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Command-Line-Args"><span class="toc-number">1.6.3.</span> <span class="toc-text">Command Line Args</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#os-argv"><span class="toc-number">1.6.3.1.</span> <span class="toc-text">os.argv</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#argparse-1"><span class="toc-number">1.6.3.2.</span> <span class="toc-text">argparse</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Path"><span class="toc-number">1.6.4.</span> <span class="toc-text">Path</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#os-path"><span class="toc-number">1.6.4.1.</span> <span class="toc-text">os.path</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pathlib"><span class="toc-number">1.6.4.2.</span> <span class="toc-text">pathlib</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bat-and-Shell"><span class="toc-number">1.6.5.</span> <span class="toc-text">Bat and Shell</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python-GUI"><span class="toc-number">1.7.</span> <span class="toc-text">Python GUI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TKinter"><span class="toc-number">1.7.1.</span> <span class="toc-text">TKinter</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Conception-Part"><span class="toc-number">2.1.</span> <span class="toc-text">Conception Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tutorial-Part"><span class="toc-number">2.2.</span> <span class="toc-text">Tutorial Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other-Part"><span class="toc-number">2.3.</span> <span class="toc-text">Other Part</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="Python-Study"><a href="#Python-Study" class="headerlink" title="Python Study"></a>Python Study</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="When"><a href="#When" class="headerlink" title="When"></a>When</h3><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Python_(programming_language)">Python is a widely used high-level programming language for general-purpose programming, created by Guido van Rossum and first released in 1991.</a><br>Python第一版发布于1991年，由<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Guido_van_Rossum">Guido van Rossum</a>编写。</p>
 <h3 id="What"><a href="#What" class="headerlink" title="What"></a>What</h3><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Python_(programming_language)">An interpreted language, Python has a design philosophy which emphasizes code readability (notably using whitespace indentation to delimit code blocks rather than curly brackets or keywords), and a syntax which allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java.[22][23] The language provides constructs intended to enable writing clear programs on both a small and large scale.</a><br>首先我们要知道Python跟Lua一样，是解释型语言(不需要编译，通过解析执行，有自己的解析器)。Python设计理念强调可读性(通过缩进而非{}来表示代码块)。</p>
 <p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Python_(programming_language)">Python features a dynamic type system and automatic memory management and supports multiple programming paradigms, including object-oriented, imperative, functional programming, and procedural styles.</a><br>Python是动态类型语言，同时有自己的内存管理机制，支持多种编程范式(待深入学习了解)。</p>
 <h3 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h3><p>了解了Python When &amp; What。那么我们Why什么要选择学习使用Python了？<br><a target="_blank" rel="noopener" href="https://www.python.org/about/">Python is powerful… and fast; plays well with others; runs everywhere; is friendly &amp; easy to learn; is Open. </a><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Python_(programming_language)">supports multiple programming paradigms. It has a large and comprehensive standard library.[25]</a><br>把上面可以归纳如下:</p>
@@ -271,7 +165,7 @@
 <li>Large and comprehensive standard library(丰富的标准库和Package)</li>
 </ol>
 <p>Note:<br>这里提一句Python里很有名的一句话:<br>“Life is short, you need python.”</p>
-<h2 id="IDE-Editor"><a href="#IDE-Editor" class="headerlink" title="IDE &amp; Editor"></a>IDE &amp; Editor</h2><p>学习任何一门编程语言，好的IDE或者Editor都能帮助我们更加快速的学习。<br>因为初学Python且Python是解析执行，这里暂时不考虑过于强大的IDE。<br>IDE详情选择可以参考<a target="_blank" rel="noopener" href="https://wiki.python.org/moin/IntegratedDevelopmentEnvironments">Python IDE</a><br>这里通过使用Sublime Text 3以及其Python相关的扩展插件作为学习Python的Editor。<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2017/02/17/Editor-Sublime-Text-3/#Usefule_Commands">Sublime Text 3 Python相关插件设置详情</a></p>
+<h2 id="IDE-Editor"><a href="#IDE-Editor" class="headerlink" title="IDE &amp; Editor"></a>IDE &amp; Editor</h2><p>学习任何一门编程语言，好的IDE或者Editor都能帮助我们更加快速的学习。<br>因为初学Python且Python是解析执行，这里暂时不考虑过于强大的IDE。<br>IDE详情选择可以参考<a target="_blank" rel="noopener" href="https://wiki.python.org/moin/IntegratedDevelopmentEnvironments">Python IDE</a><br>这里通过使用Sublime Text 3以及其Python相关的扩展插件作为学习Python的Editor。<br><a href="http://tonytang1990.github.io/2017/02/17/Editor-Sublime-Text-3/#Usefule_Commands">Sublime Text 3 Python相关插件设置详情</a></p>
 <h2 id="Python-Version-Choosen"><a href="#Python-Version-Choosen" class="headerlink" title="Python Version Choosen"></a>Python Version Choosen</h2><p>Python有一个比较重要版本分割线2.x &amp; 3.x。<br>详情参见<a target="_blank" rel="noopener" href="https://wiki.python.org/moin/Python2orPython3">Python2orPython3</a><br>这里就不深入去了解2.x和3.x之间的区别了。<br>简单的理解就是3.x提供了更多更全的功能支持，同时有更多的丰富的库支持。如果作为初学者，并不需要维护老版本(2.x)的工具代码时，完全可以从3.x学起。</p>
 <h2 id="Useful-Package"><a href="#Useful-Package" class="headerlink" title="Useful Package"></a>Useful Package</h2><h3 id="Pip"><a href="#Pip" class="headerlink" title="Pip"></a>Pip</h3><p>Python有丰富的标准库。而其中最重要也是新手第一时间就应该安装的就是Pip。<br>Pip对于Python就好比Package Control好比Sublime Text 3。<br>Pip(Python Package Index)是一个Python Package集中管理安装的扩展包。<br><a target="_blank" rel="noopener" href="https://pip.pypa.io/en/stable/installing/">Pip安装详情参考官方文档</a><br>Pip安装成功后我们就可以通过Pip去查看或安装丰富的Python Package了。<br>Package Install:<br><img src="/img/Python/PipPackageInstallation.PNG" alt="PipPackageInstallation"><br>Show Intalled Packages:<br><img src="/img/Python/PipListInstalledPackages.PNG" alt="PipListInstalledPackages"><br>安装之后的Package可以在安装目录查看到:<br><img src="/img/Python/PythonPackageLocation.PNG" alt="PythonPackageLocation"><br><a target="_blank" rel="noopener" href="https://pip.pypa.io/en/stable/user_guide/#installing-packages">更多关于Pip使用查看官方文档</a></p>
 <h3 id="argparse"><a href="#argparse" class="headerlink" title="argparse"></a>argparse</h3><p>详细的介绍会在后面Tip的Command Line Args篇章</p>
@@ -308,7 +202,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">x1 = <span class="number">1</span></span><br><span class="line">y1 = <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;x1 is y1 = &quot;</span>, x1 <span class="keyword">is</span> y1)</span><br><span class="line">y1 = <span class="number">2</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;After y1 = 2. x1 is y1 = &quot;</span>, x1 <span class="keyword">is</span> y1)</span><br><span class="line"></span><br><span class="line">list1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">list2 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;list1 is list2 = &quot;</span>, list1 <span class="keyword">is</span> list2)</span><br></pre></td></tr></table></figure>
 
 <p><img src="/img/Python/PythonIdentityOperator.PNG" alt="PythonIdentityOperator"></p>
-<p>Note:<br><a target="_blank" rel="noopener" href="https://www.programiz.com/python-programming/operators">is and is not are used to check if two values (or variables) are located on the same part of the memory.</a><br><strong>List可以理解成分配了不同的内存去存储实际成员值所以是不同identity，上面x1 &#x3D; 1和y1 &#x3D; 1是located on the same part of the memory就需要理解后续会讲到的[Namespaces概念](<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2017/06/12/Python-Study/#Object">http://tonytang1990.github.io/2017/06/12/Python-Study/#Object</a> &amp; Class)</strong></p>
+<p>Note:<br><a target="_blank" rel="noopener" href="https://www.programiz.com/python-programming/operators">is and is not are used to check if two values (or variables) are located on the same part of the memory.</a><br><strong>List可以理解成分配了不同的内存去存储实际成员值所以是不同identity，上面x1 &#x3D; 1和y1 &#x3D; 1是located on the same part of the memory就需要理解后续会讲到的[Namespaces概念](<a href="http://tonytang1990.github.io/2017/06/12/Python-Study/#Object">http://tonytang1990.github.io/2017/06/12/Python-Study/#Object</a> &amp; Class)</strong></p>
 <p>Membership operators:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list3 = [<span class="number">1</span>, <span class="string">&#x27;T&#x27;</span>, <span class="string">&#x27;H&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;T&#x27;</span> <span class="keyword">in</span> list3)</span><br><span class="line"><span class="built_in">print</span>(<span class="number">1</span> <span class="keyword">not</span> <span class="keyword">in</span> list3)</span><br></pre></td></tr></table></figure>
 
@@ -597,7 +491,7 @@
 
 <p><img src="/img/Python/PathLibAPIOutput.png" alt="PathLibAPIOutput"></p>
 <p>这里用Pathlib除了他提供了更多的文件路径操作外，还有就是它继承了PurePath跨平台文件路径处理的特性，让我们可以在处理文件路径时无需关心平台。</p>
-<h3 id="Bat-and-Shell"><a href="#Bat-and-Shell" class="headerlink" title="Bat and Shell"></a>Bat and Shell</h3><p>Bat和Shell在<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2017/04/29/Unity%E8%87%AA%E5%8A%A8%E5%8C%96&IOS%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/">Unity自动化&amp;IOS自动化签包</a>文章中已经了解过了，这里主要是介绍如何在python里和bat，shell交互(比如我们想获取环境变量里的数据，执行shell命令等)。</p>
+<h3 id="Bat-and-Shell"><a href="#Bat-and-Shell" class="headerlink" title="Bat and Shell"></a>Bat and Shell</h3><p>Bat和Shell在<a href="http://tonytang1990.github.io/2017/04/29/Unity%E8%87%AA%E5%8A%A8%E5%8C%96&IOS%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/">Unity自动化&amp;IOS自动化签包</a>文章中已经了解过了，这里主要是介绍如何在python里和bat，shell交互(比如我们想获取环境变量里的数据，执行shell命令等)。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">androidhome = os.getenv(<span class="string">&quot;ANDROID_HOME&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> androidhome == <span class="literal">None</span>:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;未配置ANDROID_HOME环境变量路径，请先配置ANDROID_HOME环境变量&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;ANDROID_HOME = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(androidhome))</span><br><span class="line"></span><br><span class="line">WorkingFolder = os.getcwd()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;WorkingFolder = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(WorkingFolder))</span><br><span class="line"></span><br><span class="line">CmdCommand = <span class="string">&quot;echo Hello World&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;CmdCommand = &#123;&#125;&quot;</span>.<span class="built_in">format</span>(CmdCommand))</span><br><span class="line"><span class="comment"># 执行CDM命令</span></span><br><span class="line">os.system(CmdCommand)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 确保不自动关闭</span></span><br><span class="line"><span class="built_in">input</span>(<span class="string">&quot;请按任意键继续...&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <p><img src="/img/Python/SystemInfoOutput.png" alt="SystemInfoOutput"></p>
@@ -617,94 +511,538 @@
 <p><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/argparse.html">argparse</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1016959663602400">Python教程</a></p>
 <h2 id="Other-Part"><a href="#Other-Part" class="headerlink" title="Other Part"></a>Other Part</h2><p><a target="_blank" rel="noopener" href="https://wiki.python.org/moin/Python2orPython3">Python2orPython3</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/22619896">Python 的图形界面（GUI）编程？</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
 
-    </div>
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Programming-Language/">Programming Language</a>
+</div>
 
-    
-    
-    
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Python/" rel="tag"># Python</a>
-          </div>
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Python/">Python</a>
+  </div>
 
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2017/06/12/Python%E4%BD%BF%E7%94%A8/" data-title="Python使用 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/06/14/Android自动化签包/" title="Android自动化签包">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Android自动化签包</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/04/29/Unity自动化&IOS自动化签包/"  title="Unity自动化&amp;IOS自动化签包">
+ <strong>下一篇：</strong><br/> 
+ <span>Unity自动化&amp;IOS自动化签包
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Python-Study"><span class="toc-number">1.</span> <span class="toc-text">Python Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#When"><span class="toc-number">1.1.1.</span> <span class="toc-text">When</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What"><span class="toc-number">1.1.2.</span> <span class="toc-text">What</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">1.1.3.</span> <span class="toc-text">Why</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IDE-Editor"><span class="toc-number">1.2.</span> <span class="toc-text">IDE &amp; Editor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python-Version-Choosen"><span class="toc-number">1.3.</span> <span class="toc-text">Python Version Choosen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Useful-Package"><span class="toc-number">1.4.</span> <span class="toc-text">Useful Package</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pip"><span class="toc-number">1.4.1.</span> <span class="toc-text">Pip</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#argparse"><span class="toc-number">1.4.2.</span> <span class="toc-text">argparse</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tutorial-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-number">1.5.</span> <span class="toc-text">Tutorial(基础篇)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Introduction-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Keywords-and-Identifier"><span class="toc-number">1.5.1.1.</span> <span class="toc-text">Keywords and Identifier</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Statements-Comments"><span class="toc-number">1.5.1.2.</span> <span class="toc-text">Statements &amp; Comments</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python-I-O-and-Import"><span class="toc-number">1.5.1.3.</span> <span class="toc-text">Python I&#x2F;O and Import</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Python-Operators"><span class="toc-number">1.5.1.4.</span> <span class="toc-text">Python Operators</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flow-Control"><span class="toc-number">1.5.2.</span> <span class="toc-text">Flow Control</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Function"><span class="toc-number">1.5.3.</span> <span class="toc-text">Function</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Modules"><span class="toc-number">1.5.3.1.</span> <span class="toc-text">Modules</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Package"><span class="toc-number">1.5.3.2.</span> <span class="toc-text">Package</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Datatypes"><span class="toc-number">1.5.4.</span> <span class="toc-text">Datatypes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Basic-Data-Types"><span class="toc-number">1.5.4.1.</span> <span class="toc-text">Basic Data Types</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#List"><span class="toc-number">1.5.4.1.1.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Tuple"><span class="toc-number">1.5.4.1.2.</span> <span class="toc-text">Tuple</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Strings"><span class="toc-number">1.5.4.1.3.</span> <span class="toc-text">Strings</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Set"><span class="toc-number">1.5.4.1.4.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Dictionary"><span class="toc-number">1.5.4.1.5.</span> <span class="toc-text">Dictionary</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Conversion-between-data-types"><span class="toc-number">1.5.4.2.</span> <span class="toc-text">Conversion between data types</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Files"><span class="toc-number">1.5.5.</span> <span class="toc-text">Files</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#File-Operation"><span class="toc-number">1.5.5.1.</span> <span class="toc-text">File Operation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Directory"><span class="toc-number">1.5.5.2.</span> <span class="toc-text">Directory</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Exception"><span class="toc-number">1.5.5.3.</span> <span class="toc-text">Exception</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object-Class"><span class="toc-number">1.5.6.</span> <span class="toc-text">Object &amp; Class</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Name"><span class="toc-number">1.5.6.1.</span> <span class="toc-text">Name</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Namepsace-Scope"><span class="toc-number">1.5.6.2.</span> <span class="toc-text">Namepsace &amp; Scope</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Class"><span class="toc-number">1.5.6.3.</span> <span class="toc-text">Class</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Inheritance"><span class="toc-number">1.5.6.4.</span> <span class="toc-text">Inheritance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Operator-Overloading"><span class="toc-number">1.5.6.5.</span> <span class="toc-text">Operator Overloading</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Iterator"><span class="toc-number">1.5.7.</span> <span class="toc-text">Iterator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generator"><span class="toc-number">1.5.8.</span> <span class="toc-text">Generator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Closure"><span class="toc-number">1.5.9.</span> <span class="toc-text">Closure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Decorators"><span class="toc-number">1.5.10.</span> <span class="toc-text">Decorators</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Property"><span class="toc-number">1.5.11.</span> <span class="toc-text">Property</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RegEx"><span class="toc-number">1.5.12.</span> <span class="toc-text">RegEx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Date-and-Time"><span class="toc-number">1.5.13.</span> <span class="toc-text">Date and Time</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Process"><span class="toc-number">1.5.14.</span> <span class="toc-text">Process</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tips"><span class="toc-number">1.6.</span> <span class="toc-text">Tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#encode-and-decode"><span class="toc-number">1.6.1.</span> <span class="toc-text">encode and decode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#main"><span class="toc-number">1.6.2.</span> <span class="toc-text">main</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Command-Line-Args"><span class="toc-number">1.6.3.</span> <span class="toc-text">Command Line Args</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#os-argv"><span class="toc-number">1.6.3.1.</span> <span class="toc-text">os.argv</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#argparse-1"><span class="toc-number">1.6.3.2.</span> <span class="toc-text">argparse</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Path"><span class="toc-number">1.6.4.</span> <span class="toc-text">Path</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#os-path"><span class="toc-number">1.6.4.1.</span> <span class="toc-text">os.path</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pathlib"><span class="toc-number">1.6.4.2.</span> <span class="toc-text">pathlib</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bat-and-Shell"><span class="toc-number">1.6.5.</span> <span class="toc-text">Bat and Shell</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python-GUI"><span class="toc-number">1.7.</span> <span class="toc-text">Python GUI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TKinter"><span class="toc-number">1.7.1.</span> <span class="toc-text">TKinter</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Conception-Part"><span class="toc-number">2.1.</span> <span class="toc-text">Conception Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tutorial-Part"><span class="toc-number">2.2.</span> <span class="toc-text">Tutorial Part</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other-Part"><span class="toc-number">2.3.</span> <span class="toc-text">Other Part</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Plugin/" title="Plugin">Plugin<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
         
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2017/04/29/Unity%E8%87%AA%E5%8A%A8%E5%8C%96&IOS%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/" rel="prev" title="Unity自动化&IOS自动化签包">
-                  <i class="fa fa-angle-left"></i> Unity自动化&IOS自动化签包
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2017/06/14/Android%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/" rel="next" title="Android自动化签包">
-                  Android自动化签包 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
 
-
-
-
-
+</aside>
 </div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2025</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">John Doe</span>
-  </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
-
     </div>
-  </footer>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
 
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2025 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
 
 
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
 
-  
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
 
 
 
-  
 
 
 
 
 
-</body>
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
 </html>

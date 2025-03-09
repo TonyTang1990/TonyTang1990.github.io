@@ -1,297 +1,191 @@
-<!DOCTYPE html>
-<html lang="en">
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+  
+    <title>OpenGL学习 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-
+    
     <meta name="description" content="时隔将近一年了，再次拾起了还未学完的OpenGL，这一年工作生活学习状态都不好，希望这一次能重新好好的把OpenGL学好，把图形渲染的基础知识掌握好  – 游戏梦 参考书籍：《OpenGL Programming Guide 8th Edition》 – Addison Wesley《Fundamentals of Computer Graphics (3rd Edition)》 – Peter">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenGL学习">
-<meta property="og:url" content="http://example.com/2015/08/26/OpenGL%E5%AD%A6%E4%B9%A0/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="http://tonytang1990.github.io/2015/08/26/OpenGL%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content="时隔将近一年了，再次拾起了还未学完的OpenGL，这一年工作生活学习状态都不好，希望这一次能重新好好的把OpenGL学好，把图形渲染的基础知识掌握好  – 游戏梦 参考书籍：《OpenGL Programming Guide 8th Edition》 – Addison Wesley《Fundamentals of Computer Graphics (3rd Edition)》 – Peter">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/OpenGL/OpenGL_Render_Pipeline.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/GLViewer.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/OpenGLWindow.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/UsingOpenGL.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/UsingShader.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/UniformVariable.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/Interpolation.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/CameraCoordinateTranslation.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/CameraCoordinate2.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/PerspectiveProject1.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/PerspectiveProject2.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/PerspectiveProject3.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/PerspectiveProject4.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/MouseAndKeyboardStudy.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/TextureConcepts.png">
-<meta property="og:image" content="http://example.com/img/OpenGL/TextureCoordinate.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/BasicTexture.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/texture1.png">
-<meta property="og:image" content="http://example.com/img/OpenGL/texture2.jpg">
-<meta property="og:image" content="http://example.com/img/OpenGL/MultipleTexture.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/Ambient.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/Diffuse.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/SpecularModle.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/SpecularModle2.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/SpecularCalculation.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/PointLightFormulation.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/SpotLight.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/SpotLightCutoffMapping.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/ShaowMapFirstPass.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/ShaowMapFirstPassCreate.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/MyTextureList.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/DemoTextureList.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/ShadowMapFirstPassSuccessful.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/ShadowMapFinal.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/SkyboxTexture.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/Skybox.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/TangentSpaceCaculation.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/TangentSpaceDeduce.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/TangentSpaceDeduce2.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/NormalMapTexture.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/NormalMappingAndRegularMapping.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/ParallaxMappinge.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/ParallaxMappinge2.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/Geometry_Shader_Fur.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/Multiple_Viewports.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/TransformFeedbackFlowchart.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/GSBillboard.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/TransformFeedbackBufferData.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/ParticleSystem.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/StreamDeclaration.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/SpiderMeshTree.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/PickingTexture.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/3DPicking.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/TessellationShaderProcess.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/Domains.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/TriangleDomainSubdivision.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/TessellationFill.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/TessellationClose.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/TessellationFar.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/TessellationHeightMap.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/AOSAndSOA.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/VAOFinalEffect.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/InstancedRendering.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/GLFX.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/ForwardRendering.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/DeferredShading.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/G-Buffer.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/DeferredShading_GeometryPass.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/DSStart.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/DSClose.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/DSSourceCode.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/StencilBufferEffect.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/DeferredShadingStencilBufferUsing.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/DeferredShadingFinalEffect.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/Open3mod.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/gDEBuggerCapture.PNG">
-<meta property="og:image" content="http://example.com/img/OpenGL/gDEBuggerShaderInfo.PNG">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/OpenGL_Render_Pipeline.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/GLViewer.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/OpenGLWindow.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/UsingOpenGL.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/UsingShader.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/UniformVariable.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/Interpolation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/CameraCoordinateTranslation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/CameraCoordinate2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/PerspectiveProject1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/PerspectiveProject2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/PerspectiveProject3.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/PerspectiveProject4.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/MouseAndKeyboardStudy.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TextureConcepts.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TextureCoordinate.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/BasicTexture.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/texture1.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/texture2.jpg">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/MultipleTexture.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/Ambient.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/Diffuse.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/SpecularModle.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/SpecularModle2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/SpecularCalculation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/PointLightFormulation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/SpotLight.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/SpotLightCutoffMapping.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/ShaowMapFirstPass.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/ShaowMapFirstPassCreate.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/MyTextureList.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/DemoTextureList.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/ShadowMapFirstPassSuccessful.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/ShadowMapFinal.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/SkyboxTexture.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/Skybox.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TangentSpaceCaculation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TangentSpaceDeduce.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TangentSpaceDeduce2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/NormalMapTexture.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/NormalMappingAndRegularMapping.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/ParallaxMappinge.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/ParallaxMappinge2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/Geometry_Shader_Fur.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/Multiple_Viewports.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TransformFeedbackFlowchart.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/GSBillboard.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TransformFeedbackBufferData.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/ParticleSystem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/StreamDeclaration.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/SpiderMeshTree.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/PickingTexture.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/3DPicking.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TessellationShaderProcess.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/Domains.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TriangleDomainSubdivision.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TessellationFill.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TessellationClose.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TessellationFar.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/TessellationHeightMap.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/AOSAndSOA.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/VAOFinalEffect.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/InstancedRendering.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/GLFX.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/ForwardRendering.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/DeferredShading.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/G-Buffer.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/DeferredShading_GeometryPass.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/DSStart.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/DSClose.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/DSSourceCode.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/StencilBufferEffect.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/DeferredShadingStencilBufferUsing.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/DeferredShadingFinalEffect.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/Open3mod.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/gDEBuggerCapture.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/OpenGL/gDEBuggerShaderInfo.PNG">
 <meta property="article:published_time" content="2015-08-26T15:57:05.000Z">
 <meta property="article:modified_time" content="2019-03-04T16:42:43.051Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="OpenGL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/img/OpenGL/OpenGL_Render_Pipeline.PNG">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/OpenGL/OpenGL_Render_Pipeline.PNG">
 
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
 
-<link rel="canonical" href="http://example.com/2015/08/26/OpenGL%E5%AD%A6%E4%B9%A0/">
+<meta name="generator" content="Hexo 7.3.0"></head>
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2015/08/26/OpenGL%E5%AD%A6%E4%B9%A0/","path":"2015/08/26/OpenGL学习/","title":"OpenGL学习"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>OpenGL学习 | Hexo</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Hexo</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-    </div>
-  </div>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
 </div>
-
-
-
-
-
-
-
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/08/26/OpenGL学习/" title="OpenGL学习" itemprop="url">OpenGL学习</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2015-08-26T15:57:05.000Z" itemprop="datePublished"> 发表于 2015-08-26</time>
+    
+  </p>
 </header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenGL"><span class="nav-number">1.</span> <span class="nav-text">OpenGL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introdction-to-OpenGL"><span class="nav-number">1.1.</span> <span class="nav-text">Introdction to OpenGL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-OpenGL"><span class="nav-number">1.1.1.</span> <span class="nav-text">What is OpenGL?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#History"><span class="nav-number">1.1.2.</span> <span class="nav-text">History</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Next-Generation-OpenGL"><span class="nav-number">1.1.3.</span> <span class="nav-text">Next Generation OpenGL</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenGL-relative-knowledge"><span class="nav-number">1.2.</span> <span class="nav-text">OpenGL relative knowledge</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenGL-render-pipeline"><span class="nav-number">1.2.1.</span> <span class="nav-text">OpenGL render pipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenGL-Shader-Language-GLSL"><span class="nav-number">1.2.2.</span> <span class="nav-text">OpenGL Shader Language (GLSL)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-color-space-in-OpenGL"><span class="nav-number">1.2.3.</span> <span class="nav-text">The color space in OpenGL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#obj-and-mtl-file-format"><span class="nav-number">1.2.4.</span> <span class="nav-text">.obj and .mtl file format</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Wavefront-OBJ-exported-by-MilkShape-3D"><span class="nav-number">2.</span> <span class="nav-text">Wavefront OBJ exported by MilkShape 3D</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#762-vertices"><span class="nav-number">3.</span> <span class="nav-text">762 vertices</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#302-texture-coordinates"><span class="nav-number">4.</span> <span class="nav-text">302 texture coordinates</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#747-normals"><span class="nav-number">5.</span> <span class="nav-text">747 normals</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#80-triangles-in-group"><span class="nav-number">6.</span> <span class="nav-text">80 triangles in group</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1368-triangles-total"><span class="nav-number">7.</span> <span class="nav-text">1368 triangles total</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenGL-learning-journal"><span class="nav-number">7.1.</span> <span class="nav-text">OpenGL learning journal</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#API"><span class="nav-number">7.1.1.</span> <span class="nav-text">API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenGL-Knowledge"><span class="nav-number">7.1.2.</span> <span class="nav-text">OpenGL Knowledge:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenGL-Practice"><span class="nav-number">7.2.</span> <span class="nav-text">OpenGL Practice</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Check-supported-OpenGL-version"><span class="nav-number">7.2.1.</span> <span class="nav-text">Check supported OpenGL version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Know-what-Glut-and-Glew-are-and-how-to-use-them"><span class="nav-number">7.2.2.</span> <span class="nav-text">Know what Glut and Glew are, and how to use them</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Open-a-Window"><span class="nav-number">7.2.3.</span> <span class="nav-text">Open a Window</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Using-OpenGL"><span class="nav-number">7.2.4.</span> <span class="nav-text">Using OpenGL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Using-Shader"><span class="nav-number">7.2.5.</span> <span class="nav-text">Using Shader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Uniform-Variables"><span class="nav-number">7.2.6.</span> <span class="nav-text">Uniform Variables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Interpolation"><span class="nav-number">7.2.7.</span> <span class="nav-text">Interpolation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coordinate-Transformations-Perspective-Projection"><span class="nav-number">7.2.8.</span> <span class="nav-text">Coordinate Transformations &amp; Perspective Projection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Keyboard-Mouse-Control"><span class="nav-number">7.2.9.</span> <span class="nav-text">Keyboard &amp;&amp; Mouse Control</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Texture-Mapping"><span class="nav-number">7.2.10.</span> <span class="nav-text">Texture Mapping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Light-and-Shadow"><span class="nav-number">7.2.11.</span> <span class="nav-text">Light and Shadow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Skybox"><span class="nav-number">7.2.12.</span> <span class="nav-text">Skybox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Normal-Mapping"><span class="nav-number">7.2.13.</span> <span class="nav-text">Normal Mapping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BillBoard-And-Geometry-Shader"><span class="nav-number">7.2.14.</span> <span class="nav-text">BillBoard And Geometry Shader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3D-Picking"><span class="nav-number">7.2.15.</span> <span class="nav-text">3D Picking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Basic-Tessellation"><span class="nav-number">7.2.16.</span> <span class="nav-text">Basic Tessellation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vertex-Array-Objects"><span class="nav-number">7.2.17.</span> <span class="nav-text">Vertex Array Objects</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Instanced-Rendering"><span class="nav-number">7.2.18.</span> <span class="nav-text">Instanced Rendering</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GLFX-An-OpenGL-Effect-Library"><span class="nav-number">7.2.19.</span> <span class="nav-text">GLFX - An OpenGL Effect Library</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deferred-Shading"><span class="nav-number">7.2.20.</span> <span class="nav-text">Deferred Shading</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenGL-Utility"><span class="nav-number">7.3.</span> <span class="nav-text">OpenGL Utility</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Open-Asset-Import-Library"><span class="nav-number">7.3.1.</span> <span class="nav-text">Open Asset Import Library</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#assimp"><span class="nav-number">7.3.1.1.</span> <span class="nav-text">assimp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#open3mod"><span class="nav-number">7.3.1.2.</span> <span class="nav-text">open3mod</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GIMP"><span class="nav-number">7.3.2.</span> <span class="nav-text">GIMP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GLSL-Debuger"><span class="nav-number">7.3.3.</span> <span class="nav-text">GLSL Debuger</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Nsight"><span class="nav-number">7.3.3.1.</span> <span class="nav-text">Nsight</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenGL-proiler-debugger"><span class="nav-number">7.3.4.</span> <span class="nav-text">OpenGL proiler, debugger</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#gDEBugger"><span class="nav-number">7.3.4.1.</span> <span class="nav-text">gDEBugger</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference-Website"><span class="nav-number">8.</span> <span class="nav-text">Reference Website:</span></a></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">50</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">22</span>
-        <span class="site-state-item-name">categories</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">33</span>
-        <span class="site-state-item-name">tags</span>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2015/08/26/OpenGL%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="OpenGL学习 | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          OpenGL学习
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2015-08-26 23:57:05" itemprop="dateCreated datePublished" datetime="2015-08-26T23:57:05+08:00">2015-08-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2019-03-05 00:42:43" itemprop="dateModified" datetime="2019-03-05T00:42:43+08:00">2019-03-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Rendering/" itemprop="url" rel="index"><span itemprop="name">Rendering</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><p><strong>时隔将近一年了，再次拾起了还未学完的OpenGL，这一年工作生活学习状态都不好，希望这一次能重新好好的把OpenGL学好，把图形渲染的基础知识掌握好</strong>  – 游戏梦</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#OpenGL"><span class="toc-number">1.</span> <span class="toc-text">OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introdction-to-OpenGL"><span class="toc-number">1.1.</span> <span class="toc-text">Introdction to OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-OpenGL"><span class="toc-number">1.1.1.</span> <span class="toc-text">What is OpenGL?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#History"><span class="toc-number">1.1.2.</span> <span class="toc-text">History</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Next-Generation-OpenGL"><span class="toc-number">1.1.3.</span> <span class="toc-text">Next Generation OpenGL</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL-relative-knowledge"><span class="toc-number">1.2.</span> <span class="toc-text">OpenGL relative knowledge</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL-render-pipeline"><span class="toc-number">1.2.1.</span> <span class="toc-text">OpenGL render pipeline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL-Shader-Language-GLSL"><span class="toc-number">1.2.2.</span> <span class="toc-text">OpenGL Shader Language (GLSL)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-color-space-in-OpenGL"><span class="toc-number">1.2.3.</span> <span class="toc-text">The color space in OpenGL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#obj-and-mtl-file-format"><span class="toc-number">1.2.4.</span> <span class="toc-text">.obj and .mtl file format</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Wavefront-OBJ-exported-by-MilkShape-3D"><span class="toc-number">2.</span> <span class="toc-text">Wavefront OBJ exported by MilkShape 3D</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#762-vertices"><span class="toc-number">3.</span> <span class="toc-text">762 vertices</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#302-texture-coordinates"><span class="toc-number">4.</span> <span class="toc-text">302 texture coordinates</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#747-normals"><span class="toc-number">5.</span> <span class="toc-text">747 normals</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#80-triangles-in-group"><span class="toc-number">6.</span> <span class="toc-text">80 triangles in group</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1368-triangles-total"><span class="toc-number">7.</span> <span class="toc-text">1368 triangles total</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL-learning-journal"><span class="toc-number">7.1.</span> <span class="toc-text">OpenGL learning journal</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#API"><span class="toc-number">7.1.1.</span> <span class="toc-text">API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL-Knowledge"><span class="toc-number">7.1.2.</span> <span class="toc-text">OpenGL Knowledge:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL-Practice"><span class="toc-number">7.2.</span> <span class="toc-text">OpenGL Practice</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Check-supported-OpenGL-version"><span class="toc-number">7.2.1.</span> <span class="toc-text">Check supported OpenGL version</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Know-what-Glut-and-Glew-are-and-how-to-use-them"><span class="toc-number">7.2.2.</span> <span class="toc-text">Know what Glut and Glew are, and how to use them</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Open-a-Window"><span class="toc-number">7.2.3.</span> <span class="toc-text">Open a Window</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-OpenGL"><span class="toc-number">7.2.4.</span> <span class="toc-text">Using OpenGL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-Shader"><span class="toc-number">7.2.5.</span> <span class="toc-text">Using Shader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Uniform-Variables"><span class="toc-number">7.2.6.</span> <span class="toc-text">Uniform Variables</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Interpolation"><span class="toc-number">7.2.7.</span> <span class="toc-text">Interpolation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Coordinate-Transformations-Perspective-Projection"><span class="toc-number">7.2.8.</span> <span class="toc-text">Coordinate Transformations &amp; Perspective Projection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Keyboard-Mouse-Control"><span class="toc-number">7.2.9.</span> <span class="toc-text">Keyboard &amp;&amp; Mouse Control</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Texture-Mapping"><span class="toc-number">7.2.10.</span> <span class="toc-text">Texture Mapping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Light-and-Shadow"><span class="toc-number">7.2.11.</span> <span class="toc-text">Light and Shadow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Skybox"><span class="toc-number">7.2.12.</span> <span class="toc-text">Skybox</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Normal-Mapping"><span class="toc-number">7.2.13.</span> <span class="toc-text">Normal Mapping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BillBoard-And-Geometry-Shader"><span class="toc-number">7.2.14.</span> <span class="toc-text">BillBoard And Geometry Shader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-Picking"><span class="toc-number">7.2.15.</span> <span class="toc-text">3D Picking</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Basic-Tessellation"><span class="toc-number">7.2.16.</span> <span class="toc-text">Basic Tessellation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vertex-Array-Objects"><span class="toc-number">7.2.17.</span> <span class="toc-text">Vertex Array Objects</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Instanced-Rendering"><span class="toc-number">7.2.18.</span> <span class="toc-text">Instanced Rendering</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GLFX-An-OpenGL-Effect-Library"><span class="toc-number">7.2.19.</span> <span class="toc-text">GLFX - An OpenGL Effect Library</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deferred-Shading"><span class="toc-number">7.2.20.</span> <span class="toc-text">Deferred Shading</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL-Utility"><span class="toc-number">7.3.</span> <span class="toc-text">OpenGL Utility</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Open-Asset-Import-Library"><span class="toc-number">7.3.1.</span> <span class="toc-text">Open Asset Import Library</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#assimp"><span class="toc-number">7.3.1.1.</span> <span class="toc-text">assimp</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#open3mod"><span class="toc-number">7.3.1.2.</span> <span class="toc-text">open3mod</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GIMP"><span class="toc-number">7.3.2.</span> <span class="toc-text">GIMP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GLSL-Debuger"><span class="toc-number">7.3.3.</span> <span class="toc-text">GLSL Debuger</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Nsight"><span class="toc-number">7.3.3.1.</span> <span class="toc-text">Nsight</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL-proiler-debugger"><span class="toc-number">7.3.4.</span> <span class="toc-text">OpenGL proiler, debugger</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#gDEBugger"><span class="toc-number">7.3.4.1.</span> <span class="toc-text">gDEBugger</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference-Website"><span class="toc-number">8.</span> <span class="toc-text">Reference Website:</span></a></li></ol>
+		
+		</div>
+		
+		<p><strong>时隔将近一年了，再次拾起了还未学完的OpenGL，这一年工作生活学习状态都不好，希望这一次能重新好好的把OpenGL学好，把图形渲染的基础知识掌握好</strong>  – 游戏梦</p>
 <p>参考书籍：<br>《OpenGL Programming Guide 8th Edition》 – Addison Wesley<br>《Fundamentals of Computer Graphics (3rd Edition)》 – Peter Shirley, Steve Marschnner<br>《Real-Time Rendering, Third Edition》 – Tomas Akenine-Moller, Eric Haines, Naty Hoffman</p>
 <p><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/tonytang1990">旧博客地址</a></p>
-<p><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/08/29/Computer-Graphic-Study/">渲染相关概念学习</a></p>
+<p><a href="http://tonytang1990.github.io/2015/08/29/Computer-Graphic-Study/">渲染相关概念学习</a></p>
 <h1 id="OpenGL"><a href="#OpenGL" class="headerlink" title="OpenGL"></a>OpenGL</h1><h2 id="Introdction-to-OpenGL"><a href="#Introdction-to-OpenGL" class="headerlink" title="Introdction to OpenGL"></a>Introdction to OpenGL</h2><h3 id="What-is-OpenGL"><a href="#What-is-OpenGL" class="headerlink" title="What is OpenGL?"></a>What is OpenGL?</h3><ol>
 <li>OpenGL is an application programming interface – “API” for short – which is merely a software library for accessing features in graphics hardware.(访问图形硬件设备功能的API)</li>
 <li>OpenGL is a “C” language library(OpenGL是一个C语言库)</li>
@@ -1281,94 +1175,538 @@ When EndPrimitive() is called, any incomplete primitives will simply be discarde
 <p>可以查看Shader的一些信息，并且可以编译Shader等：<br><img src="/img/OpenGL/gDEBuggerShaderInfo.PNG" alt="gDEBuggerShaderInfo"></p>
 <h1 id="Reference-Website"><a href="#Reference-Website" class="headerlink" title="Reference Website:"></a>Reference Website:</h1><p><a target="_blank" rel="noopener" href="http://www.opengl.org/sdk/docs/man4/">OpenGL 4 reference page</a><br><a target="_blank" rel="noopener" href="http://blog.csdn.net/guolihui112/article/details/5702915">client-server 模式</a><br><a target="_blank" rel="noopener" href="http://www.glprogramming.com/blue/ch01.html">OpenGL Execute Model</a><br><a target="_blank" rel="noopener" href="http://blog.chinaunix.net/uid-28959509-id-3762988.html">X Window System</a><br><a target="_blank" rel="noopener" href="http://ogldev.atspace.co.uk/index.html">OpenGL Tutorial</a><br><a target="_blank" rel="noopener" href="http://openglbook.com/chapter-1-getting-started.html">OpenGL Windows &amp; Context</a><br><a target="_blank" rel="noopener" href="https://www.opengl.org/wiki/Creating_an_OpenGL_Context_%28WGL%29">Creating an OpenGL Context (WGL)</a><br><a target="_blank" rel="noopener" href="https://www.opengl.org/wiki/OpenGL_Context">OpenGL Context</a><br><a target="_blank" rel="noopener" href="https://open.gl/context">Window and OpenGL context</a><br><a target="_blank" rel="noopener" href="http://openglbook.com/chapter-1-getting-started.html">OpenGLBook.com Getting Started</a></p>
 <p>Note:<br><strong>OpenGL uses right-handed coordinate system (OpenGL使用右手坐标系)</strong></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
 
-    </div>
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Rendering/">Rendering</a>
+</div>
 
-    
-    
-    
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
-          </div>
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/OpenGL/">OpenGL</a>
+  </div>
 
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2015/08/26/OpenGL%E5%AD%A6%E4%B9%A0/" data-title="OpenGL学习 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/08/29/计算机图形学相关知识/" title="计算机图形学相关知识">
+  <strong>上一篇：</strong><br/>
+  <span>
+  计算机图形学相关知识</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/08/15/CS学习/"  title="CS学习">
+ <strong>下一篇：</strong><br/> 
+ <span>CS学习
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#OpenGL"><span class="toc-number">1.</span> <span class="toc-text">OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introdction-to-OpenGL"><span class="toc-number">1.1.</span> <span class="toc-text">Introdction to OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-OpenGL"><span class="toc-number">1.1.1.</span> <span class="toc-text">What is OpenGL?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#History"><span class="toc-number">1.1.2.</span> <span class="toc-text">History</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Next-Generation-OpenGL"><span class="toc-number">1.1.3.</span> <span class="toc-text">Next Generation OpenGL</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL-relative-knowledge"><span class="toc-number">1.2.</span> <span class="toc-text">OpenGL relative knowledge</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL-render-pipeline"><span class="toc-number">1.2.1.</span> <span class="toc-text">OpenGL render pipeline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL-Shader-Language-GLSL"><span class="toc-number">1.2.2.</span> <span class="toc-text">OpenGL Shader Language (GLSL)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-color-space-in-OpenGL"><span class="toc-number">1.2.3.</span> <span class="toc-text">The color space in OpenGL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#obj-and-mtl-file-format"><span class="toc-number">1.2.4.</span> <span class="toc-text">.obj and .mtl file format</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Wavefront-OBJ-exported-by-MilkShape-3D"><span class="toc-number">2.</span> <span class="toc-text">Wavefront OBJ exported by MilkShape 3D</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#762-vertices"><span class="toc-number">3.</span> <span class="toc-text">762 vertices</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#302-texture-coordinates"><span class="toc-number">4.</span> <span class="toc-text">302 texture coordinates</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#747-normals"><span class="toc-number">5.</span> <span class="toc-text">747 normals</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#80-triangles-in-group"><span class="toc-number">6.</span> <span class="toc-text">80 triangles in group</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1368-triangles-total"><span class="toc-number">7.</span> <span class="toc-text">1368 triangles total</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL-learning-journal"><span class="toc-number">7.1.</span> <span class="toc-text">OpenGL learning journal</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#API"><span class="toc-number">7.1.1.</span> <span class="toc-text">API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL-Knowledge"><span class="toc-number">7.1.2.</span> <span class="toc-text">OpenGL Knowledge:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL-Practice"><span class="toc-number">7.2.</span> <span class="toc-text">OpenGL Practice</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Check-supported-OpenGL-version"><span class="toc-number">7.2.1.</span> <span class="toc-text">Check supported OpenGL version</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Know-what-Glut-and-Glew-are-and-how-to-use-them"><span class="toc-number">7.2.2.</span> <span class="toc-text">Know what Glut and Glew are, and how to use them</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Open-a-Window"><span class="toc-number">7.2.3.</span> <span class="toc-text">Open a Window</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-OpenGL"><span class="toc-number">7.2.4.</span> <span class="toc-text">Using OpenGL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-Shader"><span class="toc-number">7.2.5.</span> <span class="toc-text">Using Shader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Uniform-Variables"><span class="toc-number">7.2.6.</span> <span class="toc-text">Uniform Variables</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Interpolation"><span class="toc-number">7.2.7.</span> <span class="toc-text">Interpolation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Coordinate-Transformations-Perspective-Projection"><span class="toc-number">7.2.8.</span> <span class="toc-text">Coordinate Transformations &amp; Perspective Projection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Keyboard-Mouse-Control"><span class="toc-number">7.2.9.</span> <span class="toc-text">Keyboard &amp;&amp; Mouse Control</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Texture-Mapping"><span class="toc-number">7.2.10.</span> <span class="toc-text">Texture Mapping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Light-and-Shadow"><span class="toc-number">7.2.11.</span> <span class="toc-text">Light and Shadow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Skybox"><span class="toc-number">7.2.12.</span> <span class="toc-text">Skybox</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Normal-Mapping"><span class="toc-number">7.2.13.</span> <span class="toc-text">Normal Mapping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BillBoard-And-Geometry-Shader"><span class="toc-number">7.2.14.</span> <span class="toc-text">BillBoard And Geometry Shader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-Picking"><span class="toc-number">7.2.15.</span> <span class="toc-text">3D Picking</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Basic-Tessellation"><span class="toc-number">7.2.16.</span> <span class="toc-text">Basic Tessellation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vertex-Array-Objects"><span class="toc-number">7.2.17.</span> <span class="toc-text">Vertex Array Objects</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Instanced-Rendering"><span class="toc-number">7.2.18.</span> <span class="toc-text">Instanced Rendering</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GLFX-An-OpenGL-Effect-Library"><span class="toc-number">7.2.19.</span> <span class="toc-text">GLFX - An OpenGL Effect Library</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deferred-Shading"><span class="toc-number">7.2.20.</span> <span class="toc-text">Deferred Shading</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL-Utility"><span class="toc-number">7.3.</span> <span class="toc-text">OpenGL Utility</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Open-Asset-Import-Library"><span class="toc-number">7.3.1.</span> <span class="toc-text">Open Asset Import Library</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#assimp"><span class="toc-number">7.3.1.1.</span> <span class="toc-text">assimp</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#open3mod"><span class="toc-number">7.3.1.2.</span> <span class="toc-text">open3mod</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GIMP"><span class="toc-number">7.3.2.</span> <span class="toc-text">GIMP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GLSL-Debuger"><span class="toc-number">7.3.3.</span> <span class="toc-text">GLSL Debuger</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Nsight"><span class="toc-number">7.3.3.1.</span> <span class="toc-text">Nsight</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL-proiler-debugger"><span class="toc-number">7.3.4.</span> <span class="toc-text">OpenGL proiler, debugger</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#gDEBugger"><span class="toc-number">7.3.4.1.</span> <span class="toc-text">gDEBugger</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference-Website"><span class="toc-number">8.</span> <span class="toc-text">Reference Website:</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Plugin/" title="Plugin">Plugin<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
         
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2015/08/15/CS%E5%AD%A6%E4%B9%A0/" rel="prev" title="CS学习">
-                  <i class="fa fa-angle-left"></i> CS学习
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2015/08/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" rel="next" title="计算机图形学相关知识">
-                  计算机图形学相关知识 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
 
-
-
-
-
+</aside>
 </div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2025</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">John Doe</span>
-  </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
-
     </div>
-  </footer>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
 
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2025 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
 
 
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
 
-  
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
 
 
 
-  
 
 
 
 
 
-</body>
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
 </html>

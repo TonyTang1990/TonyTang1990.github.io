@@ -1,245 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+  
+    <title>经典2D小游戏 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-
+    
     <meta name="description" content="Introduction这一章节主要是为了实战学习Unity和NGUI的使用而写的。 Game Introduction开发环境：游戏引擎：UnityUI插件：NGUI 2.7 游戏内容：容纳多个经典2D红白机和手机游戏：  2D赛车躲避(原始名字想不起来了) 贪吃蛇 坦克大战待添加  平台：支持Android，IOS多设备。 Preparation关于IOS打包准备工作参见:IOS打包准备 Un">
 <meta property="og:type" content="article">
 <meta property="og:title" content="经典2D小游戏">
-<meta property="og:url" content="http://example.com/2016/08/21/%E7%BB%8F%E5%85%B82D%E5%B0%8F%E6%B8%B8%E6%88%8F/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="http://tonytang1990.github.io/2016/08/21/%E7%BB%8F%E5%85%B82D%E5%B0%8F%E6%B8%B8%E6%88%8F/index.html">
+<meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content="Introduction这一章节主要是为了实战学习Unity和NGUI的使用而写的。 Game Introduction开发环境：游戏引擎：UnityUI插件：NGUI 2.7 游戏内容：容纳多个经典2D红白机和手机游戏：  2D赛车躲避(原始名字想不起来了) 贪吃蛇 坦克大战待添加  平台：支持Android，IOS多设备。 Preparation关于IOS打包准备工作参见:IOS打包准备 Un">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/Unity/UnityCloudBuild.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/SpriteEditor.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/TagsAndLayers.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/OffsetScrollBackground.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/InputPanelHierachy.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/InputPanelUI.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/InputControlWithScrollBackground.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/FPSDisplay.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/PlayerCarSprite.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/PlayerCarTurnLeft4.png">
-<meta property="og:image" content="http://example.com/img/Unity/PlayerCarTurnRight4.png">
-<meta property="og:image" content="http://example.com/img/Unity/NormalAnimation.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/TurnLeftAnimation.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/TurnRightAnimation.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/CrashAnimator.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AnimationController.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/AnimatorParameters.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/StateTranslationConditionSetting.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/LoginUI.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/LoadingUI.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/GameSetting1.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/GameSetting2.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/GameSetting3.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/IpadScreenShot.jpg">
-<meta property="og:image" content="http://example.com/img/Unity/SnakeGame1024768.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/Snake960640.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/Snake800800.PNG">
-<meta property="og:image" content="http://example.com/img/Unity/TankScreenShot.PNG">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UnityCloudBuild.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SpriteEditor.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TagsAndLayers.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/OffsetScrollBackground.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/InputPanelHierachy.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/InputPanelUI.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/InputControlWithScrollBackground.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/FPSDisplay.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PlayerCarSprite.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PlayerCarTurnLeft4.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PlayerCarTurnRight4.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/NormalAnimation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TurnLeftAnimation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TurnRightAnimation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CrashAnimator.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AnimationController.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AnimatorParameters.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/StateTranslationConditionSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/LoginUI.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/LoadingUI.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/GameSetting1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/GameSetting2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/GameSetting3.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/IpadScreenShot.jpg">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/SnakeGame1024768.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake960640.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Snake800800.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/TankScreenShot.PNG">
 <meta property="article:published_time" content="2016-08-21T06:50:28.000Z">
 <meta property="article:modified_time" content="2022-07-31T07:14:47.949Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="Other">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/img/Unity/UnityCloudBuild.PNG">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/Unity/UnityCloudBuild.PNG">
 
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
 
-<link rel="canonical" href="http://example.com/2016/08/21/%E7%BB%8F%E5%85%B82D%E5%B0%8F%E6%B8%B8%E6%88%8F/">
+<meta name="generator" content="Hexo 7.3.0"></head>
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2016/08/21/%E7%BB%8F%E5%85%B82D%E5%B0%8F%E6%B8%B8%E6%88%8F/","path":"2016/08/21/经典2D小游戏/","title":"经典2D小游戏"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>经典2D小游戏 | Hexo</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Hexo</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-    </div>
-  </div>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
 </div>
-
-
-
-
-
-
-
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/08/21/经典2D小游戏/" title="经典2D小游戏" itemprop="url">经典2D小游戏</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2016-08-21T06:50:28.000Z" itemprop="datePublished"> 发表于 2016-08-21</time>
+    
+  </p>
 </header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Game-Introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Game Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preparation"><span class="nav-number">1.2.</span> <span class="nav-text">Preparation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity-IOS-build-process"><span class="nav-number">1.2.1.</span> <span class="nav-text">Unity IOS build process</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cloud-Build"><span class="nav-number">1.2.2.</span> <span class="nav-text">Cloud Build</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI%E5%BA%93%E9%80%89%E6%8B%A9"><span class="nav-number">1.2.3.</span> <span class="nav-text">UI库选择</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E5%AE%9E%E6%88%98%E5%BC%80%E5%8F%91"><span class="nav-number">1.3.</span> <span class="nav-text">游戏实战开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%9B%E8%BD%A6%E8%BA%B2%E9%81%BF"><span class="nav-number">1.3.1.</span> <span class="nav-text">赛车躲避</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E8%AF%B4%E6%98%8E"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">游戏说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">相关概念学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E5%88%B6%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">游戏制作过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Project-Mode%E9%80%89%E6%8B%A9"><span class="nav-number">1.3.1.3.1.</span> <span class="nav-text">Project Mode选择</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BE%8E%E6%9C%AF%E5%9B%BE%E7%89%87%E5%88%86%E8%BE%A8%E7%8E%87%E9%80%89%E6%8B%A9"><span class="nav-number">1.3.1.3.2.</span> <span class="nav-text">美术图片分辨率选择</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF%E5%BE%AA%E7%8E%AF%E7%A7%BB%E5%8A%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E9%80%89%E6%8B%A9"><span class="nav-number">1.3.1.3.3.</span> <span class="nav-text">游戏背景循环移动实现方式选择</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F%E9%80%89%E6%8B%A9"><span class="nav-number">1.3.1.3.4.</span> <span class="nav-text">游戏控制方式选择</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E9%87%8D%E8%A6%81%E4%BF%A1%E6%81%AF"><span class="nav-number">1.3.1.3.5.</span> <span class="nav-text">可视化重要信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2D%E5%8A%A8%E7%94%BB%E6%8A%89%E6%8B%A9"><span class="nav-number">1.3.1.3.6.</span> <span class="nav-text">2D动画抉择</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E5%86%85GameObject%E6%95%B0%E9%87%8F%E7%9A%84%E6%80%9D%E8%80%83"><span class="nav-number">1.3.1.3.7.</span> <span class="nav-text">游戏内GameObject数量的思考</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%AA%E5%90%83%E8%9B%87"><span class="nav-number">1.3.2.</span> <span class="nav-text">贪吃蛇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E8%AF%B4%E6%98%8E-1"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">游戏说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E8%A6%81%E7%82%B9%E6%80%9D%E8%80%83"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">游戏要点思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9D%A6%E5%85%8B%E5%A4%A7%E6%88%98"><span class="nav-number">1.3.3.</span> <span class="nav-text">坦克大战</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E8%AF%B4%E6%98%8E-2"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">游戏说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E8%A6%81%E7%82%B9%E6%80%9D%E8%80%83-1"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">游戏要点思考</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="nav-number">1.4.</span> <span class="nav-text">问题记录</span></a></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">50</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">22</span>
-        <span class="site-state-item-name">categories</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">33</span>
-        <span class="site-state-item-name">tags</span>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2016/08/21/%E7%BB%8F%E5%85%B82D%E5%B0%8F%E6%B8%B8%E6%88%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="经典2D小游戏 | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          经典2D小游戏
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2016-08-21 14:50:28" itemprop="dateCreated datePublished" datetime="2016-08-21T14:50:28+08:00">2016-08-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-07-31 15:14:47" itemprop="dateModified" datetime="2022-07-31T15:14:47+08:00">2022-07-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Other/" itemprop="url" rel="index"><span itemprop="name">Other</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>这一章节主要是为了实战学习Unity和NGUI的使用而写的。</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Game-Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">Game Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Preparation"><span class="toc-number">1.2.</span> <span class="toc-text">Preparation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity-IOS-build-process"><span class="toc-number">1.2.1.</span> <span class="toc-text">Unity IOS build process</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cloud-Build"><span class="toc-number">1.2.2.</span> <span class="toc-text">Cloud Build</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UI%E5%BA%93%E9%80%89%E6%8B%A9"><span class="toc-number">1.2.3.</span> <span class="toc-text">UI库选择</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E5%AE%9E%E6%88%98%E5%BC%80%E5%8F%91"><span class="toc-number">1.3.</span> <span class="toc-text">游戏实战开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%9B%E8%BD%A6%E8%BA%B2%E9%81%BF"><span class="toc-number">1.3.1.</span> <span class="toc-text">赛车躲避</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%AF%B4%E6%98%8E"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">游戏说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">相关概念学习</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E5%88%B6%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">游戏制作过程</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Project-Mode%E9%80%89%E6%8B%A9"><span class="toc-number">1.3.1.3.1.</span> <span class="toc-text">Project Mode选择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BE%8E%E6%9C%AF%E5%9B%BE%E7%89%87%E5%88%86%E8%BE%A8%E7%8E%87%E9%80%89%E6%8B%A9"><span class="toc-number">1.3.1.3.2.</span> <span class="toc-text">美术图片分辨率选择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF%E5%BE%AA%E7%8E%AF%E7%A7%BB%E5%8A%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E9%80%89%E6%8B%A9"><span class="toc-number">1.3.1.3.3.</span> <span class="toc-text">游戏背景循环移动实现方式选择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F%E9%80%89%E6%8B%A9"><span class="toc-number">1.3.1.3.4.</span> <span class="toc-text">游戏控制方式选择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E9%87%8D%E8%A6%81%E4%BF%A1%E6%81%AF"><span class="toc-number">1.3.1.3.5.</span> <span class="toc-text">可视化重要信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2D%E5%8A%A8%E7%94%BB%E6%8A%89%E6%8B%A9"><span class="toc-number">1.3.1.3.6.</span> <span class="toc-text">2D动画抉择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E5%86%85GameObject%E6%95%B0%E9%87%8F%E7%9A%84%E6%80%9D%E8%80%83"><span class="toc-number">1.3.1.3.7.</span> <span class="toc-text">游戏内GameObject数量的思考</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%AA%E5%90%83%E8%9B%87"><span class="toc-number">1.3.2.</span> <span class="toc-text">贪吃蛇</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%AF%B4%E6%98%8E-1"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">游戏说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%A6%81%E7%82%B9%E6%80%9D%E8%80%83"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">游戏要点思考</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%A6%E5%85%8B%E5%A4%A7%E6%88%98"><span class="toc-number">1.3.3.</span> <span class="toc-text">坦克大战</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%AF%B4%E6%98%8E-2"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">游戏说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%A6%81%E7%82%B9%E6%80%9D%E8%80%83-1"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">游戏要点思考</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="toc-number">1.4.</span> <span class="toc-text">问题记录</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>这一章节主要是为了实战学习Unity和NGUI的使用而写的。</p>
 <h2 id="Game-Introduction"><a href="#Game-Introduction" class="headerlink" title="Game Introduction"></a>Game Introduction</h2><p>开发环境：<br>游戏引擎：Unity<br>UI插件：NGUI 2.7</p>
 <p>游戏内容：<br>容纳多个经典2D红白机和手机游戏：</p>
 <ol>
@@ -248,7 +142,7 @@
 <li>坦克大战<br>待添加</li>
 </ol>
 <p>平台：<br>支持Android，IOS多设备。</p>
-<h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><p>关于IOS打包准备工作参见:<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2017/04/29/Unity%E8%87%AA%E5%8A%A8%E5%8C%96&IOS%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/#IOS%E6%89%93%E5%8C%85%E5%87%86%E5%A4%87">IOS打包准备</a></p>
+<h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><p>关于IOS打包准备工作参见:<br><a href="http://tonytang1990.github.io/2017/04/29/Unity%E8%87%AA%E5%8A%A8%E5%8C%96&IOS%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/#IOS%E6%89%93%E5%8C%85%E5%87%86%E5%A4%87">IOS打包准备</a></p>
 <h3 id="Unity-IOS-build-process"><a href="#Unity-IOS-build-process" class="headerlink" title="Unity IOS build process"></a>Unity IOS build process</h3><ol>
 <li>XCode project is generated by Unity with all the required libraries, precompiled .NET code and serialized assets.(打包所有需要的库和资源生成XCode项目)<br>第一步是通过Unity的Building Settings设定IOS平台点击Build生成</li>
 <li>XCode project is built by XCode and deployed and run on the actual device.(编译Xcode项目安装到设备上)<br>第二部必须在Mac上执行(或者黑苹果)，因为需要用到IOS SDK和XCode编译器</li>
@@ -298,7 +192,7 @@
 <li>Sprite Renderer<br>这里需要区别一下Sprite Renderer和Mesh Renderer。<br>Sprite Renderer是以2D Sprite作为输入通过Color，Material等属性去渲染出最终颜色。(默认的Sprite-Default Material是不计算光照的，因为2D游戏一般不考虑光照，当然我们也可用其他的Material去计算光照的影响)<br>Mesh Renderer是以geometry from the Mesh Filter(模型数据)作为输入通过Material和光照方面的设置渲染出最终颜色。<br>Sprite Renderer里值得一提的是Layer，因为2D游戏里没有深度的概念，所以通过Layer和Layer Order去决定Sprite的渲染顺序，同时Layer属性也被Camera和Ray Cast用作过滤的条件之一。(我们可以自定义Layer且设定Layer所处顺序(Edit -&gt; Project Setting -&gt; Tags and Layers)，然后通过设定Sprite在Layer里的Layer Order去决定在同一Layer里的顺序)<br><img src="/img/Unity/TagsAndLayers.PNG" alt="TagsAndLayers"></li>
 </ol>
 <h4 id="游戏制作过程"><a href="#游戏制作过程" class="headerlink" title="游戏制作过程"></a>游戏制作过程</h4><h5 id="Project-Mode选择"><a href="#Project-Mode选择" class="headerlink" title="Project Mode选择"></a>Project Mode选择</h5><p>通过上面概念学习，我们知道了设置Project Mode 2D会帮助我们快速开发2D游戏，所以这里我们选择2D Mode。<br>Edit-&gt;Project Settings-&gt;Editor-&gt;Default Behavior Mode -&gt; 2D<br>然后再创建我们的CarDodge Scene:<br>File -&gt; New Scene</p>
-<h5 id="美术图片分辨率选择"><a href="#美术图片分辨率选择" class="headerlink" title="美术图片分辨率选择"></a>美术图片分辨率选择</h5><p>每个游戏制作都需要指定美术图片大小标准。<br>考虑到不同屏幕分辨率适应的问题，结合<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#IL2CPP">Unity Study里NGUI 2.7屏幕自适应的学习</a>，我选择了1024*768也就是4:3的比例作为标准，这样一来在高分辨率的机器上(大部分主流机器都高于4:3)，只是两边会多显示一部分而不至于背景或游戏场景被裁减，多出来的一部分我们可以把背景放大来覆盖。(作为2D竖版游戏这样是完全可以接受的)<br>为了使我们的Sprite的像素完美显示在屏幕上(1个Sprite像素对应屏幕的一个pixel)，要做到这一点我们只需保证Screen.height&#x2F;2&#x2F;Size &#x3D; PPU(Pixel Per Unit)即可，所以因为我们设定Sprite的100 Pixel对应一个Unit，Size &#x3D; 768&#x2F;2&#x2F;100 &#x3D; 3.84，所以我们把Orthographic Camera的Size设置为3.84，这样一来Sprite的像素就和屏幕意义对应了。</p>
+<h5 id="美术图片分辨率选择"><a href="#美术图片分辨率选择" class="headerlink" title="美术图片分辨率选择"></a>美术图片分辨率选择</h5><p>每个游戏制作都需要指定美术图片大小标准。<br>考虑到不同屏幕分辨率适应的问题，结合<a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#IL2CPP">Unity Study里NGUI 2.7屏幕自适应的学习</a>，我选择了1024*768也就是4:3的比例作为标准，这样一来在高分辨率的机器上(大部分主流机器都高于4:3)，只是两边会多显示一部分而不至于背景或游戏场景被裁减，多出来的一部分我们可以把背景放大来覆盖。(作为2D竖版游戏这样是完全可以接受的)<br>为了使我们的Sprite的像素完美显示在屏幕上(1个Sprite像素对应屏幕的一个pixel)，要做到这一点我们只需保证Screen.height&#x2F;2&#x2F;Size &#x3D; PPU(Pixel Per Unit)即可，所以因为我们设定Sprite的100 Pixel对应一个Unit，Size &#x3D; 768&#x2F;2&#x2F;100 &#x3D; 3.84，所以我们把Orthographic Camera的Size设置为3.84，这样一来Sprite的像素就和屏幕意义对应了。</p>
 <h5 id="游戏背景循环移动实现方式选择"><a href="#游戏背景循环移动实现方式选择" class="headerlink" title="游戏背景循环移动实现方式选择"></a>游戏背景循环移动实现方式选择</h5><p>通过官网<a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/2d-game-creation/2d-scrolling-backgrounds?playlist=17093">2D Scrolling Backgrounds</a>的学习，了解到有下列两种方式可以实现背景循环移动。</p>
 <ol>
 <li>用一张Sprite作为背景，通过动态计算(循环)transform.position的值去实现背景移动。<br>这种方式的缺点是多分辨率适应问题，且当我们循环的时候，Sprite明显衔接不对，出现画面跳动。</li>
@@ -309,7 +203,7 @@
 <h5 id="游戏控制方式选择"><a href="#游戏控制方式选择" class="headerlink" title="游戏控制方式选择"></a>游戏控制方式选择</h5><p>Assets Store有一些付费的成熟控制插件，但考虑到控制上没太大的需求(上下左右和个别按钮即可)，这里选择自己制作。(提供上下左右和一个单独的按钮交互界面)<br><img src="/img/Unity/InputPanelHierachy.PNG" alt="InputPanelHierachy"><br><img src="/img/Unity/InputPanelUI.PNG" alt="InputPanelUI"><br>我在Panel上挂载了UIAnchor和InputControlerManager脚本，前者用于在场景里设置位置，后者是我自己写来用于通过单一接口去传递相应回调。<br>InputControllerManager.cs</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">InputControllerManager</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> InputControllerManager mInputControllerManager = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> GameObject mControlButton;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> GameObject mLeftButton;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> GameObject mRightButton;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> GameObject mUpButton;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> GameObject mDownButton;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> UIEventListener mControlButtonUIEL;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> UIEventListener mLeftButtonUIEL;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> UIEventListener mRightButtonUIEL;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> UIEventListener mUpButtonUIEL;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> UIEventListener mDownButtonUIEL;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">InputControllerManager</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Awake</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(mInputControllerManager == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mInputControllerManager = <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (mInputControllerManager != <span class="keyword">this</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Destroy(mInputControllerManager);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mControlButton != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mControlButtonUIEL = mControlButton.GetComponent&lt;UIEventListener&gt;();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mLeftButton != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mLeftButtonUIEL = mLeftButton.GetComponent&lt;UIEventListener&gt;();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mRightButton != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mRightButtonUIEL = mRightButton.GetComponent&lt;UIEventListener&gt;();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mUpButton != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mUpButtonUIEL = mUpButton.GetComponent&lt;UIEventListener&gt;();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mDownButton != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mDownButtonUIEL = mDownButton.GetComponent&lt;UIEventListener&gt;();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ControlButtonClickDelegate</span>(<span class="params">UIEventListener.VoidDelegate oncontrolbuttonclick</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mControlButtonUIEL != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mControlButtonUIEL.onClick = oncontrolbuttonclick;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ControlButtonOnPressDelegat</span>(<span class="params">UIEventListener.BoolDelegate oncontrolbuttononpress</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mControlButtonUIEL != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mControlButtonUIEL.onPress = oncontrolbuttononpress;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">LeftButtonClickDelegate</span>(<span class="params">UIEventListener.VoidDelegate onleftbuttonclick</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mLeftButtonUIEL != <span class="literal">null</span>)</span><br><span class="line">        &#123; </span><br><span class="line">            mLeftButtonUIEL.onClick = onleftbuttonclick;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">LeftButtonOnPressDelegat</span>(<span class="params">UIEventListener.BoolDelegate onleftbuttononpress</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(mLeftButtonUIEL != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mLeftButtonUIEL.onPress = onleftbuttononpress;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RightButtonClickDelegate</span>(<span class="params">UIEventListener.VoidDelegate onrightbuttonclick</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(mRightButtonUIEL != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mRightButtonUIEL.onClick = onrightbuttonclick;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RightButtonOnPressDelegat</span>(<span class="params">UIEventListener.BoolDelegate onrightbuttononpress</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mRightButtonUIEL != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mRightButtonUIEL.onPress = onrightbuttononpress;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UpButtonClickDelegate</span>(<span class="params">UIEventListener.VoidDelegate onupbuttonclick</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(mUpButtonUIEL != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mUpButtonUIEL.onClick = onupbuttonclick;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UpButtonOnPressDelegat</span>(<span class="params">UIEventListener.BoolDelegate onupbuttononpress</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mUpButtonUIEL != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mUpButtonUIEL.onPress = onupbuttononpress;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DownButtonClickDelegate</span>(<span class="params">UIEventListener.VoidDelegate ondownbuttonclick</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(mDownButtonUIEL != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mDownButtonUIEL.onClick = ondownbuttonclick;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DownButtonOnPressDelegat</span>(<span class="params">UIEventListener.BoolDelegate ondownbuttononpress</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mDownButtonUIEL != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mDownButtonUIEL.onPress = ondownbuttononpress;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后把做好的InputPanel作为Prefab存起来。上述代码只提供了按钮的OnClick和OnPress回调设置。<br>当前游戏界面如下：<br><img src="/img/Unity/InputControlWithScrollBackground.PNG" alt="InputControlWithScrollBackground"><br>游戏完成时只会有三条道会显示，但玩家需要移动8次来实现从最左边移动到最右边，这里显示九条是为了方便确认位置。</p>
-<h5 id="可视化重要信息"><a href="#可视化重要信息" class="headerlink" title="可视化重要信息"></a>可视化重要信息</h5><p>这里主要是为了可视化的看出我们在制作游戏的过程中是否用了一些导致性能或内存消耗很高的方法。<br>关于性能消耗：<br>我们采用在<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2016/03/13/Unity-COC-Study/#Optimization">Unity_COC_Study</a>里打印FPS的方式来可视化。<br>关于内存消耗：<br>之前使用过Memroy Profiler，很直观的显示了各方面的内存消耗和运行时间，性能消耗也能在这里看的一清二楚。<br>这里为了不每次都链接电脑开Memory Profiler，我采用打印FPS的方式查看性能上的消耗。<br>FPSDisplay.cs</p>
+<h5 id="可视化重要信息"><a href="#可视化重要信息" class="headerlink" title="可视化重要信息"></a>可视化重要信息</h5><p>这里主要是为了可视化的看出我们在制作游戏的过程中是否用了一些导致性能或内存消耗很高的方法。<br>关于性能消耗：<br>我们采用在<a href="http://tonytang1990.github.io/2016/03/13/Unity-COC-Study/#Optimization">Unity_COC_Study</a>里打印FPS的方式来可视化。<br>关于内存消耗：<br>之前使用过Memroy Profiler，很直观的显示了各方面的内存消耗和运行时间，性能消耗也能在这里看的一清二楚。<br>这里为了不每次都链接电脑开Memory Profiler，我采用打印FPS的方式查看性能上的消耗。<br>FPSDisplay.cs</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FPSDisplay</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> UILabel mFPSText;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">float</span> mDeltaTime = <span class="number">0.0f</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">float</span> mFPS = <span class="number">0.0f</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">	&#123;</span><br><span class="line">		mDeltaTime += (Time.deltaTime - mDeltaTime) * <span class="number">0.1f</span>;</span><br><span class="line">		<span class="built_in">float</span> msec = mDeltaTime * <span class="number">1000.0f</span>;</span><br><span class="line">		mFPS = <span class="number">1.0f</span> / mDeltaTime;</span><br><span class="line">		mFPSText.text = <span class="built_in">string</span>.Format(<span class="string">&quot;&#123;0:0.0&#125; ms (&#123;1:0.&#125; fps)&quot;</span>, msec, mFPS);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="/img/Unity/FPSDisplay.PNG" alt="FPSDisplay"></p>
 <h5 id="2D动画抉择"><a href="#2D动画抉择" class="headerlink" title="2D动画抉择"></a>2D动画抉择</h5><p>一个游戏如果都是静态的图片移动，那么看起来肯定很无聊。<br>所以这里我们必须知道如何去制作动画。<br>首先我们确定的是我们使用的是2D Sprite，那么这里就确定了我们需要制作Sprite Animation。<br>在执着2D Sprite Animation之前，我们需要了解一些重要的概念：</p>
@@ -317,24 +211,24 @@
 <li>Animation – 基于关键帧的动画</li>
 <li>Animation Controller — 动画管理，通过给物体添加Animator并设定动画状态机之间的切换规则来实现动画状态切换管理(通过给UI添加Animator我们也可以在Anmation面板设置简单动画)<br>接下来看看制作2D Animation步骤：<br>这里由于我下载的资源都只有一整张赛车的Sprite，见下图:<br><img src="/img/Unity/PlayerCarSprite.PNG" alt="PlayerCarSprite"><br>因为原始图片是463*1010的，对于我们来说像素太大了，需要缩小，所以我首先通过PS把图片缩小。<br>如果要想做更细致的动画，比如控车里的人做动画，轮子转弯的时候做动画，那么我就需要制作多张关键帧的Sprite。<br>关键帧图片制作(下面只列举最后一帧，就不多放图片了这里)：<br><img src="/img/Unity/PlayerCarTurnLeft4.png" alt="PlayerCarTurnLeft4"><br><img src="/img/Unity/PlayerCarTurnRight4.png" alt="PlayerCarTurnRight4"><br>接下来我们把制作好的关键帧图片导入Unity作为2D Sprite。<br>然后在Animation面板创建并制作Turn Right，Turn Left，Normal和Crash四种动画。<br><img src="/img/Unity/NormalAnimation.PNG" alt="NormalAnimation"><br><img src="/img/Unity/TurnLeftAnimation.PNG" alt="TurnLeftAnimation"><br><img src="/img/Unity/TurnRightAnimation.PNG" alt="TurnRightAnimation"><br><img src="/img/Unity/CrashAnimator.PNG" alt="CrashAnimator"><br>动画制作完成后，我们需要通过Animation Controller去控制四个动画之间的状态转换规则(Unity里可视化的状态机)。(除了默认的Sprite创建的动画，我们还可以在Aniamtor里通过修改scale，position等属性制作帧动画)<br>首先在Animation Controller里我的赛车有四中状态，Normal，TurnRight，TurnLeft，Crash：<br><img src="/img/Unity/AnimationController.PNG" alt="AnimationController"><br>设置了四种状态之间的转换后，我们需要添加转换条件，添加转换条件，需要通过Animator-&gt;Parameters面板添加，这里我添加了四个trigger类型的条件变量(Trigger的设置只会触发一次状态)：<br><img src="/img/Unity/AnimatorParameters.PNG" alt="AnimatorParameters"><br>创建了状态切换条件后我们需要在状态切换的条件那里设置触发条件：<br>首先选中特定状态切换的带三尖角的线，然后在Inspector设置触发条件和一些状态转换之间的设置，见下图：<br><img src="/img/Unity/StateTranslationConditionSetting.PNG" alt="StateTranslationConditionSetting"><br>这样一来我们在代码里只需获取特定对象身上的Animator，然后调用Animator.SetTrigger(“IsTurningNormal”)就能触发到Normal的状态切换了，同时触发动画效果。</li>
 </ol>
-<p>除了Unity自带的帧动画，我们还可以通过Animation插件去实现一些动画效果。<br>让我们来看看下面DOTween官网对于各个Tween插件的比较<a target="_blank" rel="noopener" href="http://dotween.demigiant.com/#enginesComparison">Comparison with other engines</a>。<br>因为我一个都没有用过，就直接按上面的理论使用方便快速的DOTween作为这一次学习使用的对象。<br>具体的DOTween学习参见<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#2D-ROGUELIKE-TUTORIAL">Unity_Study_Plugins_DOTween</a></p>
+<p>除了Unity自带的帧动画，我们还可以通过Animation插件去实现一些动画效果。<br>让我们来看看下面DOTween官网对于各个Tween插件的比较<a target="_blank" rel="noopener" href="http://dotween.demigiant.com/#enginesComparison">Comparison with other engines</a>。<br>因为我一个都没有用过，就直接按上面的理论使用方便快速的DOTween作为这一次学习使用的对象。<br>具体的DOTween学习参见<a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#2D-ROGUELIKE-TUTORIAL">Unity_Study_Plugins_DOTween</a></p>
 <p>这样一来车子的左右平滑移动和Jump动画效果就通过DOTween实现了。<br>而车子的上下移动结合Coroutine来实现(使用Coroutine的好处是可以实现避免每帧都判断是否需要向上或向下移动)。<br>具体代码如下：<br>PlayerCarController.cs</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> DG.Tweening;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.SceneManagement;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PlayerCarController</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> mMoveTweenTime = <span class="number">0.3f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> mIntervalTimeToKeepMovingUPOrDown = <span class="number">0.025f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Vector3 mHorizontalOffset = <span class="keyword">new</span> Vector3(<span class="number">0.9f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Vector3 mVerticalOffset = <span class="keyword">new</span> Vector3(<span class="number">0.0f</span>, <span class="number">0.08f</span>, <span class="number">0.0f</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> LayerMask mBolockingLayer;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">int</span> mLimitTopDownMoving = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Vector3 mTargetPosition;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> mIsTweenComplete = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> mIsJumpComplete = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> mIsKeepMovingUp = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> mIsKeepMovingDown = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> mUpdateJumpAnimationLater = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Animator mPlayerCarAnimator;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> mIsCrash = <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Jump tween</span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> mJumpDuration = <span class="number">0.4f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">float</span> mOriginalJumpDuration;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Vector3 mJumpEndScale = <span class="keyword">new</span> Vector3(<span class="number">0.6f</span>, <span class="number">0.6f</span>, <span class="number">1.0f</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Vector3 mOriginalScale;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Sequence mJumpSequence;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//Box2D</span></span><br><span class="line">    <span class="keyword">private</span> BoxCollider2D mPlayerCarBox2D;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        mTargetPosition = gameObject.transform.position;</span><br><span class="line"></span><br><span class="line">        mPlayerCarAnimator = gameObject.GetComponent&lt;Animator&gt;();</span><br><span class="line"></span><br><span class="line">        mOriginalScale = transform.localScale;</span><br><span class="line"></span><br><span class="line">        mPlayerCarBox2D = gameObject.GetComponent&lt;BoxCollider2D&gt;();</span><br><span class="line"></span><br><span class="line">        mOriginalJumpDuration = mJumpDuration;</span><br><span class="line"></span><br><span class="line">        mJumpSequence =  DOTween.Sequence();</span><br><span class="line"></span><br><span class="line">        mJumpSequence.Append(transform.DOScale(mJumpEndScale, mJumpDuration));</span><br><span class="line">        mJumpSequence.Append(transform.DOScale(mOriginalScale, mJumpDuration));</span><br><span class="line">        mJumpSequence.SetAutoKill(<span class="literal">false</span>);</span><br><span class="line">        mJumpSequence.OnComplete(OnJumpComplete);</span><br><span class="line">        mJumpSequence.Pause();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Use this for initialization</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Start</span> ()</span> &#123;</span><br><span class="line">        InputControllerManager.mInputControllerManager.RightButtonClickDelegate(MoveRight);</span><br><span class="line">        InputControllerManager.mInputControllerManager.LeftButtonClickDelegate(MoveLeft);</span><br><span class="line">        InputControllerManager.mInputControllerManager.UpButtonClickDelegate(MoveUp);</span><br><span class="line">        InputControllerManager.mInputControllerManager.UpButtonOnPressDelegat(KeepMoveUp);</span><br><span class="line">        InputControllerManager.mInputControllerManager.DownButtonClickDelegate(MoveDown);</span><br><span class="line">        InputControllerManager.mInputControllerManager.DownButtonOnPressDelegat(KeepMoveDown);</span><br><span class="line">        InputControllerManager.mInputControllerManager.ControlButtonClickDelegate(Jump);</span><br><span class="line"></span><br><span class="line">        StartCoroutine(MoveUpCoroutine());</span><br><span class="line">        StartCoroutine(MoveDownCoroutine());</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// Update is called once per frame</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Update</span> ()</span> &#123;</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MoveRight</span>(<span class="params">GameObject go</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mIsTweenComplete == <span class="literal">true</span> &amp;&amp; mIsCrash == <span class="literal">false</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Vector2 start = <span class="keyword">new</span> Vector2(transform.position.x, transform.position.y);</span><br><span class="line">            mTargetPosition = transform.position + mHorizontalOffset;</span><br><span class="line">            Vector2 end = <span class="keyword">new</span> Vector2(mTargetPosition.x, mTargetPosition.y);</span><br><span class="line">            RaycastHit2D hit = Physics2D.Linecast(start, end, mBolockingLayer);</span><br><span class="line">            <span class="keyword">if</span>(hit.transform == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (mPlayerCarAnimator != <span class="literal">null</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    mPlayerCarAnimator.SetTrigger(<span class="string">&quot;IsTurningRight&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                mIsTweenComplete = <span class="literal">false</span>;</span><br><span class="line">                transform.DOMove(mTargetPosition, mMoveTweenTime).OnComplete(OnTweenComplete);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MoveLeft</span>(<span class="params">GameObject go</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mIsTweenComplete == <span class="literal">true</span> &amp;&amp; mIsCrash == <span class="literal">false</span>) </span><br><span class="line">        &#123;</span><br><span class="line">            Vector2 start = <span class="keyword">new</span> Vector2(transform.position.x, transform.position.y);</span><br><span class="line">            mTargetPosition = transform.position - mHorizontalOffset;</span><br><span class="line">            Vector2 end = <span class="keyword">new</span> Vector2(mTargetPosition.x, mTargetPosition.y);</span><br><span class="line">            RaycastHit2D hit = Physics2D.Linecast(start, end, mBolockingLayer);</span><br><span class="line">            <span class="keyword">if</span> (hit.transform == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (mPlayerCarAnimator != <span class="literal">null</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    mPlayerCarAnimator.SetTrigger(<span class="string">&quot;IsTurningLeft&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                mIsTweenComplete = <span class="literal">false</span>;</span><br><span class="line">                mTargetPosition = transform.position - mHorizontalOffset;</span><br><span class="line">                transform.DOMove(mTargetPosition, mMoveTweenTime).OnComplete(OnTweenComplete);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MoveUp</span>(<span class="params">GameObject go</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">KeepMoveUp</span>(<span class="params">GameObject go, <span class="built_in">bool</span> state</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(state)</span><br><span class="line">        &#123;</span><br><span class="line">            mIsKeepMovingUp = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            mIsKeepMovingUp = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">IEnumerator <span class="title">MoveUpCoroutine</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (mIsKeepMovingUp &amp;&amp; mIsCrash == <span class="literal">false</span> &amp;&amp; mIsJumpComplete == <span class="literal">true</span>)</span><br><span class="line">            &#123;  </span><br><span class="line">                Vector2 start = <span class="keyword">new</span> Vector2(transform.position.x, transform.position.y);</span><br><span class="line">                mTargetPosition = transform.position + mVerticalOffset * mLimitTopDownMoving;</span><br><span class="line">                Vector2 end = <span class="keyword">new</span> Vector2(mTargetPosition.x, mTargetPosition.y);</span><br><span class="line">                RaycastHit2D hit = Physics2D.Linecast(start, end, mBolockingLayer);</span><br><span class="line">                <span class="keyword">if</span> (hit.transform == <span class="literal">null</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    mTargetPosition = transform.position + mVerticalOffset;</span><br><span class="line">                    transform.position = mTargetPosition;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="function"><span class="keyword">yield</span> <span class="keyword">return</span> <span class="keyword">new</span> <span class="title">WaitForSeconds</span>(<span class="params">mIntervalTimeToKeepMovingUPOrDown</span>)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MoveDown</span>(<span class="params">GameObject go</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">KeepMoveDown</span>(<span class="params">GameObject go, <span class="built_in">bool</span> state</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (state)</span><br><span class="line">        &#123;</span><br><span class="line">            mIsKeepMovingDown = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            mIsKeepMovingDown = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">IEnumerator <span class="title">MoveDownCoroutine</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (mIsKeepMovingDown &amp;&amp; mIsCrash == <span class="literal">false</span> &amp;&amp; mIsJumpComplete == <span class="literal">true</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Vector2 start = <span class="keyword">new</span> Vector2(transform.position.x, transform.position.y);</span><br><span class="line">                mTargetPosition = transform.position - mVerticalOffset * mLimitTopDownMoving;</span><br><span class="line">                Vector2 end = <span class="keyword">new</span> Vector2(mTargetPosition.x, mTargetPosition.y);</span><br><span class="line">                RaycastHit2D hit = Physics2D.Linecast(start, end, mBolockingLayer);</span><br><span class="line">                <span class="keyword">if</span> (hit.transform == <span class="literal">null</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    mTargetPosition = transform.position - mVerticalOffset;</span><br><span class="line">                    transform.position = mTargetPosition;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="function"><span class="keyword">yield</span> <span class="keyword">return</span> <span class="keyword">new</span> <span class="title">WaitForSeconds</span>(<span class="params">mIntervalTimeToKeepMovingUPOrDown</span>)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Jump</span>(<span class="params">GameObject go</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mIsJumpComplete == <span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mIsJumpComplete = <span class="literal">false</span>;</span><br><span class="line">            mPlayerCarBox2D.enabled = <span class="literal">false</span>;</span><br><span class="line">            mJumpSequence.Restart();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CrashCallBack</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        SceneManager.LoadScene(<span class="string">&quot;Game&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnTriggerEnter2D</span>(<span class="params">Collider2D collision</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(collision.tag == <span class="string">&quot;EnemyCar&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(<span class="built_in">string</span>.Format(<span class="string">&quot;Collision with EnemyCar.name &#123;0&#125;&quot;</span>,collision.name));</span><br><span class="line">            mIsCrash = <span class="literal">true</span>;</span><br><span class="line">            mPlayerCarAnimator.SetTrigger(<span class="string">&quot;IsCrash&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnTriggerExit2D</span>(<span class="params">Collider2D collision</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (collision.tag == <span class="string">&quot;EnemyCar&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(<span class="built_in">string</span>.Format(<span class="string">&quot;Collision with EnemyCar.name &#123;0&#125;&quot;</span>, collision.name));</span><br><span class="line">            mIsCrash = <span class="literal">true</span>;</span><br><span class="line">            mPlayerCarAnimator.SetTrigger(<span class="string">&quot;IsCrash&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnTweenComplete</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        mIsTweenComplete = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(mIsCrash == <span class="literal">false</span>)</span><br><span class="line">        &#123; </span><br><span class="line">            mPlayerCarAnimator.SetTrigger(<span class="string">&quot;IsTurningNormal&quot;</span>);</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnJumpComplete</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        mIsJumpComplete = <span class="literal">true</span>;</span><br><span class="line">        mPlayerCarBox2D.enabled = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(mUpdateJumpAnimationLater)</span><br><span class="line">        &#123;</span><br><span class="line">            mUpdateJumpAnimationLater = <span class="literal">false</span>;</span><br><span class="line">            UpdateJumpAnimation();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UpdateJumpAnimation</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mIsJumpComplete == <span class="literal">false</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mUpdateJumpAnimationLater = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">        	<span class="comment">//Reset Sequence to adjust tween&#x27;s duration</span></span><br><span class="line">            mJumpSequence.Kill(<span class="literal">true</span>);</span><br><span class="line">            mJumpSequence = DOTween.Sequence();</span><br><span class="line">            mJumpDuration = mOriginalJumpDuration - CarDodgeGame.mCarDodgeGameInstance.GameLevel / <span class="number">15.0f</span>;</span><br><span class="line">            Debug.Log(<span class="string">&quot;mJumpDuration = &quot;</span> + mJumpDuration);</span><br><span class="line">            mJumpSequence.Append(transform.DOScale(mJumpEndScale, mJumpDuration));</span><br><span class="line">            mJumpSequence.Append(transform.DOScale(mOriginalScale, mJumpDuration));</span><br><span class="line">            mJumpSequence.SetAutoKill(<span class="literal">false</span>);</span><br><span class="line">            mJumpSequence.OnComplete(OnJumpComplete);</span><br><span class="line">            mJumpSequence.Pause();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>通过调节给出的public变量，可控制movetween的duration时间和coroutine的执行时间间隔，还有垂直和水平方向的移动位移等。</p>
-<h5 id="游戏内GameObject数量的思考"><a href="#游戏内GameObject数量的思考" class="headerlink" title="游戏内GameObject数量的思考"></a>游戏内GameObject数量的思考</h5><p>因为2D赛车躲避小游戏同一时间不会有太多的GameObject处于场景里，通过<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2016/03/13/Unity-COC-Study/#Optimization">Unity_COC_Study</a>的学习，我知道了我们可以通过Object Pool的方式来预创建一定数量的GameObject，然后在适当的时机active or deactive他们来减少Instantiate的调用，即节约内存又性能损耗低。<br>ObjectPoolManager .cs</p>
+<h5 id="游戏内GameObject数量的思考"><a href="#游戏内GameObject数量的思考" class="headerlink" title="游戏内GameObject数量的思考"></a>游戏内GameObject数量的思考</h5><p>因为2D赛车躲避小游戏同一时间不会有太多的GameObject处于场景里，通过<a href="http://tonytang1990.github.io/2016/03/13/Unity-COC-Study/#Optimization">Unity_COC_Study</a>的学习，我知道了我们可以通过Object Pool的方式来预创建一定数量的GameObject，然后在适当的时机active or deactive他们来减少Instantiate的调用，即节约内存又性能损耗低。<br>ObjectPoolManager .cs</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ObjectPoolManager</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ObjectPoolManager mObjectPoolManagerInstance = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> GameObject[] mEnemyCar;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> mAmountForEachEnemyCar = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;List&lt;GameObject&gt;&gt; mEnemyCarTwoDimensionList;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">bool</span> mWillGrow = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mObjectPoolManagerInstance == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mObjectPoolManagerInstance = <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (mObjectPoolManagerInstance != <span class="keyword">this</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Destroy(gameObject);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        mEnemyCarTwoDimensionList = <span class="keyword">new</span> List&lt;List&lt;GameObject&gt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; mEnemyCar.Length; i++)</span><br><span class="line">        &#123; </span><br><span class="line">            List&lt;GameObject&gt; enemycarlist = <span class="keyword">new</span> List&lt;GameObject&gt;(mAmountForEachEnemyCar);</span><br><span class="line">            <span class="keyword">for</span>(<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; mAmountForEachEnemyCar; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                GameObject enemycarobj = Instantiate(mEnemyCar[i]) <span class="keyword">as</span> GameObject;</span><br><span class="line">                enemycarobj.SetActive(<span class="literal">false</span>);</span><br><span class="line">                enemycarlist.Add(enemycarobj);</span><br><span class="line">            &#125;</span><br><span class="line">            mEnemyCarTwoDimensionList.Add(enemycarlist);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> GameObject <span class="title">GetEnemyCarObject</span>(<span class="params"><span class="built_in">int</span> carindex</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; mEnemyCarTwoDimensionList[carindex].Count; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (!mEnemyCarTwoDimensionList[carindex][i].activeInHierarchy)</span><br><span class="line">            &#123;</span><br><span class="line">                mEnemyCarTwoDimensionList[carindex][i].SetActive(<span class="literal">true</span>);</span><br><span class="line">                <span class="keyword">return</span> mEnemyCarTwoDimensionList[carindex][i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mWillGrow)</span><br><span class="line">        &#123;</span><br><span class="line">            GameObject enemycar = Instantiate(mEnemyCar[carindex]) <span class="keyword">as</span> GameObject;</span><br><span class="line">            mEnemyCarTwoDimensionList[carindex].Add(enemycar);</span><br><span class="line">            <span class="keyword">return</span> enemycar;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上述代码写的比较死，是针对CarDodge这个游戏而言，因为有多种车子，所以用到了List&lt;List<GameObject>&gt;这样的双重List来存储对应车子所与生成的GameObject。</p>
 <p>最终游戏截图(大部分游戏UI素材选至COC)：<br><img src="/img/Unity/LoginUI.PNG" alt="LoginUI"><br>出于是学习使用旧版的NGUI，所以上述UI并没有实际的账号注册检查，只实现了简单的输入文字要求和账号对错(账号暂时是硬代码写的，PC上是通过读取Excel(使用的是ExcelReader，参考<a target="_blank" rel="noopener" href="http://exceldatareader.codeplex.com/">ExcelRead website</a>)，真机对应功能还没做)检查。<br><img src="/img/Unity/LoadingUI.PNG" alt="LoadingUI"><br>这一个主要是尝试Scroll Bar<br><img src="/img/Unity/GameSetting1.PNG" alt="GameSetting1"><br><img src="/img/Unity/GameSetting2.PNG" alt="GameSetting2"><br><img src="/img/Unity/GameSetting3.PNG" alt="GameSetting3"><br>这三个主要是尝试UIBUtton，UIPopupList，UIISlider，UIDraggable Panel的使用和TweenPosition制作简单UI动画(包含了对背景音乐和音量的设置功能，存储采取PlayerPrefs写入程序文件)。<br><img src="/img/Unity/IpadScreenShot.jpg" alt="IpadScreenShot"><br>最后这一个是本章2D赛车躲避的最终真机(Ipad mini 1)游戏截图，主要实现了赛车跳跃，前后左右移动，随着赛车数量躲避增加游戏速度增加，限制了移动范围。</p>
 <h3 id="贪吃蛇"><a href="#贪吃蛇" class="headerlink" title="贪吃蛇"></a>贪吃蛇</h3><h4 id="游戏说明-1"><a href="#游戏说明-1" class="headerlink" title="游戏说明"></a>游戏说明</h4><p>这个游戏我想没什么好说的了，直接移步<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%B4%AA%E9%A3%9F%E8%9B%87">贪吃蛇维基百科</a></p>
 <h4 id="游戏要点思考"><a href="#游戏要点思考" class="headerlink" title="游戏要点思考"></a>游戏要点思考</h4><ol>
 <li>2D or 3D？<br>标准的传统2D游戏，所以这里可以用纯2D来做(这里采用纯NGUI来做，看看NGUI的自适应效果)。</li>
-<li>游戏素材大小<br>依然以1024<em>768(4:3)为标准，因为之前在<a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#NGUI_2-7%E5%B1%8F%E5%B9%95%E8%87%AA%E9%80%82%E5%BA%94">NGUI 2.7屏幕自适应</a>已经提到了，把UIRoot的Scaling Style设置为Fixed Size，然后通过动态修改ManuaHeight已经实现了基于高度的自适应，所以我们在创建地图的时候只需考虑把Grid创建在基于1024</em>768的分辨率对应位置即可(当然这样会出现在不同分辨率机器上自适应后铺不满屏幕，但这样做我们可以无需考虑机器分辨率)。准备设计宽40<em>30(4:3)个单元格，单元格以20乘以20像素为基准，这样一来游戏地图占据800</em>600像素，高度腾出来的像素768-600&#x3D;168用于控制UI面板显示。<br>这个游戏实现没什么特别的，这里主要看看不同分辨率的显示情况。<br>1024-768：<br><img src="/img/Unity/SnakeGame1024768.PNG" alt="SnakeGame1024768"><br>960-640：<br><img src="/img/Unity/Snake960640.PNG" alt="Snake960640"><br>800-800：<br><img src="/img/Unity/Snake800800.PNG" alt="Snake800800"></li>
+<li>游戏素材大小<br>依然以1024<em>768(4:3)为标准，因为之前在<a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#NGUI_2-7%E5%B1%8F%E5%B9%95%E8%87%AA%E9%80%82%E5%BA%94">NGUI 2.7屏幕自适应</a>已经提到了，把UIRoot的Scaling Style设置为Fixed Size，然后通过动态修改ManuaHeight已经实现了基于高度的自适应，所以我们在创建地图的时候只需考虑把Grid创建在基于1024</em>768的分辨率对应位置即可(当然这样会出现在不同分辨率机器上自适应后铺不满屏幕，但这样做我们可以无需考虑机器分辨率)。准备设计宽40<em>30(4:3)个单元格，单元格以20乘以20像素为基准，这样一来游戏地图占据800</em>600像素，高度腾出来的像素768-600&#x3D;168用于控制UI面板显示。<br>这个游戏实现没什么特别的，这里主要看看不同分辨率的显示情况。<br>1024-768：<br><img src="/img/Unity/SnakeGame1024768.PNG" alt="SnakeGame1024768"><br>960-640：<br><img src="/img/Unity/Snake960640.PNG" alt="Snake960640"><br>800-800：<br><img src="/img/Unity/Snake800800.PNG" alt="Snake800800"></li>
 </ol>
 <h3 id="坦克大战"><a href="#坦克大战" class="headerlink" title="坦克大战"></a>坦克大战</h3><h4 id="游戏说明-2"><a href="#游戏说明-2" class="headerlink" title="游戏说明"></a>游戏说明</h4><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9D%A6%E5%85%8B%E5%A4%A7%E6%88%98">坦克大战（英语：Battle City）是一款平面射击游戏</a></p>
 <h4 id="游戏要点思考-1"><a href="#游戏要点思考-1" class="headerlink" title="游戏要点思考"></a>游戏要点思考</h4><ol>
 <li><p>2D or 3D?<br>以纯2D的形式来制作坦克大战游戏。</p>
 </li>
-<li><p>UI选择<br>这里为了熟悉UGUI，进而和NGUI相比较，这里采用UGUI来学习。<br><a target="_blank" rel="noopener" href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#UGUI">UGUI相关知识学习</a></p>
+<li><p>UI选择<br>这里为了熟悉UGUI，进而和NGUI相比较，这里采用UGUI来学习。<br><a href="http://tonytang1990.github.io/2015/07/15/Unity-Study/#UGUI">UGUI相关知识学习</a></p>
 </li>
 <li><p>UI自适应<br>UI Render Space – Screen Space(Camera)(设置Main Camera作为渲染Camera)<br>UI Scale Mode – Scale With Screen Size(设置MatchWidthOrHeight &#x3D; 0.5确保按宽度和高度变化同时变化去适应)<br>Background UI Scale Mode – Scale with Screen Size(设置MatchWidthOrHeight &#x3D; 1确保游戏背景是高度铺满，Anchor设置在中心保持1:1比例)</p>
 </li>
@@ -397,94 +291,538 @@
 </ol>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEditor.Callbacks;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> UnityEditor.iOS.Xcode;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BuildSetting</span> &#123;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">PostProcessBuild</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">OnPostprocessBuild</span>(<span class="params">BuildTarget buildTarget, <span class="built_in">string</span> path</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="built_in">string</span>.Format(<span class="string">&quot;OnPostprocessBuild(&#123;0&#125;,&#123;1&#125;) called!&quot;</span>, buildTarget.ToString(), path));</span><br><span class="line">        <span class="keyword">if</span> (buildTarget == BuildTarget.iOS)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">string</span> projPath = path + <span class="string">&quot;/Unity-iPhone.xcodeproj/project.pbxproj&quot;</span>;</span><br><span class="line">            PBXProject proj = <span class="keyword">new</span> PBXProject();</span><br><span class="line">            proj.ReadFromString(File.ReadAllText(projPath));</span><br><span class="line"></span><br><span class="line">            <span class="built_in">string</span> nativeTarget = proj.TargetGuidByName(PBXProject.GetUnityTargetName());</span><br><span class="line">            <span class="built_in">string</span> testTarget = proj.TargetGuidByName(PBXProject.GetUnityTestTargetName());</span><br><span class="line">            <span class="built_in">string</span>[] buildTargets = <span class="keyword">new</span> <span class="built_in">string</span>[] &#123; nativeTarget, testTarget &#125;;</span><br><span class="line"></span><br><span class="line">            proj.SetBuildProperty(buildTargets, <span class="string">&quot;ENABLE_BITCODE&quot;</span>, <span class="string">&quot;NO&quot;</span>);</span><br><span class="line">            File.WriteAllText(projPath, proj.WriteToString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>二. 不使用的资源不要放在Resources目录下，避免被打包到resources.assets里<br>三. 打包编译Release版本而非Debug版</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
 
-    </div>
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Other/">Other</a>
+</div>
 
-    
-    
-    
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Other/" rel="tag"># Other</a>
-          </div>
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Other/">Other</a>
+  </div>
 
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2016/08/21/%E7%BB%8F%E5%85%B82D%E5%B0%8F%E6%B8%B8%E6%88%8F/" data-title="经典2D小游戏 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/10/13/Unity资源/" title="Unity资源管理">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Unity资源管理</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/07/25/Shader-Toy/"  title="Shader Toy">
+ <strong>下一篇：</strong><br/> 
+ <span>Shader Toy
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Game-Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">Game Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Preparation"><span class="toc-number">1.2.</span> <span class="toc-text">Preparation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity-IOS-build-process"><span class="toc-number">1.2.1.</span> <span class="toc-text">Unity IOS build process</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cloud-Build"><span class="toc-number">1.2.2.</span> <span class="toc-text">Cloud Build</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UI%E5%BA%93%E9%80%89%E6%8B%A9"><span class="toc-number">1.2.3.</span> <span class="toc-text">UI库选择</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E5%AE%9E%E6%88%98%E5%BC%80%E5%8F%91"><span class="toc-number">1.3.</span> <span class="toc-text">游戏实战开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%9B%E8%BD%A6%E8%BA%B2%E9%81%BF"><span class="toc-number">1.3.1.</span> <span class="toc-text">赛车躲避</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%AF%B4%E6%98%8E"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">游戏说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">相关概念学习</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E5%88%B6%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">游戏制作过程</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Project-Mode%E9%80%89%E6%8B%A9"><span class="toc-number">1.3.1.3.1.</span> <span class="toc-text">Project Mode选择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BE%8E%E6%9C%AF%E5%9B%BE%E7%89%87%E5%88%86%E8%BE%A8%E7%8E%87%E9%80%89%E6%8B%A9"><span class="toc-number">1.3.1.3.2.</span> <span class="toc-text">美术图片分辨率选择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%83%8C%E6%99%AF%E5%BE%AA%E7%8E%AF%E7%A7%BB%E5%8A%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E9%80%89%E6%8B%A9"><span class="toc-number">1.3.1.3.3.</span> <span class="toc-text">游戏背景循环移动实现方式选择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F%E9%80%89%E6%8B%A9"><span class="toc-number">1.3.1.3.4.</span> <span class="toc-text">游戏控制方式选择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E9%87%8D%E8%A6%81%E4%BF%A1%E6%81%AF"><span class="toc-number">1.3.1.3.5.</span> <span class="toc-text">可视化重要信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2D%E5%8A%A8%E7%94%BB%E6%8A%89%E6%8B%A9"><span class="toc-number">1.3.1.3.6.</span> <span class="toc-text">2D动画抉择</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E5%86%85GameObject%E6%95%B0%E9%87%8F%E7%9A%84%E6%80%9D%E8%80%83"><span class="toc-number">1.3.1.3.7.</span> <span class="toc-text">游戏内GameObject数量的思考</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%AA%E5%90%83%E8%9B%87"><span class="toc-number">1.3.2.</span> <span class="toc-text">贪吃蛇</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%AF%B4%E6%98%8E-1"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">游戏说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%A6%81%E7%82%B9%E6%80%9D%E8%80%83"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">游戏要点思考</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%A6%E5%85%8B%E5%A4%A7%E6%88%98"><span class="toc-number">1.3.3.</span> <span class="toc-text">坦克大战</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%AF%B4%E6%98%8E-2"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">游戏说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B8%E6%88%8F%E8%A6%81%E7%82%B9%E6%80%9D%E8%80%83-1"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">游戏要点思考</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="toc-number">1.4.</span> <span class="toc-text">问题记录</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Plugin/" title="Plugin">Plugin<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
         
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2016/07/25/Shader-Toy/" rel="prev" title="Shader Toy">
-                  <i class="fa fa-angle-left"></i> Shader Toy
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2016/10/13/Unity%E8%B5%84%E6%BA%90/" rel="next" title="Unity资源管理">
-                  Unity资源管理 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
 
-
-
-
-
+</aside>
 </div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2025</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">John Doe</span>
-  </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
-
     </div>
-  </footer>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
 
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2025 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
 
 
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
 
-  
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
 
 
 
-  
 
 
 
 
 
-</body>
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
 </html>

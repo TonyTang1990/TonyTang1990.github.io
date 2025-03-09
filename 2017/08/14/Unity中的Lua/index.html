@@ -1,245 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+  
+    <title>Unity中的Lua | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-
+    
     <meta name="description" content="Lua结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。 首先我们要知道Lua是脚本语言，是有自己的虚拟机，是解析执行而非像C#,C++,Java这些编译执行。同时Lua是弱类型语言。 这里不更多的讲解Lua虚拟机相关概念，详情参考[http:&#x2F;&#x2F;blog.sina.com.cn&#x2F;s&#x2F;blog_8c7d49f20102uzsx.html](Scripting System)这里只要知道">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity中的Lua">
-<meta property="og:url" content="http://example.com/2017/08/14/Unity%E4%B8%AD%E7%9A%84Lua/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="http://tonytang1990.github.io/2017/08/14/Unity%E4%B8%AD%E7%9A%84Lua/index.html">
+<meta property="og:site_name" content="走停人生路">
 <meta property="og:description" content="Lua结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。 首先我们要知道Lua是脚本语言，是有自己的虚拟机，是解析执行而非像C#,C++,Java这些编译执行。同时Lua是弱类型语言。 这里不更多的讲解Lua虚拟机相关概念，详情参考[http:&#x2F;&#x2F;blog.sina.com.cn&#x2F;s&#x2F;blog_8c7d49f20102uzsx.html](Scripting System)这里只要知道">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/img/Lua/Virtual_Machine_Working_Levels.PNG">
-<meta property="og:image" content="http://example.com/img/Lua/BitNotOperation.png">
-<meta property="og:image" content="http://example.com/img/Lua/BitwiseOperation.png">
-<meta property="og:image" content="http://example.com/img/Lua/ReadOnlyTableOutput.png">
-<meta property="og:image" content="http://example.com/img/Lua/RecusiveReadOnlyTableOuput.png">
-<meta property="og:image" content="http://example.com/img/Lua/HandlerOutput.PNG">
-<meta property="og:image" content="http://example.com/img/Lua/LuaFirstClassValues.png">
-<meta property="og:image" content="http://example.com/img/Lua/LuaPairsAndIpairs.png">
-<meta property="og:image" content="http://example.com/img/Lua/LuaType.png">
-<meta property="og:image" content="http://example.com/img/Lua/WhereMinGW.png">
-<meta property="og:image" content="http://example.com/img/Lua/LuaBuildOutput.png">
-<meta property="og:image" content="http://example.com/img/Lua/LuaEnvSetting.png">
-<meta property="og:image" content="http://example.com/img/Lua/MakeSureLuaExits.png">
-<meta property="og:image" content="http://example.com/img/Lua/LuaRocksInstallCommand.png">
-<meta property="og:image" content="http://example.com/img/Lua/LuaRocksInstallSuccess.png">
-<meta property="og:image" content="http://example.com/img/Lua/LuaRocksPathAndCPath.png">
-<meta property="og:image" content="http://example.com/img/Lua/OrignalLuaPathAndCPath.png">
-<meta property="og:image" content="http://example.com/img/Lua/LuaEnviromentSetting.png">
-<meta property="og:image" content="http://example.com/img/Lua/InstallSerpent.png">
-<meta property="og:image" content="http://example.com/img/Lua/SerpentInstallatio.png">
-<meta property="og:image" content="http://example.com/img/Lua/SerpentOutput.png">
-<meta property="og:image" content="http://example.com/img/Lua/LpegInstallation.png">
-<meta property="og:image" content="http://example.com/img/Lua/LpegPatternsDoc.png">
-<meta property="og:image" content="http://example.com/img/Lua/LpegCaptureDoc.png">
-<meta property="og:image" content="http://example.com/img/Lua/LuaFolderStructure.png">
-<meta property="og:image" content="http://example.com/img/Lua/EmmyLuaNotation.png">
-<meta property="og:image" content="http://example.com/img/Lua/LuaMethodReference.png">
-<meta property="og:image" content="http://example.com/img/Lua/VSCodeEmmyLuaDebug.png">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/Virtual_Machine_Working_Levels.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/BitNotOperation.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/BitwiseOperation.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/ReadOnlyTableOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/RecusiveReadOnlyTableOuput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/HandlerOutput.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaFirstClassValues.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaPairsAndIpairs.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaType.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/WhereMinGW.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaBuildOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaEnvSetting.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/MakeSureLuaExits.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaRocksInstallCommand.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaRocksInstallSuccess.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaRocksPathAndCPath.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/OrignalLuaPathAndCPath.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaEnviromentSetting.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/InstallSerpent.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/SerpentInstallatio.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/SerpentOutput.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LpegInstallation.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LpegPatternsDoc.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LpegCaptureDoc.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaFolderStructure.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/EmmyLuaNotation.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/LuaMethodReference.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Lua/VSCodeEmmyLuaDebug.png">
 <meta property="article:published_time" content="2017-08-14T14:19:01.000Z">
 <meta property="article:modified_time" content="2022-07-31T13:19:44.159Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="Lua">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/img/Lua/Virtual_Machine_Working_Levels.PNG">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/Lua/Virtual_Machine_Working_Levels.PNG">
 
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
 
-<link rel="canonical" href="http://example.com/2017/08/14/Unity%E4%B8%AD%E7%9A%84Lua/">
+<meta name="generator" content="Hexo 7.3.0"></head>
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2017/08/14/Unity%E4%B8%AD%E7%9A%84Lua/","path":"2017/08/14/Unity中的Lua/","title":"Unity中的Lua"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Unity中的Lua | Hexo</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Hexo</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-    </div>
-  </div>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
 </div>
-
-
-
-
-
-
-
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/08/14/Unity中的Lua/" title="Unity中的Lua" itemprop="url">Unity中的Lua</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2017-08-14T14:19:01.000Z" itemprop="datePublished"> 发表于 2017-08-14</time>
+    
+  </p>
 </header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Lua"><span class="nav-number">1.</span> <span class="nav-text">Lua</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lua-Study"><span class="nav-number">2.</span> <span class="nav-text">Lua Study</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Weak-Tables-And-Finalizers"><span class="nav-number">2.1.</span> <span class="nav-text">Weak Tables And Finalizers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lua%E9%87%8C%E7%9A%84%E4%BD%8D%E8%BF%90%E7%AE%97"><span class="nav-number">2.2.</span> <span class="nav-text">Lua里的位运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E5%8F%8D"><span class="nav-number">2.2.1.</span> <span class="nav-text">取反</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E4%BD%8D%E5%92%8C%E5%BC%82%E6%88%96"><span class="nav-number">2.2.2.</span> <span class="nav-text">移位和异或</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lua%E9%87%8C%E7%9A%84OOP"><span class="nav-number">2.3.</span> <span class="nav-text">Lua里的OOP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class%E6%8A%BD%E8%B1%A1"><span class="nav-number">2.3.1.</span> <span class="nav-text">Class抽象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class%E5%AE%9A%E4%B9%89"><span class="nav-number">2.3.2.</span> <span class="nav-text">Class定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class%E7%BB%A7%E6%89%BF"><span class="nav-number">2.3.3.</span> <span class="nav-text">Class继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class%E5%AF%B9%E8%B1%A1%E5%AE%9E%E4%BE%8B%E5%8C%96"><span class="nav-number">2.3.4.</span> <span class="nav-text">Class对象实例化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lua%E5%8F%AA%E8%AF%BBTable"><span class="nav-number">2.4.</span> <span class="nav-text">Lua只读Table</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%89%88%E5%8F%AA%E8%AF%BBTable"><span class="nav-number">2.4.1.</span> <span class="nav-text">基础版只读Table</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E7%89%88%E5%8F%AA%E8%AF%BBTable-%E6%94%AF%E6%8C%81-%E5%92%8Cpairs"><span class="nav-number">2.4.2.</span> <span class="nav-text">进阶版只读Table(支持#和pairs)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E5%96%84%E7%89%88%E5%8F%AA%E8%AF%BBTable-%E6%94%AF%E6%8C%81%E9%80%92%E5%BD%92ReadOnly"><span class="nav-number">2.4.3.</span> <span class="nav-text">完善版只读Table(支持递归ReadOnly)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E7%82%B9"><span class="nav-number">2.4.4.</span> <span class="nav-text">优化点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lua%E5%9B%9E%E8%B0%83%E7%BB%91%E5%AE%9A"><span class="nav-number">2.5.</span> <span class="nav-text">Lua回调绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lua%E5%B0%8F%E7%9F%A5%E8%AF%86"><span class="nav-number">2.6.</span> <span class="nav-text">Lua小知识</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lua%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">Lua常用插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#luarocks"><span class="nav-number">3.1.</span> <span class="nav-text">luarocks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#serpent"><span class="nav-number">3.2.</span> <span class="nav-text">serpent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lpeg"><span class="nav-number">3.3.</span> <span class="nav-text">Lpeg</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pattern"><span class="nav-number">3.3.1.</span> <span class="nav-text">Pattern</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Match"><span class="nav-number">3.3.2.</span> <span class="nav-text">Match</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Capture"><span class="nav-number">3.3.3.</span> <span class="nav-text">Capture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E6%88%98"><span class="nav-number">3.3.4.</span> <span class="nav-text">实战</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lua-IDE"><span class="nav-number">4.</span> <span class="nav-text">Lua IDE</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#VSCode"><span class="nav-number">4.1.</span> <span class="nav-text">VSCode</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%90%8C%E6%AD%A5"><span class="nav-number">4.1.1.</span> <span class="nav-text">设置同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-number">4.1.2.</span> <span class="nav-text">快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Snippets"><span class="nav-number">4.1.3.</span> <span class="nav-text">Snippets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lua%E8%B0%83%E8%AF%95"><span class="nav-number">4.1.4.</span> <span class="nav-text">Lua调试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EmmyLua"><span class="nav-number">4.1.4.1.</span> <span class="nav-text">EmmyLua</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#VSCode%E9%85%8D%E7%BD%AE"><span class="nav-number">4.1.4.1.1.</span> <span class="nav-text">VSCode配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#XLua"><span class="nav-number">4.1.4.1.2.</span> <span class="nav-text">XLua</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%8F%90%E7%A4%BA"><span class="nav-number">4.1.4.1.3.</span> <span class="nav-text">代码提示</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8"><span class="nav-number">4.1.4.1.4.</span> <span class="nav-text">查找方法引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%B0%83%E8%AF%95"><span class="nav-number">4.1.4.1.5.</span> <span class="nav-text">调试</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ToLua"><span class="nav-number">5.</span> <span class="nav-text">ToLua</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Refrence"><span class="nav-number">6.</span> <span class="nav-text">Refrence</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E5%89%8D%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-number">6.1.</span> <span class="nav-text">以前学习笔记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%98%E6%96%B9%E7%BD%91%E7%AB%99"><span class="nav-number">6.2.</span> <span class="nav-text">官方网站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%B9%A6%E7%B1%8D"><span class="nav-number">6.3.</span> <span class="nav-text">参考书籍</span></a></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">50</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">22</span>
-        <span class="site-state-item-name">categories</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">33</span>
-        <span class="site-state-item-name">tags</span>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/08/14/Unity%E4%B8%AD%E7%9A%84Lua/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Unity中的Lua | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Unity中的Lua
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-08-14 22:19:01" itemprop="dateCreated datePublished" datetime="2017-08-14T22:19:01+08:00">2017-08-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-07-31 21:19:44" itemprop="dateModified" datetime="2022-07-31T21:19:44+08:00">2022-07-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Programming-Language/" itemprop="url" rel="index"><span itemprop="name">Programming Language</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><h1 id="Lua"><a href="#Lua" class="headerlink" title="Lua"></a>Lua</h1><p>结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Lua"><span class="toc-number">1.</span> <span class="toc-text">Lua</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lua-Study"><span class="toc-number">2.</span> <span class="toc-text">Lua Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Weak-Tables-And-Finalizers"><span class="toc-number">2.1.</span> <span class="toc-text">Weak Tables And Finalizers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua%E9%87%8C%E7%9A%84%E4%BD%8D%E8%BF%90%E7%AE%97"><span class="toc-number">2.2.</span> <span class="toc-text">Lua里的位运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%96%E5%8F%8D"><span class="toc-number">2.2.1.</span> <span class="toc-text">取反</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E4%BD%8D%E5%92%8C%E5%BC%82%E6%88%96"><span class="toc-number">2.2.2.</span> <span class="toc-text">移位和异或</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua%E9%87%8C%E7%9A%84OOP"><span class="toc-number">2.3.</span> <span class="toc-text">Lua里的OOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class%E6%8A%BD%E8%B1%A1"><span class="toc-number">2.3.1.</span> <span class="toc-text">Class抽象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class%E5%AE%9A%E4%B9%89"><span class="toc-number">2.3.2.</span> <span class="toc-text">Class定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class%E7%BB%A7%E6%89%BF"><span class="toc-number">2.3.3.</span> <span class="toc-text">Class继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class%E5%AF%B9%E8%B1%A1%E5%AE%9E%E4%BE%8B%E5%8C%96"><span class="toc-number">2.3.4.</span> <span class="toc-text">Class对象实例化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua%E5%8F%AA%E8%AF%BBTable"><span class="toc-number">2.4.</span> <span class="toc-text">Lua只读Table</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%89%88%E5%8F%AA%E8%AF%BBTable"><span class="toc-number">2.4.1.</span> <span class="toc-text">基础版只读Table</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E7%89%88%E5%8F%AA%E8%AF%BBTable-%E6%94%AF%E6%8C%81-%E5%92%8Cpairs"><span class="toc-number">2.4.2.</span> <span class="toc-text">进阶版只读Table(支持#和pairs)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E5%96%84%E7%89%88%E5%8F%AA%E8%AF%BBTable-%E6%94%AF%E6%8C%81%E9%80%92%E5%BD%92ReadOnly"><span class="toc-number">2.4.3.</span> <span class="toc-text">完善版只读Table(支持递归ReadOnly)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E7%82%B9"><span class="toc-number">2.4.4.</span> <span class="toc-text">优化点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua%E5%9B%9E%E8%B0%83%E7%BB%91%E5%AE%9A"><span class="toc-number">2.5.</span> <span class="toc-text">Lua回调绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua%E5%B0%8F%E7%9F%A5%E8%AF%86"><span class="toc-number">2.6.</span> <span class="toc-text">Lua小知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lua%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">Lua常用插件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#luarocks"><span class="toc-number">3.1.</span> <span class="toc-text">luarocks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#serpent"><span class="toc-number">3.2.</span> <span class="toc-text">serpent</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lpeg"><span class="toc-number">3.3.</span> <span class="toc-text">Lpeg</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pattern"><span class="toc-number">3.3.1.</span> <span class="toc-text">Pattern</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Match"><span class="toc-number">3.3.2.</span> <span class="toc-text">Match</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Capture"><span class="toc-number">3.3.3.</span> <span class="toc-text">Capture</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-number">3.3.4.</span> <span class="toc-text">实战</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lua-IDE"><span class="toc-number">4.</span> <span class="toc-text">Lua IDE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#VSCode"><span class="toc-number">4.1.</span> <span class="toc-text">VSCode</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%90%8C%E6%AD%A5"><span class="toc-number">4.1.1.</span> <span class="toc-text">设置同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">4.1.2.</span> <span class="toc-text">快捷键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Snippets"><span class="toc-number">4.1.3.</span> <span class="toc-text">Snippets</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lua%E8%B0%83%E8%AF%95"><span class="toc-number">4.1.4.</span> <span class="toc-text">Lua调试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#EmmyLua"><span class="toc-number">4.1.4.1.</span> <span class="toc-text">EmmyLua</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#VSCode%E9%85%8D%E7%BD%AE"><span class="toc-number">4.1.4.1.1.</span> <span class="toc-text">VSCode配置</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#XLua"><span class="toc-number">4.1.4.1.2.</span> <span class="toc-text">XLua</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%8F%90%E7%A4%BA"><span class="toc-number">4.1.4.1.3.</span> <span class="toc-text">代码提示</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8"><span class="toc-number">4.1.4.1.4.</span> <span class="toc-text">查找方法引用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B0%83%E8%AF%95"><span class="toc-number">4.1.4.1.5.</span> <span class="toc-text">调试</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ToLua"><span class="toc-number">5.</span> <span class="toc-text">ToLua</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Refrence"><span class="toc-number">6.</span> <span class="toc-text">Refrence</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A5%E5%89%8D%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">6.1.</span> <span class="toc-text">以前学习笔记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E7%BD%91%E7%AB%99"><span class="toc-number">6.2.</span> <span class="toc-text">官方网站</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E4%B9%A6%E7%B1%8D"><span class="toc-number">6.3.</span> <span class="toc-text">参考书籍</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="Lua"><a href="#Lua" class="headerlink" title="Lua"></a>Lua</h1><p>结合以前的初步学习了解，这一次要对Lua进行进一步的深入学习。</p>
 <p>首先我们要知道Lua是脚本语言，是有自己的虚拟机，是解析执行而非像C#,C++,Java这些编译执行。同时Lua是弱类型语言。</p>
 <p>这里不更多的讲解Lua虚拟机相关概念，详情参考[<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html]">http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html]</a>(Scripting System)<br><img src="/img/Lua/Virtual_Machine_Working_Levels.PNG" alt="Virtual_Machine_Working_Levels"><br>这里只要知道Lua的虚拟机(程序模拟线程，堆栈等)是运行在程序里而非物理CPU上，因此只要虚拟机把Lua脚本解析成对应平台的机器码就能支持跨平台(好比Java的JVM)。</p>
 <h1 id="Lua-Study"><a href="#Lua-Study" class="headerlink" title="Lua Study"></a>Lua Study</h1><p>以前的部分学习参考:<br><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html">Scripting System &amp; Lua Study</a><br><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0rk.html">Lua – some important concept and knowledge</a><br><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0zp.html">Lua - C API </a><br><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0zs.html">Lua - C call Lua &amp; Lua call C</a><br><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0s9.html">Lua - Object Oriented Programming</a><br><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v1qg.html">Lua - Userdata</a><br><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v383.html">Lua - Managing Resources &amp; Threads and States</a></p>
@@ -573,94 +467,538 @@ Note:
 <h2 id="以前学习笔记"><a href="#以前学习笔记" class="headerlink" title="以前学习笔记"></a>以前学习笔记</h2><p>[<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html]">http://blog.sina.com.cn/s/blog_8c7d49f20102uzsx.html]</a>(Game Scripting Mastery)<br>[<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0rk.html]">http://blog.sina.com.cn/s/blog_8c7d49f20102v0rk.html]</a>(Lua – some important concept and knowledge)<br>[<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0s0.html]">http://blog.sina.com.cn/s/blog_8c7d49f20102v0s0.html]</a>(Lua - Coroutines Study )<br>[<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0s5.html]">http://blog.sina.com.cn/s/blog_8c7d49f20102v0s5.html]</a>(Lua - Metatables and Metamethods)<br>[<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0s9.html]">http://blog.sina.com.cn/s/blog_8c7d49f20102v0s9.html]</a>(Lua - Object Oriented Programming)<br>[<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0zp.html]">http://blog.sina.com.cn/s/blog_8c7d49f20102v0zp.html]</a>(Lua - C API)<br>[<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v0zs.html]">http://blog.sina.com.cn/s/blog_8c7d49f20102v0zs.html]</a>(Lua - C call Lua &amp; Lua call C )<br>[<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v1qg.html]">http://blog.sina.com.cn/s/blog_8c7d49f20102v1qg.html]</a>(Lua - Userdata )<br>[<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8c7d49f20102v383.html]">http://blog.sina.com.cn/s/blog_8c7d49f20102v383.html]</a>(Lua - Managing Resources &amp; Threads and States)</p>
 <h2 id="官方网站"><a href="#官方网站" class="headerlink" title="官方网站"></a>官方网站</h2><p><a target="_blank" rel="noopener" href="https://github.com/Tencent/xLua">XLua</a><br><a target="_blank" rel="noopener" href="https://emmylua.github.io/zh_CN/installation.html">EmmyLua</a></p>
 <h2 id="参考书籍"><a href="#参考书籍" class="headerlink" title="参考书籍"></a>参考书籍</h2><p>《Programming in Lua third edition》 – Roberto Ierusalimschy<br>《Lua用户手册》<br>《Game Scripting Mastery》 – Alex Varanese</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
 
-    </div>
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Programming-Language/">Programming Language</a>
+</div>
 
-    
-    
-    
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Lua/" rel="tag"># Lua</a>
-          </div>
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Lua/">Lua</a>
+  </div>
 
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2017/08/14/Unity%E4%B8%AD%E7%9A%84Lua/" data-title="Unity中的Lua | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/03/18/导表工具/" title="导表工具">
+  <strong>上一篇：</strong><br/>
+  <span>
+  导表工具</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/06/14/Android自动化签包/"  title="Android自动化签包">
+ <strong>下一篇：</strong><br/> 
+ <span>Android自动化签包
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Lua"><span class="toc-number">1.</span> <span class="toc-text">Lua</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lua-Study"><span class="toc-number">2.</span> <span class="toc-text">Lua Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Weak-Tables-And-Finalizers"><span class="toc-number">2.1.</span> <span class="toc-text">Weak Tables And Finalizers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua%E9%87%8C%E7%9A%84%E4%BD%8D%E8%BF%90%E7%AE%97"><span class="toc-number">2.2.</span> <span class="toc-text">Lua里的位运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%96%E5%8F%8D"><span class="toc-number">2.2.1.</span> <span class="toc-text">取反</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E4%BD%8D%E5%92%8C%E5%BC%82%E6%88%96"><span class="toc-number">2.2.2.</span> <span class="toc-text">移位和异或</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua%E9%87%8C%E7%9A%84OOP"><span class="toc-number">2.3.</span> <span class="toc-text">Lua里的OOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class%E6%8A%BD%E8%B1%A1"><span class="toc-number">2.3.1.</span> <span class="toc-text">Class抽象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class%E5%AE%9A%E4%B9%89"><span class="toc-number">2.3.2.</span> <span class="toc-text">Class定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class%E7%BB%A7%E6%89%BF"><span class="toc-number">2.3.3.</span> <span class="toc-text">Class继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class%E5%AF%B9%E8%B1%A1%E5%AE%9E%E4%BE%8B%E5%8C%96"><span class="toc-number">2.3.4.</span> <span class="toc-text">Class对象实例化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua%E5%8F%AA%E8%AF%BBTable"><span class="toc-number">2.4.</span> <span class="toc-text">Lua只读Table</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%89%88%E5%8F%AA%E8%AF%BBTable"><span class="toc-number">2.4.1.</span> <span class="toc-text">基础版只读Table</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E7%89%88%E5%8F%AA%E8%AF%BBTable-%E6%94%AF%E6%8C%81-%E5%92%8Cpairs"><span class="toc-number">2.4.2.</span> <span class="toc-text">进阶版只读Table(支持#和pairs)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E5%96%84%E7%89%88%E5%8F%AA%E8%AF%BBTable-%E6%94%AF%E6%8C%81%E9%80%92%E5%BD%92ReadOnly"><span class="toc-number">2.4.3.</span> <span class="toc-text">完善版只读Table(支持递归ReadOnly)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E7%82%B9"><span class="toc-number">2.4.4.</span> <span class="toc-text">优化点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua%E5%9B%9E%E8%B0%83%E7%BB%91%E5%AE%9A"><span class="toc-number">2.5.</span> <span class="toc-text">Lua回调绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lua%E5%B0%8F%E7%9F%A5%E8%AF%86"><span class="toc-number">2.6.</span> <span class="toc-text">Lua小知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lua%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">Lua常用插件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#luarocks"><span class="toc-number">3.1.</span> <span class="toc-text">luarocks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#serpent"><span class="toc-number">3.2.</span> <span class="toc-text">serpent</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lpeg"><span class="toc-number">3.3.</span> <span class="toc-text">Lpeg</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pattern"><span class="toc-number">3.3.1.</span> <span class="toc-text">Pattern</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Match"><span class="toc-number">3.3.2.</span> <span class="toc-text">Match</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Capture"><span class="toc-number">3.3.3.</span> <span class="toc-text">Capture</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-number">3.3.4.</span> <span class="toc-text">实战</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lua-IDE"><span class="toc-number">4.</span> <span class="toc-text">Lua IDE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#VSCode"><span class="toc-number">4.1.</span> <span class="toc-text">VSCode</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%90%8C%E6%AD%A5"><span class="toc-number">4.1.1.</span> <span class="toc-text">设置同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">4.1.2.</span> <span class="toc-text">快捷键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Snippets"><span class="toc-number">4.1.3.</span> <span class="toc-text">Snippets</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lua%E8%B0%83%E8%AF%95"><span class="toc-number">4.1.4.</span> <span class="toc-text">Lua调试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#EmmyLua"><span class="toc-number">4.1.4.1.</span> <span class="toc-text">EmmyLua</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#VSCode%E9%85%8D%E7%BD%AE"><span class="toc-number">4.1.4.1.1.</span> <span class="toc-text">VSCode配置</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#XLua"><span class="toc-number">4.1.4.1.2.</span> <span class="toc-text">XLua</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%8F%90%E7%A4%BA"><span class="toc-number">4.1.4.1.3.</span> <span class="toc-text">代码提示</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8"><span class="toc-number">4.1.4.1.4.</span> <span class="toc-text">查找方法引用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B0%83%E8%AF%95"><span class="toc-number">4.1.4.1.5.</span> <span class="toc-text">调试</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ToLua"><span class="toc-number">5.</span> <span class="toc-text">ToLua</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Refrence"><span class="toc-number">6.</span> <span class="toc-text">Refrence</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A5%E5%89%8D%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">6.1.</span> <span class="toc-text">以前学习笔记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E7%BD%91%E7%AB%99"><span class="toc-number">6.2.</span> <span class="toc-text">官方网站</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E4%B9%A6%E7%B1%8D"><span class="toc-number">6.3.</span> <span class="toc-text">参考书籍</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Plugin/" title="Plugin">Plugin<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
         
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2017/06/14/Android%E8%87%AA%E5%8A%A8%E5%8C%96%E7%AD%BE%E5%8C%85/" rel="prev" title="Android自动化签包">
-                  <i class="fa fa-angle-left"></i> Android自动化签包
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2018/03/18/%E5%AF%BC%E8%A1%A8%E5%B7%A5%E5%85%B7/" rel="next" title="导表工具">
-                  导表工具 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
 </div>
 
 
-
-
-
-
+</aside>
 </div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2025</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">John Doe</span>
-  </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
-
     </div>
-  </footer>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
 
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2025 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
 
 
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
 
-  
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
 
 
 
-  
 
 
 
 
 
-</body>
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
 </html>
