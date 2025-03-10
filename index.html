@@ -404,12 +404,19 @@
 </ol>
 <h5 id="智能代理"><a href="#智能代理" class="headerlink" title="智能代理"></a>智能代理</h5><p><a target="_blank" rel="noopener" href="https://docs.cursor.com/get-started/introduction">Agent is your AI-powered coding partner that helps you tackle larger tasks</a>(智能代理是一个强大的代码编程助手，辅助我们解决复杂的任务)</p>
 <p><strong>Composer:<a target="_blank" rel="noopener" href="https://docs.cursor.com/composer">AI coding assistant that helps write and edit code directly in your editor with chat and agent modes</a></strong>(Composer是Cursor提供的通过聊天交互方式的代码助手，快捷键打开是:Ctrl+I，打开新Composer快捷键是:Ctrl+N)</p>
-<p>Composer有两种工作模式:</p>
+<p>Composer有三种工作模式:</p>
 <ol>
-<li><strong>Normal:<a target="_blank" rel="noopener" href="https://docs.cursor.com/composer">Read and writes code. Usually faster. Works with all models</a></strong></li>
-<li><strong>Agent:<a target="_blank" rel="noopener" href="https://docs.cursor.com/agent">uses tools and reasoning to perform coding tasks with minimal supervision</a></strong></li>
+<li><strong>Ask:<a target="_blank" rel="noopener" href="https://docs.cursor.com/composer">Ask question about your code, get explanations, and discover your codebase.</a>(询问关于代码的问题，得到解释的模式)</strong></li>
+<li><strong><a target="_blank" rel="noopener" href="https://docs.cursor.com/composer">Edit:Make single-turn edits to your code with precision and clarity.</a>(单词精准编辑代码的模式)</strong></li>
+<li><strong>Agent:<a target="_blank" rel="noopener" href="https://docs.cursor.com/agent">uses tools and reasoning to perform coding tasks with minimal supervision</a>(利用工具在最小的监督下完成编码任务)</strong></li>
 </ol>
-<p>目前个人理解Agent利用了更多的工具(比如<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/introduction">Model Context Protocol (MCP)</a>实现更加DIY和智能的代码理解和生成。</p>
+<p>目前个人理解<strong>Ask</strong>模式适合针对指定代码上下文询问问题得到解释。</p>
+<p><strong>Edit</strong>模式适合指定上下文代码问题给出代码修改方案。</p>
+<p><strong>Agent</strong>模式适合需要完成复杂的代码任务(利用了更多的工具(比如<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/introduction">Model Context Protocol (MCP)</a>实现更加DIY和智能的代码理解和生成)</p>
+<p>模式的指定在Composer的左下角:</p>
+<p><img src="/img/AI/AITools/ComposerModeChosen.PNG" alt="ComposerModeChosen"></p>
+<p>同时关于Composer使用的底层模型(目前代码理解比较火的是<strong>claude-3.7-sonnet-thinking(2025&#x2F;3&#x2F;11)</strong>)指定也在左下角:</p>
+<p><img src="/img/AI/AITools/ComposerAIModeChosen.PNG" alt="ComposerAIModeChose"></p>
 <p>Composer里我们可以通过@的方式指定要添加的相关上下文代码，然后通过自然语言交互的方式给人工智能提需求编写相关代码。</p>
 <p><img src="/img/AI/AITools/CursorComposerAddContext.PNG" alt="CursorComposerAddContext"></p>
 <p><img src="/img/AI/AITools/CursorComposerChat.PNG" alt="CursorComposerChat"></p>
@@ -421,9 +428,19 @@
 <p>Cursor Composer还提供了历史面板的东西，<strong>快捷键:Ctrl+Alt+L</strong>，可以帮助我们快速查看过去的所有Composer提问以及再次操作过去Composer提问的入口:</p>
 <p><img src="/img/AI/AITools/CursorComposerHistory.PNG" alt="CursorComposerHistory"></p>
 <p>关于Agent，这里暂不深入学习，未来有需求再深入了解。</p>
-<h2 id="重点知识"><a href="#重点知识" class="headerlink" title="重点知识"></a>重点知识</h2><h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=KS8QwqfPlQw">Unity+AI:The Game Dev Revolution</a></p>
+<h1 id="AI工作流工具"><a href="#AI工作流工具" class="headerlink" title="AI工作流工具"></a>AI工作流工具</h1><h2 id="Comfyui"><a href="#Comfyui" class="headerlink" title="Comfyui"></a>Comfyui</h2><p><a target="_blank" rel="noopener" href="https://docs.comfy.org/get_started/introduction">ComfyUI is a node based interface and inference engine for generative AI. Users can combine various AI models and operations through nodes to achieve highly customizable and controllable content generation.</a></p>
+<p>个人理解ComfyUI是一个基于节点编辑可组合各种AI模型完成指定AI工作流的一个AI工作流引擎。</p>
+<p>这是未来的学习方向，目前暂时不做更多了解，TODO。</p>
+<h1 id="个人心得"><a href="#个人心得" class="headerlink" title="个人心得"></a>个人心得</h1><ol>
+<li><p><strong>现在底层AI模型百花齐放，上层AI工具也百花齐放，AI提升了人的生产力，但提升多少生产力还在于每个人对于AI的使用深度，AI并不能直接替代人，而是作为工具帮助人更高效的完成工作</strong></p>
+</li>
+<li><p><strong>学会高效使用AI，打通AI工作流是未来我们每一个人必备的一门课。</strong></p>
+</li>
+</ol>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=KS8QwqfPlQw">Unity+AI:The Game Dev Revolution</a></p>
 <p><a target="_blank" rel="noopener" href="https://docs.cursor.com/tab/overview">Cursor Doc</a></p>
-<p><a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/other/unity">Unity Development with VS Code</a></p>
+<p><a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/other/unity">Unity Development with VS Code</a> </p>
+<p><a target="_blank" rel="noopener" href="https://docs.comfy.org/get_started/introduction">ComfyUI</a></p>
 
         
         
