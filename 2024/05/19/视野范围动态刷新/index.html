@@ -1,0 +1,708 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>视野范围动态刷新 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="前言一直以来除了学图形学渲染的时候接触到摄像机的坐标系转换，平时对于摄像机照射范围的原理知之甚少。当我们在做可视区域判定时(比如SLG游戏只会创建可视区域范围内的东西)，我们需要计算出当前摄像机的照射范围，然后动态请求可视化区域内需要新增显示的地图对象。实现可视区域动态请求显示这一步离不开对摄像机可视区域的计算。本文正是为了深入解决可视区域计算，深入理解摄像机照射原理，实现一套可视化摄像机照射区域">
+<meta property="og:type" content="article">
+<meta property="og:title" content="视野范围动态刷新">
+<meta property="og:url" content="http://tonytang1990.github.io/2024/05/19/%E8%A7%86%E9%87%8E%E8%8C%83%E5%9B%B4%E5%8A%A8%E6%80%81%E5%88%B7%E6%96%B0/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="前言一直以来除了学图形学渲染的时候接触到摄像机的坐标系转换，平时对于摄像机照射范围的原理知之甚少。当我们在做可视区域判定时(比如SLG游戏只会创建可视区域范围内的东西)，我们需要计算出当前摄像机的照射范围，然后动态请求可视化区域内需要新增显示的地图对象。实现可视区域动态请求显示这一步离不开对摄像机可视区域的计算。本文正是为了深入解决可视区域计算，深入理解摄像机照射原理，实现一套可视化摄像机照射区域">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Camera/PerspectiveCameraPreview.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/CameraAreaVisualization.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Camera/CameraRayCastVisualization.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/Camera/OrthographicCameraVisualization.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/DynamicCreateMapData1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/MapEditor/DynamicCreateMapData2.PNG">
+<meta property="article:published_time" content="2024-05-19T05:36:00.000Z">
+<meta property="article:modified_time" content="2025-03-20T02:06:03.000Z">
+<meta property="article:author" content="Tony Tang">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/Unity/Camera/PerspectiveCameraPreview.PNG">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2024/05/19/视野范围动态刷新/" title="视野范围动态刷新" itemprop="url">视野范围动态刷新</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2024-05-19T05:36:00.000Z" itemprop="datePublished"> 发表于 2024-05-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%91%84%E5%83%8F%E6%9C%BA"><span class="toc-number">2.</span> <span class="toc-text">摄像机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%84%E5%83%8F%E6%9C%BA%E7%85%A7%E5%B0%84%E5%8C%BA%E5%9F%9F"><span class="toc-number">2.1.</span> <span class="toc-text">摄像机照射区域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%84%E5%83%8F%E6%9C%BA%E7%85%A7%E5%B0%84%E5%8C%BA%E5%9F%9F%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-number">2.2.</span> <span class="toc-text">摄像机照射区域可视化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%84%E5%83%8F%E6%9C%BA%E7%85%A7%E5%B0%84%E5%8C%BA%E5%9F%9F%E5%8A%A8%E6%80%81%E5%88%B7%E6%96%B0"><span class="toc-number">2.3.</span> <span class="toc-text">摄像机照射区域动态刷新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E7%82%B9%E7%9F%A5%E8%AF%86"><span class="toc-number">2.4.</span> <span class="toc-text">重点知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2"><span class="toc-number">3.</span> <span class="toc-text">博客</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GitHub"><span class="toc-number">4.</span> <span class="toc-text">GitHub</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>一直以来除了学图形学渲染的时候接触到摄像机的坐标系转换，平时对于摄像机照射范围的原理知之甚少。当我们在做可视区域判定时(比如SLG游戏只会创建可视区域范围内的东西)，我们需要计算出当前摄像机的照射范围，然后动态请求可视化区域内需要新增显示的地图对象。实现可视区域动态请求显示这一步离不开对摄像机可视区域的计算。<strong>本文正是为了深入解决可视区域计算，深入理解摄像机照射原理，实现一套可视化摄像机照射区域和动态可视区域物体动态创建的工具。</strong></p>
+<h1 id="摄像机"><a href="#摄像机" class="headerlink" title="摄像机"></a>摄像机</h1><p>摄像机目前分为<strong>透视摄像机</strong>和<strong>正交摄像机</strong>，前者有深度概念有透视效果会近大远小，后者忽略深度类似是把3D投射到2D平面的效果。</p>
+<p>首先我们来看一下透视摄像机的投影图：</p>
+<p><img src="/img/Unity/Camera/PerspectiveCameraPreview.PNG" alt="PerspectiveCameraPreview"></p>
+<p>其中<strong>FOV</strong>是透视摄像机里很重要的一个参数，Fov指的是相机视场（Field of View）张角。</p>
+<p><strong>FOV</strong>指的是图中的<strong>DFOV</strong>，即<strong>对角线视场角</strong>。</p>
+<p><strong>VFOV</strong>指的是<strong>垂直视场角</strong>，VFOV是受屏幕高度影响</p>
+<p><strong>HFOV</strong>指的是<strong>水平视场角</strong>，HFOV是受屏幕宽度影响</p>
+<h2 id="摄像机照射区域"><a href="#摄像机照射区域" class="headerlink" title="摄像机照射区域"></a>摄像机照射区域</h2><p>摄像机的可见范围计算原理：</p>
+<ul>
+<li><strong>不考虑摄像机是正交还是透视，通过将屏幕四个角映射到世界坐标系(屏幕坐标到世界坐标)，得到从摄像机到摄像机四个角的射线数据</strong></li>
+<li><strong>计算四条射线到在指定平面的交叉点计算，得出的4个交叉点构成的形状就是我们要的透视摄像机在指定平面上的投影形状</strong></li>
+</ul>
+<p>仅仅是需要知道透视摄像机四条射线的前提下，我们不需要自己去计算DFOV，VFOV，HFOV等数据。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 四个角的视口坐标</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Vector3[] ViewPortPoints = <span class="keyword">new</span> Vector3[<span class="number">5</span>]</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>),        <span class="comment">// 左下角</span></span><br><span class="line">    <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>),        <span class="comment">// 左上角</span></span><br><span class="line">    <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>),        <span class="comment">// 右上角</span></span><br><span class="line">    <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>),        <span class="comment">// 右下角</span></span><br><span class="line">    <span class="keyword">new</span> Vector3(<span class="number">0.5f</span>, <span class="number">0.5f</span>, <span class="number">0</span>),  <span class="comment">// 中心</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取指定摄像机的射线数据列表</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;camera&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;rayCastDataList&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">GetCameraRayCastDataList</span>(<span class="params">Camera camera, <span class="keyword">ref</span> List&lt;KeyValuePair&lt;Vector3, Vector3&gt;&gt; rayCastDataList</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    rayCastDataList.Clear();</span><br><span class="line">    <span class="keyword">if</span>(camera == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(<span class="string">$&quot;不允许传递空摄像机组件，获取摄像机的射线数据列表失败！&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> cameraNearClipPlane = camera.nearClipPlane;</span><br><span class="line">    ViewPortPoints[<span class="number">0</span>].z = cameraNearClipPlane;</span><br><span class="line">    ViewPortPoints[<span class="number">1</span>].z = cameraNearClipPlane;</span><br><span class="line">    ViewPortPoints[<span class="number">2</span>].z = cameraNearClipPlane;</span><br><span class="line">    ViewPortPoints[<span class="number">3</span>].z = cameraNearClipPlane;</span><br><span class="line">    ViewPortPoints[<span class="number">4</span>].z = cameraNearClipPlane;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> isOrthographic = camera.orthographic;</span><br><span class="line">    <span class="keyword">if</span>(isOrthographic)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 转换为射线</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; ViewPortPoints.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            Ray ray = camera.ViewportPointToRay(ViewPortPoints[i]);</span><br><span class="line">            <span class="keyword">var</span> rayCastToPoint = ray.origin + ray.direction * camera.farClipPlane;</span><br><span class="line">            <span class="keyword">var</span> rayCastData = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(ray.origin, rayCastToPoint);</span><br><span class="line">            rayCastDataList.Add(rayCastData);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> radio = camera.farClipPlane / cameraNearClipPlane;</span><br><span class="line">        <span class="keyword">var</span> cameraPosition = camera.transform.position;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取饰扣四个角的屏幕映射世界坐标</span></span><br><span class="line">        <span class="keyword">var</span> lbNearPlaneWorldPoints = camera.ViewportToWorldPoint(ViewPortPoints[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">var</span> ltNearPlaneWorldPoints = camera.ViewportToWorldPoint(ViewPortPoints[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">var</span> rtNearPlaneWorldPoints = camera.ViewportToWorldPoint(ViewPortPoints[<span class="number">2</span>]);</span><br><span class="line">        <span class="keyword">var</span> rbNearPlaneWorldPoints = camera.ViewportToWorldPoint(ViewPortPoints[<span class="number">3</span>]);</span><br><span class="line">        <span class="keyword">var</span> ctNearPlaneWorldPoints = camera.ViewportToWorldPoint(ViewPortPoints[<span class="number">4</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> lbNearPlaneCameraWorldPointDir = lbNearPlaneWorldPoints - cameraPosition;</span><br><span class="line">        <span class="keyword">var</span> ltNearPlaneCameraWorldPointDir = ltNearPlaneWorldPoints - cameraPosition;</span><br><span class="line">        <span class="keyword">var</span> rtNearPlaneCameraWorldPointDir = rtNearPlaneWorldPoints - cameraPosition;</span><br><span class="line">        <span class="keyword">var</span> rbNearPlaneCameraWorldPointDir = rbNearPlaneWorldPoints - cameraPosition;</span><br><span class="line">        <span class="keyword">var</span> ctNearPlaneCameraWorldPointDir = ctNearPlaneWorldPoints - cameraPosition;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> lbFarPlaneWorldPoint = cameraPosition + lbNearPlaneCameraWorldPointDir * radio;</span><br><span class="line">        <span class="keyword">var</span> ltFarPlaneWorldPoint = cameraPosition + ltNearPlaneCameraWorldPointDir * radio;</span><br><span class="line">        <span class="keyword">var</span> rtFarPlaneWorldPoint = cameraPosition + rtNearPlaneCameraWorldPointDir * radio;</span><br><span class="line">        <span class="keyword">var</span> rbFarPlaneWorldPoint = cameraPosition + rbNearPlaneCameraWorldPointDir * radio;</span><br><span class="line">        <span class="keyword">var</span> ctFarPlaneWorldPoint = cameraPosition + ctNearPlaneCameraWorldPointDir * radio;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> lbRayCastData = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(lbNearPlaneWorldPoints, lbFarPlaneWorldPoint);</span><br><span class="line">        <span class="keyword">var</span> ltRayCastData = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(ltNearPlaneWorldPoints, ltFarPlaneWorldPoint);</span><br><span class="line">        <span class="keyword">var</span> rtRayCastData = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(rtNearPlaneWorldPoints, rtFarPlaneWorldPoint);</span><br><span class="line">        <span class="keyword">var</span> rbRayCastData = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(rbNearPlaneWorldPoints, rbFarPlaneWorldPoint);        </span><br><span class="line">        <span class="keyword">var</span> ctRayCastData = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(ctNearPlaneWorldPoints, ctFarPlaneWorldPoint);        </span><br><span class="line">        rayCastDataList.Add(lbRayCastData);</span><br><span class="line">        rayCastDataList.Add(ltRayCastData);</span><br><span class="line">        rayCastDataList.Add(rtRayCastData);</span><br><span class="line">        rayCastDataList.Add(rbRayCastData);</span><br><span class="line">        rayCastDataList.Add(ctRayCastData);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>得到屏幕四个角映射的射线数据后，利用射线和平面的交叉计算得到指定平面交叉的点就能得到我们要的平面照射区域</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Vector3Utilities.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Vector3静态工具类</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Vector3Utilities</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 获取指定射线和平面数据的交叉点(返回null表示没有交叉点)</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;rayOrigin&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;rayDirection&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;planePoint&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;planeNormal&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Vector3? GetRayAndPlaneIntersect(Vector3 rayOrigin, Vector3 rayDirection, Vector3 planePoint, Vector3 planeNormal)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 计算法向量和方向向量的点积</span></span><br><span class="line">        <span class="built_in">float</span> ndotu = Vector3.Dot(planeNormal, rayDirection);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 向量几乎平行，可能没有交点或者射线在平面内</span></span><br><span class="line">        <span class="keyword">if</span> (Mathf.Approximately(Math.Abs(ndotu), Mathf.Epsilon))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 计算 t</span></span><br><span class="line">        Vector3 w = rayOrigin - planePoint;</span><br><span class="line">        <span class="built_in">float</span> t = -Vector3.Dot(planeNormal, w) / ndotu;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 交点在射线起点的后面</span></span><br><span class="line">        <span class="keyword">if</span> (t &lt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 计算交点</span></span><br><span class="line">        Vector3 intersectionPoint = rayOrigin + t * rayDirection;</span><br><span class="line">        <span class="keyword">return</span> intersectionPoint;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取指定摄像机指定区域顶点和法线的的可视区域顶点数据</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;camera&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;areaPoint&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;areaNormal&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;areaPointsList&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;rectPointList&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">GetCameraVisibleArea</span>(<span class="params">Camera camera, Vector3 areaPoint, Vector3 areaNormal, <span class="keyword">ref</span> List&lt;Vector3&gt; areaPointsList, <span class="keyword">ref</span> List&lt;Vector3&gt; rectPointList</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    areaPointsList.Clear();</span><br><span class="line">    rectPointList.Clear();</span><br><span class="line">    <span class="keyword">if</span> (camera == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(<span class="string">$&quot;不允许传递空摄像机组件，获取摄像机的可视区域顶点数据失败！&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    RayCastDataList.Clear();</span><br><span class="line">    GetCameraRayCastDataList(camera, <span class="keyword">ref</span> RayCastDataList);</span><br><span class="line">    <span class="keyword">foreach</span>(<span class="keyword">var</span> rayCastData <span class="keyword">in</span> RayCastDataList)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> rayCastDirection = rayCastData.Value - rayCastData.Key;</span><br><span class="line">        <span class="keyword">var</span> areaData = Vector3Utilities.GetRayAndPlaneIntersect(rayCastData.Key, rayCastDirection, areaPoint, areaNormal);</span><br><span class="line">        <span class="keyword">if</span>(areaData != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            areaPointsList.Add((Vector3)areaData);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    rectPointList.Add(<span class="keyword">new</span> Vector3(areaPointsList[<span class="number">1</span>].x, areaPointsList[<span class="number">0</span>].y, areaPointsList[<span class="number">0</span>].z));</span><br><span class="line">    rectPointList.Add(<span class="keyword">new</span> Vector3(areaPointsList[<span class="number">1</span>].x, areaPointsList[<span class="number">1</span>].y, areaPointsList[<span class="number">1</span>].z));</span><br><span class="line">    rectPointList.Add(<span class="keyword">new</span> Vector3(areaPointsList[<span class="number">2</span>].x, areaPointsList[<span class="number">2</span>].y, areaPointsList[<span class="number">2</span>].z));</span><br><span class="line">    rectPointList.Add(<span class="keyword">new</span> Vector3(areaPointsList[<span class="number">2</span>].x, areaPointsList[<span class="number">3</span>].y, areaPointsList[<span class="number">3</span>].z));</span><br><span class="line">    rectPointList.Add(areaPointsList[<span class="number">4</span>]);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面可以看到无论是areaPointsList还是rectPointList都返回了5个顶点数据，第五个是屏幕中心映射的点。</p>
+<p><strong>之所以返回矩形的映射区域，是为了简化后面透视摄像机梯形判定顶点复杂度，简化成AABB和点的交叉判定。</strong></p>
+<h2 id="摄像机照射区域可视化"><a href="#摄像机照射区域可视化" class="headerlink" title="摄像机照射区域可视化"></a>摄像机照射区域可视化</h2><p>得到了屏幕映射的顶点数据，通过构建线条数据，我们就能利用GUI相关接口画出可视化可见区域了</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 区域顶点</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">Header(<span class="string">&quot;区域顶点&quot;</span>)</span>]</span><br><span class="line"><span class="keyword">public</span> Vector3 AreaPoint = Vector3.zero;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 区域法线</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">Header(<span class="string">&quot;区域法线&quot;</span>)</span>]</span><br><span class="line"><span class="keyword">public</span> Vector3 AreaNormal = Vector3.up;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 更新摄像机指定平面映射区域数据</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UpdateAreaDatas</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    CameraUtilities.GetCameraRayCastDataList(mCameraComponent, <span class="keyword">ref</span> mRayCastDataList);</span><br><span class="line">    CameraUtilities.GetCameraVisibleArea(mCameraComponent, AreaPoint, AreaNormal, <span class="keyword">ref</span> mAreaPointsList, <span class="keyword">ref</span> mRectAreaPointsList);</span><br><span class="line">    mAreaLinesList.Clear();</span><br><span class="line">    mRectAreaLinesList.Clear();</span><br><span class="line">    <span class="keyword">if</span>(mAreaPointsList.Count &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> lbToLtLine = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(mAreaPointsList[<span class="number">0</span>], mAreaPointsList[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">var</span> ltToRtLine = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(mAreaPointsList[<span class="number">1</span>], mAreaPointsList[<span class="number">2</span>]);</span><br><span class="line">        <span class="keyword">var</span> rtToRbLine = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(mAreaPointsList[<span class="number">2</span>], mAreaPointsList[<span class="number">3</span>]);</span><br><span class="line">        <span class="keyword">var</span> rbToLbLine = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(mAreaPointsList[<span class="number">3</span>], mAreaPointsList[<span class="number">0</span>]);</span><br><span class="line">        mAreaLinesList.Add(lbToLtLine);</span><br><span class="line">        mAreaLinesList.Add(ltToRtLine);</span><br><span class="line">        mAreaLinesList.Add(rtToRbLine);</span><br><span class="line">        mAreaLinesList.Add(rbToLbLine);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> rectLbToLtLine = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(mRectAreaPointsList[<span class="number">0</span>], mRectAreaPointsList[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">var</span> rectLtToRtLine = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(mRectAreaPointsList[<span class="number">1</span>], mRectAreaPointsList[<span class="number">2</span>]);</span><br><span class="line">        <span class="keyword">var</span> rectRtToRbLine = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(mRectAreaPointsList[<span class="number">2</span>], mRectAreaPointsList[<span class="number">3</span>]);</span><br><span class="line">        <span class="keyword">var</span> rectRbToLbLine = <span class="keyword">new</span> KeyValuePair&lt;Vector3, Vector3&gt;(mRectAreaPointsList[<span class="number">3</span>], mRectAreaPointsList[<span class="number">0</span>]);</span><br><span class="line">        mRectAreaLinesList.Add(rectLbToLtLine);</span><br><span class="line">        mRectAreaLinesList.Add(rectLtToRtLine);</span><br><span class="line">        mRectAreaLinesList.Add(rectRtToRbLine);</span><br><span class="line">        mRectAreaLinesList.Add(rectRbToLbLine);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 绘制区域信息Gizmos</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawAreaInfoGUI</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> preGizmosColor = Gizmos.color;</span><br><span class="line">    Gizmos.color = Color.green;</span><br><span class="line">    Gizmos.DrawSphere(AreaPoint, SphereSize);</span><br><span class="line">    <span class="keyword">var</span> areaPointTo = AreaPoint + AreaNormal * <span class="number">5</span>;</span><br><span class="line">    Gizmos.DrawLine(AreaPoint, areaPointTo);</span><br><span class="line">    Gizmos.color = preGizmosColor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 绘制矩形区域</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawRectAreaGUI</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> preGizmosColor = Gizmos.color;</span><br><span class="line">    Gizmos.color = <span class="keyword">new</span> Color(<span class="number">0</span>, <span class="number">0.5f</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span>(mRectAreaLinesList.Count &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Gizmos.DrawLine(mRectAreaLinesList[<span class="number">0</span>].Key, mRectAreaLinesList[<span class="number">0</span>].Value);</span><br><span class="line">        Gizmos.DrawLine(mRectAreaLinesList[<span class="number">1</span>].Key, mRectAreaLinesList[<span class="number">1</span>].Value);</span><br><span class="line">        Gizmos.DrawLine(mRectAreaLinesList[<span class="number">2</span>].Key, mRectAreaLinesList[<span class="number">2</span>].Value);</span><br><span class="line">        Gizmos.DrawLine(mRectAreaLinesList[<span class="number">3</span>].Key, mRectAreaLinesList[<span class="number">3</span>].Value);</span><br><span class="line">    &#125;</span><br><span class="line">    Gizmos.color = preGizmosColor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 绘制区域Gizmos</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DrawAreaGUI</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> preGizmosColor = Gizmos.color;</span><br><span class="line">    Gizmos.color = Color.green;</span><br><span class="line">    <span class="keyword">if</span>(mAreaLinesList.Count &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Gizmos.DrawLine(mAreaLinesList[<span class="number">0</span>].Key, mAreaLinesList[<span class="number">0</span>].Value);</span><br><span class="line">        Gizmos.DrawLine(mAreaLinesList[<span class="number">1</span>].Key, mAreaLinesList[<span class="number">1</span>].Value);</span><br><span class="line">        Gizmos.DrawLine(mAreaLinesList[<span class="number">2</span>].Key, mAreaLinesList[<span class="number">2</span>].Value);</span><br><span class="line">        Gizmos.DrawLine(mAreaLinesList[<span class="number">3</span>].Key, mAreaLinesList[<span class="number">3</span>].Value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(mAreaPointsList.Count &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Gizmos.DrawSphere(mAreaPointsList[<span class="number">4</span>], SphereSize);</span><br><span class="line">    &#125;</span><br><span class="line">    Gizmos.color = preGizmosColor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>摄像机照射区域可视化：</p>
+<p><img src="/img/Unity/MapEditor/CameraAreaVisualization.PNG" alt="CameraAreaVisualization"></p>
+<p><strong>可以看到黄色是远截面照射区域，深绿色是近截面照射区域，浅绿色是摄像机近截面换算成矩形后的区域，红色线条是摄像机近截面和远截面射线，</strong></p>
+<p>透视摄像机效果如下:</p>
+<p><img src="/img/Unity/Camera/CameraRayCastVisualization.PNG" alt="CameraRayCastVisualization"></p>
+<p>正交摄像机效果如下:</p>
+<p><img src="/img/Unity/Camera/OrthographicCameraVisualization.PNG" alt="OrthographicCameraVisualization"></p>
+<h2 id="摄像机照射区域动态刷新"><a href="#摄像机照射区域动态刷新" class="headerlink" title="摄像机照射区域动态刷新"></a>摄像机照射区域动态刷新</h2><p>动态区域刷新核心要点:</p>
+<ol>
+<li><strong>映射屏幕4个点得到四条摄像机照射射线，通过计算4条射线与指定平面的交叉点得到照射区域，简化照射区域形状到矩形，将物体是否在照射区域转换成点与AABB交叉判定</strong></li>
+</ol>
+<p>实战摄像机照射区域动态刷新参考地图编辑器:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/MapEditor">MapEditor</a></p>
+<p>实战效果图：</p>
+<p><img src="/img/Unity/MapEditor/DynamicCreateMapData1.PNG" alt="DynamicCreateMapData1"></p>
+<p><img src="/img/Unity/MapEditor/DynamicCreateMapData2.PNG" alt="DynamicCreateMapData2"></p>
+<p>Note:</p>
+<ol>
+<li><strong>屏幕4个顶点计算顺序依次是左下，左上，右上，右下</strong></li>
+</ol>
+<h2 id="重点知识"><a href="#重点知识" class="headerlink" title="重点知识"></a>重点知识</h2><ol>
+<li><strong>不考虑摄像机是正交还是透视，通过将屏幕四个角映射到世界坐标系(屏幕坐标到世界坐标)，得到从摄像机到摄像机四个角的射线数据，然后将摄像机区域计算转换成计算四条射线到在指定平面的交叉点计算，得出的4个交叉点构成的形状就是我们要的透视摄像机在指定平面上的投影形状</strong></li>
+<li><strong>FOV分为DFOV(对角线视场角)，VFOV(垂直视场角，受屏幕高度影响)和HFOV(水平视场角，受屏幕宽度影响)</strong></li>
+<li><strong>透视摄像机看多少不仅受FOV影响还受屏幕分辨率影响</strong></li>
+<li><strong>摄像机指定位置平面照射形状可以转换成摄像机4个射线和平面的相交检测处理</strong></li>
+</ol>
+<h1 id="博客"><a href="#博客" class="headerlink" title="博客"></a>博客</h1><p><a href="https://tonytang1990.github.io/2024/04/23/%E5%9C%B0%E5%9B%BE%E7%BC%96%E8%BE%91%E5%99%A8/">地图编辑器</a></p>
+<h1 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h1><p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/MapEditor">MapEditor</a></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/679453452">根据相机参数计算视场角（Filed of View, FOV）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/graphics/archive/2009/10/17/1585281.html">摄像与平面的相交检测(Ray-Plane intersection test)</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/huangkangying/article/details/108393392">浅析相机FOV</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/395006317">Fov数值推荐设置</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Math/">Math</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Math/">Math</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2024/05/19/%E8%A7%86%E9%87%8E%E8%8C%83%E5%9B%B4%E5%8A%A8%E6%80%81%E5%88%B7%E6%96%B0/" data-title="视野范围动态刷新 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2025/01/01/AI工具/" title="AI工具">
+  <strong>上一篇：</strong><br/>
+  <span>
+  AI工具</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2024/04/23/地图编辑器/"  title="地图编辑器">
+ <strong>下一篇：</strong><br/> 
+ <span>地图编辑器
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%91%84%E5%83%8F%E6%9C%BA"><span class="toc-number">2.</span> <span class="toc-text">摄像机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%84%E5%83%8F%E6%9C%BA%E7%85%A7%E5%B0%84%E5%8C%BA%E5%9F%9F"><span class="toc-number">2.1.</span> <span class="toc-text">摄像机照射区域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%84%E5%83%8F%E6%9C%BA%E7%85%A7%E5%B0%84%E5%8C%BA%E5%9F%9F%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-number">2.2.</span> <span class="toc-text">摄像机照射区域可视化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%84%E5%83%8F%E6%9C%BA%E7%85%A7%E5%B0%84%E5%8C%BA%E5%9F%9F%E5%8A%A8%E6%80%81%E5%88%B7%E6%96%B0"><span class="toc-number">2.3.</span> <span class="toc-text">摄像机照射区域动态刷新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E7%82%B9%E7%9F%A5%E8%AF%86"><span class="toc-number">2.4.</span> <span class="toc-text">重点知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2"><span class="toc-number">3.</span> <span class="toc-text">博客</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GitHub"><span class="toc-number">4.</span> <span class="toc-text">GitHub</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Plugin/" title="Plugin">Plugin<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2025 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
