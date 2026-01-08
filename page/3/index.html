@@ -81,6 +81,138 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2020/05/29/Unity组件绑定/" title="Unity组件绑定" itemprop="url">Unity组件绑定</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2020-05-29T15:35:00.000Z" itemprop="datePublished"> 发表于 2020-05-29</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>游戏开发过程中我们经常会需要访问一些指定节点，组件和脚本。</p>
+<p>常规方式会通过编写GetChild(?)和GetComponent<?>()代码的方式去获取节点和组件，但这样对于开发来说并不高效同时运行时的GetChild(?)和GetComponent<?>()也是有运行开销的。</p>
+<p>为了寻求更高效，高性能和便捷的方式，这里引出组件绑定的工具方案。</p>
+<p><strong>实现一套通用的组件绑定方案</strong>，为未来游戏快速开发打下基础。</p>
+<h2 id="组件绑定原理"><a href="#组件绑定原理" class="headerlink" title="组件绑定原理"></a>组件绑定原理</h2><ol>
+<li>通过Object数组实现通用类型的组件绑定存储</li>
+<li>通过自定义Inspector实现绑定对象，绑定对象组件绑定选择以及模板类型选择，代码生成等UI操作界面</li>
+<li>通过模板+代码生成实现组件绑定的自定义快速代码生成(通过生成partial代码不入侵原始逻辑代码)</li>
+<li>结合自定义ScriptableObject自定义不同模板类型的不同代码输出目录实现自定义代码目录输出设置</li>
+</ol>
+<h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><ol>
+<li><strong>支持通节点不同组件的绑定</strong></li>
+<li><strong>支持节点自定义变量名和注释定义</strong></li>
+<li><strong>支持自定义代码模板的选择生成</strong></li>
+<li><strong>支持组件绑定代码不入侵功能代码(利用partial class)功能生成代码</strong></li>
+<li><strong>支持不同模板类型代码生成输出目录设置</strong></li>
+</ol>
+<h2 id="实战实现"><a href="#实战实现" class="headerlink" title="实战实现"></a>实战实现</h2><h3 id="组件绑定脚本"><a href="#组件绑定脚本" class="headerlink" title="组件绑定脚本"></a>组件绑定脚本</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 节点绑定类</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">DisallowMultipleComponent</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ComponentBinder</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 绑定类型索引值</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> BindCodeTypeIndex;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> UI节点数据</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> List&lt;ComponentBindData&gt; NodeDatas = <span class="keyword">new</span> List&lt;ComponentBindData&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 组件绑定节点信息</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">Serializable</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ComponentBindData</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 节点对象</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">SerializeField</span>]</span><br><span class="line">    <span class="keyword">public</span> UnityEngine.Object NodeTarget;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 变量别名(用于生成代码)</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">SerializeField</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> VariableAlias;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 节点描述</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">SerializeField</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> NodeDes;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ComponentBindData</span>(<span class="params">UnityEngine.Object target</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        NodeTarget = target;</span><br><span class="line">        NodeDes = <span class="built_in">string</span>.Empty;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面的可以看出节点组件和脚本的数据绑定<strong>核心是通过脚本序列化Object[]数组以及相关数据的方式实现绑定节点数据存储的。</strong></p>
+<h3 id="组件绑定自定义面板"><a href="#组件绑定自定义面板" class="headerlink" title="组件绑定自定义面板"></a>组件绑定自定义面板</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 组件绑定自定义Editor</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">CustomEditor(typeof(ComponentBinder))</span>]</span><br><span class="line">[<span class="meta">CanEditMultipleObjects</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ComponentBinderEditor</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这部分代码主要是实现ComponentBinder的Inspector自定义GUI显示，从而实现我们想要的自定义UI操作。</p>
+<h3 id="组件绑定模板代码生成"><a href="#组件绑定模板代码生成" class="headerlink" title="组件绑定模板代码生成"></a>组件绑定模板代码生成</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CompoenntBinder代码生成工具</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">ComponentBinderCodeGenerator</span></span><br><span class="line">&#123;</span><br><span class="line">	******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 模板数据处理类</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TTemplate</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此文件主要是通过自定义选择的模板文件***.txt结合TTemplate工具类实现模板文件txt里的内容自定义生成输出我们想要的代码。</p>
+<p>窗口模板文件示例:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             #FileName#.cs</span></span><br><span class="line"><span class="comment"> * Author:                  #Author#</span></span><br><span class="line"><span class="comment"> * Create Date:             #CreatedDate#</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"><span class="keyword">using</span> TH.Modules.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Game.Modules.UI</span></span><br><span class="line">&#123;	</span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> #ClassName#窗口</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> #<span class="title">ClassName</span># : <span class="title">BaseWindow</span></span><br><span class="line">    &#123;</span><br><span class="line">		<span class="keyword">public</span> <span class="meta">#ClassName#()</span></span><br><span class="line">		&#123;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 添加监听</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">addListeners</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.addListeners();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 窗口显示</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">onShow</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.onShow();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 移除监听</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">removeListeners</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.removeListeners();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 窗口销毁</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">onDestroy</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.onDestroy();</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>窗口组件绑定模板示例:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             #FileName#.cs</span></span><br><span class="line"><span class="comment"> * Author:                  #Author#</span></span><br><span class="line"><span class="comment"> * Create Date:             #CreatedDate#</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"><span class="keyword">using</span> TH.Modules.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Game.Modules.UI</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> #ClassName#窗口的组件绑定</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> #<span class="title">ClassName</span>#</span><br><span class="line">    &#123;</span><br><span class="line">		 <span class="meta">#MEMBER_DEFINITION_LOOP#</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> #NodeDes# <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> <span class="meta">#NodeType# #NodeName#;#MEMBER_DEFINITION_LOOP#</span></span><br><span class="line">		   </span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 缓存组件</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">cacheComponents</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.cacheComponents();</span><br><span class="line">            <span class="meta">#MEMBER_INIT_LOOP#</span></span><br><span class="line">            <span class="meta">#NodeName# = #NodeMemberName#.NodeDatas[#NodeIndex#].NodeTarget as #NodeType#;#MEMBER_INIT_LOOP#</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 释放组件</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">disposeComponents</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.disposeComponents();</span><br><span class="line">			<span class="meta">#MEMBER_DISPOSE_LOOP#</span></span><br><span class="line">            <span class="meta">#NodeName# = null;#MEMBER_DISPOSE_LOOP#</span></span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其他模板生成参考文件:</p>
+<p>CellUIBinder.txt，CellUITemplate.txt，GameObjectUIBinder.txt</p>
+<h3 id="组件绑定设置"><a href="#组件绑定设置" class="headerlink" title="组件绑定设置"></a>组件绑定设置</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> ComponentBindSetting.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 组件绑定设置数据</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">CreateAssetMenu(fileName = <span class="string">&quot;ComponentBinderSetting&quot;</span>, menuName = <span class="string">&quot;ScriptableObjects/ComponentBinderSetting&quot;</span>, order = 1)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ComponentBinderSetting</span> : <span class="title">ScriptableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> ComponentBinderSettingEditor.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 组件绑定自定义Editor</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">CustomEditor(typeof(ComponentBinderSetting))</span>]</span><br><span class="line">[<span class="meta">DisallowMultipleComponent</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ComponentBinderSettingEditor</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实战使用"><a href="#实战使用" class="headerlink" title="实战使用"></a>实战使用</h3><ul>
+<li><p>组件绑定设置</p>
+<p><img src="/img/Unity/ComponentBinder/ComponentBinderSettingUI.PNG" alt="ComponentBinderSettingUI"></p>
+<p><strong>通过自定义模板类型的代码输出路径设置实现自定义代码输出设置</strong></p>
+</li>
+<li><p>组件绑定选择</p>
+<p><img src="/img/Unity/ComponentBinder/ComponentBindChosenUI.PNG" alt="ComponentBindChosenUI"></p>
+<ol>
+<li><strong>支持通节点不同组件的绑定</strong></li>
+<li><strong>支持节点自定义变量名和注释定义</strong></li>
+</ol>
+</li>
+<li><p>自定义绑定节点代码注释</p>
+<p><img src="/img/Unity/ComponentBinder/CustomScriptNotation.PNG" alt="CustomScriptNotation"></p>
+</li>
+<li><p>窗口模板组件绑定设置以及代码生成</p>
+<p><img src="/img/Unity/ComponentBinder/WindowTemplateBindUsing.PNG" alt="WindowTemplateBindUsing"></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             WindowBindPrefab.cs</span></span><br><span class="line"><span class="comment"> * Author:                  TONYTANG</span></span><br><span class="line"><span class="comment"> * Create Date:             2022//05/29</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"><span class="keyword">using</span> TH.Modules.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Game.Modules.UI</span></span><br><span class="line">&#123;	</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> WindowBindPrefab窗口</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">WindowBindPrefab</span> : <span class="title">BaseWindow</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">WindowBindPrefab</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 添加监听</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">addListeners</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.addListeners();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 窗口显示</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">onShow</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.onShow();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 移除监听</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">removeListeners</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.removeListeners();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 窗口销毁</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">onDestroy</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.onDestroy();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             WindowBindPrefabBinder.cs</span></span><br><span class="line"><span class="comment"> * Author:                  TONYTANG</span></span><br><span class="line"><span class="comment"> * Create Date:             2022//05/29</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"><span class="keyword">using</span> TH.Modules.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Game.Modules.UI</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> WindowBindPrefab窗口的组件绑定</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">WindowBindPrefab</span></span><br><span class="line">    &#123;</span><br><span class="line">		 </span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 根GameObject <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> GameObject _rootGo;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 根RectTransform <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> RectTransform _rootRect;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 背景图 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> Image imgBg;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 左侧按钮 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> Button btnLeftSwitch;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 右侧按钮 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> Button btnRightSwitch;</span><br><span class="line">		   </span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 缓存组件</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">cacheComponents</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.cacheComponents();</span><br><span class="line">            </span><br><span class="line">            _rootGo = mComponentBinder.NodeDatas[<span class="number">0</span>].NodeTarget <span class="keyword">as</span> GameObject;</span><br><span class="line">            _rootRect = mComponentBinder.NodeDatas[<span class="number">1</span>].NodeTarget <span class="keyword">as</span> RectTransform;</span><br><span class="line">            imgBg = mComponentBinder.NodeDatas[<span class="number">2</span>].NodeTarget <span class="keyword">as</span> Image;</span><br><span class="line">            btnLeftSwitch = mComponentBinder.NodeDatas[<span class="number">3</span>].NodeTarget <span class="keyword">as</span> Button;</span><br><span class="line">            btnRightSwitch = mComponentBinder.NodeDatas[<span class="number">4</span>].NodeTarget <span class="keyword">as</span> Button;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 释放组件</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">disposeComponents</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.disposeComponents();</span><br><span class="line">			</span><br><span class="line">            _rootGo = <span class="literal">null</span>;</span><br><span class="line">            _rootRect = <span class="literal">null</span>;</span><br><span class="line">            imgBg = <span class="literal">null</span>;</span><br><span class="line">            btnLeftSwitch = <span class="literal">null</span>;</span><br><span class="line">            btnRightSwitch = <span class="literal">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>更多的代码生成示例，参考Github源代码工程。</p>
+<p><img src="/img/Unity/ComponentBinder/GameObjectBinderUI.PNG" alt="GameObjectBinderUI"></p>
+<p><img src="/img/Unity/ComponentBinder/CellBinderUI.PNG" alt="CellBinderUI"></p>
+</li>
+</ul>
+<h2 id="重点知识"><a href="#重点知识" class="headerlink" title="重点知识"></a>重点知识</h2><ol>
+<li><strong>利用自定义UI结合Object[]实现自定义组件绑定数据序列化</strong></li>
+<li><strong>利用代码生成使用partial实现组件绑定代码无缝插入工程代码实现快速替换和访问</strong></li>
+</ol>
+<h2 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h2><p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/ComponentBinder">ComponentBinder</a></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Unity/">Unity</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Unity/">Unity</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2020/05/29/数学与缓动/" title="数学与缓动" itemprop="url">数学与缓动</a>
   </h1>
   <p class="article-author">By
@@ -1985,548 +2117,6 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/10/24/AssetBundle资源打包加载管理学习/" title="AssetBundle资源打包加载管理" itemprop="url">AssetBundle资源打包加载管理</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
-		
-  <p class="article-time">
-    <time datetime="2018-10-24T15:07:12.000Z" itemprop="datePublished"> 发表于 2018-10-24</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇文章是为了记录学习了Unity资源加载(Resource &amp; AssetBundle)相关知识后，对于AssetBundle打包加载框架实战的学习记录。因为前一篇学习Unity资源相关知识的文章太长，所以AssetBundle实战这一块单独提出来写一篇。</p>
-<p>基础知识学习回顾，参考:<br><a href="http://tonytang1990.github.io/2016/10/13/Unity-Resource-Manager">Unity Resource Manager</a></p>
-<h1 id="鸣谢"><a href="#鸣谢" class="headerlink" title="鸣谢"></a>鸣谢</h1><p>这里AssetBundle加载管理的框架思路借鉴了Git上的开源库:<br><a target="_blank" rel="noopener" href="https://github.com/tangzx/ABSystem">tangzx&#x2F;ABSystem</a></p>
-<p>同时也学习了KEngine相关部分的代码：<br><a target="_blank" rel="noopener" href="https://github.com/mr-kelly/KEngine">mr-kelly&#x2F;KEngine</a></p>
-<p>AssetBundle打包这一套后续个人参考<a target="_blank" rel="noopener" href="https://github.com/gmhevinci/MotionFramework">MotionFramework</a>思路编写的。</p>
-<p>Unity官方也推出了一个高度可视化和高度自由度打包方案(个人觉得此工具更适合用于辅助查询打包冗余):<br><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/AssetBundles-Browser">AssetBundles-Browser</a></p>
-<p>本文重点分享，参考ABSystem编写的一套AB加载管理方案实现:<br><a href="http://tonytang1990.github.io/2018/10/24/AssetBundle-Framework/#%E5%9F%BA%E4%BA%8EAB%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E7%9A%84AB%E5%8A%A0%E8%BD%BD%E7%AE%A1%E7%90%86">基于AB引用计数的AB加载管理</a></p>
-<h1 id="AssetBundle打包"><a href="#AssetBundle打包" class="headerlink" title="AssetBundle打包"></a>AssetBundle打包</h1><p>Note:<br>这里的AssetBundle打包主要是针对Unity 5.X以及以后的版本来实现学习的。</p>
-<h2 id="相关工具"><a href="#相关工具" class="headerlink" title="相关工具"></a>相关工具</h2><ol>
-<li>Unity Profiler(Unity自带的新能分析工具，这里主要用于查看内存Asset加载情况)</li>
-<li>Unity Studio(Unity AB以及Asset等资源解析查看工具)</li>
-<li>DisUnity(解析AB包的工具)</li>
-</ol>
-<h2 id="AB打包"><a href="#AB打包" class="headerlink" title="AB打包"></a>AB打包</h2><p>AB打包是把资源打包成assetbundle格式的资源。<br>AB打包需要注意的问题：</p>
-<ol>
-<li>资源冗余</li>
-<li>打包策略</li>
-<li>AB压缩格式</li>
-</ol>
-<h3 id="资源冗余"><a href="#资源冗余" class="headerlink" title="资源冗余"></a>资源冗余</h3><p>这里说的资源冗余是指同一份资源被打包到多个AB里，这样就造成了存在多份同样资源。</p>
-<p>资源冗余造成的问题：</p>
-<ol>
-<li>余造成内存中加载多份同样的资源占用内存。</li>
-<li>同一份资源通过多次IO加载，性能消耗。</li>
-<li>导致包体过大。</li>
-</ol>
-<p>解决方案：<br>依赖打包</p>
-<h4 id="依赖打包"><a href="#依赖打包" class="headerlink" title="依赖打包"></a>依赖打包</h4><p>依赖打包是指指定资源之间的依赖关系，打包时不将依赖的资源重复打包到依赖那些资源的AB里(避免资源冗余)。</p>
-<p>在老版(Unity 5之前)，官方提供的API接口是通过BuildPipeline.PushAssetDependencies和BuildPipeline.PopAssetDependencies来指定资源依赖来解决资源冗余打包的问题。</p>
-<p>在新版(Unity 5以后)，官方提供了针对每个Asset在面板上设置AssetBundle Name的形式指定每个Asset需要打包到的最终AB。然后通过 API接口BuildPipeline.BuildAssetBundles()触发AB一键打包(Unity自己会根据设置AB的名字以及Asset之间的使用依赖决定是否将依赖的资源打包到最终AB里)。或者通过API接口BuildPipeline.BuildAssetBundles(*)传入自定义分析的打包结论指定如何打包。</p>
-<p>这里值得一提的是Unity 5以后提供的增量打包功能。</p>
-<h4 id="增量打包-Unity-5以后"><a href="#增量打包-Unity-5以后" class="headerlink" title="增量打包(Unity 5以后)"></a>增量打包(Unity 5以后)</h4><p>增量打包是指Unity自己维护了一个叫manifest的文件(前面提到过的记录AB包含的Asset以及依赖的AB关系的文件)，每次触发AB打包，Unity只会修改有变化的部分，并将最新的依赖关系写入manifest文件。</p>
-<p>*.manifest记录所有AB打包依赖信息的文件，内容如下：</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">ManifestFileVersion: <span class="number">0</span></span><br><span class="line">CRC: <span class="number">961902239</span></span><br><span class="line">AssetBundleManifest:</span><br><span class="line">  AssetBundleInfos:</span><br><span class="line">    Info_0:</span><br><span class="line">      Name: nonuiprefabs/nui_capsulesingletexture</span><br><span class="line">      Dependencies:</span><br><span class="line">        Dependency_0: materials/mt_singletexturematerial</span><br><span class="line">    Info_1:</span><br><span class="line">      Name: shaders/sd_shaderlist</span><br><span class="line">      Dependencies: &#123;&#125;</span><br><span class="line">    Info_2:</span><br><span class="line">      Name: materials/mt_singletexturematerial</span><br><span class="line">      Dependencies:</span><br><span class="line">        Dependency_0: shaders/sd_shaderlist</span><br><span class="line">        Dependency_1: textures/tx_brick_diffuse</span><br><span class="line">    Info_3:</span><br><span class="line">      Name: textures/tx_brick_diffuse</span><br><span class="line">      Dependencies: &#123;&#125;</span><br><span class="line">    Info_4:</span><br><span class="line">      Name: nonuiprefabs/nui_capsulenormalmappingtexture</span><br><span class="line">      Dependencies: &#123;&#125;</span><br><span class="line">    Info_5:</span><br><span class="line">      Name: textures/tx_brick_normal</span><br><span class="line">      Dependencies: &#123;&#125;</span><br><span class="line">    Info_6:</span><br><span class="line">      Name: materials/mt_normalmappingmaterial</span><br><span class="line">      Dependencies:</span><br><span class="line">        Dependency_0: shaders/sd_shaderlist</span><br><span class="line">        Dependency_1: textures/tx_brick_diffuse</span><br><span class="line">        Dependency_2: textures/tx_brick_normal</span><br></pre></td></tr></table></figure>
-
-<p>问题：<br>虽然Unity5提供了增量打包并记录了依赖关系，但从上面的*.manifest可以看出，依赖关系只记录了依赖的AB的名字没有具体到特定的Asset。</p>
-<p>最好的证明就是上面我把用到的Shader都打包到sd_shaderlist里。在我打包的资源里，有两个shader被用到了(SingleTextShader和NormalMappingShader)，这一点可以通过UnityStudio解压查看sd_shaderlist看到:<br><img src="/img/Unity/AssetBundle-Framework/sd_shaderlist.PNG" alt="sd_shaderlist"></p>
-<p>从上面可以看出Unity的增量打包只是解决了打包时更新哪些AB的判定，而打包出来的*.manifest文件并不能让我们得知用到了具体哪一个Asset而是AssetBundle。</p>
-<p>解决用到哪些Asset这一环节依然是需要我们自己解决的问题，只有存储了用到哪些Asset的信息，我们才能在加载AB的时候对特定Asset做操作(缓存，释放等)。</p>
-<p>Note:<br>每一个AB下面都对应一个.manifest文件，这个文件记录了该AB的asset包含情况以及依赖的AB情况，但这些manifest文件最终不会不打包到游戏里的，只有最外层生成的*.manifest文件(记录了所有AB的打包信息)才会被打包到游戏里，所以才有像前面提到的<a href="http://tonytang1990.github.io/2016/10/13/Unity-Resource-Manager/#AssetBundle">通过读取.manifest文件获取对应AB所依赖的所有AB信息进行加载依赖并最终加载出所需Asset的例子</a></p>
-<h4 id="依赖Asset信息打包"><a href="#依赖Asset信息打包" class="headerlink" title="依赖Asset信息打包"></a>依赖Asset信息打包</h4><p>存储依赖的Asset信息可以有多种方式：</p>
-<ol>
-<li>通过加载依赖AB，依赖Unity自动还原的机制实现依赖Asset加载还原(<em>这正是本博客实现AssetBundle打包以及加载管理的方案</em>)</li>
-<li>存储挂载相关信息到Prefab上<br>在设置好AB名字，打包AB之前，将打包对象上用到的信息通过编写[System.Serializable]可序列化标签抽象数据挂载到该Asset对象上，然后打包AB，打包完AB后在运行时利用打包的依赖信息进行依赖Asset加载还原，从而做到对Asset的生命周期掌控。<br><img src="/img/Unity/DPInfoMono.PNG" alt="DPInfoMono"></li>
-<li>创建打包Asset到同名AB里，加载的时候读取<br>通过AssetDatabase.CreateAsset()和AssetImporter.GetAtPath()将依赖的信息写入新的Asset并打包到相同AB里，加载时加载出来使用。<br><img src="/img/Unity/AssetBundle-Framework/MaterialAssetInfo.PNG" alt="MaterialAssetInfo"></li>
-</ol>
-<h3 id="打包策略"><a href="#打包策略" class="headerlink" title="打包策略"></a>打包策略</h3><p>除了资源冗余，打包策略也很重要。打包策略是指决定各个Asset如何分配打包到指定AB里的策略。打包策略会决定AB的数量，资源冗余等问题。AB数量过多会增加IO负担。资源冗余会导致包体过大，内存中存在多份同样的Asset，热更新资源大小等。</p>
-<p>打包策略：</p>
-<ol>
-<li>Logical entities(按逻辑(功能)分类 – 比如按UI，按模型使用，按场景Share等功能分类)<br>优点：可以动态只更新特定Entity</li>
-<li>Object Types(类型分类 – 主要用于同类型文件需要同时更新的Asset)<br>优点：只适用于少部分需要经常变化更新的小文件</li>
-<li>Concurrent content(加载时机分类 – 比如按Level分类，主要用于游戏里类容固定(Level Based)不会动态变化加载的游戏类型)<br>优点：适合Level based这种一层内容一层不变的游戏类型<br>缺点：不适合用于动态创建对象的游戏类型</li>
-</ol>
-<p>打包策略遵循几个比较基本的准则：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/temas/best-practices/assetbundle-usage-patterns#Managing_Loaded_Assets">Split frequently-updated Objects into different AssetBundles than Objects that usually remain unchanged</a>(频繁更新的Asset不要放到不怎么会修改的Asset里而应分别放到不同的AB里)</li>
-<li><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/temas/best-practices/assetbundle-usage-patterns#Managing_Loaded_Assets">Group together Objects that are likely to be loaded simultaneously</a>(把需要同时加载的Asset尽量打包到同一个AB里)</li>
-</ol>
-<p>从上面可以看出，不同的打包策略适用于不同的游戏类型，根据游戏类型选择最优的策略是关键点。</p>
-<h3 id="AB压缩格式"><a href="#AB压缩格式" class="headerlink" title="AB压缩格式"></a>AB压缩格式</h3><p>AB压缩不压缩问题，主要考虑的点如下:</p>
-<ol>
-<li>加载时间</li>
-<li>加载速度</li>
-<li>资源包体大小</li>
-<li>打包时间</li>
-<li>下载AB时间<br>这里就不针对压缩问题做进一步介绍了，主要根据游戏对于各个问题的需求看重点来决定选择(内存与加载性能的抉择)</li>
-</ol>
-<h3 id="AB打包相关API"><a href="#AB打包相关API" class="headerlink" title="AB打包相关API"></a>AB打包相关API</h3><ol>
-<li>Selection(获取Unity Editor当前勾选对象相关信息的接口)</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object[] assetsselections = Selection.GetFiltered(Type, SelectionMode);</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>AssetDatabase(操作访问Unity Asset的接口)</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取选中Asset的路径</span></span><br><span class="line">assetpath = AssetDatabase.GetAssetPath(assetsselections[i]);</span><br><span class="line"><span class="comment">// 获取选中Asset的GUID</span></span><br><span class="line">assetguid = AssetDatabase.AssetPathToGUID(assetpath);</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>AssetImporter(获取设置Asset的AB名字的接口)</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取指定Asset的Asset设置接口</span></span><br><span class="line">AssetImporter assetimporter = AssetImporter.GetAtPath(assetpath);</span><br><span class="line"><span class="comment">// 设置Asset的AB信息</span></span><br><span class="line">assetimporter.assetBundleVariant = ABVariantName;</span><br><span class="line">assetimporter.assetBundleName = ABName;</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>BuildPipeline(AB打包接口)</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BuildPipeline.BuildAssetBundles(outputPath, BuildAssetBundleOptions, BuildTarget); </span><br><span class="line"></span><br><span class="line">BuildPipeline.BuildAssetBundles(<span class="built_in">string</span> outputPath, AssetBundleBuild[] builds, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);</span><br></pre></td></tr></table></figure>
-
-<p>可以看到AB打包Unity 5.X提供了两个主要的接口：</p>
-<ol>
-<li>前者是依赖于设置每个Asset的AB名字，然后一个接口完成增量打包的方案。<br>优点:<br> 自带增量打包<br>缺点:<br> 需要有一套资源AB命名规则。<br> 开发者可控度低。</li>
-<li>后者是提供给开发者自定义哪些Asset打包到指定AB里的一个接口。<br>优点:<br> 可自行实现指定需求的打包规则。<br> 开发者可控度高。<br>缺点:<br> 不自带增量打包需要自己实现。</li>
-</ol>
-<p>Note:<br>AssetBundle-Browser也是基于前者的一套打包方案，只不过AssetBundle-Browser实现了高度的Asset资源打包可视化操作与智能分析。</p>
-<h2 id="AssetBundle加载管理"><a href="#AssetBundle加载管理" class="headerlink" title="AssetBundle加载管理"></a>AssetBundle加载管理</h2><p>实战学习AB加载之前让我们通过一张图先了解下AB与Asset与GameObject之间的关系:<br><img src="/img/Unity/AssetBundleFramework.PNG" alt="AssetBundleFramework"></p>
-<h3 id="依赖加载还原"><a href="#依赖加载还原" class="headerlink" title="依赖加载还原"></a>依赖加载还原</h3><p>还记得前面说到的依赖的Assest信息打包吗？<br>这里就需要加载出来并使用进行还原了。<br>这里接不细说加载还原了，主要就是通过存储的依赖信息把依赖的Asset加载进来并设置回去的过程(可以是手动设置回去也可以是Unity自动还原的方式)。</p>
-<p>这里主要要注意的是前面那张大图上给出的各种资源类型在Asset加载还原时采用的方式。<br>资源加载还原的方式主要有两种：</p>
-<ol>
-<li><p>复制+引用<br>UI – 复制(GameObject) + 引用(Components,Tranform等)<br>Material – 复制(材质自身) + 引用(Texture和Shader)</p>
-</li>
-<li><p>引用<br>Sprite – 引用<br>Audio – 引用<br>Texture – 引用<br>Shader – 引用<br>Material – 引用</p>
-</li>
-</ol>
-<h3 id="AB加载相关API"><a href="#AB加载相关API" class="headerlink" title="AB加载相关API"></a>AB加载相关API</h3><ol>
-<li>AssetBundle(AB接口)</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 加载本地压缩过的AB</span></span><br><span class="line">AssetBundle.LoadFromFile(abfullpath)</span><br><span class="line"><span class="comment">// 加载AB里的指定Asset</span></span><br><span class="line">AssetBundle.LoadAsset(assetname);</span><br><span class="line"><span class="comment">// 加载AB里的所有Asset</span></span><br><span class="line">AssetBundle.LoadAllAssets();</span><br></pre></td></tr></table></figure>
-
-<h3 id="AB回收相关API"><a href="#AB回收相关API" class="headerlink" title="AB回收相关API"></a>AB回收相关API</h3><ol>
-<li>AssetBundle(AB接口)</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 回收AssetBundle并连带加载实例化出来的Asset以及GameObject一起回收</span></span><br><span class="line">AssetBundle.Unload(<span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 只回收AssetBundle</span></span><br><span class="line">AssetBundle.Unload(<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>Resource(资源接口)</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 回收指定Asset(这里的Asset不能为GameObject)</span></span><br><span class="line">Resource.UnloadAsset(asset);</span><br><span class="line"><span class="comment">// 回收内存以所有不再有任何引用的Asset</span></span><br><span class="line">Resources.UnloadUnusedAssets();</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>GC(内存回收)</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 内存回收</span></span><br><span class="line">GC.Collect();</span><br></pre></td></tr></table></figure>
-
-<p>AB回收的方式有两种：</p>
-<ol>
-<li>AssetBundle.Unload(false)(基于Asset层面的重用，通过遍历判定的方式去判定Asset是否回收)</li>
-<li>AssetBundle.Unload(true)(采取索引技术，基于AB层面的管理，只有AB的引用计数为0时我们直接通过AssetBundle.Unload(true)来卸载AB和Asset资源)</li>
-</ol>
-<p>接下来结合这两种方式，实战演练加深理解。</p>
-<h3 id="基于Asset重用的AB加载"><a href="#基于Asset重用的AB加载" class="headerlink" title="基于Asset重用的AB加载"></a>基于Asset重用的AB加载</h3><p>核心思想：</p>
-<ol>
-<li>打包时存储了依赖的Asset信息，加载时利用存储的依赖信息并还原</li>
-<li>缓存加载进来的Asset的控制权进行重用，卸载AB(AssetBundle.Unload(false))</li>
-<li>加载时通过Clone(复制类型)或者返回缓存Asset(引用类型)进行Asset重用</li>
-</ol>
-<p>一下以之前打包的CapsuleNormalMappingTexture.prefab进行详细说明：<br><img src="/img/Unity/CapsuleNormalMappingPrefab.PNG" alt="CapsuleNormalMappingPrefab.PNG"><br>可以看出CapsuleNormalMappingTexture.prefab用到了如下Asset:</p>
-<ol>
-<li>NormalMappingMaterial(材质)</li>
-<li>Custom&#x2F;Texture&#x2F;NormalMappingShader(Shader)</li>
-<li>Brick_Diffuse和Brick_Normal(纹理)</li>
-</ol>
-<p>开始加载CapsuleNormalMappingTexture.prefab:<br>首先让我们看看加载了CapsuleNormalMappingTexture.prefab前的Asset加载情况:<br><img src="/img/Unity/NonUIPrefabLoadedBeforeProfiler.PNG" alt="NonUIPrefabLoadedBeforeProfiler"><br>可以看出只有Shader Asset被预先加载进来了(因为我预先把所有Shader都加载进来了)<br>第一步：<br>加载CapsuleNormalMappingTexture.prefab对应的AB，因为Prefab是采用复制加引用所以这里需要返回一个通过加载Asset后Clone的一份对象。</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nonuiprefabab = loadAssetBundle(abfullname);</span><br><span class="line"><span class="keyword">var</span> nonuiprefabasset = loadMainAsset(nonuiprefabab);</span><br><span class="line">nonuigo = GameObject.Instantiate(nonuiprefabasset) <span class="keyword">as</span> GameObject;</span><br><span class="line"><span class="comment">// Asest一旦加载进来，我们就可以进行缓存，相应的AB就可以释放掉了</span></span><br><span class="line"><span class="comment">// 后续会讲到相关AB和Asset释放API</span></span><br><span class="line">nonuiprefabab.Unload(<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
-
-<p>第二步：<br>还原依赖材质<br><img src="/img/Unity/DPInfoMono.PNG" alt="DPInfoMono"></p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">NonUIPrefabDepInfo nonuidpinfo = nonuigo.GetComponent&lt;NonUIPrefabDepInfo&gt;();</span><br><span class="line"><span class="keyword">var</span> dpmaterials = nonuidpinfo.mDPMaterialInfoList;</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; dpmaterials.Count; i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; dpmaterials[i].mMaterialNameList.Count; j++)</span><br><span class="line">    &#123;</span><br><span class="line">        MaterialResourceLoader.getInstance().addMaterial(dpmaterials[i].mRenderer, dpmaterials[i].mMaterialNameList[j]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>第三步：<br>还原依赖材质的Shader和Texture依赖引用<br><img src="/img/Unity/MaterialAssetInfo.PNG" alt="MaterialAssetInfo"></p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据材质_InfoAsset.asset进行还原材质原始Shader以及Texture信息</span></span><br><span class="line"><span class="keyword">var</span> materialinfoasseetname = <span class="built_in">string</span>.Format(<span class="string">&quot;&#123;0&#125;_&#123;1&#125;InfoAsset.asset&quot;</span>, materialname, ResourceHelper.CurrentPlatformPostfix);</span><br><span class="line"><span class="keyword">var</span> materialassetinfo = loadSpecificAsset(materialab, materialinfoasseetname.ToLower()) <span class="keyword">as</span> MaterialAssetInfo;</span><br><span class="line"><span class="comment">// 加载材质依赖的Shader</span></span><br><span class="line"><span class="keyword">var</span> materialshader = materialassetinfo.mShaderName;</span><br><span class="line"><span class="keyword">var</span> shader = ShaderResourceLoader.getInstance().getSpecificShader(materialshader);</span><br><span class="line">material.shader = shader;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取Shader使用的Texture信息进行还原</span></span><br><span class="line"><span class="keyword">var</span> materialdptextureinfo = materialassetinfo.mTextureInfoList;</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; materialdptextureinfo.Count; i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 加载指定依赖纹理</span></span><br><span class="line">    Texture shadertexture = TextureResourceLoader.getInstance().loadTexture(materialdptextureinfo[i].Value);</span><br><span class="line">    <span class="comment">//设置材质的对应Texture</span></span><br><span class="line">    material.SetTexture(materialdptextureinfo[i].Key, shadertexture);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>接下让我们看看加载了CapsuleNormalMappingTexture.prefab后的Asset加载情况:<br><img src="/img/Unity/NonUIPrefabLoadedAfterProfiler.PNG" alt="NonUIPrefabLoadedAfterProfiler"><br>可以看出引用的材质和纹理Asest都被加载到内存里了(Shader因为我预先把所有Shader都加载进来了所以就直接重用了没有被重复加载)<br>第四步：<br>对缓存的Asset进行判定是否回收(这里以材质为例，判定方式可能多种多样，我这里是通过判定是否有有效引用)<br>启动一个携程判定特定Material是否不再有有效组件(所有引用组件为空或者都不再使用任何材质)时回收Material Asset</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Resources.UnloadAsset(materialasset);</span><br></pre></td></tr></table></figure>
-
-<p>接下来让我们看看卸载实例对象后，材质被回收的情况：<br><img src="/img/Unity/MaterialRecycleAssetNumer.PNG" alt="MaterialRecycleAssetNumer"><br><img src="/img/Unity/MaterialRecycle.PNG" alt="MaterialRecycle"><br>可以看到没有被引用的材质Asset被回收了，但内存里的Asset数量却明显增加了。<br>这里多出来的是我们还没有回收的Texture以及Prefab的GameObject以及Components Asset依然还在内存里。<br><img src="/img/Unity/AfterMaterialRecyleTextureStatus.PNG" alt="AfterMaterialRecyleTextureStatus"><br><img src="/img/Unity/AfterMaterialRecyleGameObjectStatus.PNG" alt="AfterMaterialRecyleGameObjectStatus"><br><img src="/img/Unity/AfterMaterialRecyleTrasformStatus.PNG" alt="AfterMaterialRecyleTrasformStatus"><br>第五步：<br>通过切换场景触发置空所有引用将还未回收的Asset变成UnsedAsset或者直接触发Texture Asset回收，然后通过Resources.UnloadUnusedAssets()回收所有未使用的Asset</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mNonUIPrefabAssetMap = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>(<span class="keyword">var</span> texture <span class="keyword">in</span> mTexturesUsingMap)</span><br><span class="line">&#123;</span><br><span class="line">    unloadAsset(texture.Value);</span><br><span class="line">&#125;</span><br><span class="line">mTexturesUsingMap = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">Resources.UnloadUnusedAssets();</span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/Unity/AfterAssetsRecyleAssetNumber.PNG" alt="AfterAssetsRecyleAssetNumber"><br><img src="/img/Unity/AfterAssetsRecyleTextureStatus.PNG" alt="AfterAssetsRecyleTextureStatus"><br><img src="/img/Unity/AfterAssetsRecyleGameObjectStatus.PNG" alt="AfterAssetsRecyleGameObjectStatus"><br><img src="/img/Unity/AfterAssetsRecyleTransformStatus.PNG" alt="AfterAssetsRecyleTransformStatus"><br>可以看到所有的Texture, GameObject, Transform都被回收了，并且Asset的数量回到了最初的数值。</p>
-<h3 id="基于AB引用计数的AB加载管理"><a href="#基于AB引用计数的AB加载管理" class="headerlink" title="基于AB引用计数的AB加载管理"></a>基于AB引用计数的AB加载管理</h3><p><strong>这是本文重点分享的部分</strong></p>
-<p>方案1：<br>核心思想：</p>
-<ol>
-<li>基于AB的引用计数 + AssetBundle.Unload(true)</li>
-<li>给每一种资源(e.g. 特效，模型，图片，窗口等)加载都编写统一的资源加载接口(父类抽象)进行自身加载使用的AB引用计数，每个资源负责自身的资源加载管理和返还(主动调用)</li>
-<li>由一个单例管理者统一管理所有加载AB的引用计数信息，负责判定是否可回收</li>
-</ol>
-<p>优点：</p>
-<ol>
-<li>严格的AB引用计数加载管理和释放</li>
-<li>可以做到对资源对象的重用减少GC</li>
-<li>对资源对象的重用可以减少AB的重复加载</li>
-</ol>
-<p>缺点：</p>
-<ol>
-<li>底层管理的内容比较多(比如基于资源对象的重用)，上层灵活度欠缺(相当于对象池已经写在了最底层)</li>
-<li>需要主动去调用返还接口(针对不同资源加载释放时机都需要编写一套对应的代码)</li>
-</ol>
-<p>方案2：<br>核心思想：</p>
-<ol>
-<li>基于AB的引用计数 + AssetBundle.Unload(true)</li>
-<li>绑定加载AB的生命周期判定到Object上(e.g. GameObject，Image，Material等)，上层无需关心AB的引用计数，只需绑定AB到对应的对象上即可</li>
-<li>通过单例管理者统一管理判定依赖使用AB的Object列表是否都为空来判定是否可以回收，无需上层管理AB引用计数返还</li>
-</ol>
-<p>优点：</p>
-<ol>
-<li>上层只需关心AB加载绑定，无需关心AB引用计数返还问题，上层使用灵活度高</li>
-</ol>
-<p>缺点：</p>
-<ol>
-<li>AB的返还判定跟绑定的Object有关，Object被回收后，AB容易出现重复加载(可以在上层写部分对象池来减少AB的重复加载)</li>
-</ol>
-<p>考虑到希望上层灵活度高一些，个人现在倾向于第二种方案。</p>
-<p>接下来基于第二种方案来实战编写资源AB加载的框架。<br>AB打包这一块采用最新的可视化指定打包策略的方式。</p>
-<h2 id="新版AssetBundle加载管理，打包以及热更新"><a href="#新版AssetBundle加载管理，打包以及热更新" class="headerlink" title="新版AssetBundle加载管理，打包以及热更新"></a>新版AssetBundle加载管理，打包以及热更新</h2><p>为了弥补以前设计和实现上不足的地方，从而有了新版AssetBundle加载管理和打包的编写。</p>
-<h3 id="新版AssetBundle加载管理"><a href="#新版AssetBundle加载管理" class="headerlink" title="新版AssetBundle加载管理"></a>新版AssetBundle加载管理</h3><p>老版的资源加载管理缺点：</p>
-<ol>
-<li>面向AssetBundle级别，没有面向Asset级别的加载管理，无法做到Asset级别的加载异步以及Asset级别加载取消的。</li>
-<li>老版AssetDatabase模式要求资源必须在设置AB名字后才能正确使用(因为依赖了AB名字作为加载参数而非资源全路径)，无法做到资源导入即可快速使用的迭代开发</li>
-<li>资源加载类型分类(普通，预加载，常驻)设计过于面向切场景的游戏设计，不通用到所有游戏类型</li>
-<li>老版AssetBundle异步加载采用了开携程的方式，代码流程看起来会比较混乱</li>
-<li>老版异步加载没有考虑设计上支持逻辑层加载打断</li>
-<li>老版代码没有涉及考虑动态AB下载的设计(边玩边下)</li>
-<li>资源加载代码设计还比较混乱，不容易让人看懂看明白</li>
-</ol>
-<p>综合上面4个问题，新版资源加载管理将支持:</p>
-<ol>
-<li>面向Asset级别加载管理，支持Asset和AssetBundle级别的同步异步加载。</li>
-<li>支持资源导入后AssetDatabase模式马上就能配置全路径加载</li>
-<li>资源加载类型只提供普通和常驻两种(且不支持运行时切换相同Asset或AssetBundle的加载类型，意味着一旦第一次加载设定了类型，就再也不能改变，同时第一次因为加载Asset而加载某个AssetBundle的加载类型和Asset一致)，同时提供统一的加载管理策略，细节管理策略由上层自己设计(比如对象池，预加载)</li>
-<li>新版异步加载准备采用监听回调的方式来实现，保证流程清晰易懂</li>
-<li>新版设计请求UID的概念来支持加载打断设计(仅逻辑层面的打断，资源加载不会打断，当所有逻辑回调都取消时，加载完成时会返还索引计数确保资源正确卸载)</li>
-<li>设计上支持动态AB下载(未来填坑)</li>
-<li>加载流程重新设计，让代码更清晰</li>
-<li><strong>保留索引计数(Asset和AssetBundle级别)+对象绑定的设计(Asset和AssetBundle级别)+按AssetBundle级别卸载(依赖还原的Asset无法准确得知所以无法直接卸载Asset)+加载触发就提前计数(避免异步加载或异步加载打断情况下资源管理异常)</strong></li>
-<li><strong>支持非回调式的同步加载返回(通过抽象Loader支持LoadImmediately的方式实现)</strong></li>
-</ol>
-<p>Note:</p>
-<ol>
-<li>一直以来设计上都是加载完成后才添加索引计数和对象绑定，这样对于异步加载以及异步打断的资源管理来说是有漏洞的，<strong>新版资源加载管理准备设计成提前添加索引计数，等加载完成后再考虑是否返还计数的方式确保异步加载以及异步加载打断的正确资源管理</strong></li>
-</ol>
-<p>加载流程设计主要参考:</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/xasset/xasset">XAsset</a></p>
-<p>对象绑定加索引计数设计主要参考:</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/tangzx/ABSystem">tangzx&#x2F;ABSystem</a></p>
-<h4 id="类说明"><a href="#类说明" class="headerlink" title="类说明"></a>类说明</h4><p>Manager统一管理：</p>
-<pre><code>- ModuleManager(单例类 Manager of Manager的管理类)
-- ModuleInterface(模块接口类)
-</code></pre>
-<p>资源加载类：</p>
-<pre><code>- ResourceLoadMethod(资源加载方式枚举类型 -- 同步 or 异步)
-- ResourceLoadMode(资源加载模式 -- AssetBundle or AssetDatabase(**限Editor模式下可切换，支持同步和异步(异步是本地模拟延迟加载来实现的)加载方式**))
-- ResourceLoadState(资源加载状态 -- 错误，等待加载， 加载中，完成，取消之类的)
-- ResourceLoadType(资源加载类型 -- 正常加载，常驻加载)
-- ResourceModuleManager(资源加载模块统一入口管理类)
-- AbstractResourceModule(资源加载模块抽象)
-- AssetBundleModule(AssetBundle模式下的实际加载管理模块)
-- AssetDatabaseModule(AssetDatabase模式下的实际加载管理模块)
-- AbstractResourceInfo(资源加载使用信息抽象)
-- AssetBundleInfo(AssetBundle资源使用信息)
-- AssetInfo(Asset资源使用信息)
-- LoaderManager(加载器管理单例类)
-- Loadable(资源加载器基类--抽象加载流程)
-- AssetLoader(Asset加载器基类抽象)
-- BundleAssetLoader(AssetBundle模式下的Asset加载器)
-- AssetDatabaseLoader(AssetDatabase模式下的Asset加载器)
-- BundleLoader(AssetBundle加载器基类抽象)
-- AssetBundleLoader(本地AssetBundle加载器)
-- DownloadAssetBundleLoader(动态资源AsserBundle加载器)
-- AssetDatabaseAsyncRequest(AssetDatabase模式下异步加载模拟)
-- AssetBundlePath(AB资源路径相关 -- 处理多平台以及热更资源加载路径问题)
-- ResourceDebugWindow.cs(Editor运行模式下可视化查看资源加载(AssetBundle和AssetDatabase两种都支持)详细信息的辅助工具窗口)
-- ResourceConstData(资源打包加载相关常量数据)
-- ResourceLoadAnalyse(资源加载统计分析工具)
-</code></pre>
-<h4 id="AB加载管理方案"><a href="#AB加载管理方案" class="headerlink" title="AB加载管理方案"></a>AB加载管理方案</h4><p>加载管理方案：</p>
-<ol>
-<li>加载指定资源</li>
-<li>加载自身AB(自身AB加载完通知资源加载层移除该AB加载任务避免重复的加载任务被创建)，自身AB加载完判定是否有依赖AB</li>
-<li>有则加载依赖AB(增加依赖AB的引用计数)(依赖AB采用和自身AB相同的加载方式(ResourceLoadMethod),但依赖AB统一采用ResourceLoadType.NormalLoad加载类型)</li>
-<li>自身AB和所有依赖AB加载完回调通知逻辑层可以开始加载Asset资源(AB绑定对象在这一步)</li>
-<li>判定AB是否满足引用计数为0，绑定对象为空，且为NormalLoad加载方式则卸载该AB(并释放依赖AB的计数减一)(通知资源管理层AB卸载，重用AssetBundleInfo对象)</li>
-<li>切场景，递归判定卸载PreloadLoad加载类型AB资源</li>
-</ol>
-<p>相关设计：</p>
-<ol>
-<li>依赖AB与被依赖者采用同样的加载方式(ResourceLoadMethod)，但加载方式依赖AB统一采用ResourceLoadType.NormalLoad</li>
-<li>依赖AB通过索引计数管理，只要原始AB不被卸载，依赖AB就不会被卸载</li>
-<li>已加载的AB资源加载类型只允许从低往高变(NormalLoad -&gt; Preload -&gt; PermanentLoad)，不允许从高往低(PermanentLoad -&gt; Preload -&gt; NormalLoad)</li>
-</ol>
-<h4 id="Demo使用说明"><a href="#Demo使用说明" class="headerlink" title="Demo使用说明"></a>Demo使用说明</h4><p>先打开资源调试工具</p>
-<p>Tools-&gt;Debug-&gt;资源调试工具</p>
-<ol>
-<li><p>AssetBundle和AssetDatabase资源加载模式切换<img src="/./img/Unity/AssetBundle-Framework/AssetDatabaseModuleSwitch.png" alt="AssetDatabaseModuleSwitch"></p>
-</li>
-<li><p>AB依赖信息查看界面</p>
-<p><img src="/./img/Unity/AssetBundle-Framework/AssetBundle-Framework/AssetBundleDepInfoUI.png" alt="AssetBundleDepInfoUI"></p>
-</li>
-<li><p>AB运行时加载管理详细信息界面</p>
-<p><img src="/./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png" alt="AssetBundleLoadManagerUI"></p>
-</li>
-<li><p>加载器信息查看界面</p>
-<p>   <img src="/./img/Unity/AssetBundle-Framework/LoaderDebugUI.png" alt="AssetBundleAsyncUI"></p>
-</li>
-<li><p>测试界面</p>
-<p><img src="/./img/Unity/AssetBundle-Framework/AssetBundleTestUI.png" alt="AssetBundleTestUI"></p>
-</li>
-<li><p>点击加载窗口预制件按钮后:</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ResourceManager.Singleton.getPrefabInstance(</span><br><span class="line">    <span class="string">&quot;Assets/Res/windows/MainWindow.prefab&quot;</span>,</span><br><span class="line">    (prefabInstance, requestUid) =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        mMainWindow = prefabInstance;</span><br><span class="line">        mMainWindow.transform.SetParent(UIRootCanvas.transform, <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png" alt="AssetBundleLoadManagerUIAfterLoadWindow"><br>可以看到窗口mainwindow依赖于loadingscreen，导致我们加载窗口资源时，loadingscreen作为依赖AB被加载进来了(引用计数为1)，窗口资源被绑定到实例出来的窗口对象上(绑定对象MainWindow)</p>
-</li>
-<li><p>点击测试异步转同步加载窗口</p>
-</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 测试异步转同步窗口加载</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAsynToSyncLoadWindow</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    DIYLog.Log(<span class="string">&quot;onAsynToSyncLoadWindow()&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (mMainWindow == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        onDestroyWindowInstance();</span><br><span class="line">    &#125;</span><br><span class="line">    AssetLoader assetLoader;</span><br><span class="line">    <span class="keyword">var</span> requestUID = ResourceManager.Singleton.getPrefabInstanceAsync(</span><br><span class="line">        <span class="string">&quot;Assets/Res/windows/MainWindow.prefab&quot;</span>,</span><br><span class="line">        <span class="keyword">out</span> assetLoader,</span><br><span class="line">        (prefabInstance, requestUid) =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            mMainWindow = prefabInstance;</span><br><span class="line">            mMainWindow.transform.SetParent(UIRootCanvas.transform, <span class="literal">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">// 将异步转同步加载</span></span><br><span class="line">    assetLoader.loadImmediately();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>点击销毁窗口实例对象后</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 销毁窗口实例对象</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroyWindowInstance</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    DIYLog.Log(<span class="string">&quot;onDestroyWindowInstance()&quot;</span>);</span><br><span class="line">    GameObject.Destroy(mMainWindow);</span><br><span class="line">&#125;</span><br><span class="line">窗口销毁后可以看到之前加载的资源所有绑定对象都为空了，因为被销毁了(MainWindow被销毁了)</span><br></pre></td></tr></table></figure>
-
-<p>​		<img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png" alt="AssetBundleLoadManagerUIAfterDestroyWindow"></p>
-<ol start="9">
-<li>等待回收检测回收后<br><img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png" alt="AssetBundleLoadManagerUIAfterUnloadAB"><br>上述资源在窗口销毁后，满足了可回收的三大条件(1. 索引计数为0 2. 绑定对象为空 3. NormalLoad加载方式)，最终被成功回收。</li>
-</ol>
-<p>Note:</p>
-<p>读者可能注意到shaderlist索引计数为0，也没绑定对象，但没有被卸载，这是因为shaderlist是被我预加载以常驻资源的形式加载进来的(PermanentLoad)，所以永远不会被卸载。</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 加载常驻Shader</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadPermanentShaderList</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    DIYLog.Log(<span class="string">&quot;onLoadPermanentShaderList()&quot;</span>);</span><br><span class="line">    ResourceManager.Singleton.loadAllShader(<span class="string">&quot;shaderlist&quot;</span>, () =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    ResourceLoadType.PermanentLoad);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="新版AssetBundle打包"><a href="#新版AssetBundle打包" class="headerlink" title="新版AssetBundle打包"></a>新版AssetBundle打包</h3><p>新版资源打包将支持:</p>
-<ol>
-<li><p><strong>打包AB的策略由抽象的目录打包策略设定决定</strong></p>
-</li>
-<li><p><strong>打包后的AB保留目录结构，确保AB模式和AssetDatabase模式加载都面向Asset路径保持一致性</strong></p>
-</li>
-<li><p><strong>支持打包策略级别的AB压缩格式设置(Note: 仅限使用ScriptableBuildPipeline打包模式)。老版AB打包流程AB压缩格式默认由打包面板压缩格式设置决定。</strong></p>
-</li>
-<li><p><strong>不支持AB变体功能(ScriptableBuildPipeline也不支持变体功能)，AB后缀名统一由打包和加载平台统一添加</strong></p>
-</li>
-<li><p><strong>老版AB依赖信息采用原始打包输出的*Manifest文件。新版ScriptableBuildPipeline采用自定义输出打包的CompatibilityAssetBundleManifest文件。</strong></p>
-</li>
-</ol>
-<p>设计主要参考:</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/gmhevinci/MotionFramework">MotionFramework</a></p>
-<p>核心AB打包思想和流程:</p>
-<ol>
-<li>通过抽象纯虚拟的打包策略设置(即AB收集打包策略设置界面–设置指定目录的打包策略)，做到AB打包策略设置完全抽象AB名字设置无关化(这样一来无需设置AB或清除AB名字，自己完全掌控AB打包策略和打包结论)</li>
-<li>打包时分析打包策略设置的所有有效资源信息，统计出所有有效资源的是否参与打包以及依赖相关等信息，然后结合所有的打包策略设置分析出所有有效Asset的AB打包名字(如果Asset满足多个打包策略设置，默认采用最里层的打包策略设置，找不到符合的采用默认收集打包规则)<strong>(这一步是分析关键，下面细说一下详细步骤)</strong><ul>
-<li>通过自定义设置的打包策略得到所有的有效参与打包路径列表</li>
-<li>通过AssetDatabase.FindAssets()结合打包路径列表得出所有需要分析的Asset</li>
-<li>通过打包配置信息分析所有Asset是否参与打包以及相关打包信息，得出最终的打包信息列表List<AssetBundleBuildInfo></li>
-<li>在最后分析得出最后的打包结论之前，这里我个人将AB的依赖信息文件(AssetBuildInfo.asset)的生成和打包信息单独插入在这里，方便AB依赖信息可以跟AB资源一起构建参与热更</li>
-<li>最后根据分析得出的打包信息列表List<AssetBundleBuildInfo>构建真真的打包信息List<AssetBundleBuild>进行打包</li>
-<li>AB打包完成后进行一些后续的特殊资源处理(比如视频单独打包。AB打包的依赖文件删除(个人采用自定义生成的AssetBuildInfo.Asset作为依赖加载信息文件)。循环依赖检查。创建打包说明文件等。)</li>
-</ul>
-</li>
-<li>不同的打包规则通过反射创建每样一个来实现获取对应打包规则的打包AB名字结论获取(采用全路径AB名的方式，方便快速查看资源打包分布)</li>
-<li>然后根据所有有效Asset的所有AB名字打包结论来分析得出自定义的打包结论(即哪些Asset打包到哪个AB名里)</li>
-<li>接着根据Asset的AB打包结论来生成最新的AssetBuildInfo(Asset打包信息，可以理解成我们自己分析得出的Manifest文件，用于运行时加载作为资源加载的基础信息数来源)(手动将AssetBuildInfo添加到打包信息里打包成AB，方便热更新走统一流程)</li>
-<li>最后采用BuildPipeline.BuildAssetBundles(输出目录, 打包信息列表, ……)的接口来手动指定打包结论的方式触发AB打包。</li>
-</ol>
-<p>AB打包策略支持了如下几种:</p>
-<ol>
-<li>按目录打包(打包策略递归子目录判定)</li>
-<li>按文件打包(打包策略递归子目录判定)</li>
-<li>按固定名字打包(扩展支持固定名字打包–比如所有Shader打包到shaderlist)(打包策略递归子目录判定)</li>
-<li>按文件或子目录打包(打包策略递归子目录判定，设定目录按文件打包，其他下层目录按目录打包)</li>
-<li>不参与打包(打包策略递归子目录判定)</li>
-</ol>
-<p>这里先简单的看下新的AB搜集和打包界面:</p>
-<p><img src="/img/Unity/AssetBundle-Framework/AssetBundleCollectWindow.PNG" alt="AssetBundleCollectWindow"></p>
-<p><img src="/img/Unity/AssetBundle-Framework/AssetBundleBuildWindow.PNG" alt="AssetBundleBuildWindow"></p>
-<p>关于Asset路径与AB路径关联信息存在一个叫assetbundlebuildinfo.asset的ScriptableObejct里(单独打包到assetbuildinfo的AB里)，通过Asset路径如何加载到对应AB的关键就在这里。这里和MotionFramework自定义Manifest文件输出不一样，assetbundlebuildinfo.asset只记录AssetPath和AB相关信息映射，不记录AB依赖信息，依赖信息依然采用AB打包生成的*Manifest文件，同时assetbundlebuildinfo.asset采用打包AB的方式（方便和热更新AB走一套机制）</p>
-<p>让我们先来看下大致数据信息结构:</p>
-<p><img src="/img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView1.PNG" alt="AssetBundleBuildInfoView1"></p>
-<p><img src="/img/Unity/AssetBundle-Framework/AssetBundleBuildInfoView2.PNG" alt="AssetBundleBuildInfoView2"></p>
-<p><strong>2022&#x2F;1&#x2F;26支持了资源打包后缀名黑名单可视化配置+资源名黑名单可视化配置</strong></p>
-<p><img src="/img/Unity/AssetBundle-Framework/PostFixBlackListAndAssetNameBlackList.PNG" alt="PostFixBlackListAndAssetNameBlackList"></p>
-<p><strong>2023&#x2F;2&#x2F;8底层支持了新版ScriptableBuildPipeline打包工具打包，加快打包速度(需添加SCRIPTABLE_ASSET_BUILD_PIPELINE宏)</strong></p>
-<h4 id="Scriptable-Build-Pipeline"><a href="#Scriptable-Build-Pipeline" class="headerlink" title="Scriptable Build Pipeline"></a>Scriptable Build Pipeline</h4><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.scriptablebuildpipeline@1.20/manual/index.html">The Scriptable Build Pipeline (SBP) package allows you to control how Unity builds content. The package moves the previously C++-only build pipeline code to a public C# package with a pre-defined build flow for building AssetBundles. The pre-defined AssetBundle build flow reduces build time, improves incremental build processing, and provides greater flexibility than before.</a></p>
-<p>从介绍可以看出Scriptable Build Pipeline是官方推出的新一代Asset Bundle自定义打包管线系统，主要是为了<strong>增加AB打包自由度和减少AB打包时间</strong>。</p>
-<p>从老版BuildPipeline.BuildAssetBundles(*)自定义分析打包升级到Scriptable Build Pipeline自定义分析打包，注意事项:</p>
-<ol>
-<li>老版打包参数走BuildAssetBundleOptions设置，SBP打包参数走BundleBuildParameters设置</li>
-<li>AB打包结论都是基于自定义分析得到的List<AssetBundleBuild>，<strong>只不过SBP通过自定义分析的List<AssetBundleBuild>构建BundleBuildContent指定AB打包策略</strong></li>
-<li>老版BuildPipeline.BuildAssetBundles(<em>)打包依赖信息是通过输出一个</em>Manifest文件来记录AB依赖信息的，而SBP打包依赖信息是通过打包返回的IBundleBuildResults获取打包Bundle信息后构建自定义CompatibilityAssetBundleManifest数据对象实现类*Manifest依赖信息文件。(<strong>所以SBP自定义AB打包完成后，我们需要创建CompatibilityAssetBundleManifest文件后再单独打包AB</strong>)</li>
-</ol>
-<p>SBP自定义打包代码:</p>
-<p>AssetBundleBuilder.cs</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 执行新版Scriptable Build Pipeline AB打包</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;outputDirectory&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;buildSuccess&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DoSBPAssetBundleBuild</span>(<span class="params"><span class="built_in">string</span> outputDirectory, <span class="keyword">out</span> <span class="built_in">bool</span> buildSuccess</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> buildParams = MakeBuildParameters();</span><br><span class="line">    IBundleBuildResults results;</span><br><span class="line">    SBPAssetBundleBuilder.BuildAllAssetBundles(<span class="keyword">this</span>, outputDirectory, BuildTarget, buildParams, mAllAssetBundleBuildList, <span class="keyword">out</span> buildSuccess, <span class="keyword">out</span> results);</span><br><span class="line">    CreateSBPReadmeFile(outputDirectory, results);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取构建参数</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> CustomBuildParameters <span class="title">MakeBuildParameters</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    CustomBuildParameters bundleBuildParameters = <span class="keyword">new</span> CustomBuildParameters(BuildTarget, BuildTargetGroup, OutputDirectory);</span><br><span class="line">    <span class="comment">//bundleBuildParameters.CacheServerHost = &quot;&quot;;</span></span><br><span class="line">    <span class="comment">//bundleBuildParameters.CacheServerPort = ;</span></span><br><span class="line">    bundleBuildParameters.BundleCompression = GetConfigBuildCompression();</span><br><span class="line">    <span class="keyword">if</span> (IsForceRebuild)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 是否增量打包</span></span><br><span class="line">        bundleBuildParameters.UseCache = !IsForceRebuild;</span><br><span class="line">    &#125;</span><br><span class="line">    bundleBuildParameters.ContiguousBundles = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (IsAppendHash)</span><br><span class="line">    &#123;</span><br><span class="line">        bundleBuildParameters.AppendHash = IsAppendHash;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (IsDisableWriteTypeTree)</span><br><span class="line">    &#123;</span><br><span class="line">        bundleBuildParameters.ContentBuildFlags |= ContentBuildFlags.DisableWriteTypeTree;</span><br><span class="line">    &#125;</span><br><span class="line">    bundleBuildParameters.ContentBuildFlags |= ContentBuildFlags.StripUnityVersion;</span><br><span class="line">    <span class="keyword">if</span> (IsIgnoreTypeTreeChanges)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// SBP不支持BuildAssetBundleOptions.IgnoreTypeTreeChanges</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 添加自定义AB压缩格式设置</span></span><br><span class="line">    <span class="keyword">foreach</span>(<span class="keyword">var</span> assetBundleBuildInfo <span class="keyword">in</span> mAllAssetBundleBuildInfoList)</span><br><span class="line">    &#123;</span><br><span class="line">        bundleBuildParameters.AddAssetBundleCompression(assetBundleBuildInfo.AssetBundleName, assetBundleBuildInfo.Compression);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bundleBuildParameters;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>SBPAssetBundleBuilder.cs</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 执行新版Scriptable Build Pipeline自定义AB打包</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;assetBundleBuilder&quot;&gt;</span>AB打包工具<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;outputDirectory&quot;&gt;</span>输出目录<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;buildTarget&quot;&gt;</span>打包平台<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;options&quot;&gt;</span>打包选项设置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;allAssetBundleBuildList&quot;&gt;</span>AB打包列表<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;buildSuccess&quot;&gt;</span>打包是否成功<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;results&quot;&gt;</span>打包结果<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> CompatibilityAssetBundleManifest <span class="title">BuildAllAssetBundles</span>(<span class="params">AssetBundleBuilder assetBundleBuilder, <span class="built_in">string</span> outputDirectory, BuildTarget buildTarget, CustomBuildParameters buildParams, List&lt;AssetBundleBuild&gt; allAssetBundleBuildList, <span class="keyword">out</span> <span class="built_in">bool</span> buildSuccess, <span class="keyword">out</span> IBundleBuildResults results</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    ScriptableBuildPipeline.slimWriteResults = <span class="literal">true</span>;</span><br><span class="line">    ScriptableBuildPipeline.useDetailedBuildLog = <span class="literal">false</span>;</span><br><span class="line">    ScriptableBuildPipeline.threadedArchiving = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">var</span> buildContent = <span class="keyword">new</span> BundleBuildContent(allAssetBundleBuildList);</span><br><span class="line">    ReturnCode exitCode = ContentPipeline.BuildAssetBundles(buildParams, buildContent, <span class="keyword">out</span> results);</span><br><span class="line">    buildSuccess = exitCode &gt;= ReturnCode.Success;</span><br><span class="line">    <span class="keyword">if</span> (exitCode &lt; ReturnCode.Success)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(<span class="string">$&quot;[BuildPatch] 构建过程中发生错误exitCode:<span class="subst">&#123;exitCode&#125;</span>！&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    CompatibilityAssetBundleManifest unityManifest = CreateAndBuildAssetBundleManifest(assetBundleBuilder, outputDirectory, buildParams, results, <span class="keyword">out</span> buildSuccess);</span><br><span class="line">    CheckCycleDependSBP(unityManifest);</span><br><span class="line">    <span class="keyword">return</span> unityManifest;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 创建并打包AssetBundleManifest</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Note:</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 1. 新版Scriptable Build Pipeline打包没有AssetBundleManifest文件，需要自己创建并打包CompatibilityAssetBundleManifest兼容文件</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;assetBundleBuilder&quot;&gt;</span>AB打包工具<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;outputDirectory&quot;&gt;</span>输出目录<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;buildParams&quot;&gt;</span>打包参数<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;results&quot;&gt;</span>打包结果<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;buildSuccess&quot;&gt;</span>打包是否成功<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> CompatibilityAssetBundleManifest <span class="title">CreateAndBuildAssetBundleManifest</span>(<span class="params">AssetBundleBuilder assetBundleBuilder, <span class="built_in">string</span> outputDirectory, CustomBuildParameters buildParams, IBundleBuildResults results, <span class="keyword">out</span> <span class="built_in">bool</span> buildSuccess</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> outputDirectoryFullPath = Path.GetFullPath(outputDirectory);</span><br><span class="line">    <span class="keyword">var</span> outputDirectoryInfo = <span class="keyword">new</span> DirectoryInfo(outputDirectoryFullPath);</span><br><span class="line">    <span class="keyword">var</span> manifestName = outputDirectoryInfo.Name;</span><br><span class="line">    <span class="keyword">var</span> manifest = ScriptableObject.CreateInstance&lt;CompatibilityAssetBundleManifest&gt;();</span><br><span class="line">    manifest.SetResults(results.BundleInfos);</span><br><span class="line">    <span class="keyword">var</span> manifestPath = buildParams.GetOutputFilePathForIdentifier(<span class="string">$&quot;<span class="subst">&#123;manifestName&#125;</span>.manifest&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;manifestPath:<span class="subst">&#123;manifestPath&#125;</span>&quot;</span>);</span><br><span class="line">    <span class="keyword">var</span> manifestAssetFolderPath = <span class="string">$&quot;Assets/SBPBuildManifest/<span class="subst">&#123;buildParams.Target&#125;</span>&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span>(!Directory.Exists(manifestAssetFolderPath))</span><br><span class="line">    &#123;</span><br><span class="line">        Directory.CreateDirectory(manifestAssetFolderPath);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> manifestAssetFilePath = Path.Combine(manifestAssetFolderPath, <span class="string">$&quot;<span class="subst">&#123;manifestName&#125;</span>.asset&quot;</span>);</span><br><span class="line">    AssetDatabase.CreateAsset(manifest, manifestAssetFilePath);</span><br><span class="line">    AssetDatabase.SaveAssets();</span><br><span class="line">    AssetDatabase.Refresh();</span><br><span class="line">    <span class="keyword">var</span> buildContent = <span class="keyword">new</span> BundleBuildContent(<span class="keyword">new</span>[]</span><br><span class="line">                                              &#123;</span><br><span class="line">                                                  <span class="keyword">new</span> AssetBundleBuild()</span><br><span class="line">                                                  &#123;</span><br><span class="line">                                                      assetBundleName = manifestName,</span><br><span class="line">                                                      assetBundleVariant = assetBundleBuilder.GetAssetBuildBundleVariant(manifestAssetFilePath),</span><br><span class="line">                                                      assetNames = <span class="keyword">new</span>[] &#123; manifestAssetFilePath &#125;,</span><br><span class="line">                                                      <span class="comment">// Manifest的Asset名强制用固定名字</span></span><br><span class="line">                                                      addressableNames = <span class="keyword">new</span>[] &#123; ResourceConstData.AssetBundleManifestAssetName &#125;,</span><br><span class="line">                                                  &#125;</span><br><span class="line">                                              &#125;);</span><br><span class="line">    <span class="keyword">var</span> exitCode = ContentPipeline.BuildAssetBundles(buildParams, buildContent, <span class="keyword">out</span> _);</span><br><span class="line">    buildSuccess = exitCode &gt;= ReturnCode.Success;</span><br><span class="line">    <span class="keyword">if</span>(exitCode &lt; ReturnCode.Success)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(<span class="string">$&quot;打包AssetBundleManifest失败！eixtCode:<span class="subst">&#123;exitCode&#125;</span>&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Debug.Log(<span class="string">$&quot;AB的Manifest打包成功！&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> manifest;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>详情代码参考Github源码：</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/AssetBundleLoadManager">AssetBundleLoadManager</a></p>
-<p>Note:</p>
-<ol>
-<li><strong>并非老版所有的功能SBP都支持，具体区别参考:<a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.scriptablebuildpipeline@1.20/manual/UpgradeGuide.html">SBP Upgrade Guide</a></strong></li>
-<li><strong>Scriptable Build Pipeline不支持变体功能</strong></li>
-<li><strong>打包参数*StripUnityVersion个人测试SBP不起作用，原因不明</strong></li>
-<li><strong>自定义AB打包时，AssetBundleBuild.assetNames必须传Asset全路径(Assets&#x2F;<em>&#x2F;</em>&#x2F;*)</strong></li>
-<li><strong>自定义AB打包时，AssetBundleBuild.addressableNames传Asset全路径后，老版AB打包支持Asset加载使用多种加载方式(e.g. 全路径，文件名，文件名带后缀等)，但SBP  AB打包只支持按打包测AssetBundleBuild.addressableNames传设置的方式加载Asset</strong></li>
-<li><strong>个人测试完全删除所有缓存AB重打的前提下，只对比AB打包这一步，SBP比老版AB打包速度要快10倍左右</strong></li>
-</ol>
-<h3 id="新版资源热更新流程"><a href="#新版资源热更新流程" class="headerlink" title="新版资源热更新流程"></a>新版资源热更新流程</h3><h4 id="类说明-1"><a href="#类说明-1" class="headerlink" title="类说明"></a>类说明</h4><p>热更类：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- HotUpdateModuleManager.cs(热更新管理模块单例类)</span><br><span class="line">- TWebRequest.cs(资源下载http抽象类)</span><br></pre></td></tr></table></figure>
-
-<p>版本信息类：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- VersionConfigModuleManager.cs(版本管理模块单例类)</span><br><span class="line">- VersionConfig.cs(版本信息抽象类)</span><br></pre></td></tr></table></figure>
-
-<h4 id="功能支持"><a href="#功能支持" class="headerlink" title="功能支持"></a>功能支持</h4><ol>
-<li>支持游戏内版本强更(完成 – 暂时限Android，IOS待测试)</li>
-<li>支持游戏内资源热更(完成 – 暂时限Android， IOS待测试)</li>
-<li>支持游戏内代码热更(未做)</li>
-</ol>
-<h4 id="热更测试说明"><a href="#热更测试说明" class="headerlink" title="热更测试说明"></a>热更测试说明</h4><p>之前是使用的<a target="_blank" rel="noopener" href="http://www.rejetto.com/hfs/">HFS</a>快速搭建的一个资源本地资源服务器，后来使用阿里的ISS静态资源服务器做了一个网络端的资源服务器。</p>
-<p>版本强更流程：</p>
-<ol>
-<li>比较包内版本信息和包外版本信息检查是否强更过版本</li>
-<li>如果强更过版本清空包外相关信息目录</li>
-<li>通过资源服务器下载最新服务器版本信息(ServerVersionConfig.json)和本地版本号作对比，决定是否强更版本</li>
-<li>结合最新版本号和资源服务器地址(Json配置)拼接出最终热更版本所在的资源服务器地址</li>
-<li>下载对应版本号下的强更包并安装</li>
-<li>安装完成，退出游戏重进</li>
-</ol>
-<p>资源热更流程：</p>
-<ol>
-<li><p>初始化本地热更过的资源列表信息(暂时存储在:Application.persistentDataPath + “&#x2F;ResourceUpdateList&#x2F;ResourceUpdateList.txt”里)</p>
-</li>
-<li><p>通过资源服务器下载最新服务器版本信息(ServerVersionConfig.json)和本地资源版本号作对比，决定是否资源热更</p>
-</li>
-<li><p>结合最新版本号，最新资源版本号和资源服务器地址(Json配置)拼接出最终资源热更所在的资源服务器地址</p>
-</li>
-<li><p>下载对应地址下的AssetBundleMD5.txt(里面包含了对应详细资源MD5信息)</p>
-<p>AssetBundleMD5.txt</p>
-<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">assetbuildinfo.bundle|ca830d174533e87efad18f1640e5301d</span><br><span class="line">shaderlist.bundle|2ac2d75f7d91fda7880f447e21b2e289</span><br><span class="line">******</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>根据比较对应地址下的AssetBundleMD5.txt里的资源MD5信息和本地资源MD5信息(包外的MD5信息优先)得出需要更新下载的资源列表</p>
-</li>
-<li><p>根据得出的需要更新的资源列表下载对应资源地址下的资源并存储在包外(Application.persistentDataPath + “&#x2F;Android&#x2F;“)，同时写入最新的资源MD5信息文件(本地AssetBundleMD5.txt)到本地</p>
-</li>
-<li><p>直到所有资源热更完成，退出重进游戏</p>
-</li>
-</ol>
-<h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="/img/Unity/HotUpdate/HotUpdateFlowChat.png" alt="HotUpdateFlowChat"></p>
-<h4 id="热更新辅助工具"><a href="#热更新辅助工具" class="headerlink" title="热更新辅助工具"></a>热更新辅助工具</h4><p>Tools-&gt;HotUpdate-&gt;热更新操作工具</p>
-<p><img src="/img/Unity/HotUpdate/HotUpdateToolsUI.png" alt="HotUpdateToolsUI"></p>
-<p>主要分为以下2个阶段：</p>
-<ul>
-<li><p>热更新准备阶段:</p>
-<ol>
-<li>每次资源打包会在包内Resource目录生成一个AssetBundleMd5.txt文件用于记录和对比哪些资源需要热更</li>
-</ol>
-<p>​    <img src="/./img/Unity/HotUpdate/AssetBundleMD5File.png" alt="AssetBundleMD5File"></p>
-<ol start="2">
-<li>执行热更新准备操作，生成热更新所需服务器最新版本信息文件(ServerVersionConfig.json)并将包内对应平台资源拷贝到热更新准备目录</li>
-</ol>
-<p><img src="/./img/Unity/HotUpdate/HotUpdatePreparationFolder.png" alt="HotUpdatePreparationFolder"></p>
-</li>
-<li><p>热更新判定阶段</p>
-<ol>
-<li><p>初始化包内(AssetBundleMd5.txt)和包外(AssetBundleMd5.txt)热更新的AssetBundle MD5信息(先读包内后读包外以包外为准)</p>
-</li>
-<li><p>游戏运行拉去服务器版本和资源版本信息进行比较是否需要版本强更或资源热更新</p>
-</li>
-<li><p>需要资源热更新则拉去对应最新资源版本的资源MD5信息文件(AssetBundleMD5.txt)进行和本地资源MD5信息进行比较判定哪些资源需要热更新</p>
-</li>
-<li><p>拉去所有需要热更新的资源，完成后进入游戏</p>
-</li>
-</ol>
-</li>
-</ul>
-<p>Note:</p>
-<ol>
-<li>每次打包版本时会拷贝一份AssetBundleMD5.txt到打包输出目录(保存一份方便查看每个版本的资源MD5信息)</li>
-</ol>
-<h4 id="热更包外目录结构"><a href="#热更包外目录结构" class="headerlink" title="热更包外目录结构"></a>热更包外目录结构</h4><p>PersistentAsset -&gt; HotUpdate -&gt; Platform(资源热更新目录)<br>PersistentAsset -&gt; HotUpdate -&gt; AssetBundleMd5.txt(记录热更新的AssetBundle路径和MD5信息–兼顾进游戏前资源热更和动态资源热更)(格式:热更AB路径:热更AB的MD5&#x2F;n热更AB路径:热更AB的MD5******)<br>PersistentAsset -&gt; Config -&gt; VersionConfig.json(包外版本信息–用于进游戏前强更和热更判定)</p>
-<p>PersistentAsset -&gt; HotUpdate -&gt; 版本强更包</p>
-<h2 id="资源辅助工具"><a href="#资源辅助工具" class="headerlink" title="资源辅助工具"></a>资源辅助工具</h2><p>资源辅助工具五件套：</p>
-<ul>
-<li><p>AB删除判定工具</p>
-<p>​    <img src="/img/Unity/AssetBundle-Framework/DeleteRemovedAssetBundle.png" alt="DeleteRemovedAssetBundle"></p>
-</li>
-<li><p>资源依赖查看工具</p>
-<p>​    <img src="/img/Unity/AssetBundle-Framework/AssetDependenciesBrowser.png" alt="AssetDependenciesBrowser"></p>
-</li>
-<li><p>内置资源依赖统计工具(只统计了*.mat和*.prefab，场景建议做成Prefab来统计)</p>
-<p>​    <img src="/img/Unity/AssetBundle-Framework/BuildInResourceReferenceAnalyze.png" alt="BuildInResourceReferenceAnalyze"></p>
-</li>
-<li><p>内置资源提取工具</p>
-<p>​    <img src="/img/Unity/AssetBundle-Framework/BuildInResourceExtraction.png" alt="BuildInResourceExtraction"></p>
-</li>
-<li><p>Shader变体搜集工具</p>
-<p>​    <img src="/img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png" alt="ShaderVariantsCollection"></p>
-</li>
-</ul>
-<h2 id="AB实战总结"><a href="#AB实战总结" class="headerlink" title="AB实战总结"></a>AB实战总结</h2><ol>
-<li>AB打包和加载是一个相互相存的过程。</li>
-<li>Unity 5提供的增量打包只是提供了更新部分AB的打包机制，*.manifest文件里也只提供依赖的AB信息并非Asset，所以想基于Asset的重用还需要我们自己处理。</li>
-<li>Unity并非所有的Asset都是采用复制而是部分采用复制，部分采用引用的形式，只有正确掌握了这一点，我们才能确保Asset真确的重用和回收。</li>
-<li>打包策略是根据游戏类型，根据实际情况而定。</li>
-<li>AB压缩格式选择取决于内存和加载性能以及包体大小等方面的抉择。</li>
-<li>资源管理策略而言，主要分为基于Asset管理(AssetBundle.Unload(false))还是基于AB管理(AssetBundle.Unload(true))，前者容易出现内存中多份重复资源，后者需要确保严格的管理机制(比如索引计数))</li>
-</ol>
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://github.com/tangzx/ABSystem">tangzx&#x2F;ABSystem</a><br><a target="_blank" rel="noopener" href="https://github.com/mr-kelly/KEngine">mr-kelly&#x2F;KEngine</a><br><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/AssetBundles-Browser">AssetBundles-Browser</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Resource/">Resource</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Resource/">Resource</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/2/">&lt;span&gt;&lt;&#x2F;span&gt;Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next&lt;span&gt;&lt;&#x2F;span&gt;</a>
@@ -2548,7 +2138,7 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 		<ul>
 		
 		  
-			<li><a href="/categories/AI/" title="AI">AI<sup>3</sup></a></li>
+			<li><a href="/categories/AI/" title="AI">AI<sup>4</sup></a></li>
 		  
 		
 		  
@@ -2653,11 +2243,11 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 			
 		
 			
-				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+				<li><a href="/tags/AI/" title="AI">AI<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/AI/" title="AI">AI<sup>3</sup></a></li>
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
 			
 		
 			
