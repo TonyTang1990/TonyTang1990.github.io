@@ -81,6 +81,409 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2026/01/12/Copilot/" title="Copilot" itemprop="url">Copilot</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2026-01-12T04:00:00.000Z" itemprop="datePublished"> 发表于 2026-01-12</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>AI编程工具盛行，学习AI编程工具的使用和底层原理是很有必要的，在<a href="">AI工具</a>通过多方面考量和对比市面上的AI编程工具，决定选择Copilot作为深入AI编程学习的切入口，本章节是为了详细记录AI编程工具的使用和深入学习AI编程相关概念。</p>
+<h2 id="Copilot"><a href="#Copilot" class="headerlink" title="Copilot"></a>Copilot</h2><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/GitHub_Copilot"><strong>GitHub Copilot</strong>是GitHub和OpenAI合作开发的一个人工智能工具，用户在使用Visual Studio Code、Microsoft Visual Studio、Vim、Cursor或JetBrains集成开发环境时可以通过GitHub Copilot自动补全代码。Copilot的OpenAI Codex接受了一系列英语语言、公共 GitHub 存储库和其他公开可用源代码的训练。这包括来自 5400 万个公共 GitHub 存储库的 159 GB Python 代码的过滤数据集。</a></p>
+<p>从介绍可以看出Copilot主打的是基于代码的学习，提供代码AI自动补全的功能。</p>
+<p>Copilot是微软旗下的，所以对Visual Studio，VS Code等微软<strong>IDE支持比较完善</strong>，下载VS时就自带集成Copilot。</p>
+<p><strong>支持基于Github大量代码学习的代码智能推断补全，支持Agent聊天问答，支持多个模型选择，支持代码Review等功能。</strong></p>
+<p>优势：</p>
+<ol>
+<li><strong>不用切换IDE，直接嵌入各大主流IDE</strong></li>
+<li><strong>微软官方支持且基于Github的大量代码知识</strong></li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>Copilot基础版免费，Pro版需要付费购买(10美元每月-个人推荐这个)，Pro+(39美元每月)[<a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/zh-hans/vs/pricing/?tab=paid-subscriptions%5D)%E3%80%82">https://visualstudio.microsoft.com/zh-hans/vs/pricing/?tab=paid-subscriptions])。</a></strong></li>
+</ol>
+<h2 id="Copilot安装"><a href="#Copilot安装" class="headerlink" title="Copilot安装"></a>Copilot安装</h2><ol>
+<li><p>官方下载带Copilot的Visual Studio 2022[<a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/github-copilot/]">https://visualstudio.microsoft.com/github-copilot/]</a></p>
+</li>
+<li><p>新建工程</p>
+</li>
+<li><p>右上角点击Github Copilot-&gt;打开聊天框</p>
+</li>
+</ol>
+<p><img src="/img/AI/AITools/Copilot/CopilotEntry.PNG" alt="CopilotEntry"></p>
+<p>Note:</p>
+<ol>
+<li><strong>Ctrl+Alt+L快捷键打开VSCode Copilot Chat</strong></li>
+</ol>
+<h2 id="Completions"><a href="#Completions" class="headerlink" title="Completions"></a>Completions</h2><p>敲击代码，Copilot会根据代码智能推断即将编写的代码，敲击tab应用智能推断的代码</p>
+<p><img src="/img/AITools/Copilot/IntelligentPrompt.PNG" alt="IntelligentPrompt"></p>
+<p>敲击注释，Copilot也会根据注释去推断即将编写的代码，敲击tab应用智能推断的代码</p>
+<p><img src="/img/AITools/Copilot/IntelligentPromptFromNotation.PNG" alt="IntelligentPromptFromNotation"></p>
+<p>只接受一部分Copilot智能推断的代码，Windows上Ctrl+→按键</p>
+<p><img src="/img/AITools/Copilot/AcceptPartOfIntelligentPrompt.PNG" alt="AcceptPartOfIntelligentPrompt"></p>
+<p><strong>决定不启用智能推断的代码，点击Esc按键</strong></p>
+<h2 id="Prompt"><a href="#Prompt" class="headerlink" title="Prompt"></a>Prompt</h2><p>**Prompt(提示词)**可以帮助AI更加准确的理解我们的需求，给出更更准确的代码推断和需求编写。</p>
+<p>前面的Completions提到注释描述给AI提示，以及Chat中提到针对<strong>代码片段的提问(Alt+I)</strong>，在提问时我们通过自然语言准确描述需求比泛化的描述可以更加准确的让AI理解我们给出的指令，得到更准确的目标结果。</p>
+<p>泛化的Prompt，比如注释描述”&#x2F;&#x2F; Some Code”</p>
+<p>此时无论是AI还是人其实都无法理解我们具体想做什么，所以AI并没与给出任何有效的代码推断</p>
+<p><img src="/img/AI/AITools/Copilot/BadPrompt.PNG" alt="BadPrompt"></p>
+<p>好的Prompt，比如注释描述”&#x2F;&#x2F; define a function that is used to compare to int value”</p>
+<p><img src="/img/AI/AITools/Copilot/GoodPrompt.PNG" alt="GoodPrompt"></p>
+<p>可以看到好的提示词成功让AI理解了需求并给出了准确的推断编写代码。</p>
+<h2 id="Chat"><a href="#Chat" class="headerlink" title="Chat"></a>Chat</h2><p>聊天模式氛围Ask Mode和Agent Mode</p>
+<p>聊天模式切换:</p>
+<p><img src="/img/AI/AITools/Copilot/AgentModeChosen.PNG" alt="AgentModeChosen"></p>
+<h3 id="Ask-Mode"><a href="#Ask-Mode" class="headerlink" title="Ask Mode"></a>Ask Mode</h3><p>AI提问模式交互，打开Copilot后，右下方有聊天窗口</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotInteraction.PNG" alt="CopilotInteraction"></p>
+<p>点击代码块右上方的应用则可以将Copilot生成的代码生成到我们的代码里</p>
+<p><img src="/img/AI/AITools/Copilot/AICodeApply.PNG" alt="AICodeApply"></p>
+<p>在代码区点击**放弃(Alt+Del)**则可以放弃方才应用的代码</p>
+<p><img src="/img/AI/AITools/Copilot/AICodeGiveUp.PNG" alt="AICodeGiveUp"></p>
+<p>代码块交互聊天，选中需要询问的代码，按Alt+&#x2F;</p>
+<p><img src="/img/AI/AITools/Copilot/CodeSnippetChat.PNG" alt="CodeSnippetChat"></p>
+<p>交互聊天有一系列的快捷操作指令</p>
+<p>输入@会看到几个大方向或内容给AI作为参考</p>
+<p><img src="/img/AI/AITools/Copilot/AtQuickCommand.PNG" alt="AtQuickCommand"></p>
+<p>输入#会看到可以在询问前添加相关文件作为给AI的参考文件</p>
+<p><img src="/img/AI/AITools/Copilot/NumberSighQuickCommand.PNG" alt="NumberSighQuickCommand"></p>
+<p>输入&#x2F;会看到有内置支持的快捷代码操作指令(比如fix,optimization……)</p>
+<p><img src="/img/AI/AITools/Copilot/SlashQuickCommand.PNG" alt="SlashQuickCommand"></p>
+<p>想引入更多复杂类型的资源作为AI参考文件，可以通过+添加:</p>
+<p><img src="/img/AI/AITools/Copilot/AddReferenceAttach.PNG" alt="AddReferenceAttach"></p>
+<p>自动以快捷交互指令详情参考:</p>
+<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/copilot-chat-context?view=vs-2022">Customize chat responses and set context</a></p>
+<h3 id="Agent-Mode"><a href="#Agent-Mode" class="headerlink" title="Agent Mode"></a>Agent Mode</h3><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/copilot-agent-mode?view=vs-2022">With the GitHub Copilot agent mode in Visual Studio, you can use natural language to specify a high-level task. AI creates a plan, makes code edits, runs terminal commands, invokes tools, and applies changes across your codebase. It monitors outcomes, such as build results, unit-test failures, or tool outputs, and iterates as needed.</a></p>
+<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/copilot-agent-mode?view=vs-2022">Unlike <em>ask mode</em>, agent mode doesn’t stop after a single response. It continues running and refining steps until you reach the goal in your prompt or more input is required.</a></p>
+<p>从介绍可以看出Copilot Agent Mode可以让我们通过自然语言区描述高阶任务需求，让AI使用特定工具自动化完成高阶任务需求。</p>
+<p>Agent Mode工具选择:</p>
+<p><img src="/img/AI/AITools/Copilot/AgentModeToolsChosen.PNG" alt="AgentModeToolsChosen"></p>
+<p>比如指挥Copilot调用指定方法并应用代码。</p>
+<p><img src="/img/AI/AITools/Copilot/FirstAgenModeUsing.PNG" alt="FirstAgenModeUsing"></p>
+<p><strong>相比Ask Mode生成的代码我们要选择应用，Agent Mode已经通过我的指令自动应用到了Program.cs文件里，同时Agent Mode还通过调用编译进行了生成代码的对错验证(工具自动化的使用是和Ask Mode的最大区别)。</strong></p>
+<p>Agent Mode可以通过选择保留和放弃去确认生成代码的去留。</p>
+<p>当成功应用后，Copilot通过创建<strong>还原点，可以实现快速的放弃之前的操作</strong></p>
+<p><img src="/img/AI/AITools/Copilot/RevertAIAction.PNG" alt="RevertAIAction"></p>
+<p>Note:</p>
+<ol>
+<li><strong>需要使用一些列工具进行自动化的操作推荐用Agent Mode</strong></li>
+<li><strong>需要使用MCP Servers功能，必须使用Agent Mode而非Ask Mode</strong></li>
+</ol>
+<h3 id="MCP"><a href="#MCP" class="headerlink" title="MCP"></a>MCP</h3><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/mcp-servers?view=vs-2022">Model Context Protocol (MCP) is an open standard that enables AI models to interact with external tools and services through a unified interface.</a></p>
+<p><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/getting-started/intro">Using MCP, AI applications like Claude or ChatGPT can connect to data sources (e.g. local files, databases), tools (e.g. search engines, calculators) and workflows (e.g. specialized prompts)—enabling them to access key information and perform tasks.</a></p>
+<p>从介绍可以看出MCP是AI模型和外部工具交互的标准。</p>
+<p>如果想通过外部工具扩展Agent Mode工作流，可以通过MCP引入外部工具。</p>
+<p><img src="/img/AI/AITools/MCP/MCPWorkFlow.PNG" alt="MCPWorkFlow"></p>
+<p>通过调用外部工具和数据，我们就能实现更多的功能，无论是简单的周报总结，自动化测试，2D或3D模型资源生成等都成为了可能。</p>
+<p>简单了解下MCP里的核心组成部分：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture"><strong>MCP Host</strong>: The AI application that coordinates and manages one or multiple MCP clients</a>(一个用于管理和协调多个MCP客户端AI宿主程序，比如VSCode，Cursor，CLAUDE CODE等)</li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture"><strong>MCP Client</strong>: A component that maintains a connection to an MCP server and obtains context from an MCP server for the MCP host to use</a>(MCP客户端，一个负责维护MPC服务器连接的组件，通过MCP服务器为MCP宿主用户获取环境上下文等)</li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture"><strong>MCP Server</strong>: A program that provides context to MCP clients</a>(MCP服务器，一个给MCP客户端提供环境上下文的程序)</li>
+</ul>
+<p>简单了解下MCP的分层设计：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture"><strong>Data layer</strong>: Defines the JSON-RPC based protocol for client-server communication, including lifecycle management, and core primitives, such as tools, resources, prompts and notifications.</a>(数据层，用于定义MCP客户端和MCP服务器的JSON数据远程调用协议相关(比如数据生命周期管理，资源，工具等))</li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture"><strong>Transport layer</strong>: Defines the communication mechanisms and channels that enable data exchange between clients and servers, including transport-specific connection establishment, message framing, and authorization.</a>(传输层，用于定义MCP客户端和MCP服务器的数据交换相关(比如数据传输协议，授权等))</li>
+</ul>
+<p>MCP的详细设计这里暂时不深入追究，暂时知道MCP是一套通用的AI模型嗯哼外部工具交互的标准即可。</p>
+<p>详情参考:</p>
+<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/mcp-servers?view=vs-2022">Use MCP servers</a></p>
+<p>因为本人只买了Copilot Pro，没有买Claude Code付费版本，所以接下来MCP和Agent Skills都已Copilot使用学习说明。</p>
+<h4 id="Extending-Copilot-MCP-Servers"><a href="#Extending-Copilot-MCP-Servers" class="headerlink" title="Extending Copilot MCP Servers"></a>Extending Copilot MCP Servers</h4><p>查看可用的MCP servers repository:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/modelcontextprotocol/servers/tree/main">Model Context Protocol servers</a></p>
+<p>支持搜索支持的MCP servers repository:</p>
+<p><a target="_blank" rel="noopener" href="https://registry.modelcontextprotocol.io/">Official MCP Registry</a></p>
+<p>给VS Codo配置MCP servers要求VS Code版本大于1.99(感觉官方版本写错了，目前最新才1.108–2026&#x2F;1&#x2F;12)</p>
+<p>MPC servers配置有两种方式：</p>
+<ol>
+<li>Using GitHub MCP Registery(<strong>这种方式只有MCP servers在MCP Registery的才能配置</strong>)</li>
+<li>Configuring MCP servers manually(<strong>这种方式可以自由配置MCP Server</strong>)</li>
+</ol>
+<h5 id="Using-GitHub-MCP-Registery"><a href="#Using-GitHub-MCP-Registery" class="headerlink" title="Using GitHub MCP Registery"></a>Using GitHub MCP Registery</h5><p>使用GitHub MCP Registery步骤:</p>
+<ol>
+<li><p>打开VSCode</p>
+</li>
+<li><p>ctrl+shift+x打开插件界面</p>
+</li>
+<li><p>过滤选择里选择MCP Register</p>
+<p><img src="/img/AI/AITools/MCP/VSCodeMCPFilter.PNG" alt="VSCodeMCPFilter"></p>
+</li>
+<li><p>然后直接再搜索里搜索想找的MCP Server，如果是第一次打开还需要先开启MCP Servers MarketPlace</p>
+<p><img src="/img/AI/AITools/MCP/EnableMCPServersMarketplace.PNG" alt="EnableMCPServersMarketplace"></p>
+</li>
+<li><p>接下来搜索一个想找的MCP Server</p>
+<p><img src="/img/AI/AITools/MCP/VSCodeCopilotGitHubMCPRegisteryInstall.PNG" alt="VSCodeCopilotGitHubMCPRegisteryInstall"></p>
+</li>
+<li><p>这里点击Install即可安装对应MCP Server</p>
+</li>
+</ol>
+<p>这里我尝试安装MarkDown MCP Server但运行失败了:</p>
+<ul>
+<li><p>发现Markitdown MCP Server安装后启动失败了，原因是uvx安装没成功</p>
+<p><img src="/img/AI/AITools/MCP/MarkitdownMCPServerInstallFailed.PNG" alt="MarkitdownMCPServerInstallFailed"></p>
+</li>
+<li><p>我们通过uv官网的教程，在PowerShell里输入一下命令安装uvx:</p>
+<p>“powershell -ExecutionPolicy ByPass -c “irm <a target="_blank" rel="noopener" href="https://astral.sh/uv/install.ps1">https://astral.sh/uv/install.ps1</a> | iex””</p>
+<p><img src="/img/AI/AITools/MCP/InstallUvxInPowerShell.PNG" alt="InstallUvxInPowerShell"></p>
+<p><strong>安装后需要自己设置uvx的环境变量，按安装后的提示输入命令或手动添加环境变量即可，后续VSCode里还是找不到注意重新打开VSCode。</strong></p>
+<ul>
+<li>安装Uvx成功后，发现Markitdown还是运行不起来，于是我让Copilot Agent帮我分析原因，它通过调用”uvx markitdown –help”命令把所有相关的Python库都下载下来了。</li>
+</ul>
+<p><img src="/img/AI/AITools/MCP/UvxPythonInstallation.PNG" alt="UvxPythonInstallation"></p>
+</li>
+<li><p>但最后依然运行不成功Markitdown，Copilot分析的结论是Python版本不对，为避免多个Python版本安装后出问题，这里不再继续了。</p>
+<p><img src="/img/AI/AITools/MCP/UvxStartPythonVersionProblem.PNG" alt="UvxStartPythonVersionProblem"></p>
+</li>
+</ul>
+<p>接下来以安装GitHub MCP Server为例:</p>
+<ol>
+<li><p>打开插件(ctrl+shift+x)</p>
+</li>
+<li><p>设置过滤为MCP Server</p>
+</li>
+<li><p>搜索GitHub</p>
+</li>
+<li><p>点击安装</p>
+</li>
+<li><p>输入GitHub Authentication token(在Github个人设置页面-&gt;Developer Settings-&gt;Tokens)</p>
+<p><img src="/img/AI/AITools/MCP/GitHubPersonalAuthenticationTokenInput.PNG" alt="GitHubPersonalAuthenticationTokenInput"></p>
+</li>
+<li><p>在Copilot Chat下方打开MCP配置工具查看GitHub MCP Server配置的工具结合</p>
+<p><img src="/img/AI/AITools/MCP/CopilotConfigureTools.PNG" alt="CopilotConfigureTools"></p>
+<p>可以看到GitHub MCP Server已经添加成功，相关工具也支持在Agent模式下通过GitHub MCP Server选择使用了。</p>
+</li>
+<li><p>接下来验证下通过Copilot+GitHub MCP Server我们是否能快速通过AI操作Github仓库相关东西</p>
+<p><img src="/img/AI/AITools/MCP/CommitReadMeFileByGitHubMCPServer.PNG" alt="CommitReadMeFileByGitHubMCPServer"></p>
+<p>可以看到我们成功通过给Copilot输入命令，通过GitHub MCP Server的相关工具将README.md文件成功自动上传到了GitHub对应仓库。</p>
+</li>
+</ol>
+<h5 id="Configuring-MCP-servers-manually"><a href="#Configuring-MCP-servers-manually" class="headerlink" title="Configuring MCP servers manually"></a>Configuring MCP servers manually</h5><p>VSCode支持两种MCP手动配置方式:</p>
+<ol>
+<li><strong>.vscode&#x2F;mcp.json用于给当前VSCode指定所有人能用的MCP服务器配置信息</strong></li>
+<li><strong>%APPDATA%&#x2F;Code&#x2F;User&#x2F;settings.json里配置当前电脑通用的MCP服务器配置信息(但实际上我发现VSCode扩展里安装的好像是配置在%APPDATA%&#x2F;Code&#x2F;User&#x2F;mcp.json文件)</strong></li>
+</ol>
+<p>这里重点学习下第一种给工程手动配置MCP Server的方式</p>
+<ol>
+<li><p>在工程.vscode目录下新建mcp.json文件</p>
+</li>
+<li><p>打开mcp.json文件，点击Add Server按钮(<strong>VSCode提供了几种安装MCP的方式</strong>)</p>
+<p><img src="/img/AI/AITools/MCP/WorkspaceMCPServerAdd.PNG" alt="WorkspaceMCPServerAdd"></p>
+<p><img src="/img/AI/AITools/MCP/VSCodeMCPInstallationMethods.PNG" alt="VSCodeMCPInstallationMethods"></p>
+</li>
+<li><p>这里使用手动添加mcp.json描述的方式</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;servers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;filesystem&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npx&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;-y&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;@modelcontextprotocol/server-filesystem&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;$&#123;workspaceFolder&#125;&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加配置后会在对应Servers名字上方看到启动MCP Server的按钮</p>
+<p><img src="/img/AI/AITools/MCP/StartFileSystemMCPServer" alt="StartFileSystemMCPServer"></p>
+</li>
+<li><p>打开Copilot的Configure Tools可以看到我们成功运行FileSystem MCP Server后相关工具都被使用了</p>
+<p><img src="/img/AI/AITools/MCP/FileSystemTools.PNG" alt="FileSystemTools"></p>
+</li>
+<li><p>接下来通过Copilot进行验证FileSytem MCP Server被正确安装和使用(将.vscode&#x2F;mcp.json和***&#x2F;User&#x2F;mcp.json作为上下文文件进行提问)</p>
+<p><img src="/img/AI/AITools/MCP/CreateMCPServerIntroductionByFileSystem.PNG" alt="CreateMCPServerIntroductionByFileSystem"></p>
+<p><img src="/img/AI/AITools/MCP/MCPMarkDown.PNG" alt="MCPMarkDown"></p>
+<p><img src="/img/AI/AITools/MCP/MCPServerMarkdownContent.PNG" alt="MCPServerMarkdownContent"></p>
+<p><strong>上面这个例子因为有一些默认工具支持了目录的创建和文件的创建读写，导致并没有直接使用FileSystem MCP Server的相关工具</strong></p>
+</li>
+<li><p>显示指定使用create_directory工具创建一个FileSystemCreatedDirectory目录</p>
+<p><img src="/img/AI/AITools/MCP/CreateDirectoryByUsingFileSystemMCPServerTool.PNG" alt="CreateDirectoryByUsingFileSystemMCPServerTool"></p>
+<p><img src="/img/AI/AITools/MCP/FileSystemCreatedDirectory.PNG" alt="FileSystemCreatedDirectory"></p>
+<p>可以看到通过#显示的指定工具名，我们成功使用了FileSystem MCP Server的create_directory工具创建了名为FileSystemCreatedDirectory目录。</p>
+</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>官方推荐相同MCP Server只在全局或本地一处添加，避免冲突</strong></li>
+<li><strong>.vscode&#x2F;mcp.json当前VSCode级别的MCP也可以通过浏览扩展里的MCP进行安装</strong></li>
+<li><strong>MCP Server无需一开始就启动，当需要触发相关工具时，对应MCP Server会自动启动</strong></li>
+<li><strong>Copilot CLI和VS Code Copilot是独立的工具，他们不会共享MCP Server配置</strong></li>
+</ol>
+<h3 id="Coding-Agent"><a href="#Coding-Agent" class="headerlink" title="Coding Agent"></a>Coding Agent</h3><p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent">With Copilot coding agent, GitHub Copilot can work independently in the background to complete tasks, just like a human developer.</a></p>
+<p>从介绍可以看出Coding Agent可以用于像人工一样自动化完成任务。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent">Copilot coding agent is distinct from the “agent mode” feature available in your IDE. Copilot coding agent works autonomously in a GitHub Actions-powered environment to complete development tasks assigned through GitHub issues or GitHub Copilot Chat prompts, and creates pull requests with the results. In contrast, agent mode in your IDE makes autonomous edits directly in your local development environment.</a></p>
+<p>相比Agent Mode，Coding Agent能独立于IDE在Github环境下运行完成任务。</p>
+<p>更多了解:</p>
+<p>TODO</p>
+<p>Note:</p>
+<ol>
+<li><strong>Coding Agent是付费功能(Pro或Pro+等)</strong></li>
+</ol>
+<h3 id="Copilot-Skills"><a href="#Copilot-Skills" class="headerlink" title="Copilot Skills"></a>Copilot Skills</h3><p>TODO</p>
+<h3 id="多模型选择"><a href="#多模型选择" class="headerlink" title="多模型选择"></a>多模型选择</h3><p>​		打开Copilot聊天框正下方有底层AI模型选择</p>
+<p>​		<img src="/img/AI/AITools/Copilot/ChangeAIModel.PNG" alt="ChangeAIModel"></p>
+<h3 id="Code-Review"><a href="#Code-Review" class="headerlink" title="Code Review"></a>Code Review</h3><p>通常合作开发时，提交代码时代码review以往都是人工查看的，有了AI工具，Code Review也能实现AI自动化分析。</p>
+<p>Visual Studio Code Review步骤:</p>
+<ol>
+<li><p>Github创建不同分支并推上去</p>
+</li>
+<li><p>在对应分支进行修改并提交</p>
+</li>
+<li><p>在Github上或者Git发出Pull Request请求</p>
+<p><img src="/img/AI/AITools/Copilot/GithubPullRequestOperation.PNG" alt="GithubPullRequestOperation"></p>
+</li>
+<li><p>在Github上Pull Request操作发起Copilot Review请求</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotReviewRequest.PNG" alt="CopilotReviewRequest"></p>
+</li>
+<li><p>等待AI Copilot Review完成则可看到AI Review结论</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotReviewResult.PNG" alt="CopilotReviewResult"></p>
+</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>Code Review是付费功能(Pro或Pro+等)</strong></li>
+</ol>
+<h3 id="Copilot-CLI"><a href="#Copilot-CLI" class="headerlink" title="Copilot CLI"></a>Copilot CLI</h3><p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli">The command-line interface (CLI) for GitHub Copilot allows you to use Copilot directly from your terminal.</a></p>
+<p>Copilot CLI允许通过命令行界面使用Copilot，这一点很像Claude Code。</p>
+<p>Copilot CLI安装:</p>
+<ol>
+<li><p>打开PowerSheel(Windows)</p>
+</li>
+<li><p>输入 winget install GitHub.Copilot</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotCLIInstallation.PNG" alt="CopilotCLIInstallation"></p>
+</li>
+</ol>
+<p>Copilot CLI使用：</p>
+<ol>
+<li><p>在需要Copilot CLI访问的目录下打开PowerShell输入Copilot命令</p>
+<p><img src="/img/AI/AITools/Copilot/StartCopilotCLI.PNG" alt="StartCopilotCLI"></p>
+</li>
+<li><p>选择选项1(Yes)–表明信任Copilot CLI对当前目录的修改</p>
+</li>
+<li><p>输入&#x2F;login(输入后按照操作流程一步一步登录账号即可) – 登录Github账号开始使用Copilot(本人买的Copilot Pro)</p>
+<p><img src="/img/AI/AITools/Copilot/LoginCopilotCLI.PNG" alt="LoginCopilotCLI"></p>
+</li>
+<li><p>在Copilot里输入&#x2F;help就可以像常规命令行一样看到所有可使用的命令介绍了</p>
+<p><img src="/img/AI/AITools/Copilot/HelpCommand.PNG" alt="HelpCommand"></p>
+</li>
+<li><p>可以看到如果AI模型没选对，我们可以输入&#x2F;model进入模型切换(<strong>部分AI模型需要Github Copilot后台开启才能使用</strong>)</p>
+<p><img src="/img/AI/AITools/Copilot/ChangeAIModel.PNG" alt="ChangeAIModel"></p>
+</li>
+<li><p>提交Git采用人类语言描述即可</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotCLIGitPush.PNG" alt="CopilotCLIGitPush"></p>
+<p>上传失败是因为命令行还没有配置SSH秘钥，这里需要安装<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse?tabs=powershell&pivots=windows-10">OpenSSH Client</a></p>
+<p>PowerShell里输入”Get-Service ssh-agent”确认开启ssh-agent服务，如果未开启，输入”Start-Service ssh-agent”，如果开启报错，输入”Set-Service ssh-agent -StartupType Automatic”将ssh-agent的开启方式设置成自动，然后输入”ssh-add”输入SSH的秘钥即可</p>
+<p><img src="/img/AI/AITools/Copilot/OpenSSHClientAndSshAdd.PNG" alt="OpenSSHClientAndSshAdd"></p>
+<p>然后我们再次测试Copilot的Git上传，发现还是上传不了，询问Copilit说是Copilot CLI默认使用的不是SSH KEY而是HTTPS，需要安装GitHub CLI(<strong>输入”winget install –id GitHub.cli -e”命令安装</strong>)然后使用gh相关命令(<strong>输入”gh auth login”命令登录</strong>)登录GitHub授权(<strong>注意网页版通过授权，网页版要求填的码需要Ctrl+R或者Ctrl+O打开Copilot的详情信息才能看到</strong>)</p>
+<p><img src="/img/AI/AITools/Copilot/GitHubCLILogin.PNG" alt="GitHubCLILogin"></p>
+<p>然后我们再次测试Copilot的Git上传，这次终于通过Copilot上传GitHub成功了</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotGitHubCommitAndPush.PNG" alt="CopilotGitHubCommitAndPush"></p>
+</li>
+</ol>
+<p>Copilot CLI使用详情参考:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli">Using GitHub Copilot CLI</a></p>
+<p>命令行查看Token使用情况:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/context</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/AI/AITools/Copilot/CopilotContextInfo" alt="CopilotContextInfo"></p>
+<p>命令行查看CLI所有操作介绍:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/help</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/AI/AITools/Copilot/CopilotHelpInfo" alt="CopilotHelpInfo"></p>
+<p>Note:</p>
+<ol>
+<li><strong>Copilot CLI是付费功能(Pro或Pro+等)</strong></li>
+<li><strong>部分功能可能要求PowerShell版本大于6，需要自己去装一个最新的PowerShell版本</strong></li>
+<li><strong>OpenSSH Client的安装和SSH配置要用管理员身份打开PowerShell(版本大于6)</strong></li>
+<li><strong>Copilot等待操作时，Ctrl+C是退出，Ctrl+R是打开最近输出，Ctrl+O是打开所有输出，Ctrl+T是显示原因</strong></li>
+<li><strong>如果不希望Copilot每次关键时候询问是否继续，可以输入–allow-all-tools允许所有工具自动执行，或者–allow-tool允许特定工具执行，或者–deny-tool阻止特定工具执行</strong></li>
+</ol>
+<h4 id="Copilot-CLI-MCP-Server"><a href="#Copilot-CLI-MCP-Server" class="headerlink" title="Copilot CLI MCP Server"></a>Copilot CLI MCP Server</h4><p><strong>Copilot CLI和VS Code Copilot的MCP Server是独立添加的，但添加MCP Server的逻辑和VSCode Copilot MCP Server添加是相同的，只是保存的目录位置不同(目录C:&#x2F;User&#x2F;UserName&#x2F;.copilot&#x2F;mcp-config.json)</strong></p>
+<p>Copilot CLI里添加MCP Server是通过输入”<strong>&#x2F;mcp add</strong>“命令：</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotCLIAddMCP.PNG" alt="CopilotCLIAddMCP"></p>
+<p><strong>Server Name</strong> – 取一个本地添加MCP Server的对应名字(必填)</p>
+<p><strong>Server Type</strong> – MCP Server连接类型(<strong>stdio(Standard I&#x2F;O)多用于本地MCP Server。http(Hypertext Transfer Protocol)多用于网络远程MCP Server。sse(Server-Send Events)http不支持时的一种fallback方案</strong>)</p>
+<p><strong>Command</strong> – 启动MCP Server的执行程序命令(<strong>含命令执行参数，本地MCP Server才需要的启动命令</strong>)(最后在mcp.json里会自动拆分成command和args两个变量)</p>
+<p><strong>Enviroment Variables</strong> – 传递个MCP Server的环境变量数据(<strong>本地MCP Server才需要</strong>)</p>
+<p><strong>URL</strong> – 远程MCP Server的URL地址(<strong>远程MCP Server才需要</strong>)</p>
+<p><strong>Http Headers</strong> – 远程MCP Server请求时带的参数数据(比如GitHub秘钥)</p>
+<p><strong>Tools</strong> – MCP Server需要激活的工具(本地和远程MCP Server都需要)</p>
+<p>参数详细介绍:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/extend-coding-agent-with-mcp#writing-a-json-configuration-for-mcp-servers">MCP</a></p>
+<ul>
+<li><p>添加MicrosoftLearn MCP Server(输入**&#x2F;mcp add**然后填充以下信息)</p>
+<p><img src="/img/AI/AITools/Copilot/MicrosoftLearnMCPServerAdd.PNG" alt="MicrosoftLearnMCPServerAdd"></p>
+<p>MicrosoftLearn MCP Server使用测试:</p>
+<p><img src="/img/AI/AITools/Copilot/MicrosoftLearnMCPServerUsingTest.PNG" alt="MicrosoftLearnMCPServerUsingTest"></p>
+</li>
+<li><p>添加GitHub MCP Server(输入**&#x2F;mcp add**然后填充以下信息)</p>
+<p><img src="/img/AI/AITools/Copilot/GitHubMCPServerAdd.PNG" alt="GitHubMCPServerAdd"></p>
+<p>GitHub MCP Server使用测试:</p>
+<p><img src="/img/AI/AITools/Copilot/GitHubMCPServerUsingTest.PNG" alt="GitHubMCPServerUsingTest"></p>
+</li>
+<li><p>添加FileSystem MCP Server(输入**&#x2F;mcp add**然后填充以下信息)</p>
+<p><img src="/img/AI/AITools/Copilot/FileSystemMCPServerAdd.PNG" alt="FileSystemMCPServerAdd"></p>
+<p>FileSystem MCP Server使用测试(<strong>Copilot CLI里无法通过描述使用stdio本地添加的MCP Server工具，只能直接指明使用</strong>):</p>
+<p><img src="/img/AI/AITools/Copilot/FileSystemMCPServerUsingTest.PNG" alt="FileSystemMCPServerUsingTest"></p>
+</li>
+</ul>
+<p>Note:</p>
+<ol>
+<li><strong>Copilot CLI的MCP Server添加时，不是所有的MCP Server都通过Http方式远程添加，也可以通过stdio本地添加的方式。</strong></li>
+<li><strong>stdio本地添加的方式不能直接通过Copilot CLI描述触发，需要直接输入”@MCP名.工具名 参数”的方式直接触发</strong></li>
+<li><strong>Copilot CLI里@除了指明用某个文件，还能@MCP名.工具名 参数的方式指定使用MCP的工具</strong></li>
+<li><em><em>所有Copilot CLI需要访问的目录必须确保授权访问，除了默认打开所在目录和</em>&#x2F;Local&#x2F;Temp目录默认授权外，其他目录都要通过&#x2F;add-dir进行授权添加</em>*</li>
+<li><strong>通过&#x2F;add-dir添加授权访问的目录暂时没有命令清除，只能通过重新开Copilot Session实现重置</strong></li>
+</ol>
+<h3 id="Copilot付费"><a href="#Copilot付费" class="headerlink" title="Copilot付费"></a>Copilot付费</h3><p>Copilot有多个付费模式：</p>
+<p>Free – **只允许使用优先功能(50次Agent Mode或Chat每月，2000次智能代码提示补全每月等)</p>
+<p>Pro – <strong>无限次Agent Mode或Chat每月，无限次智能代码补全提示，更多AI模型选择，Code Review，Coding Agent等功能</strong></p>
+<p>Pro+ – <strong>相比Pro更多的AI模型选择等</strong></p>
+<p>Copilot付费支持的<strong>Visa</strong>卡好像要<strong>要求支持跨境汇款</strong>，<strong>PayPal</strong>这个我个人没有。</p>
+<p>不同付费模式功能详情参考:</p>
+<p><a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/github-copilot/">Github-copilot</a></p>
+<h2 id="Github地址"><a href="#Github地址" class="headerlink" title="Github地址"></a>Github地址</h2><p>无</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2>
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/AI/">AI</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/AI/">AI</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2025/03/24/事件驱动行为树/" title="事件驱动行为树" itemprop="url">事件驱动行为树</a>
   </h1>
   <p class="article-author">By
@@ -445,9 +848,9 @@
 <li><strong>Undo只支持的是继承至UntiyEngine.Object的对象。</strong></li>
 <li><strong>Undo.RecordObject只记录增量快照，Undo.RegisterCompleteObjectUndo记录完整的对象数据，为了确保数据操作的撤销正确性，推荐用后者，本人就是在删除嵌套删除节点数据时发现Undo.RecordObejct未能正确还原数据导致报错后使用Undo.RegisterCompleteObjectUndo才正确实现嵌套删除节点功能。</strong></li>
 </ol>
-<h1 id="事件驱动行为树"><a href="#事件驱动行为树" class="headerlink" title="事件驱动行为树"></a>事件驱动行为树</h1><p><strong>事件驱动的行为树核心是参考<a target="_blank" rel="noopener" href="https://github.com/meniku/NPBehave/blob/master/README_CH.md">NPBehave</a>的设计思路。</strong></p>
+<h2 id="事件驱动行为树"><a href="#事件驱动行为树" class="headerlink" title="事件驱动行为树"></a>事件驱动行为树</h2><p><strong>事件驱动的行为树核心是参考<a target="_blank" rel="noopener" href="https://github.com/meniku/NPBehave/blob/master/README_CH.md">NPBehave</a>的设计思路。</strong></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/meniku/NPBehave/blob/master/README_CH.md"><strong>基于事件的行为树设计是，我们不再每帧都从根节点去遍历行为树，而是维护一个调度器负责保存已激活的节点，当正在执行的行为终止时，由其父节点决定接下来的行为。</strong></a></p>
-<h2 id="事件驱动行为树类图设计"><a href="#事件驱动行为树类图设计" class="headerlink" title="事件驱动行为树类图设计"></a>事件驱动行为树类图设计</h2><p><strong>Clock – 行为树驱动时钟(事件驱动行为树的核心，负责统一调度定时器)</strong></p>
+<h3 id="事件驱动行为树类图设计"><a href="#事件驱动行为树类图设计" class="headerlink" title="事件驱动行为树类图设计"></a>事件驱动行为树类图设计</h3><p><strong>Clock – 行为树驱动时钟(事件驱动行为树的核心，负责统一调度定时器)</strong></p>
 <p><strong>BehaviourTreeGraphData – 树编辑器存储数据(基于ScriptableObject)</strong></p>
 <p><strong>BaseNode – 树节点数据(基于ScriptableObject)</strong></p>
 <p><strong>EdgeData – 树边数据</strong></p>
@@ -474,8 +877,8 @@
 <p><strong>ParalNode – 行为树并发节点</strong></p>
 <p><strong>RandomSelector – 行为树随机选择节点</strong></p>
 <p>更多细节的行为树节点这里就不一一介绍了。</p>
-<h2 id="事件驱动行为树数据编辑"><a href="#事件驱动行为树数据编辑" class="headerlink" title="事件驱动行为树数据编辑"></a>事件驱动行为树数据编辑</h2><p>前面通过UIElement，GraphView的相关使用，我们已经成功完成了对树数据(BehaviourTreeGraphData.cs)的树数据编辑。</p>
-<h2 id="事件驱动行为树运行时数据构建"><a href="#事件驱动行为树运行时数据构建" class="headerlink" title="事件驱动行为树运行时数据构建"></a>事件驱动行为树运行时数据构建</h2><p>通过编辑的树数据到事件驱动的行为树，我们还需要利用树数据构建TBehaviourTree的过程。</p>
+<h3 id="事件驱动行为树数据编辑"><a href="#事件驱动行为树数据编辑" class="headerlink" title="事件驱动行为树数据编辑"></a>事件驱动行为树数据编辑</h3><p>前面通过UIElement，GraphView的相关使用，我们已经成功完成了对树数据(BehaviourTreeGraphData.cs)的树数据编辑。</p>
+<h3 id="事件驱动行为树运行时数据构建"><a href="#事件驱动行为树运行时数据构建" class="headerlink" title="事件驱动行为树运行时数据构建"></a>事件驱动行为树运行时数据构建</h3><p>通过编辑的树数据到事件驱动的行为树，我们还需要利用树数据构建TBehaviourTree的过程。</p>
 <p>第一步:</p>
 <ol>
 <li><p>读取BehaviourTreeGraphData.cs数据并克隆数据以备运行时使用</p>
@@ -508,7 +911,7 @@
 <p>从上面可以看到我们通过BehaviourTreeGraphData.cs树数据可用并构建TreeData.cs，然后驱动TreeData调用RootNode的Start实现了行为树的执行驱动，。</p>
 </li>
 </ol>
-<h2 id="事件驱动行为树执行设计"><a href="#事件驱动行为树执行设计" class="headerlink" title="事件驱动行为树执行设计"></a>事件驱动行为树执行设计</h2><p>传统行为树和事件驱动行为树在驱动树执行上的区别:</p>
+<h3 id="事件驱动行为树执行设计"><a href="#事件驱动行为树执行设计" class="headerlink" title="事件驱动行为树执行设计"></a>事件驱动行为树执行设计</h3><p>传统行为树和事件驱动行为树在驱动树执行上的区别:</p>
 <ol>
 <li><strong>传统行为树每帧都要从根节点开始遍历行为树，而目的仅仅是为了得到最近激活的节点进行逻辑驱动。事件驱动的行为树是通过定时器进行驱动实现节点逻辑执行。</strong></li>
 <li><strong>传统行为树和事件驱动的行为树还有一大区别节点执行结果的返回方式。传统行为树是子节点执行完成后直接通过return的方式把子节点执行结果直接返回给父节点，然后父节点根据子节点结果决定后续逻辑。而事件驱动行为树子节点结束是通过调用父节点的ChildStop()通知父节点子节点结束，而不同节点类型对于子节点结束的后续处理逻辑是在自身的OnChildStop里</strong></li>
@@ -567,7 +970,7 @@
 <ol>
 <li><strong>避免每帧从根节点执行一遍所有逻辑，而是在对应节点上通过定时器方式实现对应节点逻辑直接执行的方式，从而避免每帧无用的逻辑更新执行，更加高效。</strong></li>
 </ol>
-<h2 id="事件驱动行为树条件判定设计"><a href="#事件驱动行为树条件判定设计" class="headerlink" title="事件驱动行为树条件判定设计"></a>事件驱动行为树条件判定设计</h2><p>传统行为树和事件驱动行为树在驱动条件节点判定的区别:</p>
+<h3 id="事件驱动行为树条件判定设计"><a href="#事件驱动行为树条件判定设计" class="headerlink" title="事件驱动行为树条件判定设计"></a>事件驱动行为树条件判定设计</h3><p>传统行为树和事件驱动行为树在驱动条件节点判定的区别:</p>
 <ol>
 <li><strong>传统行为树每帧都要把执行的条件节点执行一次去比较条件是否变化，从而实现监听条件变化的目的。事件驱动的行为树是通过启动定时器实现条件节点逻辑判定执行。</strong></li>
 </ol>
@@ -618,13 +1021,13 @@
 <li><strong>事件驱动行为树里，需要支持定时判定和打断的都封装成了装饰节点而非条件节点</strong></li>
 <li><strong>目前纯条件节点不支持定时器判定和打断，只支持常规单次条件判定，推荐尽量用装饰节点来定义条件</strong></li>
 </ol>
-<h2 id="事件驱动行为树黑板"><a href="#事件驱动行为树黑板" class="headerlink" title="事件驱动行为树黑板"></a>事件驱动行为树黑板</h2><p><strong>事件驱动行为树的黑板和传统的行为树黑板有所区别。传统行为树黑板主要作为行为树局部黑板负责存储和修改数据。事件驱动的行为树为了支持黑板数据修改的监听，黑板的设计还考虑了数据监听通知逻辑，而黑板的监听通知逻辑是通过定时器(Clock)来完成的。</strong></p>
+<h3 id="事件驱动行为树黑板"><a href="#事件驱动行为树黑板" class="headerlink" title="事件驱动行为树黑板"></a>事件驱动行为树黑板</h3><p><strong>事件驱动行为树的黑板和传统的行为树黑板有所区别。传统行为树黑板主要作为行为树局部黑板负责存储和修改数据。事件驱动的行为树为了支持黑板数据修改的监听，黑板的设计还考虑了数据监听通知逻辑，而黑板的监听通知逻辑是通过定时器(Clock)来完成的。</strong></p>
 <p>接下来直接给我们看下黑板的关键部分代码定义就能知道事件驱动行为树的黑板是如何实现黑板数据监听通知逻辑的，后续在讲解打断篇章会涉及实例理解黑板的数据修改和打断监听设计。</p>
 <p>Blackboard.cs</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 黑板模式，数据共享中心</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Blackboard</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 黑板操作类型</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">enum</span> BBOperationType</span><br><span class="line">    &#123;</span><br><span class="line">        ADD,</span><br><span class="line">        REMOVE,</span><br><span class="line">        CHANGE</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 通知数据</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">struct</span> Notification</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 操作Key</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> key;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 黑板操作类型</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> BBOperationType type;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 操作值</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">object</span> <span class="keyword">value</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Notification</span>(<span class="params"><span class="built_in">string</span> key, BBOperationType type, <span class="built_in">object</span> <span class="keyword">value</span></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">this</span>.key = key;</span><br><span class="line">            <span class="keyword">this</span>.type = type;</span><br><span class="line">            <span class="keyword">this</span>.<span class="keyword">value</span> = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 时钟</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Clock mClock;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 黑板数据集合中心</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Dictionary&lt;<span class="built_in">string</span>, BaseBlackboardData&gt; mBlackboardDataMap;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 所有Key的监听Map<span class="doctag">&lt;黑板数据Key名, 黑板监听类型回调列表&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Dictionary&lt;<span class="built_in">string</span>, List&lt;Action&lt;BBOperationType, <span class="built_in">object</span>&gt;&gt;&gt; mObservers;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 是否正在通知</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> mIsNotifying;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 所有待添加的监听Key的监听Map<span class="doctag">&lt;黑板数据Key名, 黑板监听类型回调列表&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Dictionary&lt;<span class="built_in">string</span>, List&lt;Action&lt;BBOperationType, <span class="built_in">object</span>&gt;&gt;&gt; mAddObservers;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 所有等待移除的监听Key的监听Map<span class="doctag">&lt;黑板数据Key名, 黑板监听类型回调列表&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Dictionary&lt;<span class="built_in">string</span>, List&lt;Action&lt;BBOperationType, <span class="built_in">object</span>&gt;&gt;&gt; mRemoveObservers;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 等待通知列表</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Notification&gt; mNotifications;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 正在通知的通知列表</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Notification&gt; mNotificationsDispatch;</span><br><span class="line"></span><br><span class="line">    ******</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 更新黑板数据</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;value&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;noNotification&quot;&gt;</span>是否不通知(默认通知)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">UpdateData</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="built_in">string</span> key, T <span class="keyword">value</span> = <span class="literal">default</span>, <span class="built_in">bool</span> noNotification = <span class="literal">false</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> data = GetBlackboardData(key);</span><br><span class="line">        <span class="keyword">if</span> (data != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> targetData = data <span class="keyword">as</span> BlackboardData&lt;T&gt;;</span><br><span class="line">            <span class="keyword">if</span> (targetData == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Debug.LogError(<span class="string">$&quot;黑板数据里Key:<span class="subst">&#123;key&#125;</span>的数据类型和更新数据类型:<span class="subst">&#123;<span class="keyword">typeof</span>(T).Name&#125;</span>不匹配，更新数据失败！&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            targetData.Data = <span class="keyword">value</span>;</span><br><span class="line">            <span class="keyword">if</span>(!noNotification)</span><br><span class="line">            &#123;</span><br><span class="line">                mNotifications.Add(<span class="keyword">new</span> Notification(key, BBOperationType.CHANGE, <span class="keyword">value</span>));</span><br><span class="line">                mClock.AddTimer(<span class="number">0f</span>, <span class="number">0</span>, NotifiyObservers);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            BlackboardData&lt;T&gt; targetData = <span class="keyword">new</span> BlackboardData&lt;T&gt;(key, <span class="keyword">value</span>);</span><br><span class="line">            mBlackboardDataMap.Add(key, targetData);</span><br><span class="line">            <span class="keyword">if</span> (!noNotification)</span><br><span class="line">            &#123;</span><br><span class="line">                mNotifications.Add(<span class="keyword">new</span> Notification(key, BBOperationType.ADD, <span class="keyword">value</span>));</span><br><span class="line">                mClock.AddTimer(<span class="number">0f</span>, <span class="number">0</span>, NotifiyObservers);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 移除指定数据名的黑板数据</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;noNotification&quot;&gt;</span>是否不通知(默认通知)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">RemoveData</span>(<span class="params"><span class="built_in">string</span> key, <span class="built_in">bool</span> noNotification = <span class="literal">false</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> result = mBlackboardDataMap.Remove(key);</span><br><span class="line">        <span class="keyword">if</span>(result &amp;&amp; !noNotification)</span><br><span class="line">        &#123;</span><br><span class="line">            mNotifications.Add(<span class="keyword">new</span> Notification(key, BBOperationType.REMOVE, <span class="literal">null</span>));</span><br><span class="line">            mClock.AddTimer(<span class="number">0f</span>, <span class="number">0</span>, NotifiyObservers);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ******</span><br><span class="line">        </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 添加黑板数据操作监听</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;observer&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddObserver</span>(<span class="params"><span class="built_in">string</span> key, System.Action&lt;BBOperationType, <span class="built_in">object</span>&gt; observer</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        List&lt;System.Action&lt;BBOperationType, <span class="built_in">object</span>&gt;&gt; observers = GetObserverList(<span class="keyword">this</span>.mObservers, key);</span><br><span class="line">        <span class="keyword">if</span> (!mIsNotifying)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (!observers.Contains(observer))</span><br><span class="line">            &#123;</span><br><span class="line">                observers.Add(observer);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (!observers.Contains(observer))</span><br><span class="line">            &#123;</span><br><span class="line">                List&lt;System.Action&lt;BBOperationType, <span class="built_in">object</span>&gt;&gt; addObservers = GetObserverList(<span class="keyword">this</span>.mAddObservers, key);</span><br><span class="line">                <span class="keyword">if</span> (!addObservers.Contains(observer))</span><br><span class="line">                &#123;</span><br><span class="line">                    addObservers.Add(observer);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            List&lt;System.Action&lt;BBOperationType, <span class="built_in">object</span>&gt;&gt; removeObservers = GetObserverList(<span class="keyword">this</span>.mRemoveObservers, key);</span><br><span class="line">            <span class="keyword">if</span> (removeObservers.Contains(observer))</span><br><span class="line">            &#123;</span><br><span class="line">                removeObservers.Remove(observer);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 通知</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">NotifiyObservers</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mNotifications.Count == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mNotificationsDispatch.Clear();</span><br><span class="line">        mNotificationsDispatch.AddRange(mNotifications);</span><br><span class="line">        mNotifications.Clear();</span><br><span class="line"></span><br><span class="line">        mIsNotifying = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">foreach</span> (Notification notification <span class="keyword">in</span> mNotificationsDispatch)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">this</span>.mObservers.ContainsKey(notification.key))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//                Debug.Log(&quot;1 do not notify for key:&quot; + notification.key + &quot; value: &quot; + notification.value);</span></span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            List&lt;System.Action&lt;BBOperationType, <span class="built_in">object</span>&gt;&gt; observers = GetObserverList(<span class="keyword">this</span>.mObservers, notification.key);</span><br><span class="line">            <span class="keyword">foreach</span> (System.Action&lt;BBOperationType, <span class="built_in">object</span>&gt; observer <span class="keyword">in</span> observers)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">this</span>.mRemoveObservers.ContainsKey(notification.key) &amp;&amp; <span class="keyword">this</span>.mRemoveObservers[notification.key].Contains(observer))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                observer(notification.type, notification.<span class="keyword">value</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">foreach</span> (<span class="built_in">string</span> key <span class="keyword">in</span> <span class="keyword">this</span>.mAddObservers.Keys)</span><br><span class="line">        &#123;</span><br><span class="line">            GetObserverList(<span class="keyword">this</span>.mObservers, key).AddRange(<span class="keyword">this</span>.mAddObservers[key]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="built_in">string</span> key <span class="keyword">in</span> <span class="keyword">this</span>.mRemoveObservers.Keys)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">foreach</span> (System.Action&lt;BBOperationType, <span class="built_in">object</span>&gt; action <span class="keyword">in</span> mRemoveObservers[key])</span><br><span class="line">            &#123;</span><br><span class="line">                GetObserverList(<span class="keyword">this</span>.mObservers, key).Remove(action);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.mAddObservers.Clear();</span><br><span class="line">        <span class="keyword">this</span>.mRemoveObservers.Clear();</span><br><span class="line"></span><br><span class="line">        mIsNotifying = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>在Blackboard.UpdateData<T>()和Blackboard.RemoveData()方法里可以看到，Blackboard把黑板数据的操作和操作数据封装成Notification，然后结合定时器(Clock)实现下一帧对黑板相关数据和操作监听的通知。</p>
-<h2 id="事件驱动行为树打断"><a href="#事件驱动行为树打断" class="headerlink" title="事件驱动行为树打断"></a>事件驱动行为树打断</h2><p><strong>个人理解行为树打断主要是为了支持因为条件满足已经执行过的逻辑执行条件变了不满足需要打断执行往后执行或者因为条件不满足没有执行过的逻辑因为条件变了满足了希望重新激活执行。</strong></p>
+<h3 id="事件驱动行为树打断"><a href="#事件驱动行为树打断" class="headerlink" title="事件驱动行为树打断"></a>事件驱动行为树打断</h3><p><strong>个人理解行为树打断主要是为了支持因为条件满足已经执行过的逻辑执行条件变了不满足需要打断执行往后执行或者因为条件不满足没有执行过的逻辑因为条件变了满足了希望重新激活执行。</strong></p>
 <p>首先我们来理解下事件驱动打断的核心设计原理，之后再针对不同的行为树打断类型进行实战分析和测试。</p>
 <p>看下BaseObservingDecorationNode.cs的核心代码设计:</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">TCommonGraph</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> BaseObservingDecorationNode.cs</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 可被观察条件打断的装饰节点基类</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">Serializable</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">BaseObservingDecorationNode</span> : <span class="title">BaseDecorationNode</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 打断类型</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        [<span class="meta">Header(<span class="string">&quot;打断类型&quot;</span>)</span>]</span><br><span class="line">        <span class="keyword">public</span> AbortType AbortType;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 是否正在观察</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">protected</span> <span class="built_in">bool</span> mIsObserving;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 响应开始</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">DoStart</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.DoStart();</span><br><span class="line">            <span class="keyword">if</span> (AbortType != AbortType.NONE)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(!mIsObserving)</span><br><span class="line">                &#123;</span><br><span class="line">                    mIsObserving = <span class="literal">true</span>;</span><br><span class="line">                    StartObserving();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(!IsConditionMet())</span><br><span class="line">            &#123;</span><br><span class="line">                Stop(<span class="literal">false</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                DecorateNode.Start();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 响应终止</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">DoAbort</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.DoAbort();</span><br><span class="line">            DecorateNode.Abort();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 响应子节点停止</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;child&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;success&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">DoChildStop</span>(<span class="params">BaseNode child, <span class="built_in">bool</span> success</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.DoChildStop(child, success);</span><br><span class="line">            <span class="keyword">if</span>(AbortType == AbortType.NONE || AbortType == AbortType.SELF)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(mIsObserving)</span><br><span class="line">                &#123;</span><br><span class="line">                    mIsObserving = <span class="literal">false</span>;</span><br><span class="line">                    StopObserving();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            Stop(success);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 响应父组合节点停止</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;parentNode&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">DoParentCompositeStop</span>(<span class="params">BaseCompositionNode parentNode</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.DoParentCompositeStop(parentNode);</span><br><span class="line">            <span class="keyword">if</span>(mIsObserving)</span><br><span class="line">            &#123;</span><br><span class="line">                mIsObserving = <span class="literal">false</span>;</span><br><span class="line">                StopObserving();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 评估条件流程</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Evaluate</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            ******</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 开始条件监听流程</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">StartObserving</span>()</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 停止条件监听观察</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">StopObserving</span>()</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 条件是否满足</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="built_in">bool</span> <span class="title">IsConditionMet</span>()</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -703,8 +1106,8 @@
 <li><strong>ParalNode的所有子节点优先级一致，不支持配置AbortType.Node和AbortType.IMMEDIATE_RESTART以外打断类型</strong></li>
 <li><strong>所有节点逻辑(e.g 行为节点……)都要基于定时器驱动</strong></li>
 </ol>
-<h3 id="事件驱动行为树打断单元测试"><a href="#事件驱动行为树打断单元测试" class="headerlink" title="事件驱动行为树打断单元测试"></a>事件驱动行为树打断单元测试</h3><p>这里主要i针对不同打断类型，编写单元测试，验证不同的打断类型的执行逻辑是否正确。</p>
-<h4 id="Stops-NONE"><a href="#Stops-NONE" class="headerlink" title="Stops.NONE"></a><strong>Stops.NONE</strong></h4><p><strong>装饰器只会在启动时检查一次它的状态，并且永远不会停止任何正在运行的节点。</strong></p>
+<h4 id="事件驱动行为树打断单元测试"><a href="#事件驱动行为树打断单元测试" class="headerlink" title="事件驱动行为树打断单元测试"></a>事件驱动行为树打断单元测试</h4><p>这里主要i针对不同打断类型，编写单元测试，验证不同的打断类型的执行逻辑是否正确。</p>
+<h5 id="Stops-NONE"><a href="#Stops-NONE" class="headerlink" title="Stops.NONE"></a>Stops.NONE</h5><p><strong>装饰器只会在启动时检查一次它的状态，并且永远不会停止任何正在运行的节点。</strong></p>
 <p>测试结果截图:</p>
 <p><img src="/img/AI/EventBehaviourTree/RootNodeRunningOnceSetting.PNG" alt="RootNodeRunningOnceSetting"></p>
 <p><img src="/img/AI/EventBehaviourTree/BlackBoardStopNone.PNG" alt="BlackBoardStopNone"></p>
@@ -724,19 +1127,19 @@
 <li><strong>黑板比较数据，只要不是勾选的存在和不存在，那么比较时如果黑板没有设置过基础黑板变量值，那么统一返回失败！</strong></li>
 <li><strong>因为为了展示打断机制，所以RootNode根节点勾选了只执行一次的设置</strong></li>
 </ol>
-<h4 id="Stops-SELF"><a href="#Stops-SELF" class="headerlink" title="Stops.SELF"></a><strong>Stops.SELF</strong></h4><p><strong>装饰器将在启动时检查一次它的条件状态，如果满足，它将继续观察黑板的变化。一旦不再满足该条件，它将终止自身，并让父组合继续处理它的下一个节点。</strong></p>
+<h5 id="Stops-SELF"><a href="#Stops-SELF" class="headerlink" title="Stops.SELF"></a>Stops.SELF</h5><p><strong>装饰器将在启动时检查一次它的条件状态，如果满足，它将继续观察黑板的变化。一旦不再满足该条件，它将终止自身，并让父组合继续处理它的下一个节点。</strong></p>
 <p>测试结果截图:</p>
 <p><img src="/img/AI/EventBehaviourTree/BlackBoardStopSelf.PNG" alt="BlackBoardStopSelf"></p>
 <p><strong>从上图结果可以看到，执行SetShareFloatNode(设置ShareFloat值到100时)后，因为CompareShareFloatNode(比较ShareFloat&lt;&#x3D;30)修饰节点从条件满足变成了条件不满足，同时因为设置的StopSelf打断策略，所以在WaitTimeNode(等待5秒的过程中)，WaitTimeNode直接被打断，让SelectorNode直接执行了第二分支的LogNode打印节点，这也正符合StopSelf的打断策略设计。</strong></p>
-<h4 id="Stops-LOWER-PRIORITY"><a href="#Stops-LOWER-PRIORITY" class="headerlink" title="Stops.LOWER_PRIORITY"></a><strong>Stops.LOWER_PRIORITY</strong></h4><p><strong>装饰器将在启动时检查它的状态，如果不满足，它将观察黑板的变化。一旦条件满足，它将停止比此结点优先级较低的节点，允许父组合继续处理下一个节点</strong></p>
+<h5 id="Stops-LOWER-PRIORITY"><a href="#Stops-LOWER-PRIORITY" class="headerlink" title="Stops.LOWER_PRIORITY"></a>Stops.LOWER_PRIORITY</h5><p><strong>装饰器将在启动时检查它的状态，如果不满足，它将观察黑板的变化。一旦条件满足，它将停止比此结点优先级较低的节点，允许父组合继续处理下一个节点</strong></p>
 <p>测试结果截图:</p>
 <p><img src="/img/EventBehaviourTree/BlackBoardStopLowerPriority.PNG" alt="BlackBoardStopLowerPriority"></p>
 <p><strong>可以看到第一个CompareShareFloatNode(比较ShareFloat&gt;&#x3D;30，设置打断为LowerPriority)，因为不满足条件所以一开始没有执行，执行到SetShareFloatNode(设置ShareFloat值到100)节点后，WaitTimeNode被打断执行，第二个SelectorNode直接被打断执行，然后第一个SelectorNode直接执行了第一个SelectorNode的第二分支的LogNode节点，这也完美符合了修饰节点LowerPriority从不满足到满足的时候，打断比如LowerPriority低的节点的父组合节点执行，让更上层父节点执行下一个节点的设计。</strong></p>
-<h4 id="Stops-BOTH"><a href="#Stops-BOTH" class="headerlink" title="Stops.BOTH"></a><strong>Stops.BOTH</strong></h4><p><strong>装饰器将同时停止:self和优先级较低的节点。</strong></p>
+<h5 id="Stops-BOTH"><a href="#Stops-BOTH" class="headerlink" title="Stops.BOTH"></a>Stops.BOTH</h5><p><strong>装饰器将同时停止:self和优先级较低的节点。</strong></p>
 <p>测试结果截图:</p>
 <p><img src="/img/AI/EventBehaviourTree/BlackBoardStopBoth.PNG" alt="BlackBoardStopBoth"></p>
 <p><strong>通过将第一个CompareShareFloatNode(设置成比较ShareFloat&lt;&#x3D;30且Both打断类型)，我们在后续SequenceNode将ShareFloat设置成100让条件从满足到不满足，从而打断CompareShareFloatNode执行，让第二个SelectorNode接着第二条分支执行，但第二个SelectorNode的第二条分支我又通过将ShareFloat设置成0让CompareShareFloatNode从不满足到满足，从而直接打断第二个SelectorNode的执行，直接进入第二个SelectorNode的第二分支执行打印出最终Log。可以看出这个测试用例完美符合了Both既满足SELF又满足LowerPriority的两个打断机制设计。</strong></p>
-<h4 id="Stops-LOWER-PRIORITY-IMMEDIATE-RESTART"><a href="#Stops-LOWER-PRIORITY-IMMEDIATE-RESTART" class="headerlink" title="Stops.LOWER_PRIORITY_IMMEDIATE_RESTART"></a><strong>Stops.LOWER_PRIORITY_IMMEDIATE_RESTART</strong></h4><p><strong>一旦启动，装饰器将检查它的状态，如果不满足，它将观察黑板的变化。一旦条件满足，它将停止优先级较低的节点，并命令父组合立即重启此装饰器。</strong></p>
+<h5 id="Stops-LOWER-PRIORITY-IMMEDIATE-RESTART"><a href="#Stops-LOWER-PRIORITY-IMMEDIATE-RESTART" class="headerlink" title="Stops.LOWER_PRIORITY_IMMEDIATE_RESTART"></a>Stops.LOWER_PRIORITY_IMMEDIATE_RESTART</h5><p><strong>一旦启动，装饰器将检查它的状态，如果不满足，它将观察黑板的变化。一旦条件满足，它将停止优先级较低的节点，并命令父组合立即重启此装饰器。</strong></p>
 <p>测试结果截图:</p>
 <p><img src="/img/AI/EventBehaviourTree/BlackBoardStopLowerPriorityImmediateRestart.PNG" alt="BlackBoardStopLowerPriorityImmediateRestart"></p>
 <p><strong>可以看到SelectorNode的第一个分支的CompareShareFloatNode(设置成比较ShareFloat&gt;&#x3D;30且LowerPriorityImmediateRestart打断类型)，所以一开始就不满足，所以会直接进入SelectorNode的第二个分支，第二个分支里SetShareFloatNode将ShareFloat设置成100，此时第一分支的CompareShareFloatNode从不满足条件到满足条件，因为是LowerPriorityImmediateRestart打断类型的缘故，打断了SelectorNode第二分支的执行，直接重启了SelectorNode第一分支的执行。可以看出这个测试用例完美符合了LowerPriorityImmediateRestart的条件从不满足到满足时打断低优先级分支且从其当前修饰节点所在组合节点的分支设计。</strong></p>
@@ -744,7 +1147,7 @@
 <p>测试结果截图:</p>
 <p><img src="/img/AI/EventBehaviourTree/BlackBoardStopImmediateRestart.PNG" alt="BlackBoardStopImmediateRestart"></p>
 <p><strong>这里测试ImmediateRestart打断类型的测试用例比较复杂，这里简单来说就是先让CompareShareFloatNode(ImmediateRestart打断类型)不满足，然后通过运行其他分支将CompareShareFloatNode从不满足到满足(验证ImmediateRestart的打断低优先级并重启的机制)，然后在CompareShareFloatNode后续流程里将ShareFloat设置成10测试CompareShareFloatNode从条件满足到不满足的自我打断机制，然后借助CompareShareFloatNode(比较ShareFloat值为10)来实现SelectorNode的执行完成流程结束单次运行。可以看出这个测试用例完美验证了ImmediateRestart的从不满足到满足的重启和从满足到不满足的自我打断机制，完美符合ImmediateRestart打断策略。</strong></p>
-<h2 id="事件驱动行为树暂停"><a href="#事件驱动行为树暂停" class="headerlink" title="事件驱动行为树暂停"></a>事件驱动行为树暂停</h2><p>通过前面的学习，可以知道，事件驱动行为树的执行核心是<strong>定时器(Clock.cs)</strong></p>
+<h3 id="事件驱动行为树暂停"><a href="#事件驱动行为树暂停" class="headerlink" title="事件驱动行为树暂停"></a>事件驱动行为树暂停</h3><p>通过前面的学习，可以知道，事件驱动行为树的执行核心是<strong>定时器(Clock.cs)</strong></p>
 <p><strong>所以要想实现单个行为树逻辑的暂停继续功能，我们必须把定时器(Clock.cs)实现成每个行为树(TBehaviourTree.cs)一个定时器(Clock.cs)</strong></p>
 <p><strong>NPBehave的Clock采用的是全局唯一的UnityContext，同时他的Clock设计没有支持暂停继续功能。我这里的设计修改算是我自己的一个改进。</strong></p>
 <p>目前设计如下：</p>
@@ -775,7 +1178,7 @@
 <ol>
 <li><strong>这里我暂时没有对TBehavourTree和Clock做对象池优化，算是一个优化点。</strong></li>
 </ol>
-<h2 id="事件驱动行为树调试"><a href="#事件驱动行为树调试" class="headerlink" title="事件驱动行为树调试"></a>事件驱动行为树调试</h2><p><strong>行为树调试很重要的一点就是要可视化整个行为树执行过程，行为树编辑器已经实现了行为树数据的可视化绘制，那么剩下的工作就是将行为树运行时的一些数据(比如节点运行状态，节点运行结果等)通过编辑器将数据可视化显示。</strong></p>
+<h3 id="事件驱动行为树调试"><a href="#事件驱动行为树调试" class="headerlink" title="事件驱动行为树调试"></a>事件驱动行为树调试</h3><p><strong>行为树调试很重要的一点就是要可视化整个行为树执行过程，行为树编辑器已经实现了行为树数据的可视化绘制，那么剩下的工作就是将行为树运行时的一些数据(比如节点运行状态，节点运行结果等)通过编辑器将数据可视化显示。</strong></p>
 <p>目前行为树的调试是通过加载AI(BaseActor.LoadAI())时挂在<strong>BTDebugger</strong>脚本来决定选中对象是否支持数据加载显示调试(<strong>为了区分运行时编辑器就没有采用TBehaviourTree作为调试加载依据</strong>)。</p>
 <p>行为树窗口<strong>UIBTGraphEditorWindow.cs</strong>结合<strong>OnSelectionChange</strong>实现对选中对象的<strong>BTDebugger</strong>对应的运行时<strong>BehaviourTreeGraphData</strong>进行数据读取构建显示。</p>
 <p>关于为树运行时的一些数据(比如节点运行状态，节点运行结果，是否打断等)数据可视化，通过<strong>BTGraphEditorWindow.cs</strong>，<strong>BehaviourTreeGraphView.cs</strong>，<strong>NodeView.cs</strong>和<strong>EdgeView.cs</strong>相关代码进行数据显示：</p>
@@ -800,16 +1203,16 @@
 <li><strong>编辑器的运行时数据更新显示(e.g 运行节点，边颜色，打断状态等)是通过Update驱动更新的</strong></li>
 <li><strong>运行时黑板数据不是通过属性绑定显示的，所以采用通过更新刷新的方式确保黑板UI实时显示</strong></li>
 </ol>
-<h2 id="事件驱动行为树实战"><a href="#事件驱动行为树实战" class="headerlink" title="事件驱动行为树实战"></a>事件驱动行为树实战</h2><p>TODO</p>
-<h2 id="未来计划"><a href="#未来计划" class="headerlink" title="未来计划"></a>未来计划</h2><ol>
+<h3 id="事件驱动行为树实战"><a href="#事件驱动行为树实战" class="headerlink" title="事件驱动行为树实战"></a>事件驱动行为树实战</h3><p>TODO</p>
+<h3 id="未来计划"><a href="#未来计划" class="headerlink" title="未来计划"></a>未来计划</h3><ol>
 <li><strong>支持行为树引用方式的重用而非复制的方式(这种方式修改原树已经复制的树数据无法跟着变化导致重用性效率大打折扣)</strong></li>
 </ol>
-<h1 id="个人心得"><a href="#个人心得" class="headerlink" title="个人心得"></a>个人心得</h1><ol>
+<h2 id="个人心得"><a href="#个人心得" class="headerlink" title="个人心得"></a>个人心得</h2><ol>
 <li><strong>事件驱动行为树相比传统行为树最大的优势就是树更新的开销，前者基于定时器可以做到通知打断+子节点通知父节点运行结果的单向执行(不用每帧从根节点开始)，后者是每次都从根节点开始的遍历执行，后者每帧都会从根节点再走一遍流程到之前的节点继续运行(同时打断设计不好设计成基于定时器减少更新频率)</strong></li>
 <li><strong>UIElement的GraphView把逻辑节点(Node)和边(Edge)数据和节点(NodeView)和边(NodeView)显示抽象分离的很好，可以高度自由的编写显示节点(NodeView)和边(EdgeView)</strong></li>
 </ol>
-<h1 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h1><p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/EventBehaviourTree">EventBehaviourTree</a></p>
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://github.com/meniku/NPBehave/tree/master">NPBehave</a></p>
+<h2 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h2><p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/EventBehaviourTree">EventBehaviourTree</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://github.com/meniku/NPBehave/tree/master">NPBehave</a></p>
 <p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-uss-properties.html">USS properties reference</a></p>
 <p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/UIElements.IStyle.html">IStyle</a></p>
 <p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/UIE-ElementRef.html">UXML现有可用Element查询</a></p>
@@ -1255,135 +1658,12 @@
 <p>图生视频可以用类似上面文生图的SeaArt流程，这里就不一一展示了。</p>
 <h2 id="视频字幕AI"><a href="#视频字幕AI" class="headerlink" title="视频字幕AI"></a>视频字幕AI</h2><p><a target="_blank" rel="noopener" href="https://www.veed.io/">VEED.io</a></p>
 <p>支持对视频处理的相关AI功能(比如只能加字幕，智能配音，文字转视频等)</p>
-<p>这里本人只测试了智能给带音频的视频加字幕功能，目前来看免费功能优先，长期或深度使用需要付费。</p>
+<p>这里本人只测试了智能给带音频的视频加字幕功能，目前来看免费功能有限，长期或深度使用需要付费。</p>
 <h2 id="编程AI"><a href="#编程AI" class="headerlink" title="编程AI"></a>编程AI</h2><p>接下来来到本文的重点，作为程序员，我们完全是AI编程工具的目标客户，利用AI来提升开发效率是很有必要的(使用ChatGPT后对AI提升的效率深有感触)。</p>
 <p>接下来主要以Copilot和Cursor两个工具进行学习和比较。</p>
-<h3 id="Copilot"><a href="#Copilot" class="headerlink" title="Copilot"></a>Copilot</h3><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/GitHub_Copilot"><strong>GitHub Copilot</strong>是GitHub和OpenAI合作开发的一个人工智能工具，用户在使用Visual Studio Code、Microsoft Visual Studio、Vim、Cursor或JetBrains集成开发环境时可以通过GitHub Copilot自动补全代码。Copilot的OpenAI Codex接受了一系列英语语言、公共 GitHub 存储库和其他公开可用源代码的训练。这包括来自 5400 万个公共 GitHub 存储库的 159 GB Python 代码的过滤数据集。</a></p>
-<p>从介绍可以看出Copilot主打的是基于代码的学习，提供代码AI自动补全的功能。</p>
-<p>Copilot是微软旗下的，所以对Visual Studio，VS Code等微软<strong>IDE支持比较完善</strong>，下载VS时就自带集成Copilot。</p>
-<p><strong>支持基于Github大量代码学习的代码智能推断补全，支持Agent聊天问答，支持多个模型选择，支持代码Review等功能。</strong></p>
-<p>优势：</p>
-<ol>
-<li><strong>不用切换IDE，直接嵌入各大主流IDE</strong></li>
-<li><strong>微软官方支持且基于Github的大量代码知识</strong></li>
-</ol>
-<p>Note:</p>
-<ol>
-<li><strong>Copilot基础版免费，Pro版需要付费购买(10美元每月-个人推荐这个)，Pro+(39美元每月)[<a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/zh-hans/vs/pricing/?tab=paid-subscriptions%5D)%E3%80%82">https://visualstudio.microsoft.com/zh-hans/vs/pricing/?tab=paid-subscriptions])。</a></strong></li>
-</ol>
-<h4 id="Copilot安装"><a href="#Copilot安装" class="headerlink" title="Copilot安装"></a>Copilot安装</h4><ol>
-<li><p>官方下载带Copilot的Visual Studio 2022[<a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/github-copilot/]">https://visualstudio.microsoft.com/github-copilot/]</a></p>
-</li>
-<li><p>新建工程</p>
-</li>
-<li><p>右上角点击Github Copilot-&gt;打开聊天框</p>
-</li>
-</ol>
-<p><img src="/img/AI/AITools/Copilot/CopilotEntry.PNG" alt="CopilotEntry"></p>
-<h4 id="Completions"><a href="#Completions" class="headerlink" title="Completions"></a>Completions</h4><p>敲击代码，Copilot会根据代码智能推断即将编写的代码，敲击tab应用智能推断的代码</p>
-<p><img src="/img/AITools/Copilot/IntelligentPrompt.PNG" alt="IntelligentPrompt"></p>
-<p>敲击注释，Copilot也会根据注释去推断即将编写的代码，敲击tab应用智能推断的代码</p>
-<p><img src="/img/AITools/Copilot/IntelligentPromptFromNotation.PNG" alt="IntelligentPromptFromNotation"></p>
-<p>只接受一部分Copilot智能推断的代码，Windows上Ctrl+→按键</p>
-<p><img src="/img/AITools/Copilot/AcceptPartOfIntelligentPrompt.PNG" alt="AcceptPartOfIntelligentPrompt"></p>
-<p><strong>决定不启用智能推断的代码，点击Esc按键</strong></p>
-<h4 id="Prompt"><a href="#Prompt" class="headerlink" title="Prompt"></a>Prompt</h4><p>**Prompt(提示词)**可以帮助AI更加准确的理解我们的需求，给出更更准确的代码推断和需求编写。</p>
-<p>前面的Completions提到注释描述给AI提示，以及Chat中提到针对<strong>代码片段的提问(Alt+I)</strong>，在提问时我们通过自然语言准确描述需求比泛化的描述可以更加准确的让AI理解我们给出的指令，得到更准确的目标结果。</p>
-<p>泛化的Prompt，比如注释描述”&#x2F;&#x2F; Some Code”</p>
-<p>此时无论是AI还是人其实都无法理解我们具体想做什么，所以AI并没与给出任何有效的代码推断</p>
-<p><img src="/img/AI/AITools/Copilot/BadPrompt.PNG" alt="BadPrompt"></p>
-<p>好的Prompt，比如注释描述”&#x2F;&#x2F; define a function that is used to compare to int value”</p>
-<p><img src="/img/AI/AITools/Copilot/GoodPrompt.PNG" alt="GoodPrompt"></p>
-<p>可以看到好的提示词成功让AI理解了需求并给出了准确的推断编写代码。</p>
-<h4 id="Chat"><a href="#Chat" class="headerlink" title="Chat"></a>Chat</h4><p>聊天模式氛围Ask Mode和Agent Mode</p>
-<p>聊天模式切换:</p>
-<p><img src="/img/AI/AITools/Copilot/AgentModeChosen.PNG" alt="AgentModeChosen"></p>
-<h5 id="Ask-Mode"><a href="#Ask-Mode" class="headerlink" title="Ask Mode"></a>Ask Mode</h5><p>AI提问模式交互，打开Copilot后，右下方有聊天窗口</p>
-<p><img src="/img/AI/AITools/Copilot/CopilotInteraction.PNG" alt="CopilotInteraction"></p>
-<p>点击代码块右上方的应用则可以将Copilot生成的代码生成到我们的代码里</p>
-<p><img src="/img/AI/AITools/Copilot/AICodeApply.PNG" alt="AICodeApply"></p>
-<p>在代码区点击**放弃(Alt+Del)**则可以放弃方才应用的代码</p>
-<p><img src="/img/AI/AITools/Copilot/AICodeGiveUp.PNG" alt="AICodeGiveUp"></p>
-<p>代码块交互聊天，选中需要询问的代码，按Alt+&#x2F;</p>
-<p><img src="/img/AI/AITools/Copilot/CodeSnippetChat.PNG" alt="CodeSnippetChat"></p>
-<p>交互聊天有一系列的快捷操作指令</p>
-<p>输入@会看到几个大方向或内容给AI作为参考</p>
-<p><img src="/img/AI/AITools/Copilot/AtQuickCommand.PNG" alt="AtQuickCommand"></p>
-<p>输入#会看到可以在询问前添加相关文件作为给AI的参考文件</p>
-<p><img src="/img/AI/AITools/Copilot/NumberSighQuickCommand.PNG" alt="NumberSighQuickCommand"></p>
-<p>输入&#x2F;会看到有内置支持的快捷代码操作指令(比如fix,optimization……)</p>
-<p><img src="/img/AI/AITools/Copilot/SlashQuickCommand.PNG" alt="SlashQuickCommand"></p>
-<p>想引入更多复杂类型的资源作为AI参考文件，可以通过+添加:</p>
-<p><img src="/img/AI/AITools/Copilot/AddReferenceAttach.PNG" alt="AddReferenceAttach"></p>
-<p>自动以快捷交互指令详情参考:</p>
-<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/copilot-chat-context?view=vs-2022">Customize chat responses and set context</a></p>
-<h5 id="Agent-Mode"><a href="#Agent-Mode" class="headerlink" title="Agent Mode"></a>Agent Mode</h5><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/copilot-agent-mode?view=vs-2022">With the GitHub Copilot agent mode in Visual Studio, you can use natural language to specify a high-level task. AI creates a plan, makes code edits, runs terminal commands, invokes tools, and applies changes across your codebase. It monitors outcomes, such as build results, unit-test failures, or tool outputs, and iterates as needed.</a></p>
-<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/copilot-agent-mode?view=vs-2022">Unlike <em>ask mode</em>, agent mode doesn’t stop after a single response. It continues running and refining steps until you reach the goal in your prompt or more input is required.</a></p>
-<p>从介绍可以看出Copilot Agent Mode可以让我们通过自然语言区描述高阶任务需求，让AI使用特定工具自动化完成高阶任务需求。</p>
-<p>Agent Mode工具选择:</p>
-<p><img src="/img/AI/AITools/Copilot/AgentModeToolsChosen.PNG" alt="AgentModeToolsChosen"></p>
-<p>比如指挥Copilot调用指定方法并应用代码。</p>
-<p><img src="/img/AI/AITools/Copilot/FirstAgenModeUsing.PNG" alt="FirstAgenModeUsing"></p>
-<p><strong>相比Ask Mode生成的代码我们要选择应用，Agent Mode已经通过我的指令自动应用到了Program.cs文件里，同时Agent Mode还通过调用编译进行了生成代码的对错验证(工具自动化的使用是和Ask Mode的最大区别)。</strong></p>
-<p>Agent Mode可以通过选择保留和放弃去确认生成代码的去留。</p>
-<p>当成功应用后，Copilot通过创建<strong>还原点，可以实现快速的放弃之前的操作</strong></p>
-<p><img src="/img/AI/AITools/Copilot/RevertAIAction.PNG" alt="RevertAIAction"></p>
-<p>Note:</p>
-<ol>
-<li><strong>需要使用一些列工具进行自动化的操作推荐用Agent Mode</strong></li>
-<li><strong>需要使用MCP Servers功能，必须使用Agent Mode而非Ask Mode</strong></li>
-</ol>
-<h4 id="MCP"><a href="#MCP" class="headerlink" title="MCP"></a>MCP</h4><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/mcp-servers?view=vs-2022">Model Context Protocol (MCP) is an open standard that enables AI models to interact with external tools and services through a unified interface.</a></p>
-<p>从介绍可以看出MCP是AI模型和外部工具交互的标准。</p>
-<p>如果想通过外部工具扩展Agent Mode工作流，可以通过MCP引入外部工具。</p>
-<p>详情参考:</p>
-<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/mcp-servers?view=vs-2022">Use MCP servers</a></p>
-<h4 id="Coding-Agent"><a href="#Coding-Agent" class="headerlink" title="Coding Agent"></a>Coding Agent</h4><p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent">With Copilot coding agent, GitHub Copilot can work independently in the background to complete tasks, just like a human developer.</a></p>
-<p>从介绍可以看出Coding Agent可以用于像人工一样自动化完成任务。</p>
-<p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent">Copilot coding agent is distinct from the “agent mode” feature available in your IDE. Copilot coding agent works autonomously in a GitHub Actions-powered environment to complete development tasks assigned through GitHub issues or GitHub Copilot Chat prompts, and creates pull requests with the results. In contrast, agent mode in your IDE makes autonomous edits directly in your local development environment.</a></p>
-<p>相比Agent Mode，Coding Agent能独立于IDE在Github环境下运行完成任务。</p>
-<p>Note:</p>
-<ol>
-<li><strong>Coding Agent是付费功能(Pro或Pro+等)</strong></li>
-</ol>
-<h4 id="多模型选择"><a href="#多模型选择" class="headerlink" title="多模型选择"></a>多模型选择</h4><p>​		打开Copilot聊天框正下方有底层AI模型选择</p>
-<p>​		<img src="/img/AITools/Copilot/ChangeAIModel.PNG" alt="ChangeAIModel"></p>
-<h4 id="Code-Review"><a href="#Code-Review" class="headerlink" title="Code Review"></a>Code Review</h4><p>通常合作开发时，提交代码时代码review以往都是人工查看的，有了AI工具，Code Review也能实现AI自动化分析。</p>
-<p>Visual Studio Code Review步骤:</p>
-<ol>
-<li><p>Github创建不同分支并推上去</p>
-</li>
-<li><p>在对应分支进行修改并提交</p>
-</li>
-<li><p>在Github上或者Git发出Pull Request请求</p>
-<p><img src="/img/AI/AITools/Copilot/GithubPullRequestOperation.PNG" alt="GithubPullRequestOperation"></p>
-</li>
-<li><p>在Github上Pull Request操作发起Copilot Review请求</p>
-<p><img src="/img/AI/AITools/Copilot/CopilotReviewRequest.PNG" alt="CopilotReviewRequest"></p>
-</li>
-<li><p>等待AI Copilot Review完成则可看到AI Review结论</p>
-<p><img src="/img/AI/AITools/Copilot/CopilotReviewResult.PNG" alt="CopilotReviewResult"></p>
-</li>
-</ol>
-<p>Note:</p>
-<ol>
-<li><strong>Code Review是付费功能(Pro或Pro+等)</strong></li>
-</ol>
-<h4 id="Copilot-CLI"><a href="#Copilot-CLI" class="headerlink" title="Copilot CLI"></a>Copilot CLI</h4><p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli">The command-line interface (CLI) for GitHub Copilot allows you to use Copilot directly from your terminal.</a></p>
-<p>Copilot CLI允许通过命令行界面使用Copilot，这一点很想Claude Code。</p>
-<p>Copilot CLI使用详情参考:</p>
-<p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli">Using GitHub Copilot CLI</a></p>
-<p>Note:</p>
-<ol>
-<li><strong>Copilot CLI是付费功能(Pro或Pro+等)</strong></li>
-</ol>
-<h4 id="Copilot付费"><a href="#Copilot付费" class="headerlink" title="Copilot付费"></a>Copilot付费</h4><p>Copilot有多个付费模式：</p>
-<p>Free – **只允许使用优先功能(50次Agent Mode或Chat每月，2000次智能代码提示补全每月等)</p>
-<p>Pro – <strong>无限次Agent Mode或Chat每月，无限次智能代码补全提示，更多AI模型选择，Code Review，Coding Agent等功能</strong></p>
-<p>Pro+ – <strong>相比Pro更多的AI模型选择等</strong></p>
-<p>Copilot付费支持的<strong>Visa</strong>卡好像要<strong>要求支持跨境汇款</strong>，<strong>PayPal</strong>这个我个人没有。</p>
-<p>不同付费模式功能详情参考:</p>
-<p><a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/github-copilot/">Github-copilot</a></p>
+<h3 id="Copilot"><a href="#Copilot" class="headerlink" title="Copilot"></a>Copilot</h3><p><strong>综合价格，方便(比如Claude Code要被封)，适配现有工作流(IDE比如VSCode和VS)，准备以VSCode+Copilot和Copilot CLI作为AI编程工具为主去学习AI编程工具相关的知识和使用。</strong></p>
+<p>所以会有比较长的内容去学习讲解Copilot的相关使用和知识，这里只给出引用，详细内容在单独的博客篇章里记录。</p>
+<p><a href="">Copilot</a></p>
 <h3 id="Cursor"><a href="#Cursor" class="headerlink" title="Cursor"></a>Cursor</h3><p>让我们看下官网的介绍:</p>
 <p><a target="_blank" rel="noopener" href="https://www.cursor.com/">The AI Code Editor. Built to make you extraordinarily productive, Cursor is the best way to code with AI.</a></p>
 <p><strong>从介绍可以看出与Copilot主打编程辅助不同，Cursor设计之初是作为一款人工智能代码编辑器，是一款为提供更好编程AI体验的IDE工具。</strong></p>
@@ -1583,7 +1863,7 @@
 <li><strong>Using instructions(使用自然语言描述让AI把选中的代码模块进行从够或编写代码测试用例等)</strong></li>
 <li><strong>Code Completions(这个就是Cursor里基于代码库分析，编码时快速预测提示补全的功能)</strong></li>
 </ol>
-<h4 id="Chat-1"><a href="#Chat-1" class="headerlink" title="Chat"></a>Chat</h4><p>Chat和Agent前面介绍过细节区别，接下来看看使用Agent提问帮助我们理解项目代码设计：</p>
+<h4 id="Chat"><a href="#Chat" class="headerlink" title="Chat"></a>Chat</h4><p>Chat和Agent前面介绍过细节区别，接下来看看使用Agent提问帮助我们理解项目代码设计：</p>
 <p><img src="/img/AI/AugmentCode/AugmentCodeAgentUsing.PNG" alt="AugmentCodeAgentUsing"></p>
 <p>可以看到同**@符号我们添加了给AI作为思考上下文的核心代码目录**，AI通过分析把每一步思考理解过程都详细讲述出来了，最后给出了分析结论(这一点和Cursor的Chat和Agent没有本质区别)，底层AI用的目前适配编程AI最好的Claude模型(2025&#x2F;07&#x2F;13)。</p>
 <p>关于AI给出的代码都会提供复制和创建新文件的快捷操作入口方便我们采纳AI给出的代码建议:</p>
@@ -1642,6 +1922,61 @@
 <p>最终博主决定选择<strong>Copilot</strong>作为VS+Unity开发的个人AI编程工具。</p>
 <p><strong>在公司公司付费了Cursor，所以在公司依然使用Cursor辅助AI编程开发。</strong></p>
 <p>未来如果经费允许参与大型项目需要强大的上下文代码分析能力，可以考虑Augment Code。</p>
+<h2 id="AI编程发展"><a href="#AI编程发展" class="headerlink" title="AI编程发展"></a>AI编程发展</h2><h3 id="提示词工程师"><a href="#提示词工程师" class="headerlink" title="提示词工程师"></a>提示词工程师</h3><p>核心角色：</p>
+<p><strong>人与AI的“翻译”</strong></p>
+<p>工作方式:</p>
+<p><strong>精心设计提示词，指令驱动AI完成任务</strong></p>
+<p>关注焦点：</p>
+<p><strong>优化单次交互，追求精准、稳定、可控的输出</strong></p>
+<p>AI编程中的作用：</p>
+<p><strong>基础能力，让AI正确理解开发意图，生成所需代码或文档。</strong></p>
+<p>事例：</p>
+<p>链式思考提示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">让我们逐步思考：</span><br><span class="line">1. 首先分析需求的关键要素</span><br><span class="line">2. 然后确定合适的数据结构</span><br><span class="line">3. 接着设计算法逻辑</span><br><span class="line">4. 最后考虑边界情况和优化</span><br></pre></td></tr></table></figure>
+
+<p>角色扮演提示:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">“你是一位资深Python开发者和代码审查专家，</span><br><span class="line">请以这个身份审查以下代码...”</span><br></pre></td></tr></table></figure>
+
+<p>少样本学习提示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">以下是一些良好代码的例子：</span><br><span class="line">[示例1]</span><br><span class="line">[示例2]</span><br><span class="line"></span><br><span class="line">请按照同样的风格和质量标准完成：[新任务]</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示词工程师的价值在于通过系统化的方法（如角色设定、结构化指令、思维链提示等），引导AI生成高质量代码，是高效利用AI的基础。</strong></p>
+<h4 id="Copilot-Prompt"><a href="#Copilot-Prompt" class="headerlink" title="Copilot Prompt"></a>Copilot Prompt</h4><p><a target="_blank" rel="noopener" href="https://support.microsoft.com/en-us/topic/learn-about-copilot-prompts-f6c3b467-f07c-4db1-ae54-ffac96184dd5">Copilot prompts are instructions or questions you use to tell Copilot what you want. </a>(Copilot提示词是用于告知Copilot您的需求的指令或问题。)</p>
+<p>Copilot prompts由4部分组成：</p>
+<ul>
+<li><p>Goal</p>
+<p>What do you want from Copilot?(想从Copilot这里获得什么？)</p>
+</li>
+<li><p>Context</p>
+<p>Why do you need it and who is involved?(为什么需要？会包含哪些人？)</p>
+</li>
+<li><p>Expectations</p>
+<p>How should Copilot respond to best fullfill you request?(你期望Copilot如何去满足你的请求？)</p>
+</li>
+<li><p>Source</p>
+<p>What information or samples do you want Copilot to use?(你希望Copilot使用什么信息或样例？)</p>
+</li>
+</ul>
+<p>给Copilot编写提示词时，注重上面几点，这样才能让Copilot更加准确的理解任务需求和输出正确的结果。</p>
+<p><strong>个人理解提示词强调的是如何让AI更加正确理解需求和输出正确结果。</strong></p>
+<h3 id="Vibe-Coding"><a href="#Vibe-Coding" class="headerlink" title="Vibe Coding"></a>Vibe Coding</h3><p>核心角色：</p>
+<p><strong>项目“总监”</strong></p>
+<p>工作方式:</p>
+<p><strong>用自然语言描述高层次需求，<strong>与AI多轮对话迭代</strong>，快速构建原型</strong></p>
+<p>关注焦点：</p>
+<p><strong>整体实现效率，快速验证想法，让AI处理大量细节</strong></p>
+<p>AI编程中的作用：</p>
+<p><strong>工作流革新，大幅降低编程门槛，将开发者精力集中在系统设计和逻辑规划上</strong></p>
+<p><strong>Vibe Coding代表了一种更自由、更具实验性的工作风格，特别适合快速原型验证、探索性项目或独立开发。但它可能导致开发者对代码库的理解不深，在严肃的、需要长期维护的企业级项目中需谨慎使用。它更适合作为高效实现想法的“加速器”。</strong></p>
+<p><strong>个人理解，Vibe Coding是一种从程序开发转变到提需求的甲方，强调的是利用AI全方面开发生成需求产品的过程。Vibe Coding因为是纯依赖AI理解需求生成代码，所以对AI的token消耗可能比较高。</strong></p>
+<h3 id="Skill"><a href="#Skill" class="headerlink" title="Skill"></a>Skill</h3><p>核心角色：</p>
+<p><strong>系统“架构师”</strong></p>
+<p>工作方式:</p>
+<p><strong>模块化、可复用的AI能力包，按需动态加载</strong></p>
+<p>关注焦点：</p>
+<p><strong>工程化与标准化，构建可维护、可扩展、高效率的AI协作体系</strong></p>
+<p>AI编程中的作用：</p>
+<p><strong>未来范式，将AI能力固化为“即插即用”的标准化工具，是AI工程化协作的关键</strong></p>
 <h1 id="AI工作流工具"><a href="#AI工作流工具" class="headerlink" title="AI工作流工具"></a>AI工作流工具</h1><h2 id="Comfyui"><a href="#Comfyui" class="headerlink" title="Comfyui"></a>Comfyui</h2><p><a target="_blank" rel="noopener" href="https://docs.comfy.org/get_started/introduction">ComfyUI is a node based interface and inference engine for generative AI. Users can combine various AI models and operations through nodes to achieve highly customizable and controllable content generation.</a></p>
 <p>个人理解ComfyUI是一个基于节点编辑可组合各种AI模型完成指定AI工作流的一个AI工作流引擎。</p>
 <p>这是未来的学习方向，目前暂时不做更多了解，TODO。</p>
@@ -3061,157 +3396,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2022/10/12/异步编程/" title="异步编程" itemprop="url">异步编程</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
-		
-  <p class="article-time">
-    <time datetime="2022-10-12T02:43:00.000Z" itemprop="datePublished"> 发表于 2022-10-12</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>游戏开发过程中为了无论资源加载异步还是逻辑异步，异步都是不可或缺的一部分。本章节是为了深入理解C#的异步编程以及Unity里异步编程使用而编写。</p>
-<h2 id="异步编程"><a href="#异步编程" class="headerlink" title="异步编程"></a>异步编程</h2><p>Unity里最初的模拟异步编程概念的当之无愧是携程，但携程实际上是单线程通过每帧等待实现异步模拟运行的而非真正的异步编程。</p>
-<p>异步编程的过程中我们往往会采用回调式的方式来编写代码，这回导致回调地狱，导致代码理解起来比较困难，有了Task异步编程我们可以实现类似同步式的代码编写来编写异步代码。</p>
-<p>而本章节的重点是真正深入了解异步编程，C#里的最新的异步编程主要是通过Task</p>
-<h3 id="Task-based-Asynchronous-Pattern-TAP"><a href="#Task-based-Asynchronous-Pattern-TAP" class="headerlink" title="Task-based Asynchronous Pattern(TAP)"></a>Task-based Asynchronous Pattern(TAP)</h3><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/async">The core of async programming is the <code>Task</code> and <code>Task</code> objects, which model asynchronous operations. They are supported by the <code>async</code> and <code>await</code> keywords. </a></p>
-<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/asynchronous-programming-patterns/task-based-asynchronous-pattern-tap">TAP uses a single method to represent the initiation and completion of an asynchronous operation. </a></p>
-<p>从上面的介绍可以看出异步编程的核心是Task实现了异步操作，并且支持async和await关键词，其次<strong>TAP</strong>通过方法定义就完成了所有的异步操作初始化和方法定义。</p>
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
-<li><strong>await can only be used inside an async method.(await只能用在async标记的方法内)</strong></li>
-<li><strong>async methods need to have an await keyword in their body or they will never yield!(async标记的方法需要一个await关键词在方法定义内，不然这个异步方法不会暂停会同步执行)</strong></li>
-</ol>
-<h3 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h3><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task?view=net-7.0">The Task class represents a single operation that does not return a value and that usually executes asynchronously. Task objects are one of the central components of the task-based asynchronous pattern first introduced in the .NET Framework 4. Because the work performed by a Task object typically executes asynchronously on a thread pool thread rather than synchronously on the main application thread, you can use the Status property, as well as the IsCanceled, IsCompleted, and IsFaulted properties, to determine the state of a task. </a></p>
-<p>从介绍可以看出，异步编程主要是通过Task类的抽象，而Task的异步编程底层伴随着线程池，我们使用的人可以不用关心底层线程池的优化调度问题。通过Task抽象异步编程，Task可以返回异步运行状态IsCanceled,IsCompleted,IsFaulted等来查看异步运行状态。</p>
-<p>通过实战使用，了解下Task的基础使用以及底层跨线程的设计:</p>
-<h4 id="Task基础使用"><a href="#Task基础使用" class="headerlink" title="Task基础使用"></a>Task基础使用</h4><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 响应基础Task使用按钮点击</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnBtnBasicTaskUsingClick</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 创建一个Task1但不开始</span></span><br><span class="line">    Task task1 = <span class="keyword">new</span> Task(mTaskActionDelegate, <span class="string">&quot;Task1&quot;</span>);</span><br><span class="line">    <span class="comment">// 通过Task工厂创建一个Task2并等待完成</span></span><br><span class="line">    Task task2 = Task.Factory.StartNew(mTaskActionDelegate, <span class="string">&quot;Task2&quot;</span>);</span><br><span class="line">    task2.Wait();</span><br><span class="line">    <span class="comment">// Task1开始</span></span><br><span class="line">    task1.Start();</span><br><span class="line">    Debug.Log(<span class="string">$&quot;Task1 has been launched. Main Thread:<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>&quot;</span>);</span><br><span class="line">    <span class="comment">// 等待Task1完成</span></span><br><span class="line">    task1.Wait();</span><br><span class="line">    <span class="comment">// 通过Task.Run创建Task3并等待完成</span></span><br><span class="line">    Task task3 = Task.Run(()=&gt;</span><br><span class="line">                          &#123;</span><br><span class="line">                              Debug.Log(<span class="string">$&quot;ActionName:Task3&quot;</span>);</span><br><span class="line">                              Debug.Log(<span class="string">$&quot;Task:<span class="subst">&#123;Task.CurrentId&#125;</span> Thread:<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>&quot;</span>);</span><br><span class="line">                          &#125;);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;Task3 has been launched. Main Thread:<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>&quot;</span>);</span><br><span class="line">    task3.Wait();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Task使用方法</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;actionName&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TaskAction</span>(<span class="params"><span class="built_in">object</span> actionName</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">$&quot;ActionName:<span class="subst">&#123;actionName&#125;</span>&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;Task:<span class="subst">&#123;Task.CurrentId&#125;</span> Thread:<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/CSharp/Async/TaskBasicUsing.PNG" alt="TaskBasicUsing"></p>
-<p>从上面的Task尝试可以看出，Task是在不同线程开启的，其次Task如果是单独的New是不会自动开始的，Task.Run和Task.Factory.StartNew才会直接开始一个Task。</p>
-<h4 id="Task使用Async和Await实现异步方法定义和等待"><a href="#Task使用Async和Await实现异步方法定义和等待" class="headerlink" title="Task使用Async和Await实现异步方法定义和等待"></a>Task使用Async和Await实现异步方法定义和等待</h4><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 响应Task等待按钮点击 </span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">async</span> <span class="keyword">void</span> <span class="title">OnBtnAwaitTaskUsingClick</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> awaitTask = Task.Run(AwaitTaskAction);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;AwaitTaskAction has been launched. Main Thread:<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>&quot;</span>);</span><br><span class="line">    <span class="keyword">var</span> sumResult = <span class="keyword">await</span> awaitTask;</span><br><span class="line">    Debug.Log(<span class="string">$&quot;sumResult:<span class="subst">&#123;sumResult&#125;</span>&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;DateTime.Now.Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 等待的Task方法</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">async</span> Task&lt;<span class="built_in">int</span>&gt; <span class="title">AwaitTaskAction</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">$&quot;AwaitTaskAction Start&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;DateTime.Now.Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">    <span class="keyword">await</span> Task.Delay(<span class="number">1</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;AwaitTaskAction After Task.Delay(1)&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;DateTime.Now.Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">    <span class="built_in">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000000000</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        sum++;</span><br><span class="line">    &#125;</span><br><span class="line">    Debug.Log(<span class="string">$&quot;AwaitTaskAction End&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;DateTime.Now.Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/CSharp/Async/AwaitTaskUsing.PNG" alt="AwaitTaskUsing"></p>
-<p>通过Async关键词，我把OnBtnAwaitTaskUsingClick和AwaitTaskAction方法都定义成了异步方法(既可以通过Task异步调用的方法)。然后结合Await关键词实现了等待异步方法AwaitTaskAction执行完后返回运算结果并打印的效果，可以看到这样一来我们的异步代码编写结合Await关键词就跟同步代码一般是一个线性流程，同时异步方法内通过Task.Delay等类似携程的等待方法实现指定时间指定条件的等待。</p>
-<p>那么Async和Await关键词是如何实现异步等待效果的了，让我们结合反编译看一下底层实现:</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">AsyncStateMachine((Type) typeof(&lt;AwaitTaskAction&gt;d__10)), DebuggerStepThrough</span>]</span><br><span class="line"><span class="function"><span class="keyword">private</span> Task&lt;<span class="built_in">int</span>&gt; <span class="title">AwaitTaskAction</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    &lt;AwaitTaskAction&gt;d__10 stateMachine = <span class="keyword">new</span> &lt;AwaitTaskAction&gt;d__10 &#123;</span><br><span class="line">        &lt;&gt;<span class="number">4</span>__this = <span class="keyword">this</span>,</span><br><span class="line">        &lt;&gt;t__builder = AsyncTaskMethodBuilder&lt;<span class="built_in">int</span>&gt;.Create(),</span><br><span class="line">        &lt;&gt;<span class="number">1</span>__state = <span class="number">-1</span></span><br><span class="line">    &#125;;</span><br><span class="line">    stateMachine.&lt;&gt;t__builder.Start&lt;&lt;AwaitTaskAction&gt;d__10&gt;(<span class="keyword">ref</span> stateMachine);</span><br><span class="line">    <span class="keyword">return</span> stateMachine.&lt;&gt;t__builder.get_Task();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[<span class="meta">CompilerGenerated</span>]</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">sealed</span> <span class="keyword">class</span> &lt;<span class="title">AwaitTaskAction</span>&gt;<span class="title">d__10</span> : <span class="title">IAsyncStateMachine</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Fields</span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> &lt;&gt;<span class="number">1</span>__state;</span><br><span class="line">    <span class="keyword">public</span> AsyncTaskMethodBuilder&lt;<span class="built_in">int</span>&gt; &lt;&gt;t__builder;</span><br><span class="line">    <span class="keyword">public</span> GameLauncher &lt;&gt;<span class="number">4</span>__this;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> &lt;sum&gt;<span class="number">5</span>__1;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> &lt;i&gt;<span class="number">5</span>__2;</span><br><span class="line">    <span class="keyword">private</span> TaskAwaiter &lt;&gt;u__1;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Methods</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MoveNext</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> num = <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            TaskAwaiter awaiter;</span><br><span class="line">            GameLauncher.&lt;AwaitTaskAction&gt;d__10 d__;</span><br><span class="line">            TaskAwaiter awaiter2;</span><br><span class="line">            <span class="keyword">if</span> (num == <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                awaiter = <span class="keyword">this</span>.&lt;&gt;u__1;</span><br><span class="line">                <span class="keyword">this</span>.&lt;&gt;u__1 = <span class="keyword">new</span> TaskAwaiter();</span><br><span class="line">                <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = num = <span class="number">-1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (num == <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                awaiter2 = <span class="keyword">this</span>.&lt;&gt;u__1;</span><br><span class="line">                <span class="keyword">this</span>.&lt;&gt;u__1 = <span class="keyword">new</span> TaskAwaiter();</span><br><span class="line">                <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = num = <span class="number">-1</span>;</span><br><span class="line">                <span class="keyword">goto</span> TR_0005;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 开始第一个Task并获得awaiter，通过awaiter来观察Task是否完成。</span></span><br><span class="line">                Debug.Log(<span class="string">&quot;AwaitTaskAction Start&quot;</span>);</span><br><span class="line">                Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;(<span class="built_in">int</span>) DateTime.get_Now().Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">                awaiter = Task.Delay(<span class="number">1</span>).GetAwaiter();</span><br><span class="line">                <span class="keyword">if</span> (!awaiter.IsCompleted)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">// 向未完成的Task中注册continuation action;</span></span><br><span class="line">                    <span class="comment">// continuation action会在Task完成时执行;</span></span><br><span class="line">                    <span class="comment">// 等同于awaiter1.onCompleted(() =&gt; this.MoveNext())</span></span><br><span class="line">                    <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = num = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">this</span>.&lt;&gt;u__1 = awaiter;</span><br><span class="line">                    d__ = <span class="keyword">this</span>;</span><br><span class="line">                    <span class="keyword">this</span>.&lt;&gt;t__builder.AwaitUnsafeOnCompleted&lt;TaskAwaiter, GameLauncher.&lt;AwaitTaskAction&gt;d__10&gt;(<span class="keyword">ref</span> awaiter, <span class="keyword">ref</span> d__);</span><br><span class="line">		            <span class="comment">// return（即交出控制权给AwaitTaskAction的调用者）</span></span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 第一个Task完成(即Task.Delay(1)那部分代码)，获取结果</span></span><br><span class="line">            awaiter.GetResult();</span><br><span class="line">            Debug.Log(<span class="string">&quot;AwaitTaskAction After Task.Delay(1)&quot;</span>);</span><br><span class="line">            Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;(<span class="built_in">int</span>) DateTime.get_Now().Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">            <span class="keyword">this</span>.&lt;sum&gt;<span class="number">5</span>__1 = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">this</span>.&lt;i&gt;<span class="number">5</span>__2 = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">this</span>.&lt;i&gt;<span class="number">5</span>__2 &lt; <span class="number">0x3b9a</span>_ca00)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="built_in">int</span> num3 = <span class="keyword">this</span>.&lt;sum&gt;<span class="number">5</span>__1;</span><br><span class="line">                    <span class="keyword">this</span>.&lt;sum&gt;<span class="number">5</span>__1 = num3 + <span class="number">1</span>;</span><br><span class="line">                    num3 = <span class="keyword">this</span>.&lt;i&gt;<span class="number">5</span>__2;</span><br><span class="line">                    <span class="keyword">this</span>.&lt;i&gt;<span class="number">5</span>__2 = num3 + <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                awaiter2 = Task.Delay(<span class="number">2</span>).GetAwaiter();</span><br><span class="line">                <span class="keyword">if</span> (awaiter2.IsCompleted)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">goto</span> TR_0005;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = num = <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">this</span>.&lt;&gt;u__1 = awaiter2;</span><br><span class="line">                    d__ = <span class="keyword">this</span>;</span><br><span class="line">                    <span class="keyword">this</span>.&lt;&gt;t__builder.AwaitUnsafeOnCompleted&lt;TaskAwaiter, GameLauncher.&lt;AwaitTaskAction&gt;d__10&gt;(<span class="keyword">ref</span> awaiter2, <span class="keyword">ref</span> d__);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        TR_0005:</span><br><span class="line">            <span class="comment">// 第二个Task完成(即Task.Delay(2)那部分代码)，获取结果</span></span><br><span class="line">            awaiter2.GetResult();</span><br><span class="line">            Debug.Log(<span class="string">&quot;AwaitTaskAction After Task.Delay(2)&quot;</span>);</span><br><span class="line">            Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;(<span class="built_in">int</span>) DateTime.get_Now().Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">            Debug.Log(<span class="string">&quot;AwaitTaskAction End&quot;</span>);</span><br><span class="line">            Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;(<span class="built_in">int</span>) DateTime.get_Now().Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">            <span class="built_in">int</span> result = <span class="keyword">this</span>.&lt;sum&gt;<span class="number">5</span>__1;</span><br><span class="line">            <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = <span class="number">-2</span>;</span><br><span class="line">            <span class="keyword">this</span>.&lt;&gt;t__builder.SetResult(result);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Exception exception)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = <span class="number">-2</span>;</span><br><span class="line">            <span class="keyword">this</span>.&lt;&gt;t__builder.SetException(exception);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">DebuggerHidden</span>]</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">SetStateMachine</span>(<span class="params">IAsyncStateMachine stateMachine</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>上面的代码是通过NetReflector才反编译出来的，之前试过ILSpy和DnSpy都得不到<OnBtnAwaitTaskUsingClick>d__9类定义相关反编译代码。</strong></p>
-<p>上面的代码只截取了跟AwaitTaskAction这个异步方法相关的部分。通过上面的代码可以看到，通过async定义异步方法后，编译器帮我们生成了继承至IAsyncStateMachine 的AwaitTaskAction&gt;d__10类，这个类正是实现异步的一个关键抽象(个人理解有点像携程里的迭代器封装逻辑代码调用)。通过构建一个AwaitTaskAction&gt;d__10实例类并调用stateMachine.&lt;&gt;t__builder.Start&lt;<AwaitTaskAction>d__10&gt;(ref stateMachine)触发了状态机的MoveNext()的代码执行。</p>
-<p>通过代码生成，我们定义的异步线性流程被划分成了状态机里的几个状态(1__state)，首先<strong>状态从-1</strong>进行初始化:</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;AwaitTaskAction&gt;d__10 stateMachine = <span class="keyword">new</span> &lt;AwaitTaskAction&gt;d__10 &#123;</span><br><span class="line">        &lt;&gt;<span class="number">4</span>__this = <span class="keyword">this</span>,</span><br><span class="line">        &lt;&gt;t__builder = AsyncTaskMethodBuilder&lt;<span class="built_in">int</span>&gt;.Create(),</span><br><span class="line">        &lt;&gt;<span class="number">1</span>__state = <span class="number">-1</span></span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
-
-<p>触发状态机开始后，遇到<strong>第一个Awaiter(await Task.Delay(1))<strong>进行异步Task等待完成，同时将</strong>状态机切换到状态0</strong>:</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 开始第一个Task并获得awaiter，通过awaiter来观察Task是否完成。</span></span><br><span class="line">    Debug.Log(<span class="string">&quot;AwaitTaskAction Start&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;(<span class="built_in">int</span>) DateTime.get_Now().Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">    awaiter = Task.Delay(<span class="number">1</span>).GetAwaiter();</span><br><span class="line">    <span class="keyword">if</span> (!awaiter.IsCompleted)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 向未完成的Task中注册continuation action;</span></span><br><span class="line">        <span class="comment">// continuation action会在Task完成时执行;</span></span><br><span class="line">        <span class="comment">// 等同于awaiter1.onCompleted(() =&gt; this.MoveNext())</span></span><br><span class="line">        <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = num = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">this</span>.&lt;&gt;u__1 = awaiter;</span><br><span class="line">        d__ = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">this</span>.&lt;&gt;t__builder.AwaitUnsafeOnCompleted&lt;TaskAwaiter, GameLauncher.&lt;AwaitTaskAction&gt;d__10&gt;(<span class="keyword">ref</span> awaiter, <span class="keyword">ref</span> d__);</span><br><span class="line">        <span class="comment">// return（即交出控制权给AwaitTaskAction的调用者）</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>第一个Awaiter等待完成后，状态机继续运行直到遇到<strong>第二个Awaiter(await Task.Delay(2))<strong>并将</strong>状态机状态切换到1</strong>:</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (num == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    awaiter = <span class="keyword">this</span>.&lt;&gt;u__1;</span><br><span class="line">    <span class="keyword">this</span>.&lt;&gt;u__1 = <span class="keyword">new</span> TaskAwaiter();</span><br><span class="line">    <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = num = <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line">awaiter.GetResult();</span><br><span class="line">Debug.Log(<span class="string">&quot;AwaitTaskAction After Task.Delay(1)&quot;</span>);</span><br><span class="line">Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;(<span class="built_in">int</span>) DateTime.get_Now().Millisecond&#125;</span>&quot;</span>);</span><br><span class="line"><span class="keyword">this</span>.&lt;sum&gt;<span class="number">5</span>__1 = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">this</span>.&lt;i&gt;<span class="number">5</span>__2 = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.&lt;i&gt;<span class="number">5</span>__2 &lt; <span class="number">0x3b9a</span>_ca00)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> num3 = <span class="keyword">this</span>.&lt;sum&gt;<span class="number">5</span>__1;</span><br><span class="line">        <span class="keyword">this</span>.&lt;sum&gt;<span class="number">5</span>__1 = num3 + <span class="number">1</span>;</span><br><span class="line">        num3 = <span class="keyword">this</span>.&lt;i&gt;<span class="number">5</span>__2;</span><br><span class="line">        <span class="keyword">this</span>.&lt;i&gt;<span class="number">5</span>__2 = num3 + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    awaiter2 = Task.Delay(<span class="number">2</span>).GetAwaiter();</span><br><span class="line">    <span class="keyword">if</span> (awaiter2.IsCompleted)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">goto</span> TR_0005;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = num = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">this</span>.&lt;&gt;u__1 = awaiter2;</span><br><span class="line">        d__ = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">this</span>.&lt;&gt;t__builder.AwaitUnsafeOnCompleted&lt;TaskAwaiter, GameLauncher.&lt;AwaitTaskAction&gt;d__10&gt;(<span class="keyword">ref</span> awaiter2, <span class="keyword">ref</span> d__);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span>;</span><br></pre></td></tr></table></figure>
-
-<p>等待第二个Awaiter完成后，继续状态机状态1逻辑执行:</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (num == <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        awaiter2 = <span class="keyword">this</span>.&lt;&gt;u__1;</span><br><span class="line">        <span class="keyword">this</span>.&lt;&gt;u__1 = <span class="keyword">new</span> TaskAwaiter();</span><br><span class="line">        <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = num = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">goto</span> TR_0005;</span><br><span class="line">    &#125;</span><br><span class="line">TR_0005:</span><br><span class="line">    <span class="comment">// 第二个Task完成(即Task.Delay(2)那部分代码)，获取结果</span></span><br><span class="line">    awaiter2.GetResult();</span><br><span class="line">    Debug.Log(<span class="string">&quot;AwaitTaskAction After Task.Delay(2)&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;(<span class="built_in">int</span>) DateTime.get_Now().Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">&quot;AwaitTaskAction End&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;(<span class="built_in">int</span>) DateTime.get_Now().Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">    <span class="built_in">int</span> result = <span class="keyword">this</span>.&lt;sum&gt;<span class="number">5</span>__1;</span><br><span class="line">    <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = <span class="number">-2</span>;</span><br><span class="line">    <span class="keyword">this</span>.&lt;&gt;t__builder.SetResult(result);</span><br></pre></td></tr></table></figure>
-
-<p>就这样我们所有的异步线性流程都通过代码生成状态机运行的方式，变成了一个一个的状态按顺序执行。</p>
-<p>可以看到异步线性流程和核心由两部分组成:</p>
-<ol>
-<li><strong>Task异步运行机制</strong></li>
-<li><strong>异步状态机代码生成</strong></li>
-</ol>
-<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/async">On the C# side of things, the compiler transforms your code into a state machine that keeps track of things like yielding execution when an <code>await</code> is reached and resuming execution when a background job has finished.</a></p>
-<h4 id="Task异步取消"><a href="#Task异步取消" class="headerlink" title="Task异步取消"></a>Task异步取消</h4><p>Task异步的取消是通过<strong>Cancellation Token</strong>来完成的。</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 响应开启等待取消Task按钮点击</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">async</span> <span class="keyword">void</span> <span class="title">OnBtnWaitCancelTaskUsingClick</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    mTaskCancelTokenSource = <span class="keyword">new</span> CancellationTokenSource();</span><br><span class="line">    <span class="keyword">var</span> taskToken = mTaskCancelTokenSource.Token;</span><br><span class="line">    <span class="keyword">var</span> awaitTask = Task.Run(() =&gt;</span><br><span class="line">                             &#123;</span><br><span class="line">                                 <span class="keyword">return</span> AwaitCancelTaskAction(taskToken);</span><br><span class="line">                             &#125;, taskToken);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;AwaitCancelTaskAction has been launched. Main Thread:<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>&quot;</span>);</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> sumResult = <span class="keyword">await</span> awaitTask;</span><br><span class="line">        Debug.Log(<span class="string">$&quot;AwaitCancelTaskAction sumResult:<span class="subst">&#123;sumResult&#125;</span>&quot;</span>);</span><br><span class="line">        Debug.Log(<span class="string">$&quot;AwaitCancelTaskAction DateTime.Now.Millisecond:<span class="subst">&#123;DateTime.Now.Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (OperationCanceledException e)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(e);</span><br><span class="line">        Debug.Log(<span class="string">$&quot;e.CancelLlationToken.Equals(taskCancelToken):<span class="subst">&#123;e.CancellationToken.Equals(taskToken&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">finally</span></span><br><span class="line">    &#123;</span><br><span class="line">        mTaskCancelTokenSource.Dispose();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 等待取消的Task方法</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;taskToken&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">async</span> Task&lt;<span class="built_in">int</span>&gt; <span class="title">AwaitCancelTaskAction</span>(<span class="params">CancellationToken taskToken</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 检测异步Task是否已经取消</span></span><br><span class="line">    taskToken.ThrowIfCancellationRequested();</span><br><span class="line">    Debug.Log(<span class="string">$&quot;AwaitCancelTaskAction Start&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;DateTime.Now.Millisecond&#125;</span>  Thread Id:<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>&quot;</span>);</span><br><span class="line">    <span class="keyword">await</span> Task.Delay(<span class="number">1</span>);</span><br><span class="line">    <span class="comment">// 检测异步Task是否已经取消</span></span><br><span class="line">    taskToken.ThrowIfCancellationRequested();</span><br><span class="line">    Debug.Log(<span class="string">$&quot;AwaitCancelTaskAction After Task.Delay(1)&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;DateTime.Now.Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">    <span class="built_in">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000000</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        sum++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">await</span> Task.Delay(<span class="number">2</span>);</span><br><span class="line">    <span class="comment">// 检测异步Task是否已经取消</span></span><br><span class="line">    taskToken.ThrowIfCancellationRequested();</span><br><span class="line">    Debug.Log(<span class="string">$&quot;AwaitCancelTaskAction After Task.Delay(2)&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;DateTime.Now.Millisecond:<span class="subst">&#123;DateTime.Now.Millisecond&#125;</span>&quot;</span>);</span><br><span class="line">    Debug.Log(<span class="string">$&quot;AwaitCancelTaskAction End&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 响应Task取消按钮点击</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnBtnCancelTaskUsingClick</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    mTaskCancelTokenSource?.Cancel();</span><br><span class="line">    Debug.Log(<span class="string">$&quot;取消异步Task&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面的代码可以看到，我们在开启一个需要支持取消的异步Task时需要以下步骤:</p>
-<ol>
-<li><strong>申请创建了一个CancellationTokenSource对象</strong>，这个对象会包含我们异步Task取消所需的token。</li>
-<li><strong>将CancellationTokenSource.token传递给需要异步执行的Task(多层调用要一直传递下去，确保Task正确异步取消</strong>)</li>
-<li><strong>在需要异步打断的Task里判定token是否已经取消(token.ThrowIfCancellationRequested())</strong></li>
-<li><strong>try catch异步await，确保释放token source(CancellationTokenSource.Dispose())</strong></li>
-</ol>
-<p>在上面的使用中可以看到，<strong>Task异步是多线程</strong>的，通过Task.Run()我们启用了一个新的线程执行任务，所以打印出的Thread Id和Main Thread Id不一样。</p>
-<p>为了确保Task取消后异步逻辑能正确停止，我们在异步逻辑里关键地方都在判定taskToken.ThrowIfCancellationRequested()通知Task进入取消状态。</p>
-<h4 id="使用体验"><a href="#使用体验" class="headerlink" title="使用体验"></a>使用体验</h4><p>通过上面的学习使用，这里个人讲讲个人Task的使用心得。</p>
-<p>好处:</p>
-<ol>
-<li>通过Task异步我们能将<strong>异步逻辑跟同步逻辑一样方便的线性流程编写</strong>，不再需要编写回调嵌套(<strong>回调地狱</strong>)的代码。</li>
-</ol>
-<p>不方便处:</p>
-<ol>
-<li>Task异步需要定义async关键字，导致所有异步方法都需要加上async关键字(<strong>async传染</strong>)</li>
-<li>Task异步取消时，使用者在异步逻辑里需要关心 taskToken是否已经取消(<strong>taskToken.ThrowIfCancellationRequested()</strong>)，这样代码写起来还是比较麻烦</li>
-<li>开启一个异步Task需要通过Task.Run或者Task.Factory.StartNew方法，这样导致我们<strong>嵌套调用异步方法传递token时被迫用上闭包这种方式</strong></li>
-<li><strong>Task异步是多线程，需要考虑数据多线程访问问题，对开发者多线程相关知识要求更高</strong></li>
-</ol>
-<h3 id="进阶-UniTask"><a href="#进阶-UniTask" class="headerlink" title="进阶(UniTask)"></a>进阶(UniTask)</h3><p>了解Task异步的基础使用和设计，接下来让我们看看UniTask是如何实现Unity内更优的异步框架设计的。</p>
-<p>官网介绍:</p>
-<p><strong>UniTask的特点</strong></p>
-<ul>
-<li>为 Unity 提供有效的无GC async&#x2F;await集成。</li>
-<li>基于Struct <code>UniTask&lt;T&gt;</code> 的自定义 AsyncMethodBuilder，实现零GC,使所有Unity的异步操作和协程可以await</li>
-<li>基于PlayerLoop的Task（ <code>UniTask.Yield</code>、 <code>UniTask.Delay</code>、 <code>UniTask.DelayFrame</code> 等）这使得能够替换所有协程操作</li>
-<li>MonoBehaviour 消息事件和 uGUI 事件为可使用Await&#x2F;AsyncEnumerable</li>
-<li>完全在 Unity 的 PlayerLoop 上运行，因此不使用线程，可在 WebGL、wasm 等平台上运行。</li>
-<li>异步 LINQ，具有Channel和 AsyncReactiveProperty</li>
-<li>防止内存泄漏的 TaskTracker (Task追踪器)窗口</li>
-<li>与Task&#x2F;ValueTask&#x2F;IValueTaskSource 的行为高度兼容</li>
-</ul>
-<p>上面提到UniTask没有使用多线程，这一点对于Unity单线程开发理念更加适合。</p>
-<p><strong>更多学习使用待添加……(TODO)</strong></p>
-<h2 id="重点知识"><a href="#重点知识" class="headerlink" title="重点知识"></a>重点知识</h2><ol>
-<li><strong>Unity子线程内不可访问游戏对象或者组件以及相关方法，只用于处理数据或者逻辑，任何要与主线程发生关系的地方都必须进行回调和上下文切换。</strong></li>
-<li><strong>await和async关键词并不一定触发多线程，是否多线程是与使用的具体方式而定(比如Task.Run)</strong></li>
-</ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/csharp/async">Asynchronous programming</a></p>
-<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/standard/asynchronous-programming-patterns/task-based-asynchronous-pattern-tap">Task-based Asynchronous Pattern(TAP)</a></p>
-<h2 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h2><p><a target="_blank" rel="noopener" href="https://github.com/Cysharp/UniTask">UniTask</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Programming/">Programming</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Programming/">Programming</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next&lt;span&gt;&lt;&#x2F;span&gt;</a>
@@ -3233,7 +3417,7 @@
 		<ul>
 		
 		  
-			<li><a href="/categories/AI/" title="AI">AI<sup>4</sup></a></li>
+			<li><a href="/categories/AI/" title="AI">AI<sup>5</sup></a></li>
 		  
 		
 		  
@@ -3334,11 +3518,11 @@
 			
 		
 			
-				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+				<li><a href="/tags/AI/" title="AI">AI<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/AI/" title="AI">AI<sup>4</sup></a></li>
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
 			
 		
 			

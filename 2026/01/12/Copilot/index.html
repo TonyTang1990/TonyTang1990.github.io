@@ -1,0 +1,1038 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Copilot | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="前言AI编程工具盛行，学习AI编程工具的使用和底层原理是很有必要的，在AI工具通过多方面考量和对比市面上的AI编程工具，决定选择Copilot作为深入AI编程学习的切入口，本章节是为了详细记录AI编程工具的使用和深入学习AI编程相关概念。 CopilotGitHub Copilot是GitHub和OpenAI合作开发的一个人工智能工具，用户在使用Visual Studio Code、Microso">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Copilot">
+<meta property="og:url" content="http://tonytang1990.github.io/2026/01/12/Copilot/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="前言AI编程工具盛行，学习AI编程工具的使用和底层原理是很有必要的，在AI工具通过多方面考量和对比市面上的AI编程工具，决定选择Copilot作为深入AI编程学习的切入口，本章节是为了详细记录AI编程工具的使用和深入学习AI编程相关概念。 CopilotGitHub Copilot是GitHub和OpenAI合作开发的一个人工智能工具，用户在使用Visual Studio Code、Microso">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotEntry.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AITools/Copilot/IntelligentPrompt.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AITools/Copilot/IntelligentPromptFromNotation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AITools/Copilot/AcceptPartOfIntelligentPrompt.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/BadPrompt.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/GoodPrompt.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/AgentModeChosen.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotInteraction.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/AICodeApply.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/AICodeGiveUp.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CodeSnippetChat.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/AtQuickCommand.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/NumberSighQuickCommand.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/SlashQuickCommand.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/AddReferenceAttach.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/AgentModeToolsChosen.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/FirstAgenModeUsing.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/RevertAIAction.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/MCPWorkFlow.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/VSCodeMCPFilter.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/EnableMCPServersMarketplace.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/VSCodeCopilotGitHubMCPRegisteryInstall.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/MarkitdownMCPServerInstallFailed.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/InstallUvxInPowerShell.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/UvxPythonInstallation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/UvxStartPythonVersionProblem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/GitHubPersonalAuthenticationTokenInput.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/CopilotConfigureTools.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/CommitReadMeFileByGitHubMCPServer.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/WorkspaceMCPServerAdd.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/VSCodeMCPInstallationMethods.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/StartFileSystemMCPServer">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/FileSystemTools.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/CreateMCPServerIntroductionByFileSystem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/MCPMarkDown.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/MCPServerMarkdownContent.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/CreateDirectoryByUsingFileSystemMCPServerTool.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/FileSystemCreatedDirectory.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/ChangeAIModel.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/GithubPullRequestOperation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotReviewRequest.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotReviewResult.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotCLIInstallation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/StartCopilotCLI.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/LoginCopilotCLI.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/HelpCommand.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/ChangeAIModel.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotCLIGitPush.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/OpenSSHClientAndSshAdd.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/GitHubCLILogin.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotGitHubCommitAndPush.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotContextInfo">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotHelpInfo">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotCLIAddMCP.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/MicrosoftLearnMCPServerAdd.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/MicrosoftLearnMCPServerUsingTest.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/GitHubMCPServerAdd.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/GitHubMCPServerUsingTest.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/FileSystemMCPServerAdd.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/FileSystemMCPServerUsingTest.PNG">
+<meta property="article:published_time" content="2026-01-12T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-15T09:24:16.925Z">
+<meta property="article:author" content="Tony Tang">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotEntry.PNG">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2026/01/12/Copilot/" title="Copilot" itemprop="url">Copilot</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2026-01-12T04:00:00.000Z" itemprop="datePublished"> 发表于 2026-01-12</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Copilot"><span class="toc-number">2.</span> <span class="toc-text">Copilot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Copilot%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">Copilot安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Completions"><span class="toc-number">4.</span> <span class="toc-text">Completions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Prompt"><span class="toc-number">5.</span> <span class="toc-text">Prompt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chat"><span class="toc-number">6.</span> <span class="toc-text">Chat</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Ask-Mode"><span class="toc-number">6.1.</span> <span class="toc-text">Ask Mode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Agent-Mode"><span class="toc-number">6.2.</span> <span class="toc-text">Agent Mode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MCP"><span class="toc-number">6.3.</span> <span class="toc-text">MCP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Extending-Copilot-MCP-Servers"><span class="toc-number">6.3.1.</span> <span class="toc-text">Extending Copilot MCP Servers</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Using-GitHub-MCP-Registery"><span class="toc-number">6.3.1.1.</span> <span class="toc-text">Using GitHub MCP Registery</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Configuring-MCP-servers-manually"><span class="toc-number">6.3.1.2.</span> <span class="toc-text">Configuring MCP servers manually</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Coding-Agent"><span class="toc-number">6.4.</span> <span class="toc-text">Coding Agent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Copilot-Skills"><span class="toc-number">6.5.</span> <span class="toc-text">Copilot Skills</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9"><span class="toc-number">6.6.</span> <span class="toc-text">多模型选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Code-Review"><span class="toc-number">6.7.</span> <span class="toc-text">Code Review</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Copilot-CLI"><span class="toc-number">6.8.</span> <span class="toc-text">Copilot CLI</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Copilot-CLI-MCP-Server"><span class="toc-number">6.8.1.</span> <span class="toc-text">Copilot CLI MCP Server</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Copilot%E4%BB%98%E8%B4%B9"><span class="toc-number">6.9.</span> <span class="toc-text">Copilot付费</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Github%E5%9C%B0%E5%9D%80"><span class="toc-number">7.</span> <span class="toc-text">Github地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">8.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>AI编程工具盛行，学习AI编程工具的使用和底层原理是很有必要的，在<a href="">AI工具</a>通过多方面考量和对比市面上的AI编程工具，决定选择Copilot作为深入AI编程学习的切入口，本章节是为了详细记录AI编程工具的使用和深入学习AI编程相关概念。</p>
+<h2 id="Copilot"><a href="#Copilot" class="headerlink" title="Copilot"></a>Copilot</h2><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/GitHub_Copilot"><strong>GitHub Copilot</strong>是GitHub和OpenAI合作开发的一个人工智能工具，用户在使用Visual Studio Code、Microsoft Visual Studio、Vim、Cursor或JetBrains集成开发环境时可以通过GitHub Copilot自动补全代码。Copilot的OpenAI Codex接受了一系列英语语言、公共 GitHub 存储库和其他公开可用源代码的训练。这包括来自 5400 万个公共 GitHub 存储库的 159 GB Python 代码的过滤数据集。</a></p>
+<p>从介绍可以看出Copilot主打的是基于代码的学习，提供代码AI自动补全的功能。</p>
+<p>Copilot是微软旗下的，所以对Visual Studio，VS Code等微软<strong>IDE支持比较完善</strong>，下载VS时就自带集成Copilot。</p>
+<p><strong>支持基于Github大量代码学习的代码智能推断补全，支持Agent聊天问答，支持多个模型选择，支持代码Review等功能。</strong></p>
+<p>优势：</p>
+<ol>
+<li><strong>不用切换IDE，直接嵌入各大主流IDE</strong></li>
+<li><strong>微软官方支持且基于Github的大量代码知识</strong></li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>Copilot基础版免费，Pro版需要付费购买(10美元每月-个人推荐这个)，Pro+(39美元每月)[<a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/zh-hans/vs/pricing/?tab=paid-subscriptions%5D)%E3%80%82">https://visualstudio.microsoft.com/zh-hans/vs/pricing/?tab=paid-subscriptions])。</a></strong></li>
+</ol>
+<h2 id="Copilot安装"><a href="#Copilot安装" class="headerlink" title="Copilot安装"></a>Copilot安装</h2><ol>
+<li><p>官方下载带Copilot的Visual Studio 2022[<a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/github-copilot/]">https://visualstudio.microsoft.com/github-copilot/]</a></p>
+</li>
+<li><p>新建工程</p>
+</li>
+<li><p>右上角点击Github Copilot-&gt;打开聊天框</p>
+</li>
+</ol>
+<p><img src="/img/AI/AITools/Copilot/CopilotEntry.PNG" alt="CopilotEntry"></p>
+<p>Note:</p>
+<ol>
+<li><strong>Ctrl+Alt+L快捷键打开VSCode Copilot Chat</strong></li>
+</ol>
+<h2 id="Completions"><a href="#Completions" class="headerlink" title="Completions"></a>Completions</h2><p>敲击代码，Copilot会根据代码智能推断即将编写的代码，敲击tab应用智能推断的代码</p>
+<p><img src="/img/AITools/Copilot/IntelligentPrompt.PNG" alt="IntelligentPrompt"></p>
+<p>敲击注释，Copilot也会根据注释去推断即将编写的代码，敲击tab应用智能推断的代码</p>
+<p><img src="/img/AITools/Copilot/IntelligentPromptFromNotation.PNG" alt="IntelligentPromptFromNotation"></p>
+<p>只接受一部分Copilot智能推断的代码，Windows上Ctrl+→按键</p>
+<p><img src="/img/AITools/Copilot/AcceptPartOfIntelligentPrompt.PNG" alt="AcceptPartOfIntelligentPrompt"></p>
+<p><strong>决定不启用智能推断的代码，点击Esc按键</strong></p>
+<h2 id="Prompt"><a href="#Prompt" class="headerlink" title="Prompt"></a>Prompt</h2><p>**Prompt(提示词)**可以帮助AI更加准确的理解我们的需求，给出更更准确的代码推断和需求编写。</p>
+<p>前面的Completions提到注释描述给AI提示，以及Chat中提到针对<strong>代码片段的提问(Alt+I)</strong>，在提问时我们通过自然语言准确描述需求比泛化的描述可以更加准确的让AI理解我们给出的指令，得到更准确的目标结果。</p>
+<p>泛化的Prompt，比如注释描述”&#x2F;&#x2F; Some Code”</p>
+<p>此时无论是AI还是人其实都无法理解我们具体想做什么，所以AI并没与给出任何有效的代码推断</p>
+<p><img src="/img/AI/AITools/Copilot/BadPrompt.PNG" alt="BadPrompt"></p>
+<p>好的Prompt，比如注释描述”&#x2F;&#x2F; define a function that is used to compare to int value”</p>
+<p><img src="/img/AI/AITools/Copilot/GoodPrompt.PNG" alt="GoodPrompt"></p>
+<p>可以看到好的提示词成功让AI理解了需求并给出了准确的推断编写代码。</p>
+<h2 id="Chat"><a href="#Chat" class="headerlink" title="Chat"></a>Chat</h2><p>聊天模式氛围Ask Mode和Agent Mode</p>
+<p>聊天模式切换:</p>
+<p><img src="/img/AI/AITools/Copilot/AgentModeChosen.PNG" alt="AgentModeChosen"></p>
+<h3 id="Ask-Mode"><a href="#Ask-Mode" class="headerlink" title="Ask Mode"></a>Ask Mode</h3><p>AI提问模式交互，打开Copilot后，右下方有聊天窗口</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotInteraction.PNG" alt="CopilotInteraction"></p>
+<p>点击代码块右上方的应用则可以将Copilot生成的代码生成到我们的代码里</p>
+<p><img src="/img/AI/AITools/Copilot/AICodeApply.PNG" alt="AICodeApply"></p>
+<p>在代码区点击**放弃(Alt+Del)**则可以放弃方才应用的代码</p>
+<p><img src="/img/AI/AITools/Copilot/AICodeGiveUp.PNG" alt="AICodeGiveUp"></p>
+<p>代码块交互聊天，选中需要询问的代码，按Alt+&#x2F;</p>
+<p><img src="/img/AI/AITools/Copilot/CodeSnippetChat.PNG" alt="CodeSnippetChat"></p>
+<p>交互聊天有一系列的快捷操作指令</p>
+<p>输入@会看到几个大方向或内容给AI作为参考</p>
+<p><img src="/img/AI/AITools/Copilot/AtQuickCommand.PNG" alt="AtQuickCommand"></p>
+<p>输入#会看到可以在询问前添加相关文件作为给AI的参考文件</p>
+<p><img src="/img/AI/AITools/Copilot/NumberSighQuickCommand.PNG" alt="NumberSighQuickCommand"></p>
+<p>输入&#x2F;会看到有内置支持的快捷代码操作指令(比如fix,optimization……)</p>
+<p><img src="/img/AI/AITools/Copilot/SlashQuickCommand.PNG" alt="SlashQuickCommand"></p>
+<p>想引入更多复杂类型的资源作为AI参考文件，可以通过+添加:</p>
+<p><img src="/img/AI/AITools/Copilot/AddReferenceAttach.PNG" alt="AddReferenceAttach"></p>
+<p>自动以快捷交互指令详情参考:</p>
+<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/copilot-chat-context?view=vs-2022">Customize chat responses and set context</a></p>
+<h3 id="Agent-Mode"><a href="#Agent-Mode" class="headerlink" title="Agent Mode"></a>Agent Mode</h3><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/copilot-agent-mode?view=vs-2022">With the GitHub Copilot agent mode in Visual Studio, you can use natural language to specify a high-level task. AI creates a plan, makes code edits, runs terminal commands, invokes tools, and applies changes across your codebase. It monitors outcomes, such as build results, unit-test failures, or tool outputs, and iterates as needed.</a></p>
+<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/copilot-agent-mode?view=vs-2022">Unlike <em>ask mode</em>, agent mode doesn’t stop after a single response. It continues running and refining steps until you reach the goal in your prompt or more input is required.</a></p>
+<p>从介绍可以看出Copilot Agent Mode可以让我们通过自然语言区描述高阶任务需求，让AI使用特定工具自动化完成高阶任务需求。</p>
+<p>Agent Mode工具选择:</p>
+<p><img src="/img/AI/AITools/Copilot/AgentModeToolsChosen.PNG" alt="AgentModeToolsChosen"></p>
+<p>比如指挥Copilot调用指定方法并应用代码。</p>
+<p><img src="/img/AI/AITools/Copilot/FirstAgenModeUsing.PNG" alt="FirstAgenModeUsing"></p>
+<p><strong>相比Ask Mode生成的代码我们要选择应用，Agent Mode已经通过我的指令自动应用到了Program.cs文件里，同时Agent Mode还通过调用编译进行了生成代码的对错验证(工具自动化的使用是和Ask Mode的最大区别)。</strong></p>
+<p>Agent Mode可以通过选择保留和放弃去确认生成代码的去留。</p>
+<p>当成功应用后，Copilot通过创建<strong>还原点，可以实现快速的放弃之前的操作</strong></p>
+<p><img src="/img/AI/AITools/Copilot/RevertAIAction.PNG" alt="RevertAIAction"></p>
+<p>Note:</p>
+<ol>
+<li><strong>需要使用一些列工具进行自动化的操作推荐用Agent Mode</strong></li>
+<li><strong>需要使用MCP Servers功能，必须使用Agent Mode而非Ask Mode</strong></li>
+</ol>
+<h3 id="MCP"><a href="#MCP" class="headerlink" title="MCP"></a>MCP</h3><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/mcp-servers?view=vs-2022">Model Context Protocol (MCP) is an open standard that enables AI models to interact with external tools and services through a unified interface.</a></p>
+<p><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/getting-started/intro">Using MCP, AI applications like Claude or ChatGPT can connect to data sources (e.g. local files, databases), tools (e.g. search engines, calculators) and workflows (e.g. specialized prompts)—enabling them to access key information and perform tasks.</a></p>
+<p>从介绍可以看出MCP是AI模型和外部工具交互的标准。</p>
+<p>如果想通过外部工具扩展Agent Mode工作流，可以通过MCP引入外部工具。</p>
+<p><img src="/img/AI/AITools/MCP/MCPWorkFlow.PNG" alt="MCPWorkFlow"></p>
+<p>通过调用外部工具和数据，我们就能实现更多的功能，无论是简单的周报总结，自动化测试，2D或3D模型资源生成等都成为了可能。</p>
+<p>简单了解下MCP里的核心组成部分：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture"><strong>MCP Host</strong>: The AI application that coordinates and manages one or multiple MCP clients</a>(一个用于管理和协调多个MCP客户端AI宿主程序，比如VSCode，Cursor，CLAUDE CODE等)</li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture"><strong>MCP Client</strong>: A component that maintains a connection to an MCP server and obtains context from an MCP server for the MCP host to use</a>(MCP客户端，一个负责维护MPC服务器连接的组件，通过MCP服务器为MCP宿主用户获取环境上下文等)</li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture"><strong>MCP Server</strong>: A program that provides context to MCP clients</a>(MCP服务器，一个给MCP客户端提供环境上下文的程序)</li>
+</ul>
+<p>简单了解下MCP的分层设计：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture"><strong>Data layer</strong>: Defines the JSON-RPC based protocol for client-server communication, including lifecycle management, and core primitives, such as tools, resources, prompts and notifications.</a>(数据层，用于定义MCP客户端和MCP服务器的JSON数据远程调用协议相关(比如数据生命周期管理，资源，工具等))</li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture"><strong>Transport layer</strong>: Defines the communication mechanisms and channels that enable data exchange between clients and servers, including transport-specific connection establishment, message framing, and authorization.</a>(传输层，用于定义MCP客户端和MCP服务器的数据交换相关(比如数据传输协议，授权等))</li>
+</ul>
+<p>MCP的详细设计这里暂时不深入追究，暂时知道MCP是一套通用的AI模型嗯哼外部工具交互的标准即可。</p>
+<p>详情参考:</p>
+<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/visualstudio/ide/mcp-servers?view=vs-2022">Use MCP servers</a></p>
+<p>因为本人只买了Copilot Pro，没有买Claude Code付费版本，所以接下来MCP和Agent Skills都已Copilot使用学习说明。</p>
+<h4 id="Extending-Copilot-MCP-Servers"><a href="#Extending-Copilot-MCP-Servers" class="headerlink" title="Extending Copilot MCP Servers"></a>Extending Copilot MCP Servers</h4><p>查看可用的MCP servers repository:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/modelcontextprotocol/servers/tree/main">Model Context Protocol servers</a></p>
+<p>支持搜索支持的MCP servers repository:</p>
+<p><a target="_blank" rel="noopener" href="https://registry.modelcontextprotocol.io/">Official MCP Registry</a></p>
+<p>给VS Codo配置MCP servers要求VS Code版本大于1.99(感觉官方版本写错了，目前最新才1.108–2026&#x2F;1&#x2F;12)</p>
+<p>MPC servers配置有两种方式：</p>
+<ol>
+<li>Using GitHub MCP Registery(<strong>这种方式只有MCP servers在MCP Registery的才能配置</strong>)</li>
+<li>Configuring MCP servers manually(<strong>这种方式可以自由配置MCP Server</strong>)</li>
+</ol>
+<h5 id="Using-GitHub-MCP-Registery"><a href="#Using-GitHub-MCP-Registery" class="headerlink" title="Using GitHub MCP Registery"></a>Using GitHub MCP Registery</h5><p>使用GitHub MCP Registery步骤:</p>
+<ol>
+<li><p>打开VSCode</p>
+</li>
+<li><p>ctrl+shift+x打开插件界面</p>
+</li>
+<li><p>过滤选择里选择MCP Register</p>
+<p><img src="/img/AI/AITools/MCP/VSCodeMCPFilter.PNG" alt="VSCodeMCPFilter"></p>
+</li>
+<li><p>然后直接再搜索里搜索想找的MCP Server，如果是第一次打开还需要先开启MCP Servers MarketPlace</p>
+<p><img src="/img/AI/AITools/MCP/EnableMCPServersMarketplace.PNG" alt="EnableMCPServersMarketplace"></p>
+</li>
+<li><p>接下来搜索一个想找的MCP Server</p>
+<p><img src="/img/AI/AITools/MCP/VSCodeCopilotGitHubMCPRegisteryInstall.PNG" alt="VSCodeCopilotGitHubMCPRegisteryInstall"></p>
+</li>
+<li><p>这里点击Install即可安装对应MCP Server</p>
+</li>
+</ol>
+<p>这里我尝试安装MarkDown MCP Server但运行失败了:</p>
+<ul>
+<li><p>发现Markitdown MCP Server安装后启动失败了，原因是uvx安装没成功</p>
+<p><img src="/img/AI/AITools/MCP/MarkitdownMCPServerInstallFailed.PNG" alt="MarkitdownMCPServerInstallFailed"></p>
+</li>
+<li><p>我们通过uv官网的教程，在PowerShell里输入一下命令安装uvx:</p>
+<p>“powershell -ExecutionPolicy ByPass -c “irm <a target="_blank" rel="noopener" href="https://astral.sh/uv/install.ps1">https://astral.sh/uv/install.ps1</a> | iex””</p>
+<p><img src="/img/AI/AITools/MCP/InstallUvxInPowerShell.PNG" alt="InstallUvxInPowerShell"></p>
+<p><strong>安装后需要自己设置uvx的环境变量，按安装后的提示输入命令或手动添加环境变量即可，后续VSCode里还是找不到注意重新打开VSCode。</strong></p>
+<ul>
+<li>安装Uvx成功后，发现Markitdown还是运行不起来，于是我让Copilot Agent帮我分析原因，它通过调用”uvx markitdown –help”命令把所有相关的Python库都下载下来了。</li>
+</ul>
+<p><img src="/img/AI/AITools/MCP/UvxPythonInstallation.PNG" alt="UvxPythonInstallation"></p>
+</li>
+<li><p>但最后依然运行不成功Markitdown，Copilot分析的结论是Python版本不对，为避免多个Python版本安装后出问题，这里不再继续了。</p>
+<p><img src="/img/AI/AITools/MCP/UvxStartPythonVersionProblem.PNG" alt="UvxStartPythonVersionProblem"></p>
+</li>
+</ul>
+<p>接下来以安装GitHub MCP Server为例:</p>
+<ol>
+<li><p>打开插件(ctrl+shift+x)</p>
+</li>
+<li><p>设置过滤为MCP Server</p>
+</li>
+<li><p>搜索GitHub</p>
+</li>
+<li><p>点击安装</p>
+</li>
+<li><p>输入GitHub Authentication token(在Github个人设置页面-&gt;Developer Settings-&gt;Tokens)</p>
+<p><img src="/img/AI/AITools/MCP/GitHubPersonalAuthenticationTokenInput.PNG" alt="GitHubPersonalAuthenticationTokenInput"></p>
+</li>
+<li><p>在Copilot Chat下方打开MCP配置工具查看GitHub MCP Server配置的工具结合</p>
+<p><img src="/img/AI/AITools/MCP/CopilotConfigureTools.PNG" alt="CopilotConfigureTools"></p>
+<p>可以看到GitHub MCP Server已经添加成功，相关工具也支持在Agent模式下通过GitHub MCP Server选择使用了。</p>
+</li>
+<li><p>接下来验证下通过Copilot+GitHub MCP Server我们是否能快速通过AI操作Github仓库相关东西</p>
+<p><img src="/img/AI/AITools/MCP/CommitReadMeFileByGitHubMCPServer.PNG" alt="CommitReadMeFileByGitHubMCPServer"></p>
+<p>可以看到我们成功通过给Copilot输入命令，通过GitHub MCP Server的相关工具将README.md文件成功自动上传到了GitHub对应仓库。</p>
+</li>
+</ol>
+<h5 id="Configuring-MCP-servers-manually"><a href="#Configuring-MCP-servers-manually" class="headerlink" title="Configuring MCP servers manually"></a>Configuring MCP servers manually</h5><p>VSCode支持两种MCP手动配置方式:</p>
+<ol>
+<li><strong>.vscode&#x2F;mcp.json用于给当前VSCode指定所有人能用的MCP服务器配置信息</strong></li>
+<li><strong>%APPDATA%&#x2F;Code&#x2F;User&#x2F;settings.json里配置当前电脑通用的MCP服务器配置信息(但实际上我发现VSCode扩展里安装的好像是配置在%APPDATA%&#x2F;Code&#x2F;User&#x2F;mcp.json文件)</strong></li>
+</ol>
+<p>这里重点学习下第一种给工程手动配置MCP Server的方式</p>
+<ol>
+<li><p>在工程.vscode目录下新建mcp.json文件</p>
+</li>
+<li><p>打开mcp.json文件，点击Add Server按钮(<strong>VSCode提供了几种安装MCP的方式</strong>)</p>
+<p><img src="/img/AI/AITools/MCP/WorkspaceMCPServerAdd.PNG" alt="WorkspaceMCPServerAdd"></p>
+<p><img src="/img/AI/AITools/MCP/VSCodeMCPInstallationMethods.PNG" alt="VSCodeMCPInstallationMethods"></p>
+</li>
+<li><p>这里使用手动添加mcp.json描述的方式</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;servers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;filesystem&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npx&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;-y&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;@modelcontextprotocol/server-filesystem&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;$&#123;workspaceFolder&#125;&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加配置后会在对应Servers名字上方看到启动MCP Server的按钮</p>
+<p><img src="/img/AI/AITools/MCP/StartFileSystemMCPServer" alt="StartFileSystemMCPServer"></p>
+</li>
+<li><p>打开Copilot的Configure Tools可以看到我们成功运行FileSystem MCP Server后相关工具都被使用了</p>
+<p><img src="/img/AI/AITools/MCP/FileSystemTools.PNG" alt="FileSystemTools"></p>
+</li>
+<li><p>接下来通过Copilot进行验证FileSytem MCP Server被正确安装和使用(将.vscode&#x2F;mcp.json和***&#x2F;User&#x2F;mcp.json作为上下文文件进行提问)</p>
+<p><img src="/img/AI/AITools/MCP/CreateMCPServerIntroductionByFileSystem.PNG" alt="CreateMCPServerIntroductionByFileSystem"></p>
+<p><img src="/img/AI/AITools/MCP/MCPMarkDown.PNG" alt="MCPMarkDown"></p>
+<p><img src="/img/AI/AITools/MCP/MCPServerMarkdownContent.PNG" alt="MCPServerMarkdownContent"></p>
+<p><strong>上面这个例子因为有一些默认工具支持了目录的创建和文件的创建读写，导致并没有直接使用FileSystem MCP Server的相关工具</strong></p>
+</li>
+<li><p>显示指定使用create_directory工具创建一个FileSystemCreatedDirectory目录</p>
+<p><img src="/img/AI/AITools/MCP/CreateDirectoryByUsingFileSystemMCPServerTool.PNG" alt="CreateDirectoryByUsingFileSystemMCPServerTool"></p>
+<p><img src="/img/AI/AITools/MCP/FileSystemCreatedDirectory.PNG" alt="FileSystemCreatedDirectory"></p>
+<p>可以看到通过#显示的指定工具名，我们成功使用了FileSystem MCP Server的create_directory工具创建了名为FileSystemCreatedDirectory目录。</p>
+</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>官方推荐相同MCP Server只在全局或本地一处添加，避免冲突</strong></li>
+<li><strong>.vscode&#x2F;mcp.json当前VSCode级别的MCP也可以通过浏览扩展里的MCP进行安装</strong></li>
+<li><strong>MCP Server无需一开始就启动，当需要触发相关工具时，对应MCP Server会自动启动</strong></li>
+<li><strong>Copilot CLI和VS Code Copilot是独立的工具，他们不会共享MCP Server配置</strong></li>
+</ol>
+<h3 id="Coding-Agent"><a href="#Coding-Agent" class="headerlink" title="Coding Agent"></a>Coding Agent</h3><p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent">With Copilot coding agent, GitHub Copilot can work independently in the background to complete tasks, just like a human developer.</a></p>
+<p>从介绍可以看出Coding Agent可以用于像人工一样自动化完成任务。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent">Copilot coding agent is distinct from the “agent mode” feature available in your IDE. Copilot coding agent works autonomously in a GitHub Actions-powered environment to complete development tasks assigned through GitHub issues or GitHub Copilot Chat prompts, and creates pull requests with the results. In contrast, agent mode in your IDE makes autonomous edits directly in your local development environment.</a></p>
+<p>相比Agent Mode，Coding Agent能独立于IDE在Github环境下运行完成任务。</p>
+<p>更多了解:</p>
+<p>TODO</p>
+<p>Note:</p>
+<ol>
+<li><strong>Coding Agent是付费功能(Pro或Pro+等)</strong></li>
+</ol>
+<h3 id="Copilot-Skills"><a href="#Copilot-Skills" class="headerlink" title="Copilot Skills"></a>Copilot Skills</h3><p>TODO</p>
+<h3 id="多模型选择"><a href="#多模型选择" class="headerlink" title="多模型选择"></a>多模型选择</h3><p>​		打开Copilot聊天框正下方有底层AI模型选择</p>
+<p>​		<img src="/img/AI/AITools/Copilot/ChangeAIModel.PNG" alt="ChangeAIModel"></p>
+<h3 id="Code-Review"><a href="#Code-Review" class="headerlink" title="Code Review"></a>Code Review</h3><p>通常合作开发时，提交代码时代码review以往都是人工查看的，有了AI工具，Code Review也能实现AI自动化分析。</p>
+<p>Visual Studio Code Review步骤:</p>
+<ol>
+<li><p>Github创建不同分支并推上去</p>
+</li>
+<li><p>在对应分支进行修改并提交</p>
+</li>
+<li><p>在Github上或者Git发出Pull Request请求</p>
+<p><img src="/img/AI/AITools/Copilot/GithubPullRequestOperation.PNG" alt="GithubPullRequestOperation"></p>
+</li>
+<li><p>在Github上Pull Request操作发起Copilot Review请求</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotReviewRequest.PNG" alt="CopilotReviewRequest"></p>
+</li>
+<li><p>等待AI Copilot Review完成则可看到AI Review结论</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotReviewResult.PNG" alt="CopilotReviewResult"></p>
+</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>Code Review是付费功能(Pro或Pro+等)</strong></li>
+</ol>
+<h3 id="Copilot-CLI"><a href="#Copilot-CLI" class="headerlink" title="Copilot CLI"></a>Copilot CLI</h3><p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli">The command-line interface (CLI) for GitHub Copilot allows you to use Copilot directly from your terminal.</a></p>
+<p>Copilot CLI允许通过命令行界面使用Copilot，这一点很像Claude Code。</p>
+<p>Copilot CLI安装:</p>
+<ol>
+<li><p>打开PowerSheel(Windows)</p>
+</li>
+<li><p>输入 winget install GitHub.Copilot</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotCLIInstallation.PNG" alt="CopilotCLIInstallation"></p>
+</li>
+</ol>
+<p>Copilot CLI使用：</p>
+<ol>
+<li><p>在需要Copilot CLI访问的目录下打开PowerShell输入Copilot命令</p>
+<p><img src="/img/AI/AITools/Copilot/StartCopilotCLI.PNG" alt="StartCopilotCLI"></p>
+</li>
+<li><p>选择选项1(Yes)–表明信任Copilot CLI对当前目录的修改</p>
+</li>
+<li><p>输入&#x2F;login(输入后按照操作流程一步一步登录账号即可) – 登录Github账号开始使用Copilot(本人买的Copilot Pro)</p>
+<p><img src="/img/AI/AITools/Copilot/LoginCopilotCLI.PNG" alt="LoginCopilotCLI"></p>
+</li>
+<li><p>在Copilot里输入&#x2F;help就可以像常规命令行一样看到所有可使用的命令介绍了</p>
+<p><img src="/img/AI/AITools/Copilot/HelpCommand.PNG" alt="HelpCommand"></p>
+</li>
+<li><p>可以看到如果AI模型没选对，我们可以输入&#x2F;model进入模型切换(<strong>部分AI模型需要Github Copilot后台开启才能使用</strong>)</p>
+<p><img src="/img/AI/AITools/Copilot/ChangeAIModel.PNG" alt="ChangeAIModel"></p>
+</li>
+<li><p>提交Git采用人类语言描述即可</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotCLIGitPush.PNG" alt="CopilotCLIGitPush"></p>
+<p>上传失败是因为命令行还没有配置SSH秘钥，这里需要安装<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse?tabs=powershell&pivots=windows-10">OpenSSH Client</a></p>
+<p>PowerShell里输入”Get-Service ssh-agent”确认开启ssh-agent服务，如果未开启，输入”Start-Service ssh-agent”，如果开启报错，输入”Set-Service ssh-agent -StartupType Automatic”将ssh-agent的开启方式设置成自动，然后输入”ssh-add”输入SSH的秘钥即可</p>
+<p><img src="/img/AI/AITools/Copilot/OpenSSHClientAndSshAdd.PNG" alt="OpenSSHClientAndSshAdd"></p>
+<p>然后我们再次测试Copilot的Git上传，发现还是上传不了，询问Copilit说是Copilot CLI默认使用的不是SSH KEY而是HTTPS，需要安装GitHub CLI(<strong>输入”winget install –id GitHub.cli -e”命令安装</strong>)然后使用gh相关命令(<strong>输入”gh auth login”命令登录</strong>)登录GitHub授权(<strong>注意网页版通过授权，网页版要求填的码需要Ctrl+R或者Ctrl+O打开Copilot的详情信息才能看到</strong>)</p>
+<p><img src="/img/AI/AITools/Copilot/GitHubCLILogin.PNG" alt="GitHubCLILogin"></p>
+<p>然后我们再次测试Copilot的Git上传，这次终于通过Copilot上传GitHub成功了</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotGitHubCommitAndPush.PNG" alt="CopilotGitHubCommitAndPush"></p>
+</li>
+</ol>
+<p>Copilot CLI使用详情参考:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli">Using GitHub Copilot CLI</a></p>
+<p>命令行查看Token使用情况:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/context</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/AI/AITools/Copilot/CopilotContextInfo" alt="CopilotContextInfo"></p>
+<p>命令行查看CLI所有操作介绍:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/help</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/AI/AITools/Copilot/CopilotHelpInfo" alt="CopilotHelpInfo"></p>
+<p>Note:</p>
+<ol>
+<li><strong>Copilot CLI是付费功能(Pro或Pro+等)</strong></li>
+<li><strong>部分功能可能要求PowerShell版本大于6，需要自己去装一个最新的PowerShell版本</strong></li>
+<li><strong>OpenSSH Client的安装和SSH配置要用管理员身份打开PowerShell(版本大于6)</strong></li>
+<li><strong>Copilot等待操作时，Ctrl+C是退出，Ctrl+R是打开最近输出，Ctrl+O是打开所有输出，Ctrl+T是显示原因</strong></li>
+<li><strong>如果不希望Copilot每次关键时候询问是否继续，可以输入–allow-all-tools允许所有工具自动执行，或者–allow-tool允许特定工具执行，或者–deny-tool阻止特定工具执行</strong></li>
+</ol>
+<h4 id="Copilot-CLI-MCP-Server"><a href="#Copilot-CLI-MCP-Server" class="headerlink" title="Copilot CLI MCP Server"></a>Copilot CLI MCP Server</h4><p><strong>Copilot CLI和VS Code Copilot的MCP Server是独立添加的，但添加MCP Server的逻辑和VSCode Copilot MCP Server添加是相同的，只是保存的目录位置不同(目录C:&#x2F;User&#x2F;UserName&#x2F;.copilot&#x2F;mcp-config.json)</strong></p>
+<p>Copilot CLI里添加MCP Server是通过输入”<strong>&#x2F;mcp add</strong>“命令：</p>
+<p><img src="/img/AI/AITools/Copilot/CopilotCLIAddMCP.PNG" alt="CopilotCLIAddMCP"></p>
+<p><strong>Server Name</strong> – 取一个本地添加MCP Server的对应名字(必填)</p>
+<p><strong>Server Type</strong> – MCP Server连接类型(<strong>stdio(Standard I&#x2F;O)多用于本地MCP Server。http(Hypertext Transfer Protocol)多用于网络远程MCP Server。sse(Server-Send Events)http不支持时的一种fallback方案</strong>)</p>
+<p><strong>Command</strong> – 启动MCP Server的执行程序命令(<strong>含命令执行参数，本地MCP Server才需要的启动命令</strong>)(最后在mcp.json里会自动拆分成command和args两个变量)</p>
+<p><strong>Enviroment Variables</strong> – 传递个MCP Server的环境变量数据(<strong>本地MCP Server才需要</strong>)</p>
+<p><strong>URL</strong> – 远程MCP Server的URL地址(<strong>远程MCP Server才需要</strong>)</p>
+<p><strong>Http Headers</strong> – 远程MCP Server请求时带的参数数据(比如GitHub秘钥)</p>
+<p><strong>Tools</strong> – MCP Server需要激活的工具(本地和远程MCP Server都需要)</p>
+<p>参数详细介绍:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/extend-coding-agent-with-mcp#writing-a-json-configuration-for-mcp-servers">MCP</a></p>
+<ul>
+<li><p>添加MicrosoftLearn MCP Server(输入**&#x2F;mcp add**然后填充以下信息)</p>
+<p><img src="/img/AI/AITools/Copilot/MicrosoftLearnMCPServerAdd.PNG" alt="MicrosoftLearnMCPServerAdd"></p>
+<p>MicrosoftLearn MCP Server使用测试:</p>
+<p><img src="/img/AI/AITools/Copilot/MicrosoftLearnMCPServerUsingTest.PNG" alt="MicrosoftLearnMCPServerUsingTest"></p>
+</li>
+<li><p>添加GitHub MCP Server(输入**&#x2F;mcp add**然后填充以下信息)</p>
+<p><img src="/img/AI/AITools/Copilot/GitHubMCPServerAdd.PNG" alt="GitHubMCPServerAdd"></p>
+<p>GitHub MCP Server使用测试:</p>
+<p><img src="/img/AI/AITools/Copilot/GitHubMCPServerUsingTest.PNG" alt="GitHubMCPServerUsingTest"></p>
+</li>
+<li><p>添加FileSystem MCP Server(输入**&#x2F;mcp add**然后填充以下信息)</p>
+<p><img src="/img/AI/AITools/Copilot/FileSystemMCPServerAdd.PNG" alt="FileSystemMCPServerAdd"></p>
+<p>FileSystem MCP Server使用测试(<strong>Copilot CLI里无法通过描述使用stdio本地添加的MCP Server工具，只能直接指明使用</strong>):</p>
+<p><img src="/img/AI/AITools/Copilot/FileSystemMCPServerUsingTest.PNG" alt="FileSystemMCPServerUsingTest"></p>
+</li>
+</ul>
+<p>Note:</p>
+<ol>
+<li><strong>Copilot CLI的MCP Server添加时，不是所有的MCP Server都通过Http方式远程添加，也可以通过stdio本地添加的方式。</strong></li>
+<li><strong>stdio本地添加的方式不能直接通过Copilot CLI描述触发，需要直接输入”@MCP名.工具名 参数”的方式直接触发</strong></li>
+<li><strong>Copilot CLI里@除了指明用某个文件，还能@MCP名.工具名 参数的方式指定使用MCP的工具</strong></li>
+<li><em><em>所有Copilot CLI需要访问的目录必须确保授权访问，除了默认打开所在目录和</em>&#x2F;Local&#x2F;Temp目录默认授权外，其他目录都要通过&#x2F;add-dir进行授权添加</em>*</li>
+<li><strong>通过&#x2F;add-dir添加授权访问的目录暂时没有命令清除，只能通过重新开Copilot Session实现重置</strong></li>
+</ol>
+<h3 id="Copilot付费"><a href="#Copilot付费" class="headerlink" title="Copilot付费"></a>Copilot付费</h3><p>Copilot有多个付费模式：</p>
+<p>Free – **只允许使用优先功能(50次Agent Mode或Chat每月，2000次智能代码提示补全每月等)</p>
+<p>Pro – <strong>无限次Agent Mode或Chat每月，无限次智能代码补全提示，更多AI模型选择，Code Review，Coding Agent等功能</strong></p>
+<p>Pro+ – <strong>相比Pro更多的AI模型选择等</strong></p>
+<p>Copilot付费支持的<strong>Visa</strong>卡好像要<strong>要求支持跨境汇款</strong>，<strong>PayPal</strong>这个我个人没有。</p>
+<p>不同付费模式功能详情参考:</p>
+<p><a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/github-copilot/">Github-copilot</a></p>
+<h2 id="Github地址"><a href="#Github地址" class="headerlink" title="Github地址"></a>Github地址</h2><p>无</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/AI/">AI</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/AI/">AI</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2026/01/12/Copilot/" data-title="Copilot | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2025/03/24/事件驱动行为树/"  title="事件驱动行为树">
+ <strong>下一篇：</strong><br/> 
+ <span>事件驱动行为树
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Copilot"><span class="toc-number">2.</span> <span class="toc-text">Copilot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Copilot%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">Copilot安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Completions"><span class="toc-number">4.</span> <span class="toc-text">Completions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Prompt"><span class="toc-number">5.</span> <span class="toc-text">Prompt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chat"><span class="toc-number">6.</span> <span class="toc-text">Chat</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Ask-Mode"><span class="toc-number">6.1.</span> <span class="toc-text">Ask Mode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Agent-Mode"><span class="toc-number">6.2.</span> <span class="toc-text">Agent Mode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MCP"><span class="toc-number">6.3.</span> <span class="toc-text">MCP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Extending-Copilot-MCP-Servers"><span class="toc-number">6.3.1.</span> <span class="toc-text">Extending Copilot MCP Servers</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Using-GitHub-MCP-Registery"><span class="toc-number">6.3.1.1.</span> <span class="toc-text">Using GitHub MCP Registery</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Configuring-MCP-servers-manually"><span class="toc-number">6.3.1.2.</span> <span class="toc-text">Configuring MCP servers manually</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Coding-Agent"><span class="toc-number">6.4.</span> <span class="toc-text">Coding Agent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Copilot-Skills"><span class="toc-number">6.5.</span> <span class="toc-text">Copilot Skills</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9"><span class="toc-number">6.6.</span> <span class="toc-text">多模型选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Code-Review"><span class="toc-number">6.7.</span> <span class="toc-text">Code Review</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Copilot-CLI"><span class="toc-number">6.8.</span> <span class="toc-text">Copilot CLI</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Copilot-CLI-MCP-Server"><span class="toc-number">6.8.1.</span> <span class="toc-text">Copilot CLI MCP Server</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Copilot%E4%BB%98%E8%B4%B9"><span class="toc-number">6.9.</span> <span class="toc-text">Copilot付费</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Github%E5%9C%B0%E5%9D%80"><span class="toc-number">7.</span> <span class="toc-text">Github地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">8.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Plugin/" title="Plugin">Plugin<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2026 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
