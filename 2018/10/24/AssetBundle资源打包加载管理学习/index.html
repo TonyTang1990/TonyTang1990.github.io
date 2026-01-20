@@ -57,9 +57,9 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/AssetDependenciesBrowser.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/BuildInResourceReferenceAnalyze.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/BuildInResourceExtraction.png">
-<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetBundle-Framework/ShaderVariantsCollectionEntry.png">
 <meta property="article:published_time" content="2018-10-24T15:07:12.000Z">
-<meta property="article:modified_time" content="2023-08-10T12:26:04.802Z">
+<meta property="article:modified_time" content="2026-01-20T03:45:15.010Z">
 <meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="Resource">
 <meta name="twitter:card" content="summary">
@@ -194,9 +194,9 @@
 <h3 id="打包策略"><a href="#打包策略" class="headerlink" title="打包策略"></a>打包策略</h3><p>除了资源冗余，打包策略也很重要。打包策略是指决定各个Asset如何分配打包到指定AB里的策略。打包策略会决定AB的数量，资源冗余等问题。AB数量过多会增加IO负担。资源冗余会导致包体过大，内存中存在多份同样的Asset，热更新资源大小等。</p>
 <p>打包策略：</p>
 <ol>
-<li>Logical entities(按逻辑(功能)分类 – 比如按UI，按模型使用，按场景Share等功能分类)<br>优点：可以动态只更新特定Entity</li>
-<li>Object Types(类型分类 – 主要用于同类型文件需要同时更新的Asset)<br>优点：只适用于少部分需要经常变化更新的小文件</li>
-<li>Concurrent content(加载时机分类 – 比如按Level分类，主要用于游戏里类容固定(Level Based)不会动态变化加载的游戏类型)<br>优点：适合Level based这种一层内容一层不变的游戏类型<br>缺点：不适合用于动态创建对象的游戏类型</li>
+<li>Logical entities(按逻辑(功能)分类 – 比如按UI，按模型使用，按场景Share等功能分类)<br> 优点：可以动态只更新特定Entity</li>
+<li>Object Types(类型分类 – 主要用于同类型文件需要同时更新的Asset)<br> 优点：只适用于少部分需要经常变化更新的小文件</li>
+<li>Concurrent content(加载时机分类 – 比如按Level分类，主要用于游戏里类容固定(Level Based)不会动态变化加载的游戏类型)<br> 优点：适合Level based这种一层内容一层不变的游戏类型<br> 缺点：不适合用于动态创建对象的游戏类型</li>
 </ol>
 <p>打包策略遵循几个比较基本的准则：</p>
 <ol>
@@ -216,22 +216,18 @@
 <li>Selection(获取Unity Editor当前勾选对象相关信息的接口)</li>
 </ol>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object[] assetsselections = Selection.GetFiltered(Type, SelectionMode);</span><br></pre></td></tr></table></figure>
-
 <ol start="2">
 <li>AssetDatabase(操作访问Unity Asset的接口)</li>
 </ol>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取选中Asset的路径</span></span><br><span class="line">assetpath = AssetDatabase.GetAssetPath(assetsselections[i]);</span><br><span class="line"><span class="comment">// 获取选中Asset的GUID</span></span><br><span class="line">assetguid = AssetDatabase.AssetPathToGUID(assetpath);</span><br></pre></td></tr></table></figure>
-
 <ol start="3">
 <li>AssetImporter(获取设置Asset的AB名字的接口)</li>
 </ol>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取指定Asset的Asset设置接口</span></span><br><span class="line">AssetImporter assetimporter = AssetImporter.GetAtPath(assetpath);</span><br><span class="line"><span class="comment">// 设置Asset的AB信息</span></span><br><span class="line">assetimporter.assetBundleVariant = ABVariantName;</span><br><span class="line">assetimporter.assetBundleName = ABName;</span><br></pre></td></tr></table></figure>
-
 <ol start="4">
 <li>BuildPipeline(AB打包接口)</li>
 </ol>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BuildPipeline.BuildAssetBundles(outputPath, BuildAssetBundleOptions, BuildTarget); </span><br><span class="line"></span><br><span class="line">BuildPipeline.BuildAssetBundles(<span class="built_in">string</span> outputPath, AssetBundleBuild[] builds, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);</span><br></pre></td></tr></table></figure>
-
 <p>可以看到AB打包Unity 5.X提供了两个主要的接口：</p>
 <ol>
 <li>前者是依赖于设置每个Asset的AB名字，然后一个接口完成增量打包的方案。<br>优点:<br> 自带增量打包<br>缺点:<br> 需要有一套资源AB命名规则。<br> 开发者可控度低。</li>
@@ -256,12 +252,10 @@
 <li>AssetBundle(AB接口)</li>
 </ol>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 回收AssetBundle并连带加载实例化出来的Asset以及GameObject一起回收</span></span><br><span class="line">AssetBundle.Unload(<span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 只回收AssetBundle</span></span><br><span class="line">AssetBundle.Unload(<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
-
 <ol start="2">
 <li>Resource(资源接口)</li>
 </ol>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 回收指定Asset(这里的Asset不能为GameObject)</span></span><br><span class="line">Resource.UnloadAsset(asset);</span><br><span class="line"><span class="comment">// 回收内存以所有不再有任何引用的Asset</span></span><br><span class="line">Resources.UnloadUnusedAssets();</span><br></pre></td></tr></table></figure>
-
 <ol start="3">
 <li>GC(内存回收)</li>
 </ol>
@@ -287,19 +281,14 @@
 </ol>
 <p>开始加载CapsuleNormalMappingTexture.prefab:<br>首先让我们看看加载了CapsuleNormalMappingTexture.prefab前的Asset加载情况:<br><img src="/img/Unity/NonUIPrefabLoadedBeforeProfiler.PNG" alt="NonUIPrefabLoadedBeforeProfiler"><br>可以看出只有Shader Asset被预先加载进来了(因为我预先把所有Shader都加载进来了)<br>第一步：<br>加载CapsuleNormalMappingTexture.prefab对应的AB，因为Prefab是采用复制加引用所以这里需要返回一个通过加载Asset后Clone的一份对象。</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nonuiprefabab = loadAssetBundle(abfullname);</span><br><span class="line"><span class="keyword">var</span> nonuiprefabasset = loadMainAsset(nonuiprefabab);</span><br><span class="line">nonuigo = GameObject.Instantiate(nonuiprefabasset) <span class="keyword">as</span> GameObject;</span><br><span class="line"><span class="comment">// Asest一旦加载进来，我们就可以进行缓存，相应的AB就可以释放掉了</span></span><br><span class="line"><span class="comment">// 后续会讲到相关AB和Asset释放API</span></span><br><span class="line">nonuiprefabab.Unload(<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
-
 <p>第二步：<br>还原依赖材质<br><img src="/img/Unity/DPInfoMono.PNG" alt="DPInfoMono"></p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">NonUIPrefabDepInfo nonuidpinfo = nonuigo.GetComponent&lt;NonUIPrefabDepInfo&gt;();</span><br><span class="line"><span class="keyword">var</span> dpmaterials = nonuidpinfo.mDPMaterialInfoList;</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; dpmaterials.Count; i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; dpmaterials[i].mMaterialNameList.Count; j++)</span><br><span class="line">    &#123;</span><br><span class="line">        MaterialResourceLoader.getInstance().addMaterial(dpmaterials[i].mRenderer, dpmaterials[i].mMaterialNameList[j]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>第三步：<br>还原依赖材质的Shader和Texture依赖引用<br><img src="/img/Unity/MaterialAssetInfo.PNG" alt="MaterialAssetInfo"></p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据材质_InfoAsset.asset进行还原材质原始Shader以及Texture信息</span></span><br><span class="line"><span class="keyword">var</span> materialinfoasseetname = <span class="built_in">string</span>.Format(<span class="string">&quot;&#123;0&#125;_&#123;1&#125;InfoAsset.asset&quot;</span>, materialname, ResourceHelper.CurrentPlatformPostfix);</span><br><span class="line"><span class="keyword">var</span> materialassetinfo = loadSpecificAsset(materialab, materialinfoasseetname.ToLower()) <span class="keyword">as</span> MaterialAssetInfo;</span><br><span class="line"><span class="comment">// 加载材质依赖的Shader</span></span><br><span class="line"><span class="keyword">var</span> materialshader = materialassetinfo.mShaderName;</span><br><span class="line"><span class="keyword">var</span> shader = ShaderResourceLoader.getInstance().getSpecificShader(materialshader);</span><br><span class="line">material.shader = shader;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取Shader使用的Texture信息进行还原</span></span><br><span class="line"><span class="keyword">var</span> materialdptextureinfo = materialassetinfo.mTextureInfoList;</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; materialdptextureinfo.Count; i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 加载指定依赖纹理</span></span><br><span class="line">    Texture shadertexture = TextureResourceLoader.getInstance().loadTexture(materialdptextureinfo[i].Value);</span><br><span class="line">    <span class="comment">//设置材质的对应Texture</span></span><br><span class="line">    material.SetTexture(materialdptextureinfo[i].Key, shadertexture);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>接下让我们看看加载了CapsuleNormalMappingTexture.prefab后的Asset加载情况:<br><img src="/img/Unity/NonUIPrefabLoadedAfterProfiler.PNG" alt="NonUIPrefabLoadedAfterProfiler"><br>可以看出引用的材质和纹理Asest都被加载到内存里了(Shader因为我预先把所有Shader都加载进来了所以就直接重用了没有被重复加载)<br>第四步：<br>对缓存的Asset进行判定是否回收(这里以材质为例，判定方式可能多种多样，我这里是通过判定是否有有效引用)<br>启动一个携程判定特定Material是否不再有有效组件(所有引用组件为空或者都不再使用任何材质)时回收Material Asset</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Resources.UnloadAsset(materialasset);</span><br></pre></td></tr></table></figure>
-
 <p>接下来让我们看看卸载实例对象后，材质被回收的情况：<br><img src="/img/Unity/MaterialRecycleAssetNumer.PNG" alt="MaterialRecycleAssetNumer"><br><img src="/img/Unity/MaterialRecycle.PNG" alt="MaterialRecycle"><br>可以看到没有被引用的材质Asset被回收了，但内存里的Asset数量却明显增加了。<br>这里多出来的是我们还没有回收的Texture以及Prefab的GameObject以及Components Asset依然还在内存里。<br><img src="/img/Unity/AfterMaterialRecyleTextureStatus.PNG" alt="AfterMaterialRecyleTextureStatus"><br><img src="/img/Unity/AfterMaterialRecyleGameObjectStatus.PNG" alt="AfterMaterialRecyleGameObjectStatus"><br><img src="/img/Unity/AfterMaterialRecyleTrasformStatus.PNG" alt="AfterMaterialRecyleTrasformStatus"><br>第五步：<br>通过切换场景触发置空所有引用将还未回收的Asset变成UnsedAsset或者直接触发Texture Asset回收，然后通过Resources.UnloadUnusedAssets()回收所有未使用的Asset</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mNonUIPrefabAssetMap = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>(<span class="keyword">var</span> texture <span class="keyword">in</span> mTexturesUsingMap)</span><br><span class="line">&#123;</span><br><span class="line">    unloadAsset(texture.Value);</span><br><span class="line">&#125;</span><br><span class="line">mTexturesUsingMap = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">Resources.UnloadUnusedAssets();</span><br></pre></td></tr></table></figure>
-
 <p><img src="/img/Unity/AfterAssetsRecyleAssetNumber.PNG" alt="AfterAssetsRecyleAssetNumber"><br><img src="/img/Unity/AfterAssetsRecyleTextureStatus.PNG" alt="AfterAssetsRecyleTextureStatus"><br><img src="/img/Unity/AfterAssetsRecyleGameObjectStatus.PNG" alt="AfterAssetsRecyleGameObjectStatus"><br><img src="/img/Unity/AfterAssetsRecyleTransformStatus.PNG" alt="AfterAssetsRecyleTransformStatus"><br>可以看到所有的Texture, GameObject, Transform都被回收了，并且Asset的数量回到了最初的数值。</p>
 <h3 id="基于AB引用计数的AB加载管理"><a href="#基于AB引用计数的AB加载管理" class="headerlink" title="基于AB引用计数的AB加载管理"></a>基于AB引用计数的AB加载管理</h3><p><strong>这是本文重点分享的部分</strong></p>
 <p>方案1：<br>核心思想：</p>
@@ -414,24 +403,24 @@
 <h4 id="Demo使用说明"><a href="#Demo使用说明" class="headerlink" title="Demo使用说明"></a>Demo使用说明</h4><p>先打开资源调试工具</p>
 <p>Tools-&gt;Debug-&gt;资源调试工具</p>
 <ol>
-<li><p>AssetBundle和AssetDatabase资源加载模式切换<img src="/./img/Unity/AssetBundle-Framework/AssetDatabaseModuleSwitch.png" alt="AssetDatabaseModuleSwitch"></p>
+<li><p>AssetBundle和AssetDatabase资源加载模式切换<img src="/img/Unity/AssetBundle-Framework/AssetDatabaseModuleSwitch.png" alt="AssetDatabaseModuleSwitch"></p>
 </li>
 <li><p>AB依赖信息查看界面</p>
-<p><img src="/./img/Unity/AssetBundle-Framework/AssetBundle-Framework/AssetBundleDepInfoUI.png" alt="AssetBundleDepInfoUI"></p>
+<p><img src="/img/Unity/AssetBundle-Framework/AssetBundle-Framework/AssetBundleDepInfoUI.png" alt="AssetBundleDepInfoUI"></p>
 </li>
 <li><p>AB运行时加载管理详细信息界面</p>
-<p><img src="/./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png" alt="AssetBundleLoadManagerUI"></p>
+<p><img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUI.png" alt="AssetBundleLoadManagerUI"></p>
 </li>
 <li><p>加载器信息查看界面</p>
-<p>   <img src="/./img/Unity/AssetBundle-Framework/LoaderDebugUI.png" alt="AssetBundleAsyncUI"></p>
+<p><img src="/img/Unity/AssetBundle-Framework/LoaderDebugUI.png" alt="AssetBundleAsyncUI"></p>
 </li>
 <li><p>测试界面</p>
-<p><img src="/./img/Unity/AssetBundle-Framework/AssetBundleTestUI.png" alt="AssetBundleTestUI"></p>
+<p><img src="/img/Unity/AssetBundle-Framework/AssetBundleTestUI.png" alt="AssetBundleTestUI"></p>
 </li>
 <li><p>点击加载窗口预制件按钮后:</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ResourceManager.Singleton.getPrefabInstance(</span><br><span class="line">    <span class="string">&quot;Assets/Res/windows/MainWindow.prefab&quot;</span>,</span><br><span class="line">    (prefabInstance, requestUid) =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        mMainWindow = prefabInstance;</span><br><span class="line">        mMainWindow.transform.SetParent(UIRootCanvas.transform, <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png" alt="AssetBundleLoadManagerUIAfterLoadWindow"><br>可以看到窗口mainwindow依赖于loadingscreen，导致我们加载窗口资源时，loadingscreen作为依赖AB被加载进来了(引用计数为1)，窗口资源被绑定到实例出来的窗口对象上(绑定对象MainWindow)</p>
+<p><img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterLoadWindow.png" alt="AssetBundleLoadManagerUIAfterLoadWindow"><br>可以看到窗口mainwindow依赖于loadingscreen，导致我们加载窗口资源时，loadingscreen作为依赖AB被加载进来了(引用计数为1)，窗口资源被绑定到实例出来的窗口对象上(绑定对象MainWindow)</p>
 </li>
 <li><p>点击测试异步转同步加载窗口</p>
 </li>
@@ -441,9 +430,10 @@
 <ol start="8">
 <li>点击销毁窗口实例对象后</li>
 </ol>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 销毁窗口实例对象</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroyWindowInstance</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    DIYLog.Log(<span class="string">&quot;onDestroyWindowInstance()&quot;</span>);</span><br><span class="line">    GameObject.Destroy(mMainWindow);</span><br><span class="line">&#125;</span><br><span class="line">窗口销毁后可以看到之前加载的资源所有绑定对象都为空了，因为被销毁了(MainWindow被销毁了)</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 销毁窗口实例对象</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroyWindowInstance</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    DIYLog.Log(<span class="string">&quot;onDestroyWindowInstance()&quot;</span>);</span><br><span class="line">    GameObject.Destroy(mMainWindow);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>​		<img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png" alt="AssetBundleLoadManagerUIAfterDestroyWindow"></p>
+<p>​		窗口销毁后可以看到之前加载的资源所有绑定对象都为空了，因为被销毁了(MainWindow被销毁了)</p>
+<p><img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterDestroyWindow.png" alt="AssetBundleLoadManagerUIAfterDestroyWindow"></p>
 <ol start="9">
 <li>等待回收检测回收后<br><img src="/img/Unity/AssetBundle-Framework/AssetBundleLoadManagerUIAfterUnloadAB.png" alt="AssetBundleLoadManagerUIAfterUnloadAB"><br>上述资源在窗口销毁后，满足了可回收的三大条件(1. 索引计数为0 2. 绑定对象为空 3. NormalLoad加载方式)，最终被成功回收。</li>
 </ol>
@@ -576,11 +566,11 @@
 <ol>
 <li>每次资源打包会在包内Resource目录生成一个AssetBundleMd5.txt文件用于记录和对比哪些资源需要热更</li>
 </ol>
-<p>​    <img src="/./img/Unity/HotUpdate/AssetBundleMD5File.png" alt="AssetBundleMD5File"></p>
+<p>​    <img src="/img/Unity/HotUpdate/AssetBundleMD5File.png" alt="AssetBundleMD5File"></p>
 <ol start="2">
 <li>执行热更新准备操作，生成热更新所需服务器最新版本信息文件(ServerVersionConfig.json)并将包内对应平台资源拷贝到热更新准备目录</li>
 </ol>
-<p><img src="/./img/Unity/HotUpdate/HotUpdatePreparationFolder.png" alt="HotUpdatePreparationFolder"></p>
+<p><img src="/img/Unity/HotUpdate/HotUpdatePreparationFolder.png" alt="HotUpdatePreparationFolder"></p>
 </li>
 <li><p>热更新判定阶段</p>
 <ol>
@@ -615,8 +605,10 @@
 <li><p>内置资源提取工具</p>
 <p>​    <img src="/img/Unity/AssetBundle-Framework/BuildInResourceExtraction.png" alt="BuildInResourceExtraction"></p>
 </li>
-<li><p>Shader变体搜集工具</p>
-<p>​    <img src="/img/Unity/AssetBundle-Framework/ShaderVariantsCollection.png" alt="ShaderVariantsCollection"></p>
+<li><p>Shader变体搜集工具(<strong>接入YooAsset的变体搜集工具</strong>)</p>
+<p><strong>核心思想是搜集所有需要参与打包的材质球(含被动依赖不在打包策略内的)，然后通过单独的场景和摄像机去照射让ShaderVariantCollection去搜集</strong></p>
+</li>
+<li><p>​	<img src="/img/Unity/AssetBundle-Framework/ShaderVariantsCollectionEntry.png" alt="ShaderVariantsCollectionEntry"></p>
 </li>
 </ul>
 <h2 id="AB实战总结"><a href="#AB实战总结" class="headerlink" title="AB实战总结"></a>AB实战总结</h2><ol>
