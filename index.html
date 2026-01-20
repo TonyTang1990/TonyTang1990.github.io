@@ -2307,10 +2307,13 @@
 <p>地图对象编辑和地图对象选择后面的**+<strong>默认是</strong>添加到地图对象数据列表尾部**。</p>
 <p>地图对象数据列表后的操作可以对已经配置的地图对象数据进行相关操作，此处的**+<strong>号是将选择的地图对象类型和地图对象选择</strong>插入的当前数据位置**。</p>
 <p>Note:</p>
-<ol start="2">
-<li><strong>地图对象可以通过地图对象配置面板配置的关联id导出给程序实现动态对象的配置关联</strong></li>
-<li><strong>地图对象的数据关联是通过挂在MapObjectDataMono.cs脚本实现</strong></li>
-<li><strong>未来如果地图对象要想实现按需加载可以通过导出地图对象数据给程序动态加载实现，相关代码参考MapObjectExport.cs相关代码(不分代码注释着)</strong></li>
+<ol>
+<li><p><strong>地图对象可以通过地图对象配置面板配置的关联id导出给程序实现动态对象的配置关联</strong></p>
+</li>
+<li><p><strong>地图对象的数据关联是通过挂在MapObjectDataMono.cs脚本实现</strong></p>
+</li>
+<li><p><strong>未来如果地图对象要想实现按需加载可以通过导出地图对象数据给程序动态加载实现，相关代码参考MapObjectExport.cs相关代码(不分代码注释着)</strong></p>
+</li>
 </ol>
 <h3 id="地图埋点编辑区域"><a href="#地图埋点编辑区域" class="headerlink" title="地图埋点编辑区域"></a>地图埋点编辑区域</h3><p>效果图:</p>
 <p><img src="/img/Unity/MapEditor/MapDataConfigInspectorArea.PNG" alt="MapDataConfigInspectorArea"></p>
@@ -2322,6 +2325,10 @@
 <p>地图埋点数据列表后的操作可以对已经配置的地图埋点数据进行相关操作，此处的**+<strong>号是将选择的地图埋点类型和地图对象选择</strong>插入的当前数据位置**。</p>
 <p><strong>地图埋点支持批量操作位置</strong>，通过勾选批量选项决定哪些地图埋点数据要一起操作位置，然后操作(拖拽或者输入坐标)勾选了批量的地图埋点对象的位置，可以实现一起修改勾选了批量操作的地图埋点位置。</p>
 <p><strong>一键清除批量勾选按钮</strong> – 用于快速取消所有已勾选批量的地图埋点数据</p>
+<p>快捷键操作:</p>
+<p><strong>前提:选中挂载Map脚本的GameObject</strong></p>
+<p><strong>Scene场景里按住W键会看到埋点数据位置的坐标轴，然后就可以直接拖拽位置。</strong></p>
+<p><strong>Scene场景里按住E键会看到埋点数据旋转的坐标轴，然后就可以直接拖拽旋转。</strong></p>
 <p>Note:</p>
 <ol>
 <li><strong>地图数据的编辑和导出是按Map.cs脚本为单位。</strong></li>
