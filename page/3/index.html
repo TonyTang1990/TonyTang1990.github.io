@@ -81,6 +81,162 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2020/09/12/行为树-Unity/" title="行为树-Unity" itemprop="url">行为树-Unity</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2020-09-12T13:47:46.000Z" itemprop="datePublished"> 发表于 2020-09-12</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本章节博客是在项目需求设计支持Lua AI系统的前提下，驱动深入学习行为树设计实现。关于AI的相关基础概念学习可以参考:<a href="http://tonytang1990.github.io/2015/10/14/Artificial-Inteligence-Study/#Programming_Game_AI_by_Example">Programming Game AI by Example</a>。而本章节的重点就是行为树，最终目的是实现一份Unity里能够支持项目级使用的支持Lua测使用AI的行为树框架设计。源代码考虑到公司正在使用所以暂时不放源码，大家可以参考设计思路自行实现。</p>
+<h2 id="行为树"><a href="#行为树" class="headerlink" title="行为树"></a>行为树</h2><h3 id="行为树介绍"><a href="#行为树介绍" class="headerlink" title="行为树介绍"></a>行为树介绍</h3><p>行为树首先要知道的一点，是一颗树形结构，树里包含控制决策走向的控制节点和负责展示表现的叶子结点。</p>
+<p>行为树抽象一个角色的简单AI角色逻辑如下：<br><img src="/img/AI/BehaviorTreeHierachy.png" alt="BehaviorTreeHierachy"></p>
+<p>优点：</p>
+<ol>
+<li>可视化决策逻辑</li>
+<li>可复用控制节点</li>
+<li>逻辑和实现低耦合(叶子结点才是与上层逻辑挂钩的)</li>
+</ol>
+<h4 id="节点分类"><a href="#节点分类" class="headerlink" title="节点分类"></a>节点分类</h4><p>从设计上来说节点功能划分为两类：</p>
+<ol>
+<li>决策节点(决定行为树走向的非叶子节点)</li>
+<li>行为节点(叶子节点决定最后的行为表现)</li>
+</ol>
+<p>决策节点分类：</p>
+<ol>
+<li>组合节点(序列节点(相当于and)、选择节点(相当于or)、并行节点(相当于for循环)等)</li>
+<li>装饰节点(可以作为某种节点的一种额外的附加条件，如允许次数限制，时间限制，错误处理等。Note:<strong>装饰节点只有一个子节点</strong>)</li>
+</ol>
+<p>行为节点分类：</p>
+<ol>
+<li>条件节点(控制节点结果)</li>
+<li>动作节点(实际的行为表现)</li>
+</ol>
+<h4 id="节点状态"><a href="#节点状态" class="headerlink" title="节点状态"></a>节点状态</h4><p>所有的节点都有三种状态：</p>
+<ol>
+<li>运行中(Running)</li>
+<li>运行完毕(Success &#x2F; Failed)</li>
+<li>无效(Invalide)</li>
+</ol>
+<p>正是通过上面的三种状态来实现行为树的行为决策的(所有节点都有返回状态)</p>
+<h4 id="节点选择"><a href="#节点选择" class="headerlink" title="节点选择"></a>节点选择</h4><p>决策控制选择节点时需要有依据，这里的依据可以看做是选择某个节点的一个前提条件(Precondition)，前提可以让我们快速判定分支避免不必要的子节点判定。控制节点相当于默认返回True，叶子节点可以作为选择节点的依据。</p>
+<p>关于节点选择更多的优化(e.g. 1. 带优先级的选择 2. 带权值的选择……)参考：</p>
+<p><a target="_blank" rel="noopener" href="http://www.aisharing.com/archives/99">行为树（Behavior Tree）实践（2）– 进一步的讨论</a></p>
+<p><strong>Note:</strong><br><strong>这里考虑到前置条件等价于组合节点的第一个节点设置条件节点，所以最终实战实现里没有实现前置条件(Precondition)</strong></p>
+<h4 id="行为树更新"><a href="#行为树更新" class="headerlink" title="行为树更新"></a>行为树更新</h4><p>行为树更新方案：<br>2. <strong>每次从上次运行的节点运行(打断时从根节点重新运行)</strong></p>
+<h4 id="行为树中断"><a href="#行为树中断" class="headerlink" title="行为树中断"></a>行为树中断</h4><p>前面我们已经选择了方案2，这里就要考虑一下如何实现行为打断了。</p>
+<p>从前面可以看出行为树节点是有Running状态的，也就是说只要满足子节点的层层条件后，可以持续执行一段时间(比如寻找目标地点寻路过去这段时间都是Running)。</p>
+<p>试想一下游戏过程中所有的条件数据都是在实时变化的，执行寻找目标地点的条件可以在任何时候出现条件不满足的情况，那么我们如何打断正在执行的Running节点，让行为树判定执行一条符合条件的行为分支了？</p>
+<p>通过了解，BehaviorDesigner里存在4中类型的中断：</p>
+<ol>
+<li>None</li>
+<li>Self</li>
+<li>Lower Priority</li>
+<li>Both</li>
+</ol>
+<p>详情参考:<a target="_blank" rel="noopener" href="https://blog.csdn.net/FireworksFlower/article/details/99655101">行为树 中断的理解</a></p>
+<p>核心都是通过标识决策节点的打断类型以及配合设置相应条件节点来实现额外的条件判定，从而实现其他子节点运行时也可以动态判定其他节点条件来实现打断运行节点。</p>
+<p>BehaviorDesigner节点有抽象出节点优先级概念(大概就是树形结构的层级顺序优先级)。</p>
+<p>这里只是为了实现一个简易版的行为树，所以就不实现那么复杂的打断机制了。</p>
+<p>方案：<br><strong>行为树运行时记录运行时跑过的需要重新评估的节点的运行结果状态(现阶段主要是指条件节点)，每一次从根节点运行时都判定需要重新评估的节点运行状态是否有变化，有变化表示条件有变行为树需要打断执行。</strong></p>
+<h3 id="为什么使用行为树"><a href="#为什么使用行为树" class="headerlink" title="为什么使用行为树"></a>为什么使用行为树</h3><p>从<a href="http://tonytang1990.github.io/2015/10/14/Artificial-Inteligence-Study/#Programming_Game_AI_by_Example">Programming Game AI by Example</a>的介绍里可以看到相比状态机(FSM)行为树有以下几个好处:</p>
+<ol>
+<li>使用行为树解决了状态机(FSM)过于复杂后维护成本高不利于扩展的问题。</li>
+<li>行为树决策节点重用性高</li>
+<li>行为树可视化编辑器能高效的查看行为树执行情况</li>
+</ol>
+<h3 id="行为树实战"><a href="#行为树实战" class="headerlink" title="行为树实战"></a>行为树实战</h3><p>目标：</p>
+<ol>
+<li>实现一套可用于项目级别使用的支持Lua版编写AI的Unity行为树(深入理解行为树的原理和实现)</li>
+</ol>
+<p>设计：</p>
+<ol>
+<li>使用黑板模式作为单颗行为树的数据中心解决方案</li>
+<li>使用Unity原生API实现行为树节点编辑器，支持高效方便的行为树编辑导出调试工具</li>
+<li>使用Json(至于性能问题未来可选择高效的Json库，这里主要看中Json的可读性)作为行为树数据序列化反序列化方案</li>
+<li>使用C#开发一套兼容CS和Lua的行为树框架(方便未来直接用于作为CS测的行为树解决方案)，兼容Lua的核心思想是参数由string序列化，行为树节点反序列化构建时自行解析。</li>
+<li>支持暂停，打断以及加载不同行为树Json的行为树框架</li>
+<li>支持条件节点状态变化级别的行为树打断设计</li>
+</ol>
+<h4 id="数据管理"><a href="#数据管理" class="headerlink" title="数据管理"></a>数据管理</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/KillerAery/p/10054558.html">黑板模式</a></p>
+<p>可以简单的理解成一个共享数据的地方，核心设计是一个K-V结构的Map容器(结合泛型的设计支持不同类型的数据访问)，通过统一的数据访问方式实现行为树统一的数据访问。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> 黑板模式，数据共享中心</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Blackboard</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 黑板数据集合中心</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="keyword">protected</span> Dictionary&lt;<span class="built_in">string</span>, IBlackboardData&gt; mBlackboardDataMap;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">Blackboard</span>()</span></span><br><span class="line">       &#123;</span><br><span class="line">           mBlackboardDataMap = <span class="keyword">new</span> Dictionary&lt;<span class="built_in">string</span>, IBlackboardData&gt;();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 添加黑板数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;data&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">AddData</span>(<span class="params"><span class="built_in">string</span> key, IBlackboardData data</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">           IBlackboardData <span class="keyword">value</span>;</span><br><span class="line">           <span class="keyword">if</span>(!mBlackboardDataMap.TryGetValue(key, <span class="keyword">out</span> <span class="keyword">value</span>))</span><br><span class="line">           &#123;</span><br><span class="line">               mBlackboardDataMap.Add(key, data);</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">else</span></span><br><span class="line">           &#123;</span><br><span class="line">               Debug.LogError(<span class="built_in">string</span>.Format(<span class="string">&quot;黑板数据里已存在Key:&#123;0&#125;的数据，添加数据失败!&quot;</span>, key));</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 移除黑板数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">RemoveData</span>(<span class="params"><span class="built_in">string</span> key</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">return</span> mBlackboardDataMap.Remove(key);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 获取指定黑板数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> T <span class="title">GetData</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="built_in">string</span> key</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">var</span> <span class="keyword">value</span> = GetBlackboardData(key);</span><br><span class="line">           <span class="keyword">if</span> (<span class="keyword">value</span> != <span class="literal">null</span>)</span><br><span class="line">           &#123;</span><br><span class="line">               <span class="keyword">return</span> (<span class="keyword">value</span> <span class="keyword">as</span> BlackboardData&lt;T&gt;).Data;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">else</span></span><br><span class="line">           &#123;</span><br><span class="line">               Debug.LogError(<span class="string">&quot;返回默认值!&quot;</span>);</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">default</span>(T);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 更新黑板数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;data&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">UpdateData</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="built_in">string</span> key, T data</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">var</span> <span class="keyword">value</span> = GetBlackboardData(key);</span><br><span class="line">           <span class="keyword">if</span>(<span class="keyword">value</span> != <span class="literal">null</span>)</span><br><span class="line">           &#123;</span><br><span class="line">               (<span class="keyword">value</span> <span class="keyword">as</span> BlackboardData&lt;T&gt;).Data = data;</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">else</span></span><br><span class="line">           &#123;</span><br><span class="line">               Debug.LogError(<span class="built_in">string</span>.Format(<span class="string">&quot;更新Key:&#123;0&#125;的数据失败!&quot;</span>, key));</span><br><span class="line">               <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 清除黑板数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ClearData</span>()</span></span><br><span class="line">       &#123;</span><br><span class="line">           mBlackboardDataMap.Clear();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 获取黑板指定数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;key&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">private</span> IBlackboardData <span class="title">GetBlackboardData</span>(<span class="params"><span class="built_in">string</span> key</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">           IBlackboardData <span class="keyword">value</span>;</span><br><span class="line">           <span class="keyword">if</span> (!mBlackboardDataMap.TryGetValue(key, <span class="keyword">out</span> <span class="keyword">value</span>))</span><br><span class="line">           &#123;</span><br><span class="line">               Debug.LogError(<span class="built_in">string</span>.Format(<span class="string">&quot;找不到Key:&#123;0&#125;的黑板数据!&quot;</span>, key));</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">value</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> 黑板数据接口抽象</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IBlackboardData</span></span><br><span class="line">   &#123;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> 黑板数据泛型基类</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BlackboardData</span>&lt;<span class="title">T</span>&gt; : <span class="title">IBlackboardData</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> 数据</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="keyword">public</span> T Data</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">get</span>;</span><br><span class="line">           <span class="keyword">set</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">BlackboardData</span>(<span class="params">T data</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">           Data = data;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">#<span class="keyword">region</span> 黑板数据常用数据类型定义</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> 黑板数据整形数据</span></span><br><span class="line">   <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">IntBlackboardData</span> : <span class="title">BlackboardData</span>&lt;<span class="title">int</span>&gt;</span><br><span class="line">   &#123;</span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">IntBlackboardData</span>(<span class="params"><span class="built_in">int</span> data</span>) : <span class="title">base</span>(<span class="params">data</span>)</span></span><br><span class="line">       &#123;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line">   <span class="meta">#<span class="keyword">endregion</span></span></span><br></pre></td></tr></table></figure>
+
+<p>这里具体的黑板数据类型支持通过集成BlackboardData即可，这里就不放全部代码了。</p>
+<p><strong>黑板模式这里用于实现自定义变量并支持修改和读取判定，用于实现自定义变量控制AI逻辑。</strong><br>黑板模式实现效果如下:<br><img src="/img/AI/BehaviourTree/CustomVariableNodes.png" alt="自定义变量节点"><br><img src="/img/AI/BehaviourTree/CustomVariableInspector.png" alt="自定义变量参数面板"><br><img src="/img/AI/BehaviourTree/AllCustomVariableInspector.png" alt="所有自定义变量展示面板"></p>
+<h4 id="节点编辑器"><a href="#节点编辑器" class="headerlink" title="节点编辑器"></a>节点编辑器</h4><p>关于节点编辑器，核心要了解Unity以下几个API:</p>
+<ol>
+<li>Event – UnityGUI事件响应编写接口类<br> <img src="/img/AI/BehaviourTree/GenericMenu.png" alt="节点编辑器操作响应"></li>
+<li>GUILayout.BeginArea() GUILayout.Toolbar() GUILayout.EndArea() EditorGUILayout.*** – GUI自定义面板UI显示接口<br> <img src="/img/AI/BehaviourTree/BTOperationPanel.png" alt="节点编辑器操作面板"></li>
+<li>GenericMenu – Unity编写自定义菜单的类<br> <img src="/img/AI/BehaviourTree/GenericMenu.png" alt="行为树编辑器菜单"></li>
+<li>BeginWindows() GUI.Window() EndWindows() GUI.DragWindow() – Unity编写节点窗口的类(支持拖拽的节点)<br> <img src="/img/AI/BehaviourTree/BTEditorNode.png" alt="行为树节点窗口"></li>
+<li>Handles.DrawBezier() – 绘制节点曲线(Bezier曲线)连接线的接口<br> <img src="/img/AI/BehaviourTree/BTNodeConnectLine.png" alt="行为树节点连线"></li>
+<li>JsonUtility.ToJson() JsonUtility.FromJson<T>() – Unity Json数据序列化反序列化存储<br> <img src="/img/AI/BehaviourTree/BTJsonData.png" alt="行为树序列化反序列化存储"></li>
+</ol>
+<p>结合上面几个核心类，最终实现行为树节点编辑器效果图如下:<br><img src="/img/AI/BehaviourTree/BTNodeEditor.png" alt="行为树节点编辑器效果展示"></p>
+<h4 id="行为树框架"><a href="#行为树框架" class="headerlink" title="行为树框架"></a>行为树框架</h4><p>这里考虑项目正在使用，所以不方便放出源码，通过给出行为树的UML类图设计，大家可以参考思路自行实现(因为UML比较大所以分了两张图):<br><img src="/img/AI/BehaviourTree/BehaviourTreeUML1.png" alt="行为树UML类图1"><br><img src="/img/AI/BehaviourTree/BehaviourTreeUML2.png" alt="行为树UML类图2"></p>
+<h4 id="行为树打断"><a href="#行为树打断" class="headerlink" title="行为树打断"></a>行为树打断</h4><p>这里单独谈谈行为树的打断实现，在BehaviourDesigner里行为树的打断设计相对比较复杂，详情可以参考:<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012632851/article/details/89647097">Unity3D Behavior Designer 行为树4 打断机制的实现</a></p>
+<p>而这里实现的行为树打断是一种较为简单打断方式，就是在每棵行为树重新从根节点开始执行时，记录执行过的节点以及需要重新判定的节点以及状态，在下一次从根节点运行时执行需要重新判定的节点是否有状态变化来判定是否需要打断行为树Running等执行状态。而需要打断的节点是从上一次记录的执行过的节点里执行结果为Running的才需要打断，其他状态不用打断。</p>
+<p>行为树驱动执行代码大致如下:<br>BTGraph.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 更新</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnUpdate</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (RootNode != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 根节点处于非成功和失败状态(一般来说是Running)</span></span><br><span class="line">        <span class="keyword">if</span> (!RootNode.IsTerminated)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 节点处于非运行时需要清除上一次运行数据</span></span><br><span class="line">            <span class="keyword">if</span>(!RootNode.IsRunning)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 清除上一次运行数据(比如执行过的节点和需要重新评估的节点数据)</span></span><br><span class="line">                ClearRunningDatas();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 重新评估需要重新判定的节点，看状态是否有变化</span></span><br><span class="line">            <span class="keyword">if</span> (ReevaluatedExecutedNodes())</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 重新判定节点运行结果有变化需要重置运行节点重新判定</span></span><br><span class="line">                DoAbortBehaviourTree();</span><br><span class="line">            &#125;</span><br><span class="line">            RootNode.OnUpdate();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 根节点处于成功或失败状态</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 清除上一次运行数据(比如执行过的节点和需要重新评估的节点数据)</span></span><br><span class="line">            ClearRunningDatas();</span><br><span class="line">            <span class="comment">// 重新评估需要重新判定的节点，看状态是否有变化</span></span><br><span class="line">            <span class="keyword">if</span> (ReevaluatedExecutedNodes())</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 重新判定节点运行结果有变化需要重置运行节点重新判定</span></span><br><span class="line">                DoAbortBehaviourTree();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 判定行为树单次执行完后是否需要自动重启下一次执行</span></span><br><span class="line">            <span class="keyword">if</span> (OwnerBT.RestartWhenComplete)</span><br><span class="line">            &#123;</span><br><span class="line">                RootNode.OnUpdate();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 执行终止行为树</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DoAbortBehaviourTree</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">&quot;DoAbortBehaviourTree()&quot;</span>);</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> executingnode <span class="keyword">in</span> ExecutingNodesMap)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 只有执行中的节点需要打断(避免执行完成的节点二次打断)</span></span><br><span class="line">        <span class="keyword">if</span>(executingnode.Value.IsRunning)</span><br><span class="line">        &#123;</span><br><span class="line">            executingnode.Value.OnConditionalAbort();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ClearRunningDatas();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而动态打断机制是通过指定特定节点(比如当前博主只支持条件节点)是否支持参与重新打断判定实现的。<br>BTBaseConditionNode.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 是否可被重新评估</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">CanReevaluate</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> AbortType == EAbortType.Self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>公司项目没有继续做了，项目开源了:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/BehaviourTreeForLua">BehaviourTreeForLua</a></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="http://www.aisharing.com/archives/90">行为树（Behavior Tree）实践（1）– 基本概念</a><br><a target="_blank" rel="noopener" href="http://www.aisharing.com/archives/99">行为树（Behavior Tree）实践（2）– 进一步的讨论</a><br><a target="_blank" rel="noopener" href="http://www.aisharing.com/archives/517">用800行代码做个行为树（Behavior Tree）的库（1）</a><br><a target="_blank" rel="noopener" href="http://www.aisharing.com/archives/522">用800行代码做个行为树（Behavior Tree）的库（2）</a><br><a target="_blank" rel="noopener" href="https://www.veinin.com/2018/08/07/ai_behavior_tree_design_and_implementation_01/">AI 行为树设计与实现-理论篇</a><br><a target="_blank" rel="noopener" href="https://domicat.me/2017/03/behavior-tree-1/">行为树及其实现</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_31850729/article/details/69944324">unity 行为树 简单实现</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/fg5823820/article/details/8750606">基于Unity行为树设计与实现的尝试</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/KillerAery/p/10054558.html">游戏设计模式——黑板模式</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012632851/article/details/89647097">Unity3D Behavior Designer 行为树4 打断机制的实现</a></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/AI/">AI</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/AI/">AI</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2020/06/08/Unity滚动列表/" title="Unity滚动列表" itemprop="url">Unity滚动列表</a>
   </h1>
   <p class="article-author">By
@@ -2002,146 +2158,6 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2019/04/25/优化/" title="优化篇" itemprop="url">优化篇</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
-		
-  <p class="article-time">
-    <time datetime="2019-04-25T06:41:00.000Z" itemprop="datePublished"> 发表于 2019-04-25</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本章节主要目的是学习记录游戏开发中各个模块里的优化知识，深入理解项目设计里的各种底层知识点，避免前期不考虑后期优化成灾的情况。</p>
-<p>Note:</p>
-<ol>
-<li>此处并不是要宣扬优化，项目初期不推崇过度优化毕竟产品做出来才是王道，而是通过深入理解核心知识点在项目初期做出正确的设计来避免没必要的后期优化。</li>
-</ol>
-<h2 id="UI模块"><a href="#UI模块" class="headerlink" title="UI模块"></a>UI模块</h2><p>深入深度学习Unity UI(UGUI)模块的使用，优化，原理知识等。</p>
-<h3 id="UI基础"><a href="#UI基础" class="headerlink" title="UI基础"></a>UI基础</h3><h4 id="UI核心概念"><a href="#UI核心概念" class="headerlink" title="UI核心概念"></a>UI核心概念</h4><p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">Canvases are responsible for combining their constituent geometry into batches, generating the appropriate render commands and sending these to Unity’s Graphics system. All of this is done in native C++ code, and is called a rebatch or a batch build.</a></p>
-<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">Geometry is provided to Canvases by Canvas Renderer components.</a></p>
-<p>从前面可以看出UGUI的绘制是以画布为单位的，子Canvas也就是嵌套的关系，大部分情况子Canvas脏了只会触发子Canvas的网格重建不会触发父Canvas的网格重建。</p>
-<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">When composing user interfaces in Unity UI, keep in mind that all geometry drawn by a Canvas will be drawn in the <strong>Transparent queue.</strong></a>(UGUI的Canvas绘制实在Transpanrent Queue里)</p>
-<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">A <em>Graphic</em> is a base class provided by the Unity UI C# library. It is the base class for all Unity UI C# classes that provide drawable geometry to the Canvas system. Most built-in Unity UI Graphics are implemented via the <em>MaskableGraphic</em> subclass, which allows them to be masked via the <em>IMaskable</em> interface.</a>(UGUI里Graphic是提供Canvas里可绘制单位的基类，大部分UGUI组件继承至MaskableGraphic，为了支持Mask过滤。)</p>
-<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">The updates of Layout and Graphic components is called a rebuild.</a>(网格重建是因为排版或者Graphic组件有更新导致的，比如UI位置变化(排版),UI图片变化(组件变化))</p>
-<ol>
-<li>Batch Building Process(Canvases)<br><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">The batch building process is the process whereby a Canvas combines the meshes representing its UI elements and generates the appropriate rendering commands to send to Unity’s graphics pipeline. The results of this process are cached and reused until the Canvas is marked as dirty, which occurs whenever there is a change to one of its constituent meshes.</a>(网格合并是为了将Canvas下的元素合并到一个网格数据里缓存起来直到UI被标记脏时。主要是为了减少DrawCall，减少GPU压力)</li>
-<li>Rebuild Process(Graphics)<br><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">The Rebuild process is where the layout and meshes of Unity UI’s C# Graphic components are recalculated.</a>(网格重建是因为Canvas下的UI有排版或者Graphic组件有变化触发的，目的是为了重新计算绘制所需的网格数据)</li>
-</ol>
-<p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b5a0">Whenever any drawable UI element on a given Canvas changes, the Canvas must re-run the batch building process. This process re-analyzes every drawable UI element on the Canvas, regardless of whether it has changed or not. </a>(任何的可绘制UI变化都会导致Canvas重新执行网格合并，因为Mesh有变化了)</p>
-<h4 id="UI合批规则"><a href="#UI合批规则" class="headerlink" title="UI合批规则"></a>UI合批规则</h4><p>UI顺序：<br><a href="">Unity UIs are constructed back-to-front, with objects’ order in the hierarchy determining their sort order. </a><br>UI是从后往前结合节点层级(Hierarchy)判定的出序列号的，相邻序列号的会检测是否能合批。所以我们要注意合批打断问题(比如相邻节点没有使用同一个图集，材质。相邻UI节点重叠问题等。)</p>
-<p>详细学习参考：<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/5b6f5022662e">Unity 之 UGUI 小总结</a></p>
-<h4 id="UI射线"><a href="#UI射线" class="headerlink" title="UI射线"></a>UI射线</h4><p>UI射线响应需要满足下面几个条件：</p>
-<ol>
-<li>目标UI是激活状态</li>
-<li>点击区域是目标UI区域</li>
-<li>目标UI对象本身或父节点有ICanvasRaycastFilter组件设置允许raycast</li>
-</ol>
-<p>优化Raycast方案：</p>
-<ol>
-<li>减少不必要的UI响应Raycast(关闭不必要的UI Raycast Target设置)</li>
-</ol>
-<p>Note:<br>Unity 5.4之前有个Bug是即使没有input输入也会每帧检查Raycast造成额外开销。</p>
-<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p>UI的几个常见问题如下:</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b59f">Excessive GPU fragment shader utilization (i.e. fill-rate overutilization)</a>(过度使用GPU – 片元Shader的使用显示，比如填充率过高)</li>
-<li><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b59f">Excessive CPU time spent rebuilding a Canvas batch</a>(过度使用CPU – Canvas网格重建和合并)</li>
-<li><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b59f">Excessive numbers of rebuilds of Canvas batches (over-dirtying)</a>(过度高频率的触发Canvas网格重建和合并 – 比如大量的动态元素)</li>
-<li><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/optimizing-unity-ui#5c7f8528edbc2a002053b59f">Excessive CPU time spent generating vertices (usually from text)</a>(过度的使用CPU – 生成过多的顶点数据，比如文本顶点数量)</li>
-</ol>
-<p>从上面可以看出优化UI主要从两个方面下手：</p>
-<ul>
-<li>CPU(减少Canvas频繁的合并，减少生成过多的顶点数量)</li>
-<li>GPU(减少Drawcall和填充率)</li>
-</ul>
-<h3 id="Profile-Tool"><a href="#Profile-Tool" class="headerlink" title="Profile Tool"></a>Profile Tool</h3><ol>
-<li>Unity Profiler</li>
-<li>Unity Frame Debugger</li>
-<li>Xcode Intruments</li>
-<li>Xcode Frame Debugger<br>详情参考：<br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/unity-ui-profiling-tools?playlist=30089">Unity UI Profiling Tools</a></li>
-</ol>
-<h3 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h3><ol>
-<li>减少不可见UI – 比如全屏不透明UI显示时隐藏背后UI</li>
-<li>简化UI结构 – 比如减少不必要节点 不要使用混合GameObject节点等</li>
-<li>关闭不可见Camera – 比如全屏不透明UI显示时隐藏其他不必要Camera</li>
-<li>划分多Canvas+动静分离 – 比如不同的窗口放到不同的Canvas下避免互相影响。动的元素放在一个Canvas下，静的元素放在一个Canvas下，避免动的元素影响静态元素的网格重建</li>
-<li>使用最新版TextMeshPro来替换原生Text方案(TMP使用SDF技术支持不失真的动态字体大小变化)</li>
-</ol>
-<p>Note:</p>
-<ol>
-<li>UGUI的Text的文字顶点绘制是单个文字就是一个独立的四边形网格(造成顶点数多)</li>
-<li>UGUI的Text动态字体对于不同的大小或者风格(粗体细体)是按不同的文字来处理的(容易造成Canvas的重绘(动态字体纹理重新生成))</li>
-<li>文本变化是会触发网格重建和合并的(因为文本网格数据变化了)</li>
-</ol>
-<h3 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h3><p>通过前面的学习，我们知道了UI的开销主要在Rebatch和Rebuild上。前者可以理解成通过UGUI合批规则把Canvas下的UI合并到指定数量的DrawCall传递到GPU去。后者可以理解成UI变化后重新计算Mesh。</p>
-<p>UI优化的关键也就不言而喻了：</p>
-<ol>
-<li><p>减少Rebatch<br> Canvas没有标记dirty或者Canvas下没有UI Mesh有变化时不会触发Rebatch。<br> 这也就是为什么要划分Canvas且采用动静分离的原因，目的就是把经常变化的UI分离到单独的Canvas，减少静态UI部分的Rebatch开销。</p>
-</li>
-<li><p>减少Rebuild</p>
-</li>
-<li><p>降低隐藏激活开销(这一点主要是对于UI显示状态变化时的一种优化)</p>
-<p> 根据<a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/1875.html"><a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/1875.html">UWA 六月直播季 | 6.29 Unity UI模块中的优化案例精讲</a></a>的建议，UGUI最好采用Canvas Group设置Alpha为0的方式来避免SetActive带来的开销以及避免隐藏时的渲染开销</p>
-</li>
-</ol>
-<p>Note:<br>Unity 5.2版本Unity大力优化了UI Batch部分。</p>
-<h2 id="资源模块"><a href="#资源模块" class="headerlink" title="资源模块"></a>资源模块</h2><p>资源分很多，比如纹理贴图，图集，材质，Shader，字体，音效，模型，动画等等等。接下来我会针对特定部分来学习针对性的优化知识点。</p>
-<h3 id="纹理资源"><a href="#纹理资源" class="headerlink" title="纹理资源"></a>纹理资源</h3><p>这里说的纹理资源同时也包含了图集，图集也可以理解成纹理的一种。</p>
-<h3 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h3><p>待续……</p>
-<h3 id="音效"><a href="#音效" class="headerlink" title="音效"></a>音效</h3><p>待续……</p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><h2 id="Relative-Study"><a href="#Relative-Study" class="headerlink" title="Relative Study"></a>Relative Study</h2><p><a href="">TextMeshPro相关学习</a></p>
-<h2 id="Unity-Conception-Part"><a href="#Unity-Conception-Part" class="headerlink" title="Unity Conception Part"></a>Unity Conception Part</h2><p><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/guide-optimizing-unity-ui?playlist=30089">A guide to optimizing Unity UI</a><br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/fundamentals-unity-ui?playlist=30089">Fundamentals of Unity UI</a><br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/unity-ui-profiling-tools?playlist=30089">Unity UI Profiling Tools</a><br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/fill-rate-canvases-and-input?playlist=30089&tdsourcetag=s_pcqq_aiomsg">Fill-rate, Canvases and input</a><br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/optimizing-ui-controls?playlist=30089">Optimizing UI Controls</a><br><a target="_blank" rel="noopener" href="https://unity3d.com/cn/learn/tutorials/topics/best-practices/other-ui-optimization-techniques-and-tips?playlist=30089">Other UI Optimization Techniques and Tips</a></p>
-<h2 id="Other-Part"><a href="#Other-Part" class="headerlink" title="Other Part"></a>Other Part</h2><p><a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/QA_UGUI-1.html">关于Unity中的UGUI优化，你可能遇到这些问题</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/5b6f5022662e">Unity 之 UGUI 小总结</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/1875.html"><a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/1875.html">UWA 六月直播季 | 6.29 Unity UI模块中的优化案例精讲</a></a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Optimization/">Optimization</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Optimization/">Optimization</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/2/">&lt;span&gt;&lt;&#x2F;span&gt;Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next&lt;span&gt;&lt;&#x2F;span&gt;</a>
@@ -2239,7 +2255,7 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 		  
 		
 		  
-			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>4</sup></a></li>
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>5</sup></a></li>
 		  
 		
 		  
@@ -2288,6 +2304,10 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 			
 		
 			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>2</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Programming/" title="Programming">Programming<sup>2</sup></a></li>
 			
 		
@@ -2321,10 +2341,6 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 		
 			
 				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>1</sup></a></li>
 			
 		
 			
