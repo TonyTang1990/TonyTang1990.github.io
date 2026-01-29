@@ -1,0 +1,842 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>渲染顺序 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="IntroductionUnity游戏开发过程中，无论是UI还是3D物体之间是什么因素决定了它的渲染顺序的了，本章是为了深入学习理解渲染顺序相关知识而写。 Note:  本章节本非深入渲染管线学习，而是理解Unity渲染管线里的一些渲染顺序相关的决定因素设计。  渲染顺序相关概念一个物体的渲染无论3D还是2D都需要经过摄像机的照射，然后通过Shader经历渲染管线处理后最终显示在屏幕上。 在正确理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="渲染顺序">
+<meta property="og:url" content="http://tonytang1990.github.io/2026/01/29/%E6%B8%B2%E6%9F%93%E9%A1%BA%E5%BA%8F/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="IntroductionUnity游戏开发过程中，无论是UI还是3D物体之间是什么因素决定了它的渲染顺序的了，本章是为了深入学习理解渲染顺序相关知识而写。 Note:  本章节本非深入渲染管线学习，而是理解Unity渲染管线里的一些渲染顺序相关的决定因素设计。  渲染顺序相关概念一个物体的渲染无论3D还是2D都需要经过摄像机的照射，然后通过Shader经历渲染管线处理后最终显示在屏幕上。 在正确理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/RenderQueueIntroduction.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/CameraInspector.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/MeshRendererInspector.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/SpriteRendererInspector.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/SkinnedMeshRendererInspector.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/MainCameraSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/UICameraSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/3DAnd2DMixResultPreview.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/ZWriteZTestOnRedMaterial.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/ZWriteZTestOnBlueMaterial.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/ZWriteZTestOnCubeSceneView.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/ZWriteZTestOnCubeGameView.PNG.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/ZWriteZTestOnRedCubePosition.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/ZWriteZTestOnBlueCubePosition.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/ZWriteZTestOnWithSameDistanceResult.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/SortingLayerSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/ZOn3D1Layer2000RedSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/ZOnDefaultLayer2500BlueSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/ZOnDefaultLayer2501GreenSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/SortingLayerAndRenderQueueResultPreview.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/AllSortingOrderAndRenderQueueSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/SortingOrderAndRenderQueueResultPreview1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/SortingOrderAndRenderQueueResultPreview2.PNG">
+<meta property="article:published_time" content="2026-01-29T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-29T17:10:52.615Z">
+<meta property="article:author" content="Tony Tang">
+<meta property="article:tag" content="Rendering">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/Unity/RenderOrder/RenderQueueIntroduction.PNG">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2026/01/29/渲染顺序/" title="渲染顺序" itemprop="url">渲染顺序</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2026-01-29T15:00:00.000Z" itemprop="datePublished"> 发表于 2026-01-29</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E9%A1%BA%E5%BA%8F%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">渲染顺序相关概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Camera"><span class="toc-number">2.1.</span> <span class="toc-text">Camera</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OpaqueSortMode"><span class="toc-number">2.1.1.</span> <span class="toc-text">OpaqueSortMode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TransparencySortMode"><span class="toc-number">2.1.2.</span> <span class="toc-text">TransparencySortMode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Depth"><span class="toc-number">2.1.3.</span> <span class="toc-text">Depth</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RenderQueue"><span class="toc-number">2.2.</span> <span class="toc-text">RenderQueue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SortingLayer"><span class="toc-number">2.3.</span> <span class="toc-text">SortingLayer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SortingOrder"><span class="toc-number">2.4.</span> <span class="toc-text">SortingOrder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZTest-ZWrite"><span class="toc-number">2.5.</span> <span class="toc-text">ZTest &amp; ZWrite</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZWrite-%E6%B7%B1%E5%BA%A6%E5%86%99%E5%85%A5"><span class="toc-number">2.5.1.</span> <span class="toc-text">ZWrite(深度写入)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZTest-%E6%B7%B1%E5%BA%A6%E6%B5%8B%E8%AF%95"><span class="toc-number">2.5.2.</span> <span class="toc-text">ZTest(深度测试)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Alpha-Blend-%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B7%B7%E5%90%88"><span class="toc-number">2.5.3.</span> <span class="toc-text">Alpha Blend(透明度混合)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-number">3.</span> <span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Inspecotr%E6%89%A9%E5%B1%95"><span class="toc-number">3.1.</span> <span class="toc-text">Inspecotr扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Camera-Inspector%E6%89%A9%E5%B1%95"><span class="toc-number">3.1.1.</span> <span class="toc-text">Camera Inspector扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MeshRenderer-Inspector%E6%89%A9%E5%B1%95"><span class="toc-number">3.1.2.</span> <span class="toc-text">MeshRenderer Inspector扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SpriteRenderer-Inspector%E6%89%A9%E5%B1%95"><span class="toc-number">3.1.3.</span> <span class="toc-text">SpriteRenderer Inspector扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SkinnedMeshRenderer-Inspector%E6%89%A9%E5%B1%95"><span class="toc-number">3.1.4.</span> <span class="toc-text">SkinnedMeshRenderer Inspector扩展</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Camera-Depth"><span class="toc-number">3.2.</span> <span class="toc-text">Camera Depth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZWrite-ZTest-VS-RenderQueue"><span class="toc-number">3.3.</span> <span class="toc-text">(ZWrite &amp; ZTest) VS RenderQueue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sorting-Layer-VS-RenderQueue"><span class="toc-number">3.4.</span> <span class="toc-text">Sorting Layer VS RenderQueue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sorting-Order-VS-RenderQueue"><span class="toc-number">3.5.</span> <span class="toc-text">Sorting Order VS RenderQueue</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">5.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Unity游戏开发过程中，无论是UI还是3D物体之间是什么因素决定了它的渲染顺序的了，本章是为了<strong>深入学习理解渲染顺序相关知识而写</strong>。</p>
+<p>Note:</p>
+<ol>
+<li><strong>本章节本非深入渲染管线学习，而是理解Unity渲染管线里的一些渲染顺序相关的决定因素设计。</strong></li>
+</ol>
+<h1 id="渲染顺序相关概念"><a href="#渲染顺序相关概念" class="headerlink" title="渲染顺序相关概念"></a>渲染顺序相关概念</h1><p>一个物体的渲染无论3D还是2D都需要经过摄像机的照射，然后通过Shader经历渲染管线处理后最终显示在屏幕上。</p>
+<p>在正确理解渲染顺序之前，让我们先了解一些相关概念知识：</p>
+<ol>
+<li><strong>Camera(OpaqueSortMode，TransparencySortMode，Depth)</strong></li>
+<li><strong>RenderQueue</strong></li>
+<li><strong>SortingLayer</strong></li>
+<li><strong>SortingOrder</strong></li>
+<li><strong>ZTest &amp; ZWrite</strong></li>
+</ol>
+<h2 id="Camera"><a href="#Camera" class="headerlink" title="Camera"></a>Camera</h2><h3 id="OpaqueSortMode"><a href="#OpaqueSortMode" class="headerlink" title="OpaqueSortMode"></a>OpaqueSortMode</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Rendering.OpaqueSortMode.html">Opaque object sorting mode of a Camera. Opaque objects are sorted by various criteria (sorting layers, shader queues, materials, distance, lightmaps etc.) to maximize both the CPU efficiency (reduce number of state changes and improve draw call batching), and to maximize GPU efficiency (many GPUs prefer rough front-to-back rendering order for faster rejection of invisible surfaces).</a></p>
+<p>简单的理解OpaqueSortMode是设置摄像机对<strong>不透明物体的排序顺序的策略标准</strong>。</p>
+<p><strong>OpaqueSortMode.FrontToBack</strong>(根据距离排序，<strong>先绘制近的后绘制远的结合ZTest实现正确渲染显示</strong>)</p>
+<p><strong>OpaqueSortMode.NoDistanceSort</strong>(不根据距离排序)</p>
+<h3 id="TransparencySortMode"><a href="#TransparencySortMode" class="headerlink" title="TransparencySortMode"></a>TransparencySortMode</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Camera-transparencySortMode.html">Transparent object sorting mode. By default, perspective Cameras sort objects based on distance from Camera position to the object center; and orthographic Cameras sort based on distance along the view direction.</a></p>
+<p>简单的理解TransparencySortMode是设置摄像机对<strong>透明物体的排序顺序的策略标准</strong>。</p>
+<p><strong>TransparencySortMode.Perspective</strong>(透视投影–判定物体中心与摄像机距离)</p>
+<p><strong>TransparencySortMode.Orthographic</strong>(正交投影–判定物体与摄像机方向距离)</p>
+<p><strong>TransparencySortMode.CustomAxis</strong>(轴判定–判定与指定轴距离)</p>
+<p>比如纯2D游戏，可能就希望使用正交投影方式。</p>
+<h3 id="Depth"><a href="#Depth" class="headerlink" title="Depth"></a>Depth</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Camera-depth.html">Camera’s depth in the camera rendering order. Cameras with lower depth are rendered before cameras with higher depth. Use this to control the order in which cameras are drawn if you have multiple cameras and some of them don’t cover the full screen.</a></p>
+<p>简单的理解Camera.depth是用于控制多个摄像机之间的渲染顺序，<strong>值越低越先渲染</strong>。</p>
+<p>常规的场景摄像机和UI摄像机采用不同摄像机，为了确保UI摄像机在场景摄像机之上，所以一般把UI摄像机的depth设置的更小。</p>
+<h2 id="RenderQueue"><a href="#RenderQueue" class="headerlink" title="RenderQueue"></a>RenderQueue</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Rendering.RenderQueue.html">Determine in which order objects are renderered. This way for example transparent objects are rendered after opaque objects.</a></p>
+<p>从上面的介绍可以看出，RenderQueue决定物体的渲染顺序(e.g. 透明物体在不透明物体之后渲染)</p>
+<p>让我们看下不同的RenderQueue的详细介绍:</p>
+<p><img src="/img/Unity/RenderOrder/RenderQueueIntroduction.PNG" alt="RenderQueueIntroduction"></p>
+<p><strong>RenderQueue越大显示层级越高</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>不透明物体RenderQueue&lt;&#x3D; 2500，透明物体RenderQueue&gt;2500</strong></li>
+</ol>
+<h2 id="SortingLayer"><a href="#SortingLayer" class="headerlink" title="SortingLayer"></a>SortingLayer</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/SortingLayer.html">SortingLayer allows you to set the render order of multiple sprites easily. There is always a default SortingLayer named “Default” which all sprites are added to initially. </a></p>
+<p>从上面介绍可以看出，SortingLayer也是决定物体显示顺序优先级，<strong>SortingLayer越大显示层级越高</strong>，至于它和RenderQueu之间的优先级后续会讲到。</p>
+<h2 id="SortingOrder"><a href="#SortingOrder" class="headerlink" title="SortingOrder"></a>SortingOrder</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Renderer-sortingOrder.html">Renderer’s order within a sorting layer. You can group GameObjects into layers in their SpriteRenderercomponent. This is called the SortingLayer. The sorting order decides what priority each GameObject has to the Renderer within each Sorting Layer. </a></p>
+<p>从上面介绍可以看出，SortingOrder是在SortingLayer之后的一个显示优先级设置，(SortingLayer相同前提下)<strong>值越大显示层级越高</strong>。</p>
+<h2 id="ZTest-ZWrite"><a href="#ZTest-ZWrite" class="headerlink" title="ZTest &amp; ZWrite"></a>ZTest &amp; ZWrite</h2><h3 id="ZWrite-深度写入"><a href="#ZWrite-深度写入" class="headerlink" title="ZWrite(深度写入)"></a>ZWrite(深度写入)</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/SL-ZWrite.html">Sets whether the <strong>depth buffer</strong> contents are updated during rendering. Normally, ZWrite is enabled for opaque objects and disabled for semi-transparent ones. Disabling ZWrite can lead to incorrect depth ordering. In this case, you need to sort geometry on the CPU.</a></p>
+<p>从上面的介绍可以看出ZWrite是决定渲染时是否写入深度信息。<strong>通常情况情况不透明物体的ZWrite是打开的，半透明物体ZWrite是关闭的。</strong></p>
+<p>那么什么是深度信息了？</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lyh916/article/details/45317571"> 深度其实就是该像素点在3d世界中距离摄像机的距离。离摄像机越远，则深度值（Z值）越大。</a></p>
+<p>这里需要了解两个渲染管线里的概念:</p>
+<ol>
+<li><strong>Z-Buffer(深度缓冲区)</strong>(用于记录当前渲染过程中渲染记录的深度信息)</li>
+<li><strong>Color-Buff(颜色缓冲区)</strong>(用于记录当前渲染过程中渲染记录的颜色信息)</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>深度信息写入的大前提是通过ZTest(深度测试)</strong></li>
+</ol>
+<h3 id="ZTest-深度测试"><a href="#ZTest-深度测试" class="headerlink" title="ZTest(深度测试)"></a>ZTest(深度测试)</h3><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/SL-ZTest.html">Sets the conditions under which geometry passes or fails depth testing. Depth testing allows GPUs that have “Early-Z” functionality to reject geometry early in the pipeline, and also ensures correct ordering of the geometry. </a></p>
+<p>从上面的介绍可以看出ZTest是设置深度测试判定策略。深度测试可以实现“Early-Z”从而实现提前扔掉不必要的参与渲染的数据，同时ZTest是确保渲染顺序的关键。</p>
+<p>ZWrite结合ZTest的逻辑流程如下：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.bzetu.com/207/.html">当<strong>ZTest开启时</strong>，以<strong>深度缓冲</strong>为判断基准，来判断是否满足通过条件,如果<strong>不满足则直接丢弃，如果满足执行2</strong></a></li>
+<li><strong>更新颜色缓存</strong>，同时<strong>判断是否可以更新深度缓冲</strong>，(也就是 ZWrite 是On还是 Off)，<strong>如果Off,不更新深度缓冲</strong><strong>(之后如果有同位置的颜色要深度测试，用的还是之前深度缓冲里对应颜色的深度)</strong>，如果满足执行3**</li>
+<li><strong>更新深度缓冲</strong></li>
+</ol>
+<p><strong>ZTest与ZWrite的所有组合关系如下</strong></p>
+<ol>
+<li>深度测试通过，深度写入开启：更新颜色缓冲区，更新深度缓冲区；</li>
+<li>深度测试通过，深度写入关闭：更新颜色缓冲区，不更新深度缓冲区；</li>
+<li>深度测试失败，深度写入开启：不更新颜色缓冲区，不更新深度缓冲区；</li>
+<li>深度测试失败，深度写入关闭：不更新颜色缓冲区，不更新深度缓冲区。</li>
+</ol>
+<p>了解了ZWrite和ZTest概念后，这里就会好奇，ZWrite和ZTest和RenderQueue都是用于决定渲染顺序的，那他们之间的优先级是怎样的了？详细测试见后面实战。</p>
+<p>Note:</p>
+<ol>
+<li><strong>只有通过ZTest才会把像素信息写入Color-Buffer(颜色缓冲区)</strong></li>
+</ol>
+<h3 id="Alpha-Blend-透明度混合"><a href="#Alpha-Blend-透明度混合" class="headerlink" title="Alpha Blend(透明度混合)"></a>Alpha Blend(透明度混合)</h3><p><a target="_blank" rel="noopener" href="https://medium.com/ericzhan-publication/shader%E7%AD%86%E8%A8%98-%E9%80%8F%E6%98%8E%E7%89%A9%E9%AB%94-z-test-z-write-z-buffer-alpha-blending-692c60d9b605">透明度混合使用當前片元的透明度作為混合因子，與已經存儲在顏色緩衝中的顏色進行混合，得到新的顏色，不過透明度混合必須要關閉深度寫入(Zwrite) 需要特別注意的是，透明度混合只會關閉深度寫入不會關閉深度測試(ZTest)，這意味著當透明度混合渲染一個片元時，還是會比較他的深度與深度緩存中的深度值，如果深度值距離相機更遠就不會進行混合操作。</a></p>
+<p><strong>正是因为透明度混合只关闭ZWrite不关闭ZTest，所以不透明物体依然可以通过ZTest进行对透明物体的遮挡。</strong></p>
+<h1 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h1><p>学习了影响渲染顺序相关的概念后，我们知道了影响物体渲染顺序的东西很多，特别是材质的Shader里的RenderQueue，但Unity有一些数据默认是没有显示在Inspector面板上的，为了方便快速查看或修改渲染相关数据，这里我通过扩展Inspector的方式让相关数据显示出来。</p>
+<h2 id="Inspecotr扩展"><a href="#Inspecotr扩展" class="headerlink" title="Inspecotr扩展"></a>Inspecotr扩展</h2><h3 id="Camera-Inspector扩展"><a href="#Camera-Inspector扩展" class="headerlink" title="Camera Inspector扩展"></a>Camera Inspector扩展</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.Rendering;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CameraInspector.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Camera组件Inspector扩展显示</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">CanEditMultipleObjects</span>]</span><br><span class="line">[<span class="meta">CustomEditor(typeof(Camera))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CameraInspector</span> : <span class="title">CameraEditor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Note:</span></span><br><span class="line">    <span class="comment">// opaqueSortMode和TransparentSortMode属性好像不属于Serialized成员，FindProperty得不到</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标组件对象</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Camera mTarget;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Note:</span></span><br><span class="line">    <span class="comment">// 这里不能重写OnEnable，会导致CameraEditor原始部分流程异常</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnInspectorGUI</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">base</span>.OnInspectorGUI();</span><br><span class="line">        <span class="keyword">if</span>(mTarget == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mTarget = (Camera)target;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (mTarget != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            EditorGUILayout.BeginHorizontal();</span><br><span class="line">            EditorGUILayout.LabelField(<span class="string">&quot;opaqueSortMode&quot;</span>, GUILayout.Width(<span class="number">170f</span>));</span><br><span class="line">            EditorGUI.BeginChangeCheck();</span><br><span class="line">            <span class="keyword">var</span> newOpaqueSortMode = (OpaqueSortMode)EditorGUILayout.EnumPopup(mTarget.opaqueSortMode);</span><br><span class="line">            <span class="keyword">if</span>(EditorGUI.EndChangeCheck())</span><br><span class="line">            &#123;</span><br><span class="line">                mTarget.opaqueSortMode = newOpaqueSortMode;</span><br><span class="line">            &#125;</span><br><span class="line">            EditorGUILayout.EndHorizontal();</span><br><span class="line">            EditorGUILayout.BeginHorizontal();</span><br><span class="line">            EditorGUILayout.LabelField(<span class="string">&quot;transparencySortMode&quot;</span>, GUILayout.Width(<span class="number">170f</span>));</span><br><span class="line">            EditorGUI.BeginChangeCheck();</span><br><span class="line">            <span class="keyword">var</span> newTransparencySortMode = (TransparencySortMode)EditorGUILayout.EnumPopup(mTarget.transparencySortMode);</span><br><span class="line">            <span class="keyword">if</span>(EditorGUI.EndChangeCheck())</span><br><span class="line">            &#123;</span><br><span class="line">                mTarget.transparencySortMode = newTransparencySortMode;</span><br><span class="line">            &#125;</span><br><span class="line">            EditorGUILayout.EndHorizontal();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Unity/RenderOrder/CameraInspector.PNG" alt="CameraInspector"></p>
+<p>可以看到通过扩展，我把Camera.opaqueSortMode和Camera.transparencySortMode都在Inspecotr面板显示出来了。</p>
+<h3 id="MeshRenderer-Inspector扩展"><a href="#MeshRenderer-Inspector扩展" class="headerlink" title="MeshRenderer Inspector扩展"></a>MeshRenderer Inspector扩展</h3><p>MeshRendererInspector.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> MeshRendererInspector.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> MeshRenderer编辑器扩展</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">CustomEditor(typeof(MeshRenderer))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MeshRendererInspector</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> SortingOrder属性</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> SerializedProperty mSortingOrderProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Materials属性</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> SerializedProperty mMaterialsProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标组件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> MeshRenderer mTarget;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> SortingLayer名数组</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span>[] mSortingLayersNameArray;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> SortingLayer索引</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> mSortingLayerIndex;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnEnable</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        mTarget = (MeshRenderer)target;</span><br><span class="line">        mSortingLayersNameArray = SortingLayer.layers.Select(x =&gt; x.name).ToArray();</span><br><span class="line">        mSortingOrderProperty = serializedObject.FindProperty(<span class="string">&quot;m_SortingOrder&quot;</span>);</span><br><span class="line">        mMaterialsProperty = serializedObject.FindProperty(<span class="string">&quot;m_Materials&quot;</span>);</span><br><span class="line">        UpdateSortingLayerIndex();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnInspectorGUI</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">base</span>.OnInspectorGUI();</span><br><span class="line">        serializedObject.Update();</span><br><span class="line">        EditorGUI.BeginChangeCheck();</span><br><span class="line">        <span class="keyword">var</span> selectedIndex = EditorGUILayout.Popup(<span class="string">&quot;SortingLayerName&quot;</span>, mSortingLayerIndex, mSortingLayersNameArray);</span><br><span class="line">        <span class="keyword">if</span>(EditorGUI.EndChangeCheck())</span><br><span class="line">        &#123;</span><br><span class="line">            mTarget.sortingLayerName = SortingLayer.layers[selectedIndex].name;</span><br><span class="line">            UpdateSortingLayerIndex();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(mSortingOrderProperty != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            EditorGUILayout.PropertyField(mSortingOrderProperty);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(mMaterialsProperty != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; mMaterialsProperty.arraySize; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> material = mMaterialsProperty.GetArrayElementAtIndex(i);</span><br><span class="line">                <span class="keyword">if</span>(material != <span class="literal">null</span> &amp;&amp; material.objectReferenceValue != <span class="literal">null</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    EditorGUILayout.BeginHorizontal();</span><br><span class="line">                    EditorGUILayout.LabelField(<span class="string">$&quot;Materials[<span class="subst">&#123;i&#125;</span>]&quot;</span>, GUILayout.Width(<span class="number">170f</span>));</span><br><span class="line">                    EditorGUILayout.BeginVertical();</span><br><span class="line">                    <span class="keyword">var</span> mat = (Material)material.objectReferenceValue;</span><br><span class="line">                    EditorGUILayout.ObjectField(mat, EditorType.MATERIAL_TYPE, <span class="literal">false</span>);</span><br><span class="line">                    EditorGUILayout.BeginHorizontal();</span><br><span class="line">                    EditorGUILayout.LabelField(<span class="string">&quot;RenderQueue&quot;</span>, GUILayout.Width(<span class="number">80f</span>));</span><br><span class="line">                    EditorGUILayout.IntField(mat.renderQueue);</span><br><span class="line">                    EditorGUILayout.EndHorizontal();</span><br><span class="line">                    EditorGUILayout.EndVertical();</span><br><span class="line">                    EditorGUILayout.EndHorizontal();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        serializedObject.ApplyModifiedProperties();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 更新SortingLayer索引</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">UpdateSortingLayerIndex</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        mSortingLayerIndex = Array.FindIndex(mSortingLayersNameArray, FindSortingLayerNameIndex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 查找当前SortingLayerName索引</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;sortingName&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="built_in">bool</span> <span class="title">FindSortingLayerNameIndex</span>(<span class="params"><span class="built_in">string</span> sortingName</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> mTarget.sortingLayerName == sortingName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Unity/RenderOrder/MeshRendererInspector.PNG" alt="MeshRendererInspector"></p>
+<p>可以看到通过扩展，我把MeshRenderer的SortingLayerName和Sorting Order以及材质的RenderQueue值都显示出来了。</p>
+<h3 id="SpriteRenderer-Inspector扩展"><a href="#SpriteRenderer-Inspector扩展" class="headerlink" title="SpriteRenderer Inspector扩展"></a>SpriteRenderer Inspector扩展</h3><p>SpriteRendererInspector.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Reflection;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> SpriteRendererInspector.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> SpriteRenderer编辑器扩展</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">CustomEditor(typeof(SpriteRenderer))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SpriteRendererInspector</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Materials属性</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> SerializedProperty mMaterialsProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> SpriteRendererEditor类型信息</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Type mSpriteRendererEditorType;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> SpriteRenderer Editor</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Editor mSpriteRendererEditor;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> SortingLayer索引</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> mSortingLayerIndex;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnEnable</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        mMaterialsProperty = serializedObject.FindProperty(<span class="string">&quot;m_Materials&quot;</span>);</span><br><span class="line">        <span class="keyword">var</span> assembly = Assembly.GetAssembly(<span class="keyword">typeof</span>(Editor));</span><br><span class="line">            mSpriteRendererEditorType = assembly.GetType(<span class="string">&quot;UnityEditor.SpriteRendererEditor&quot;</span>, <span class="literal">true</span>);</span><br><span class="line">        mSpriteRendererEditor = Editor.CreateEditor(target, mSpriteRendererEditorType);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnInspectorGUI</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(mSpriteRendererEditor != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mSpriteRendererEditor.OnInspectorGUI();</span><br><span class="line">        &#125;</span><br><span class="line">        serializedObject.Update();</span><br><span class="line">        <span class="keyword">if</span>(mMaterialsProperty != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; mMaterialsProperty.arraySize; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> material = mMaterialsProperty.GetArrayElementAtIndex(i);</span><br><span class="line">                <span class="keyword">if</span>(material != <span class="literal">null</span> &amp;&amp; material.objectReferenceValue != <span class="literal">null</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    EditorGUILayout.BeginHorizontal();</span><br><span class="line">                    EditorGUILayout.LabelField(<span class="string">$&quot;Materials[<span class="subst">&#123;i&#125;</span>]&quot;</span>, GUILayout.Width(<span class="number">170f</span>));</span><br><span class="line">                    EditorGUILayout.BeginVertical();</span><br><span class="line">                    <span class="keyword">var</span> mat = (Material)material.objectReferenceValue;</span><br><span class="line">                    EditorGUILayout.ObjectField(mat, EditorType.MATERIAL_TYPE, <span class="literal">false</span>);</span><br><span class="line">                    EditorGUILayout.BeginHorizontal();</span><br><span class="line">                    EditorGUILayout.LabelField(<span class="string">&quot;RenderQueue&quot;</span>, GUILayout.Width(<span class="number">80f</span>));</span><br><span class="line">                    EditorGUILayout.IntField(mat.renderQueue);</span><br><span class="line">                    EditorGUILayout.EndHorizontal();</span><br><span class="line">                    EditorGUILayout.EndVertical();</span><br><span class="line">                    EditorGUILayout.EndHorizontal();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        serializedObject.ApplyModifiedProperties();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Unity/RenderOrder/SpriteRendererInspector.PNG" alt="SpriteRendererInspector"></p>
+<p>可以看到通过扩展我把SpriteRenderer材质相关的RenderQueue值显示出来了。</p>
+<h3 id="SkinnedMeshRenderer-Inspector扩展"><a href="#SkinnedMeshRenderer-Inspector扩展" class="headerlink" title="SkinnedMeshRenderer Inspector扩展"></a>SkinnedMeshRenderer Inspector扩展</h3><p>SKinnedMeshRendererInspector.cs</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> SkinnedMeshRendererInspector.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> SkinnedMeshRenderer编辑器扩展</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">CustomEditor(typeof(SkinnedMeshRenderer))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SkinnedMeshRendererInspector</span> : <span class="title">Editor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> SortingOrder属性</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> SerializedProperty mSortingOrderProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Materials属性</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> SerializedProperty mMaterialsProperty;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 目标组件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> SkinnedMeshRenderer mTarget;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> SortingLayer名数组</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span>[] mSortingLayersNameArray;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> SortingLayer索引</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> mSortingLayerIndex;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnEnable</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        mTarget = (SkinnedMeshRenderer)target;</span><br><span class="line">        mSortingLayersNameArray = SortingLayer.layers.Select(x =&gt; x.name).ToArray();</span><br><span class="line">        mSortingOrderProperty = serializedObject.FindProperty(<span class="string">&quot;m_SortingOrder&quot;</span>);</span><br><span class="line">        mMaterialsProperty = serializedObject.FindProperty(<span class="string">&quot;m_Materials&quot;</span>);</span><br><span class="line">        UpdateSortingLayerIndex();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnInspectorGUI</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">base</span>.OnInspectorGUI();</span><br><span class="line">        serializedObject.Update();</span><br><span class="line">        EditorGUI.BeginChangeCheck();</span><br><span class="line">        <span class="keyword">var</span> selectedIndex = EditorGUILayout.Popup(<span class="string">&quot;SortingLayerName&quot;</span>, mSortingLayerIndex, mSortingLayersNameArray);</span><br><span class="line">        <span class="keyword">if</span>(EditorGUI.EndChangeCheck())</span><br><span class="line">        &#123;</span><br><span class="line">            mTarget.sortingLayerName = SortingLayer.layers[selectedIndex].name;</span><br><span class="line">            UpdateSortingLayerIndex();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(mSortingOrderProperty != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            EditorGUILayout.PropertyField(mSortingOrderProperty);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(mMaterialsProperty != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; mMaterialsProperty.arraySize; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> material = mMaterialsProperty.GetArrayElementAtIndex(i);</span><br><span class="line">                <span class="keyword">if</span>(material != <span class="literal">null</span> &amp;&amp; material.objectReferenceValue != <span class="literal">null</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    EditorGUILayout.BeginHorizontal();</span><br><span class="line">                    EditorGUILayout.LabelField(<span class="string">$&quot;Materials[<span class="subst">&#123;i&#125;</span>]&quot;</span>, GUILayout.Width(<span class="number">170f</span>));</span><br><span class="line">                    EditorGUILayout.BeginVertical();</span><br><span class="line">                    <span class="keyword">var</span> mat = (Material)material.objectReferenceValue;</span><br><span class="line">                    EditorGUILayout.ObjectField(mat, EditorType.MATERIAL_TYPE, <span class="literal">false</span>);</span><br><span class="line">                    EditorGUILayout.BeginHorizontal();</span><br><span class="line">                    EditorGUILayout.LabelField(<span class="string">&quot;RenderQueue&quot;</span>, GUILayout.Width(<span class="number">80f</span>));</span><br><span class="line">                    EditorGUILayout.IntField(mat.renderQueue);</span><br><span class="line">                    EditorGUILayout.EndHorizontal();</span><br><span class="line">                    EditorGUILayout.EndVertical();</span><br><span class="line">                    EditorGUILayout.EndHorizontal();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        serializedObject.ApplyModifiedProperties();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 更新SortingLayer索引</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">UpdateSortingLayerIndex</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        mSortingLayerIndex = Array.FindIndex(mSortingLayersNameArray, FindSortingLayerNameIndex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 查找当前SortingLayerName索引</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;sortingName&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="built_in">bool</span> <span class="title">FindSortingLayerNameIndex</span>(<span class="params"><span class="built_in">string</span> sortingName</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> mTarget.sortingLayerName == sortingName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Unity/RenderOrder/SkinnedMeshRendererInspector.PNG" alt="SkinnedMeshRendererInspector"></p>
+<p>可以看到通过扩展我把SkinnedMeshRenderer的SortingLayerName和Sorting Order以及材质设置的RenderQueue值都显示出来了。</p>
+<h2 id="Camera-Depth"><a href="#Camera-Depth" class="headerlink" title="Camera Depth"></a>Camera Depth</h2><p><strong>摄像机深度在所有影响渲染排序的因素里排首位</strong></p>
+<p>游戏开发过程中我们的UI往往在3D场景之上，为了做不同的渲染合批，我们一般会设置2个摄像机，一个作为3D主摄像机，一个作为UI摄像机。</p>
+<p><img src="/img/Unity/RenderOrder/MainCameraSetting.PNG" alt="MainCameraSetting"></p>
+<p><img src="/img/Unity/RenderOrder/UICameraSetting.PNG" alt="UICameraSetting"></p>
+<p>可以看到为了使UI摄像机渲染结果再3D主摄像机之上，我们把UI摄像机的Depth设置值&gt;3D主摄像机</p>
+<p><img src="/img/Unity/RenderOrder/3DAnd2DMixResultPreview.PNG" alt="3DAnd2DMixResultPreview"></p>
+<p>可以看到UI摄像机照射的结果显示在了3D主摄像机之上，所以可以得出<strong>Camera.Depth值越大越晚渲染</strong>。</p>
+<h2 id="ZWrite-ZTest-VS-RenderQueue"><a href="#ZWrite-ZTest-VS-RenderQueue" class="headerlink" title="(ZWrite &amp; ZTest) VS RenderQueue"></a>(ZWrite &amp; ZTest) VS RenderQueue</h2><p>前面提到过ZWrite&amp;ZTest和RenderQueue都是影响渲染顺序的关键。那么他们之间优先级又是怎样得了？</p>
+<p>这里直接说结论:</p>
+<p><a target="_blank" rel="noopener" href="https://dev.twsiyuan.com/2018/05/unity-rendering-order.html"><strong>如果开启了ZTest和ZWrite，可不管物件绘制順序 (rendering order)，使得里摄像机越近的物件，永远都绘制在其他离摄像机越远的物件之前 (<code>ZTest LEqual</code>)。</strong></a></p>
+<p>首先我们创建一个ZWrite On和ZTest LEqual的Shader:</p>
+<p>ZWriteZTestOnSurfaceShader.shader</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">&quot;Custom/ZWriteZTestOnSurfaceShader&quot;</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">    </span><br><span class="line">    SubShader</span><br><span class="line">    &#123;</span><br><span class="line">        Tags &#123; <span class="string">&quot;RenderType&quot;</span>=<span class="string">&quot;Opaque&quot;</span> &#125;</span><br><span class="line">        LOD <span class="number">200</span></span><br><span class="line">        ZWrite On</span><br><span class="line">        ZTest LEqual</span><br><span class="line">		</span><br><span class="line">        ******</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面可以看到我们指定了ZWrite On和ZTest LEqual表示开始深度写入，且深度比较标准是距离越近或相等的情况通过深度测试。同时我们将默认的RenderQueue设置成Opaque，用于不透明物体的渲染。</p>
+<p><img src="/img/Unity/RenderOrder/ZWriteZTestOnRedMaterial.PNG" alt="ZWriteZTestOnRedMaterial"></p>
+<p><img src="/img/Unity/RenderOrder/ZWriteZTestOnBlueMaterial.PNG" alt="ZWriteZTestOnBlueMaterial"></p>
+<p><img src="/img/Unity/RenderOrder/ZWriteZTestOnCubeSceneView.PNG" alt="ZWriteZTestOnCubeSceneView"></p>
+<p><img src="/img/Unity/RenderOrder/ZWriteZTestOnCubeGameView.PNG.PNG" alt="ZWriteZTestOnCubeGameView.PNG"></p>
+<p>从上面可以看到我们创建了一个ZWrite On ZTest LEqual且RenderQueue分别为2010(红色)和2000(蓝色)的材质球，分别用于两个Cube渲染显示。</p>
+<p>可以看到即使红色小球的RenderQueue值更高，但因为开启了ZWrite On和ZTest LEqual，红色Cube离摄像机更远依然渲染在蓝色Cube背后。</p>
+<p>接下来让我们看一下两个Cube距离摄像机位置一致时，RenderQueue不一样，两个Cube是怎么显示的？</p>
+<p><img src="/img/Unity/RenderOrder/ZWriteZTestOnRedCubePosition.PNG" alt="ZWriteZTestOnRedCubePosition"></p>
+<p><img src="/img/Unity/RenderOrder/ZWriteZTestOnBlueCubePosition.PNG" alt="ZWriteZTestOnBlueCubePosition"></p>
+<p><img src="/img/Unity/RenderOrder/ZWriteZTestOnWithSameDistanceResult.PNG" alt="ZWriteZTestOnWithSameDistanceResult"></p>
+<p>从上面可以看到，距离摄像机相同距离的前提下，红色Cube拥有更高的RenderQueue(2010)显示在了蓝色Cube RenderQueue(2000)之上。</p>
+<p>结论：</p>
+<ol>
+<li><strong>开启ZWrite和ZTest的情况下，深度优先于RenderQueue，深度一样则比较RenderQueue</strong></li>
+</ol>
+<h2 id="Sorting-Layer-VS-RenderQueue"><a href="#Sorting-Layer-VS-RenderQueue" class="headerlink" title="Sorting Layer VS RenderQueue"></a>Sorting Layer VS RenderQueue</h2><p>那么Sorting Layer和RenderQueue在渲染顺序里谁的优先级更高了？</p>
+<p><strong>不透明物体 &gt; 透明物体</strong></p>
+<p><strong>同为不透明物体或透明物体时，Sorting Layer &gt; RenderQueue</strong></p>
+<p>在测试之前让我们首先添加几个3D Sorting Layer：</p>
+<p><img src="/img/Unity/RenderOrder/SortingLayerSetting.PNG" alt="SortingLayerSetting"></p>
+<p>接下来让我们实战测试：</p>
+<p>红色方块设置：</p>
+<p><img src="/img/Unity/RenderOrder/ZOn3D1Layer2000RedSetting.PNG" alt="ZOn3D1Layer2000RedSetting"></p>
+<p>蓝色方块设置：</p>
+<p><img src="/img/Unity/RenderOrder/ZOnDefaultLayer2500BlueSetting.PNG" alt="ZOnDefaultLayer2500BlueSetting"></p>
+<p>绿色方块设置：</p>
+<p><img src="/img/Unity/RenderOrder/ZOnDefaultLayer2501GreenSetting.PNG" alt="ZOnDefaultLayer2501GreenSetting"></p>
+<p>Game渲染结果：</p>
+<p><img src="/img/Unity/RenderOrder/SortingLayerAndRenderQueueResultPreview.PNG" alt="SortingLayerAndRenderQueueResultPreview"></p>
+<p>从上面的测试可以看到:</p>
+<ol>
+<li><strong>同时开启ZWrite和ZTest，当物体都是不透明物体时Sorting Layer设置优先于RenderQueue</strong></li>
+<li><strong>同时开启ZWrite和ZTest，一个为不透明物体一个为透明物体时，透明物体在不透明物体之后渲染，此时RenderQueue的影响优先与Sorting Layer</strong></li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>RenderQueue 2500是不透明物体(&lt;&#x3D;2500)和透明物体(&gt;2500)的分界线</strong></li>
+</ol>
+<h2 id="Sorting-Order-VS-RenderQueue"><a href="#Sorting-Order-VS-RenderQueue" class="headerlink" title="Sorting Order VS RenderQueue"></a>Sorting Order VS RenderQueue</h2><p>那么Sorting Order和RenderQueue在渲染顺序里谁的优先级更高了？</p>
+<p>在前面我们了解到RenderQueue会影响物体处于透明或不透明渲染队列里，所以</p>
+<p><strong>不透明物体 &gt; 透明物体</strong></p>
+<p><strong>同为不透明物体或透明物体时，Sorting Order&gt; RenderQueue</strong></p>
+<p>这里我就不一一截图单个物体材质设置了，通过材质球名字就能看出我的测试单元设置:</p>
+<p><img src="/img/Unity/RenderOrder/AllSortingOrderAndRenderQueueSetting.PNG" alt="AllSortingOrderAndRenderQueueSetting"></p>
+<p><strong>ZOnSortingOrder10GreenMaterial2000</strong> VS <strong>ZOnSortingOder5RedMaterial2005</strong> VS <strong>ZOnSortingOrder1BlueMaterial2009</strong></p>
+<p><img src="/img/Unity/RenderOrder/SortingOrderAndRenderQueueResultPreview1.PNG" alt="SortingOrderAndRenderQueueResultPreview1"></p>
+<p>从上面测试结果可以看看出:</p>
+<ol>
+<li><strong>同为不透明物体状态下，Sorting Order &gt; RenderQueue，而不是Sorting Order+RenderQueue的值决定的</strong></li>
+</ol>
+<p><strong>ZOnSortingOrder6BlueMaterial2100</strong> VS <strong>ZOnSortingOrder7GreenMaterial2000</strong></p>
+<p><img src="/img/Unity/RenderOrder/SortingOrderAndRenderQueueResultPreview2.PNG" alt="SortingOrderAndRenderQueueResultPreview2"></p>
+<p>从上面测试结果可以看看出:</p>
+<ol>
+<li><strong>不透明物体 &gt; 透明物体依然适用</strong></li>
+</ol>
+<h1 id="学习总结"><a href="#学习总结" class="headerlink" title="学习总结"></a>学习总结</h1><p>渲染顺序优先级：</p>
+<p>大的优先级如下：</p>
+<p><strong>Camera.depth &gt; Material type((RenderQueue不透明 &gt; RenderQueue透明) ) &gt; SortingLayer&gt; SortingOrder &gt; RenderQueue</strong></p>
+<p>其他规则：</p>
+<p><strong>如果开启了ZTest和ZWrite，可不管物件绘制順序 (rendering order)，使得里摄像机越近的物件，永远都绘制在其他离摄像机越远的物件之前 (<code>ZTest LEqual</code>)。</strong></p>
+<p><strong>同为不透明物体或透明物体时，Sorting Layer &gt; RenderQueue</strong></p>
+<h1 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h1><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://dev.twsiyuan.com/2018/05/unity-rendering-order.html">Unity rendering order 整理筆記</a></p>
+<p><a target="_blank" rel="noopener" href="https://qxsoftware.github.io/Unity-Rendering-Order.html">Unity 渲染顺序详解</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bzetu.com/207/.html">Unity渲染顺序(Queue,ZWrite,ZTest)</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lyh916/article/details/45317571">[UnityShader]渲染队列、ZWrite和ZTest</a></p>
+<p><a target="_blank" rel="noopener" href="https://medium.com/ericzhan-publication/shader%E7%AD%86%E8%A8%98-%E9%80%8F%E6%98%8E%E7%89%A9%E9%AB%94-z-test-z-write-z-buffer-alpha-blending-692c60d9b605">[Shader筆記]透明物體(Z-Test、Z-Write、Z-Buffer、Alpha Blending)</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Rendering/">Rendering</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Rendering/">Rendering</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2026/01/29/%E6%B8%B2%E6%9F%93%E9%A1%BA%E5%BA%8F/" data-title="渲染顺序 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2026/01/29/UGUI遮罩原理/" title="UGUI遮罩原理">
+  <strong>上一篇：</strong><br/>
+  <span>
+  UGUI遮罩原理</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2026/01/12/Copilot/"  title="Copilot">
+ <strong>下一篇：</strong><br/> 
+ <span>Copilot
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E9%A1%BA%E5%BA%8F%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">渲染顺序相关概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Camera"><span class="toc-number">2.1.</span> <span class="toc-text">Camera</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OpaqueSortMode"><span class="toc-number">2.1.1.</span> <span class="toc-text">OpaqueSortMode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TransparencySortMode"><span class="toc-number">2.1.2.</span> <span class="toc-text">TransparencySortMode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Depth"><span class="toc-number">2.1.3.</span> <span class="toc-text">Depth</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RenderQueue"><span class="toc-number">2.2.</span> <span class="toc-text">RenderQueue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SortingLayer"><span class="toc-number">2.3.</span> <span class="toc-text">SortingLayer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SortingOrder"><span class="toc-number">2.4.</span> <span class="toc-text">SortingOrder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZTest-ZWrite"><span class="toc-number">2.5.</span> <span class="toc-text">ZTest &amp; ZWrite</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZWrite-%E6%B7%B1%E5%BA%A6%E5%86%99%E5%85%A5"><span class="toc-number">2.5.1.</span> <span class="toc-text">ZWrite(深度写入)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZTest-%E6%B7%B1%E5%BA%A6%E6%B5%8B%E8%AF%95"><span class="toc-number">2.5.2.</span> <span class="toc-text">ZTest(深度测试)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Alpha-Blend-%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B7%B7%E5%90%88"><span class="toc-number">2.5.3.</span> <span class="toc-text">Alpha Blend(透明度混合)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-number">3.</span> <span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Inspecotr%E6%89%A9%E5%B1%95"><span class="toc-number">3.1.</span> <span class="toc-text">Inspecotr扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Camera-Inspector%E6%89%A9%E5%B1%95"><span class="toc-number">3.1.1.</span> <span class="toc-text">Camera Inspector扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MeshRenderer-Inspector%E6%89%A9%E5%B1%95"><span class="toc-number">3.1.2.</span> <span class="toc-text">MeshRenderer Inspector扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SpriteRenderer-Inspector%E6%89%A9%E5%B1%95"><span class="toc-number">3.1.3.</span> <span class="toc-text">SpriteRenderer Inspector扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SkinnedMeshRenderer-Inspector%E6%89%A9%E5%B1%95"><span class="toc-number">3.1.4.</span> <span class="toc-text">SkinnedMeshRenderer Inspector扩展</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Camera-Depth"><span class="toc-number">3.2.</span> <span class="toc-text">Camera Depth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZWrite-ZTest-VS-RenderQueue"><span class="toc-number">3.3.</span> <span class="toc-text">(ZWrite &amp; ZTest) VS RenderQueue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sorting-Layer-VS-RenderQueue"><span class="toc-number">3.4.</span> <span class="toc-text">Sorting Layer VS RenderQueue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sorting-Order-VS-RenderQueue"><span class="toc-number">3.5.</span> <span class="toc-text">Sorting Order VS RenderQueue</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">学习总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Github"><span class="toc-number">5.</span> <span class="toc-text">Github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Prefab/" title="Prefab">Prefab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Plugin/" title="Plugin">Plugin<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2026 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
