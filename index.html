@@ -347,7 +347,7 @@
 </li>
 </ol>
 <p>Note:</p>
-<ol start="2">
+<ol>
 <li><strong>Mask实现遮罩效果底层原理是通过Stencil(模板缓存)</strong></li>
 </ol>
 <h3 id="Mask-粒子特效"><a href="#Mask-粒子特效" class="headerlink" title="Mask+粒子特效"></a>Mask+粒子特效</h3><h4 id="Mask-自带ParticleAdditive-Shader"><a href="#Mask-自带ParticleAdditive-Shader" class="headerlink" title="Mask+自带ParticleAdditive Shader"></a>Mask+自带ParticleAdditive Shader</h4><p>在了解完Mask组件的常规UI遮罩原理后，接下来让我们尝试下UI上放入粒子特效</p>
@@ -363,7 +363,7 @@
 <p><img src="/img/Unity/RenderOrder/ParticleAdditiveMaskInspector.PNG" alt="ParticleAdditiveMaskInspector"></p>
 <p>为了匹配Mask的模版缓存判定，我将<strong>Stencil ID设置成1(模版缓存参考比较值)，Stencil Comparison设置成3(Equal)，Stencil Operation设置成0(Keep)，ColorMask设置成15(所有颜色写入)，这些设置是为了在Mask下去比较模板缓存值1的才通过，从而实现超出Mask区域部分不通过不绘制</strong>。</p>
 <p>让我们看看改造后的显示结果：</p>
-<p><img src="/img/Unity/RenderOder/ParticleAdditiveMaskShowResult.PNG" alt="ParticleAdditiveMaskShowResult"></p>
+<p><img src="/img/Unity/RenderOrder/ParticleAdditiveMaskShowResult.PNG" alt="ParticleAdditiveMaskShowResult"></p>
 <p>结果发现粒子特效啥都没显示，让我们看看FrameDebugger是怎么回事。</p>
 <p><img src="/img/Unity/RenderOrder/ParticleAdditiveMaskFrameDebugger.PNG" alt="ParticleAdditiveMaskFrameDebugger"></p>
 <p><strong>从FrameDebugger可以看到粒子特效的渲染和常规UI的渲染流程不一样，因为粒子特效是当做3D物体渲染的，所以他的渲染顺序不想UI子节点图形没有在Canvas的渲染流程里，而是Canvas渲染完成后才通过Draw Dynamic的方式绘制的。</strong></p>
@@ -372,7 +372,7 @@
 <h4 id="仅使用自带UI-Default-Shader"><a href="#仅使用自带UI-Default-Shader" class="headerlink" title="仅使用自带UI Default Shader"></a>仅使用自带UI Default Shader</h4><p><strong>unmaskMaterial这个流程是Mask流程里自带的，不修改源码是无法修改的，所以目前看来想通过粒子特效支持模板缓存功能从而通过Mask遮罩显示的方案是行不通的。</strong></p>
 <p><strong>既然我们已经知道模板缓存是Mask实现遮罩的核心原理，那么我们如果不使用Mask组件，直接导入自带的UI Default Shader，通过直接创建一个非Mask的UI Default材质，一个负责Mask的UI Default Mask材质和一个支持被UI Default Mask遮罩后显示的UI Default Masked材质来实现模版遮罩功。</strong></p>
 <p><img src="/img/Unity/RenderOrder/UIDefaultMatInspector.PNG" alt="UIDefaultMatInspector"></p>
-<p><img src="/img/Unity/RenderOder/UIDefaultMaskMatInspector.PNG" alt="UIDefaultMaskMatInspector"></p>
+<p><img src="/img/Unity/RenderOrder/UIDefaultMaskMatInspector.PNG" alt="UIDefaultMaskMatInspector"></p>
 <p><img src="/img/Unity/RenderOrder/UIDefaultMaskedMatInspector.PNG" alt="UIDefaultMaskedMatInspector"></p>
 <p><strong>可以看到三份材质球都是使用功能的UI Default Shader，但为了Mask不同情况下正确显示，分别设置了不同的Stencil ID，Stencil Comparison，Stencil Operation值。UIDefaultMat用于不需要管遮罩时，UIDefaultMaskMat用在当做遮罩(相当于Mask挂载的情况)时，UIDefaultMaskedMat用在在遮罩里需要被遮罩时。</strong></p>
 <p><strong>为了方便查看层级显示和遮罩效果，我创建了一个红色的使用UI Default Mat的最底层图和一个黄色的使用UI Default Mat的最顶层图(同时添加了Canvas设置了order高于特效显示order)</strong></p>
@@ -460,7 +460,7 @@
 </li>
 </ol>
 <h5 id="UIParticle遮罩"><a href="#UIParticle遮罩" class="headerlink" title="UIParticle遮罩"></a>UIParticle遮罩</h5><p><strong>Mask遮罩，就像常规Mask遮罩UI对象一样，将制作的UIParticle GameObject放到对应节点位置即可。</strong></p>
-<p><img src="/img/Unity/RenderOrder/ParticleEffectForUGUIMaskInspector" alt="ParticleEffectForUGUIMaskInspector"></p>
+<p><img src="/img/Unity/RenderOrder/ParticleEffectForUGUIMaskInspector.PNG" alt="ParticleEffectForUGUIMaskInspector"></p>
 <p><img src="/img/Unity/RenderOrder/ParticleEffectForUGUIMaskShowResult.PNG" alt="ParticleEffectForUGUIMaskShowResult"></p>
 <p>我们结合Mask遮罩来看看UIParticle是如何实现粒子特效支持Mask显示的。</p>
 <p>首先看看粒子特效在FrameDebugger里是如何绘制的：</p>
