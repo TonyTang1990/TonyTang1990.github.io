@@ -94,7 +94,7 @@
 </header>
     <div class="article-content">
         
-        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Unity游戏开发过程中，2D UI上常常会通过添加Mask或者RectMask2D组件进行UI遮罩显示。本章是为了<strong>深入学习理解Mask和RectMask2D原理相关知识</strong>。</p>
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Unity游戏开发过程中，2D UI上常常会通过添加Mask或者RectMask2D组件进行UI遮罩显示。本章是为了<strong>深入学习理解Mask和RectMask2D原理相关知识，思考3D粒子，模型和UI混合显示方案</strong>。</p>
 <h1 id="Mask"><a href="#Mask" class="headerlink" title="Mask"></a>Mask</h1><p>Mask是指通过遮罩控制可见显示区域的一种遮罩显示。</p>
 <p>UGUI里常见的遮罩有两种：</p>
 <ol>
@@ -334,6 +334,12 @@
 <p><img src="/img/Unity/RenderOrder/ParticleEffectForUGUILayerInspector.PNG" alt="ParticleEffectForUGUILayerInspector"></p>
 <p><img src="/img/Unity/RenderOrder/ParticleEffectForUGUILayerShowResult.PNG" alt="ParticleEffectForUGUILayerShowResult"></p>
 <p><strong>可以看到我制作的白色粒子特效夹在UI中间显示，绿色粒子特效在最顶层显示正确显示了</strong></p>
+<h5 id="UIParticleAttractor"><a href="#UIParticleAttractor" class="headerlink" title="UIParticleAttractor"></a>UIParticleAttractor</h5><p><strong>UIParticleAttractor脚本是ParticleEffectForUGUI提供的一个队粒子做额外动画的组件。</strong></p>
+<p>比如指定粒子按半径的方式移动到目标UIParticleAttrctor所在为止。</p>
+<p><img src="/img/Unity/RenderOrder/UIParticleAttractorInspector.PNG" alt="UIParticleAttractorInspector"></p>
+<p><img src="/img/Unity/RenderOrder/UIParticleAttractorShowResult.PNG" alt="UIParticleAttractorShowResult"></p>
+<p><strong>可以看到粒子在运行指定延迟时间后按目标终点以指定路线方式(e.g. 直线，曲线等)移动。</strong></p>
+<p>效果挺神奇的，可以看出ParticleEffectForUGUI对粒子的控制做到了单个粒子级别。</p>
 <h2 id="RectMask2D组件"><a href="#RectMask2D组件" class="headerlink" title="RectMask2D组件"></a>RectMask2D组件</h2><p><strong><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33060405/article/details/143782999?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~Ctr-2-143782999-blog-135170296.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~Ctr-2-143782999-blog-135170296.235%5Ev43%5Epc_blog_bottom_relevance_base5&utm_relevant_index=4">RectMask2D是通过CanvasRenderer的裁剪矩形（ClipRect）实现，底层是CPU裁剪顶点。</a></strong></p>
 <p><strong><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33060405/article/details/143782999?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~Ctr-2-143782999-blog-135170296.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~Ctr-2-143782999-blog-135170296.235%5Ev43%5Epc_blog_bottom_relevance_base5&utm_relevant_index=4">标准ParticleSystem渲染在Camera空间，走的是Renderer，不是UGUI的CanvasRenderer。</a></strong></p>
 <p>从上面的介绍可以看到正常流程粒子特效没走CanvasRenderer，是无法被RectMask2D裁剪的，如果想支持粒子被RectMask2D裁剪，有两种方案：</p>
