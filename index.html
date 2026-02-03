@@ -283,14 +283,36 @@
 </ol>
 <p>Note:</p>
 <ol>
-<li><p><strong>通过ParticleEffectForUGUI制作的粒子特效我们不再需要手动调整Order，我们可以像调整UI节点一样放到对应位置即可</strong></p>
+<li><strong>通过ParticleEffectForUGUI制作的粒子特效我们不再需要手动调整Order，我们可以像调整UI节点一样放到对应位置即可</strong></li>
+<li><strong>要想UIParticle制作的特效支持Mask需要勾选UIParticle的Maskable</strong></li>
+</ol>
+<h5 id="UIParticle缩放"><a href="#UIParticle缩放" class="headerlink" title="UIParticle缩放"></a>UIParticle缩放</h5><p><strong>UIParticle的显示大小根据UIParticle的AutoScalingMode设置不同而决定因素不同。UIParticle.scale是UIParticle提供控制粒子特效显示大小的一个参数。</strong></p>
+<p>粒子最终渲染尺寸的计算公式如下：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gitblog_00936/article/details/151919289"><strong>最终尺寸 &#x3D; Scale3D值 × Canvas缩放因子 × 粒子系统自身缩放 × 父级UI元素缩放</strong></a></p>
+<p><strong>UIParticle.AutoScalingMode是解决Canvas分辨率适配的核心参数</strong>，有三种模式:</p>
+<ul>
+<li><p><strong>None</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gitblog_00936/article/details/151919289">行为：完全禁用自动缩放适配</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gitblog_00936/article/details/151919289">适用场景：固定分辨率的应用（如某些嵌入式设备）</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gitblog_00936/article/details/151919289">缩放公式：最终尺寸 &#x3D; Scale3D值 × 粒子系统自身缩放</a></p>
 </li>
-<li><p><strong>通过调整UIParticle上的Scale来控制粒子特效显示大小</strong></p>
+<li><p><strong>Transform</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gitblog_00936/article/details/151919289">行为：通过调整Transform.localScale适配Canvas缩放</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gitblog_00936/article/details/151919289">适用场景：需要与其他UI元素保持一致缩放比例的情况</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gitblog_00936/article/details/151919289">缩放公式：最终尺寸 &#x3D; Scale3D值 × Transform.localScale × 粒子系统自身缩放</a></p>
 </li>
-<li><p><strong>要想UIParticle制作的特效支持Mask需要勾选UIParticle的Maskable</strong></p>
+<li><p><strong>UIParticle</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gitblog_00936/article/details/151919289">行为：通过调整UIParticle.scale3DForCalc的计算公式适配Canvas缩放</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gitblog_00936/article/details/151919289">适用场景：大多数UI粒子效果，尤其是需要保持相对大小的元素</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gitblog_00936/article/details/151919289">缩放公式：最终尺寸 &#x3D; Scale3D值 × Canvas缩放因子 × 粒子系统自身缩放</a></p>
 </li>
-<li><p><strong>希望制作的粒子特效跟UI在不同分辨率下保持大小一致选择AutoScalingMode.Transform</strong></p>
-</li>
+</ul>
+<p><strong>看网上的说法Position Mode是Absolute或者Relative对于AutoScalingMode.Transform还是AutoScalingMode.UIParticle选择有影响，目前未做测试。</strong></p>
+<p>个人目前想法结论如下：</p>
+<p><strong>AutoScalingMode推荐UIParticle，制作粒子特效的Simulation Space推荐Local，UIParticle.scale创建时默认是10所有特效制作时基于scale修改成1的标准来做，这样我们设置UIParticle.scale缩放时就是相对1的比例来考虑(这样更符合类似Transform Scale缩放理念的设置)</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>UIParticle.scale无论在任何模式下都会对粒子特效的最终显示大小都有影响</strong></li>
 </ol>
 <h5 id="UIParticle遮罩"><a href="#UIParticle遮罩" class="headerlink" title="UIParticle遮罩"></a>UIParticle遮罩</h5><p><strong>Mask遮罩，就像常规Mask遮罩UI对象一样，将制作的UIParticle GameObject放到对应节点位置即可。</strong></p>
 <p><img src="/img/Unity/RenderOrder/ParticleEffectForUGUIMaskInspector.PNG" alt="ParticleEffectForUGUIMaskInspector"></p>
@@ -418,6 +440,7 @@
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f79f0da90103">ShaderLab: Stencil Buffer 的理解和应用</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.51cto.com/u_14402/10670234">Unity 粒子特效在模型前面显示 unity ui粒子特效</a></p>
 <p><a target="_blank" rel="noopener" href="https://duanyiliang.com/2020/11/05/unity_particlesystem_mask/">UI上的特效的裁剪问题</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gitblog_00936/article/details/151919289">解决Unity UI粒子缩放异常：ParticleEffectForUGUI的Scale参数完全指南</a></p>
 
         
         
