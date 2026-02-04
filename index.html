@@ -309,7 +309,7 @@
 </ul>
 <p><strong>看网上的说法Position Mode是Absolute或者Relative对于AutoScalingMode.Transform还是AutoScalingMode.UIParticle选择有影响，目前未做测试。</strong></p>
 <p>个人目前想法结论如下：</p>
-<p><strong>AutoScalingMode推荐UIParticle，制作粒子特效的Simulation Space推荐Local，UIParticle.scale创建时默认是10所有特效制作时基于scale修改成1的标准来做，这样我们设置UIParticle.scale缩放时就是相对1的比例来考虑(这样更符合类似Transform Scale缩放理念的设置)</strong></p>
+<p><strong>AutoScalingMode推荐UIParticle，制作粒子特效的Simulation Space推荐Local，UIParticle.scale创建时默认是10所有特效制作时基于scale修改成1的标准来做，这样我们设置UIParticle.scale缩放时就是相对1的比例来考虑(这样更符合类似Transform Scale缩放理念的设置)，同时这种方式也支持我们去修改UIParticle自身Transform的localScale</strong></p>
 <p>Note:</p>
 <ol>
 <li><strong>UIParticle.scale无论在任何模式下都会对粒子特效的最终显示大小都有影响</strong></li>
