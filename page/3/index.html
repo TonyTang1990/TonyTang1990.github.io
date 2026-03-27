@@ -1281,7 +1281,9 @@
 <p>图集Variant的适用场景?<br>图集Variant的主要目的是为了用于不同分辨率设备适配不同图集来实现，内存和效果的可控。</p>
 <p>图集Variant设置适用：<br><img src="/img/Unity/SpriteAtlas/SpriteAtlasVariants.png" alt="SpriteAtlasVariants"><br>可以看到我们创建一个SpriteAtlas把Type设置成Variant后，然后指定Master Atlas，最后通过调节Scale为0.5我们得到了比playerpreview图集小一倍大小的图集效果。</p>
 <p>结论:</p>
-<p>图集变体是类似Mipmap的东西，通过多打包多个不同大小的图集到游戏里，Unity自动帮我们选择合适的图集来加载，从而做到高分辨率机型加载高分辨率的，低分辨率机型加载低分辨率的，<strong>典型的空间换时间做法</strong>。</p>
+<ol>
+<li>图集变体是类似Mipmap的东西，通过多打包多个不同大小的图集到游戏里，Unity自动帮我们选择合适的图集来加载，从而做到高分辨率机型加载高分辨率的，低分辨率机型加载低分辨率的，<strong>典型的空间换时间做法</strong>。</li>
+</ol>
 <p>Note:</p>
 <ol>
 <li><strong>要想只打包使用图集Variant，需要把图集Variant的Include in Build打开，把图集Master的Include in Build关闭</strong></li>
@@ -1329,17 +1331,47 @@
 <h5 id="Bug记录"><a href="#Bug记录" class="headerlink" title="Bug记录"></a>Bug记录</h5><ol>
 <li><strong>勾选Include in Build会导致资源打包冗余(部分Unity版本比如Unity2018.4.1f1)，建议升级到LTS版本</strong></li>
 </ol>
-<h5 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h5><p>SpriteAtlas虽然解决了Atlas和UIPrefab的解耦，同时提供了图集变体的概念来解决适配图集适配方案，但也带来了一些新的问题要解决(e.g. 要解决没有依赖信息的SpriteAtals基础上做到正确的资源加载管理)。</p>
+<h5 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h5><p>SpriteAtlas虽然解决了Atlas和UIPrefab的解耦，同时提供了图集变体的概念来解决适配图集适配方案，但也带来了一些新的问题要解决(e.g. 要解决不勾选include in build前提下没有依赖信息的SpriteAtals基础上做到正确的资源加载管理)。</p>
 <p><strong>——————————–2021&#x2F;20&#x2F;12更新开始————————————–</strong></p>
 <p>正确使用姿势参考：</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/msxh/p/14194756.html">【Unity游戏开发】SpriteAtlas与AssetBundle最佳食用方案</a></p>
-<p>简单来说:</p>
+<p>正确使用姿势:</p>
 <ol>
-<li><strong>SpriteAtlas 勾选Include in build</strong></li>
-<li><strong>SpriteAtlas不设置AB打包</strong></li>
-<li><strong>直接当做单Sprite一样加载</strong></li>
+<li><p>勾选Include in Build</p>
+<ul>
+<li><p><strong>SpriteAtlas 勾选Include in build</strong></p>
+</li>
+<li><p><strong>SpriteAtlas不设置AB打包，所有相同图集的Sprite设置打一个包</strong></p>
+</li>
+<li><p><strong>直接当做单Sprite一样加载</strong></p>
+</li>
+</ul>
+</li>
+<li><p>不勾选Include in Build</p>
+<ul>
+<li><strong>SpriteAtlas不勾选Include in Build</strong></li>
+<li><strong>SpriteAtlas和所有归属Sprite设置打一个AB包</strong></li>
+<li><strong>直接当单Sprite一样加载+延迟绑定加载SpriteAtlas</strong></li>
+</ul>
+</li>
+</ol>
+<p><strong>这里本人采用勾选Include in Build的方式，不想处理延迟绑定的SpriteAtlas加载问题</strong></p>
+<p>Note:</p>
+<ol>
+<li>上面两种方式都没有资源冗余(Unity版本2019.4.28f1)</li>
+<li><strong>未测试勾选Include in Build的前提下热更新新图集AB的情况</strong></li>
 </ol>
 <p><strong>——————————–2021&#x2F;20&#x2F;12更新结束————————————–</strong></p>
+<p><strong>——————————–2026&#x2F;02&#x2F;10更新开始————————————–</strong></p>
+<p>勾选Include in Build</p>
+<ul>
+<li><strong>SpriteAtlas 勾选Include in build</strong></li>
+<li><strong>SpriteAtlas可以和所有相同图集的Sprite设置打一个包(当有Sprite Atlas Variant时推荐打一起，这样才会有多个不同纹理大小的图集被打包生成，但运行时加载哪一个个人觉得需要通过加载对应SpriteAtlas去获取Sprite)，SpriteAtlas也可以不参与打包</strong></li>
+<li><strong>直接当做单Sprite一样加载</strong></li>
+</ul>
+<p>测试Unity版本：<strong>2022.3.62f3</strong></p>
+<p>Scriptable Build Pipeline版本：<strong>1.21.25</strong></p>
+<p><strong>——————————–2026&#x2F;02&#x2F;10更新结束————————————–</strong></p>
 <h2 id="Timeline"><a href="#Timeline" class="headerlink" title="Timeline"></a>Timeline</h2><p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/TimelineSection.html"> <strong>Timeline</strong> to create cinematic content, game-play sequences, audio sequences, and complex particle effects. </a></p>
 <p>官方介绍Timeline可以用于制作类似电影过场表现的工具。</p>
 <p>Timeline分为两个部分：</p>
@@ -1387,7 +1419,7 @@
 <p>从介绍个人的理解，Playable是一套可自定义数据处理流程成树状结构的工具。而自定义出来的树状结构数据就叫做PlayableGraph(后续会讲到)。而Timeline的核心正是Playable。</p>
 <p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Playables.html">使用Playables API的好处:</a></p>
 <ul>
-<li>The Playables API allows for dynamic animation blending. This means that objects in the <strong>scenes</strong><br>could provide their own animations. For example, animations for weapons, chests, and traps could be dynamically added to the PlayableGraph and used for a certain duration.</li>
+<li>The Playables API allows for dynamic animation blending. This means that objects in the <strong>scenes</strong><br> could provide their own animations. For example, animations for weapons, chests, and traps could be dynamically added to the PlayableGraph and used for a certain duration.</li>
 <li>The Playables API allows you to easily play a single animation without the overhead involved in creating and managing an AnimatorController asset.</li>
 <li>The Playables API allows users to dynamically create blending graphs and control the blending weights directly frame by frame.</li>
 <li>A PlayableGraph can be created at runtime, adding playable node as needed, based on conditions. Instead of having a huge “one-size-fit-all” graph where nodes are enabled and disabled, the PlayableGraph can be tailored to fit the requirements of the current situation.</li>
@@ -1488,12 +1520,13 @@
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CustomAudioTrack.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 自定义音效Track</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">TrackClipType(typeof(CustomAudioAsset))</span>]</span><br><span class="line">[<span class="meta">TrackBindingType(typeof(AudioSource))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomAudioTrack</span> : <span class="title">PlayableTrack</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>CustomAudioBehaviour.cs</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CustomAudioBehaviour.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 自定义音效播放Behaviour</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomAudioBehaviour</span> : <span class="title">BaseGameBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">        </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 音效播放组件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> AudioSource mSourceAudio;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called each frame while the state is set to Play</span></span><br><span class="line">    <span class="comment">// Playable更新执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">ProcessFrame</span>(<span class="params">Playable playable, FrameData info, <span class="built_in">object</span> playerData</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(mSourceAudio == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mSourceAudio = playerData <span class="keyword">as</span> AudioSource;</span><br><span class="line">        &#125;</span><br><span class="line">        TryPlayAudio();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">	******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> CustomAudioBehaviour.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 自定义音效播放Behaviour</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomAudioBehaviour</span> : <span class="title">BaseGameBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">        </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 音效播放组件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> AudioSource mSourceAudio;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called each frame while the state is set to Play</span></span><br><span class="line">    <span class="comment">// Playable更新执行时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">ProcessFrame</span>(<span class="params">Playable playable, FrameData info, <span class="built_in">object</span> playerData</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(mSourceAudio == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mSourceAudio = playerData <span class="keyword">as</span> AudioSource;</span><br><span class="line">        &#125;</span><br><span class="line">        TryPlayAudio();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">	******</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>CustomAudioTrack通过声明TrackBindingType(typeof(AudioSource))指定Track可以绑定AudioSource组件。</p>
 <p>CustomAudioBehaviour通过在运行时ProcessFrame里动态使用Track上指定的AudioSource组件作为音乐播放组件来实现CustomAudioBehaviour采用Track统一绑定组件的的效果。</p>
 <p><img src="/img/Unity/Timeline_Cinemachine/CustomAudioTrackWithAudioSourceBindingPreview.PNG" alt="CustomAudioTrackWithAudioSourceBindingPreview"></p>
-<h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/69e60a27bccb">Unity使用Cinemachine和Timeline入门</a><br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineTimeline.html">Cinemachine and Timeline</a></p>
+<h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/69e60a27bccb">Unity使用Cinemachine和Timeline入门</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/manual/CinemachineTimeline.html">Cinemachine and Timeline</a></p>
 <p><a target="_blank" rel="noopener" href="https://learn.unity.com/tutorial/cinemachine">Cinemachine</a></p>
 <p>Timeline可以看做是自定义展示效果的工具，而Cinemachine可以看做是多摄像机的一套完整控制表现的工具。</p>
 <p>更多的Cinemachine学习见后面</p>

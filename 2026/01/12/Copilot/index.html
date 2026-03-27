@@ -19,9 +19,9 @@
 <meta property="og:description" content="前言AI编程工具盛行，学习AI编程工具的使用和底层原理是很有必要的，在AI工具通过多方面考量和对比市面上的AI编程工具，决定选择Copilot作为深入AI编程学习的切入口，本章节是为了详细记录AI编程工具的使用和深入学习AI编程相关概念。 CopilotGitHub Copilot是GitHub和OpenAI合作开发的一个人工智能工具，用户在使用Visual Studio Code、Microso">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotEntry.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/AITools/Copilot/IntelligentPrompt.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/AITools/Copilot/IntelligentPromptFromNotation.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/AITools/Copilot/AcceptPartOfIntelligentPrompt.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/IntelligentPrompt.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/IntelligentPromptFromNotation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/AcceptPartOfIntelligentPrompt.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/BadPrompt.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/GoodPrompt.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/AgentModeChosen.PNG">
@@ -49,7 +49,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/CommitReadMeFileByGitHubMCPServer.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/WorkspaceMCPServerAdd.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/VSCodeMCPInstallationMethods.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/StartFileSystemMCPServer">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/StartFileSystemMCPServer.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/FileSystemTools.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/CreateMCPServerIntroductionByFileSystem.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/MCP/MCPMarkDown.PNG">
@@ -69,8 +69,8 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/OpenSSHClientAndSshAdd.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/GitHubCLILogin.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotGitHubCommitAndPush.PNG">
-<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotContextInfo">
-<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotHelpInfo">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotContextInfo.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotHelpInfo.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/CopilotCLIAddMCP.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/MicrosoftLearnMCPServerAdd.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/MicrosoftLearnMCPServerUsingTest.PNG">
@@ -79,7 +79,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/FileSystemMCPServerAdd.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/AI/AITools/Copilot/FileSystemMCPServerUsingTest.PNG">
 <meta property="article:published_time" content="2026-01-12T04:00:00.000Z">
-<meta property="article:modified_time" content="2026-01-15T09:24:16.925Z">
+<meta property="article:modified_time" content="2026-03-27T14:24:45.631Z">
 <meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary">
@@ -193,11 +193,11 @@
 <li><strong>Ctrl+Alt+L快捷键打开VSCode Copilot Chat</strong></li>
 </ol>
 <h2 id="Completions"><a href="#Completions" class="headerlink" title="Completions"></a>Completions</h2><p>敲击代码，Copilot会根据代码智能推断即将编写的代码，敲击tab应用智能推断的代码</p>
-<p><img src="/img/AITools/Copilot/IntelligentPrompt.PNG" alt="IntelligentPrompt"></p>
+<p><img src="/img/AI/AITools/Copilot/IntelligentPrompt.PNG" alt="IntelligentPrompt"></p>
 <p>敲击注释，Copilot也会根据注释去推断即将编写的代码，敲击tab应用智能推断的代码</p>
-<p><img src="/img/AITools/Copilot/IntelligentPromptFromNotation.PNG" alt="IntelligentPromptFromNotation"></p>
+<p><img src="/img/AI/AITools/Copilot/IntelligentPromptFromNotation.PNG" alt="IntelligentPromptFromNotation"></p>
 <p>只接受一部分Copilot智能推断的代码，Windows上Ctrl+→按键</p>
-<p><img src="/img/AITools/Copilot/AcceptPartOfIntelligentPrompt.PNG" alt="AcceptPartOfIntelligentPrompt"></p>
+<p><img src="/img/AI/AITools/Copilot/AcceptPartOfIntelligentPrompt.PNG" alt="AcceptPartOfIntelligentPrompt"></p>
 <p><strong>决定不启用智能推断的代码，点击Esc按键</strong></p>
 <h2 id="Prompt"><a href="#Prompt" class="headerlink" title="Prompt"></a>Prompt</h2><p>**Prompt(提示词)**可以帮助AI更加准确的理解我们的需求，给出更更准确的代码推断和需求编写。</p>
 <p>前面的Completions提到注释描述给AI提示，以及Chat中提到针对<strong>代码片段的提问(Alt+I)</strong>，在提问时我们通过自然语言准确描述需求比泛化的描述可以更加准确的让AI理解我们给出的指令，得到更准确的目标结果。</p>
@@ -351,7 +351,7 @@
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;servers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;filesystem&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npx&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;-y&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;@modelcontextprotocol/server-filesystem&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;$&#123;workspaceFolder&#125;&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>添加配置后会在对应Servers名字上方看到启动MCP Server的按钮</p>
-<p><img src="/img/AI/AITools/MCP/StartFileSystemMCPServer" alt="StartFileSystemMCPServer"></p>
+<p><img src="/img/AI/AITools/MCP/StartFileSystemMCPServer.PNG" alt="StartFileSystemMCPServer"></p>
 </li>
 <li><p>打开Copilot的Configure Tools可以看到我们成功运行FileSystem MCP Server后相关工具都被使用了</p>
 <p><img src="/img/AI/AITools/MCP/FileSystemTools.PNG" alt="FileSystemTools"></p>
@@ -451,11 +451,11 @@
 <p>命令行查看Token使用情况:</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/context</span><br></pre></td></tr></table></figure>
 
-<p><img src="/img/AI/AITools/Copilot/CopilotContextInfo" alt="CopilotContextInfo"></p>
+<p><img src="/img/AI/AITools/Copilot/CopilotContextInfo.PNG" alt="CopilotContextInfo"></p>
 <p>命令行查看CLI所有操作介绍:</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/help</span><br></pre></td></tr></table></figure>
 
-<p><img src="/img/AI/AITools/Copilot/CopilotHelpInfo" alt="CopilotHelpInfo"></p>
+<p><img src="/img/AI/AITools/Copilot/CopilotHelpInfo.PNG" alt="CopilotHelpInfo"></p>
 <p>Note:</p>
 <ol>
 <li><strong>Copilot CLI是付费功能(Pro或Pro+等)</strong></li>
