@@ -19,7 +19,7 @@
 <meta property="og:description" content="title: 红点系统 date: 2022-08-12 22:19:00 categories: Game tags: Game前言游戏开发过程中为了提示玩家有可操作数据，往往会采用显示红点的方式，红点会散布到游戏的各个角落，如果项目初期没有一个好的红点系统，后期维护开发中往往会有数不清的红点bug以及不必要的红点刷新开销。本章节真是为了实现一套高效且高度可扩展和可维护的红点系统而编写的。 红点">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-03-09T17:30:08.905Z">
-<meta property="article:modified_time" content="2026-07-10T09:24:46.448Z">
+<meta property="article:modified_time" content="2026-07-10T09:28:33.959Z">
 <meta property="article:author" content="Tony Tang">
 <meta name="twitter:card" content="summary">
 
@@ -107,20 +107,6 @@
 <h2 id="tags-Game"><a href="#tags-Game" class="headerlink" title="tags: Game"></a>tags: Game</h2><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>游戏开发过程中为了提示玩家有可操作数据，往往会采用显示红点的方式，红点会散布到游戏的各个角落，如果项目初期没有一个好的红点系统，后期维护开发中往往会有数不清的红点bug以及不必要的红点刷新开销。本章节真是为了实现一套高效且高度可扩展和可维护的红点系统而编写的。</p>
 <h2 id="红点系统"><a href="#红点系统" class="headerlink" title="红点系统"></a>红点系统</h2><h3 id="红点系统需求"><a href="#红点系统需求" class="headerlink" title="红点系统需求"></a>红点系统需求</h3><p>在开始设计和编写我们需要的红点系统前，让我们先理清下红点的需求:</p>
 <ol>
-<li><strong>采用前缀树数据结构，从红点命名上解决红点父子定义关联问题</strong></li>
-<li><strong>红点运算单元采用最小单元化定义，采用组合定义方式组装红点影响因素，从而实现高度自由的红点运算逻辑组装</strong></li>
-<li><strong>统一抽象红点初始化模块流程，支持按系统解锁的设计去解锁对应红点初始化模块，做到按需解锁红点名初始化功能。</strong></li>
-<li><strong>红点名允许定义红点处理器统一红点名的所有相关逻辑编写流程封装，方便维护和扩展，避免相关逻辑代码零散问题。</strong></li>
-<li><strong>红点运算单元支持多种显示类型定义(e.g. 1. 纯红点 2. 纯数字红点 3. 新红点 4. 混合红点等)，红点最终显示类型由所有影响他的红点运算单元计算结果组合而成(e.g. 红点运算单元1(新红点类型)+红点运算单元2(数字红点类型)&#x3D;新红点类型)</strong></li>
-<li><strong>采用直接复制对应红点名所有红点单元的方式(只负责添加红点单元不负责绑定，绑定数据由原始入口的红点名负责)</strong></li>
-<li><strong>列表里数量过多的红点推荐采用只定义上层红点单元包含所有，内部红点显示采用自行计算的方式，列表数量不多的情况也可采用模版红点动态创建每一个列表红点名和红点单元。</strong></li>
-<li><strong>非列表红点推荐全部采用静态红点预定义</strong></li>
-<li><strong>根据逻辑动态创建销毁的推荐使用动态红点方式，通过逻辑成去创建和移除红点名做到同步动态红点名生命周期。</strong></li>
-<li><strong>红点单元采用标脏加延迟计算+每帧限制红点单元计算数量的方式优化单帧计算过多卡顿问题。同时红点运算结果按红点运算单元为单位计算并缓存结果避免重复运算。</strong></li>
-<li><strong>编写自定义EditorWindow实现红点数据全面可视化提升红点系统可维护性</strong></li>
-</ol>
-<h3 id="红点系统设计"><a href="#红点系统设计" class="headerlink" title="红点系统设计"></a>红点系统设计</h3><p>针对上面的红点需求，我通过以下设计来一一解决:</p>
-<ol>
 <li><strong>单个红点可能受多个游戏逻辑因素影响</strong></li>
 <li><strong>内层红点可以影响外层红点可以不影响外层红点</strong></li>
 <li><strong>红点显示逻辑会受功能解锁和游戏数据流程影响动态生效，如果全部都全量定义初始化会导致初期太多无效红点名的定义和计算</strong></li>
@@ -131,6 +117,20 @@
 <li><strong>红点分静态红点(界面上固定存在的)和动态红点(列表里数量繁多的以及根据逻辑动态创建销毁的)</strong></li>
 <li><strong>数据变化会触发红点频繁逻辑运算(有时候还会触发重复运算)导致GC和时间占用</strong></li>
 <li><strong>红点影响因素比较多，查询的时候缺乏可视化高效的查询手段</strong></li>
+</ol>
+<h3 id="红点系统设计"><a href="#红点系统设计" class="headerlink" title="红点系统设计"></a>红点系统设计</h3><p>针对上面的红点需求，我通过以下设计来一一解决:</p>
+<ol>
+<li><strong>采用前缀树数据结构，从红点命名上解决红点父子定义关联问题</strong></li>
+<li><strong>红点运算单元采用最小单元化定义，采用组合定义方式组装红点影响因素，从而实现高度自由的红点运算逻辑组装</strong></li>
+<li><strong>统一抽象红点初始化模块流程，支持按系统解锁的设计去解锁对应红点初始化模块，做到按需解锁红点名初始化功能。</strong></li>
+<li><strong>红点名允许定义红点处理器统一红点名的所有相关逻辑编写流程封装，方便维护和扩展，避免相关逻辑代码零散问题。</strong></li>
+<li><strong>红点运算单元支持多种显示类型定义(e.g. 1. 纯红点 2. 纯数字红点 3. 新红点 4. 混合红点等)，红点最终显示类型由所有影响他的红点运算单元计算结果组合而成(e.g. 红点运算单元1(新红点类型)+红点运算单元2(数字红点类型)&#x3D;新红点类型)</strong></li>
+<li><strong>同样的功能入口出现在不同地方的情况，采用直接复制对应红点名所有红点单元的方式(只负责添加红点单元不负责绑定，绑定数据由原始入口的红点名负责)</strong></li>
+<li><strong>列表里数量过多的红点推荐采用只定义上层红点单元包含所有，内部红点显示采用自行计算的方式，列表数量不多的情况也可采用模版红点动态创建每一个列表红点名和红点单元。</strong></li>
+<li><strong>非列表红点推荐全部采用静态红点预定义</strong></li>
+<li><strong>根据逻辑动态创建销毁的推荐使用动态红点方式，通过逻辑成去创建和移除红点名做到同步动态红点名生命周期。</strong></li>
+<li><strong>红点单元采用标脏加延迟计算+每帧限制红点单元计算数量的方式优化单帧计算过多卡顿问题。同时红点运算结果按红点运算单元为单位计算并缓存结果避免重复运算。</strong></li>
+<li><strong>编写自定义EditorWindow实现红点数据全面可视化提升红点系统可维护性</strong></li>
 </ol>
 <h3 id="前缀树"><a href="#前缀树" class="headerlink" title="前缀树"></a>前缀树</h3><p>在真正实战编写红点系统之前，让我们先了解实现一版前缀树，后续会用到红点系统里解决红点父子关联问题。</p>
 <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Trie"><strong>trie</strong>，又称<strong>前缀树</strong>或<strong>字典树</strong>，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个节点对应的字符串，而根节点对应空字符串。</a></p>
@@ -289,6 +289,7 @@
 <li><strong>红点数据的标脏既可以基于红点运算单元也可以基于红点名，从而支持上层逻辑的准确标脏机制</strong></li>
 <li><strong>数量动态红点如果数量过多，建议只定义入口上层红点名和红点单元，里层依然采用自行逻辑判定显示红点+事件触发刷新的机制(比如背包道具数量红点很多，这样可以避免生成过多的红点名和红点单元)</strong></li>
 <li><strong>生命周期动态红点建议严格把控逻辑生命周期，控制好对应的红点名初始化和销毁逻辑</strong></li>
+<li><strong>红点类型显示多样性取决于逻辑层显示回调后对RedDotType的显示处理，请自行按需求处理显示优先级</strong></li>
 </ol>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Trie">Trie</a></p>
 <h2 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h2><p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/RedDotSystem">RedDotSystem</a></p>
