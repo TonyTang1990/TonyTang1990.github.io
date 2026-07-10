@@ -19,7 +19,7 @@
 <meta property="og:description" content="title: 红点系统date: 2022-08-12 22:19:00categories: Game tags: Game前言游戏开发过程中为了提示玩家有可操作数据，往往会采用显示红点的方式，红点会散布到游戏的各个角落，如果项目初期没有一个好的红点系统，后期维护开发中往往会有数不清的红点bug以及不必要的红点刷新开销。本章节真是为了实现一套高效且高度可扩展和可维护的红点系统而编写的。 红点系统">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-03-09T17:30:08.905Z">
-<meta property="article:modified_time" content="2026-07-10T09:30:34.295Z">
+<meta property="article:modified_time" content="2026-07-10T09:39:21.655Z">
 <meta property="article:author" content="Tony Tang">
 <meta name="twitter:card" content="summary">
 
@@ -277,9 +277,10 @@
 <li><strong>无论是数量动态红点名还是生命周期动态红点名，红点名都要采取模版动态拼接生成的方式确保唯一性，同时也方便通过红点名和红点单元看出所属功能</strong></li>
 </ol>
 <h2 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h2><ol>
-<li><strong>数量固定且不多的统统定义成静态红点名和静态红点单元的方式(预估占游戏里红点数量的70%)</strong></li>
+<li><strong>数量固定且不多的统统定义成静态红点名和静态红点单元的方式(预估占游戏里红点数量的60%)</strong></li>
 <li><strong>数量不多且数量由配置或游戏逻辑决定的情况(比如一些多难度游戏入口(根据配置的难度数量决定))，可以使用动态红点的方式运行时定义红点名和红点单元(预估占游戏里红点数量的25%)</strong></li>
-<li><strong>数量特别多且由游戏逻辑或配置决定的情况(比如背包道具红点(数量种类特别多跟拥有的道具数量挂钩))，可以使用常规游戏开发中的事件+逻辑刷新判定显示红点的方式(预估占游戏里红点数量的5%)</strong></li>
+<li><strong>生命周期挂钩的动态红点推荐抽象好对应生命周期走动态红点的创建和移除方式(比如活动红点)(预估占游戏10%)</strong></li>
+<li><strong>数量特别多且由游戏逻辑或配置决定的情况(比如背包道具红点(数量种类特别多跟拥有的道具数量挂钩))，可以只定义上层红点名和红点单元(包含所有列表里的红点逻辑)+常规事件驱动逻辑刷新+列表单元红点独立判定红点显示的方式(预估占游戏里红点数量的5%)</strong></li>
 </ol>
 <h2 id="重点知识"><a href="#重点知识" class="headerlink" title="重点知识"></a>重点知识</h2><ol>
 <li><strong>前缀树用于实现字符串命名定义父子关系(后续会用于红点单元的递归向上绑定，请严格遵循此规则)</strong></li>
