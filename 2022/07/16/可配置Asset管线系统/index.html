@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetPipeline/MixFolderAssetPipelineLog.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AssetPipeline/MixFolderTextureSettingAfterImport.PNG">
 <meta property="article:published_time" content="2022-07-16T04:16:00.000Z">
-<meta property="article:modified_time" content="2026-01-05T03:44:16.670Z">
+<meta property="article:modified_time" content="2026-07-13T04:40:53.404Z">
 <meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary">
@@ -266,12 +266,16 @@
 <li><strong>原设计全部是基于ScriptableObejct作为数据存储媒介，导致各电脑同步时配置数据也处于导入状态导致无法正确加载最新的后处理配置(更坏的情况可能加载失败)。(2022&#x2F;8&#x2F;31)</strong></li>
 <li><strong>InitializeOnLoadMethodAttribute标记的方法里无法使用跟Asset相关的类型(比如ScriptableObject相关类)信息也不允许加载Asset相关资源，如果加载Asset相关类型信息会在触发后处理接口的时候发现Asset相关的类型信息发生了Type Exception(类型丢失)(2023&#x2F;10&#x2F;19)</strong></li>
 <li><strong>InitializeOnLoadMethodAttribute标签只能确保部分流程重新初始化AssetPipeline系统，但只有Asset导入(比如协同更新AssetPipeline配置文件时)时并不会触发InitializeOnLoadMethodAttribute，导致Asset未能按最新的AssetPipeline配置执行后处理(2024&#x2F;12&#x2F;19)</strong></li>
+<li><strong>最初设计对于相同目录相同处理器不允许重复配置，后来考虑到最好的配置方式是单策略多平台公用，所以相同处理器被重复配置不同平台是有必要的（比如多平台纹理格式设置使用通用的平台纹理格式设置处理器）(2026&#x2F;1&#x2F;5)</strong></li>
+<li><strong>因为ScriptableObject和Json序列化类都指向了原始的ScriptableObject对象，导致Json导出时每次都会出现InstanceID变化问题(2026&#x2F;7&#x2F;13)</strong></li>
 </ol>
 <p>解决方案:</p>
 <ol>
 <li><strong>所有ScriptableObject配置导出一份Json(基于ScritableObject的引用改存AssetPath)，保存时基于ScriptableObject配置生成最新的Json数据。Asset管线系统加载配置数据基于导出的Json，ScriptableObject只作为可视化配置读取的数据来源以及导出Json的数据依据。(2022&#x2F;8&#x2F;31)</strong></li>
 <li><strong>通过拆分配置数据(比如ASTCSet相关的ScriptableObject只负责数据定义)和处理流程(比如ASTCSetJson负责定义和ASTCSet一致的数据实现配置数据反序列化构建+处理流程定义)实现在InitializeOnLoadMethodAttribute标记的方法里读取Asset管线配置数据进行Asset管线系统数据初始化，作为我们Asset管线后处理数据依据(2023&#x2F;10&#x2F;19)</strong></li>
 <li><strong>通过FileSystemWatcher进行对AssetPipeline配置文件保存目录的json文件变化监听，实现AssetPipeline配置文件协同更新时重新初始化AssetPipeline系统(如果用户更新时直接待在Unity界面提前触发Asset导入会导致部分Asset导入时还未加载最新的AssetPipeline配置文件，这个问题暂时没有好的解决方案，欢迎提供好的解决方案)(InitializeOnLoadMethodAttribute+FileSystemWatcher解决99.99%使用情况)</strong></li>
+<li><strong>放开单个目录相同处理器配置限制，改为打印警告。（2026&#x2F;1&#x2F;5）</strong></li>
+<li><strong>序列化导出Json前手动清除Json无效导出数据，避免导出ScriptableObject的InstanceID，从而解决每次Json导出都有InstanceID变化问题(2026&#x2F;7&#x2F;13)</strong></li>
 </ol>
 <h2 id="Github地址"><a href="#Github地址" class="headerlink" title="Github地址"></a>Github地址</h2><p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/AssetPipeline">AssetPipeline</a></p>
   
