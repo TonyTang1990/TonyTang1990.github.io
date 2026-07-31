@@ -11,12 +11,12 @@
     
 
     
-    <meta name="description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。 列表什么是列表了？可以滚动，支持创建多个基于特定模板显示的单元格容器。 列表的功能需求(**(√)**表示本人已经实现的部分)？  滚动显示(支持滚动到指定位置)(√) 动态添加(支持任何位置添加元素)(√) 循">
+    <meta name="description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。 觉得好用的可以购买淘宝商店版本支持作者： ScrollContainer滚动列表(淘宝) 列表什么是列表了？可以滚动，支持创建多个基于特定模板显示的单元格容器。 列表的功能需求(**(√)**表示本人已经实现的部">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity滚动列表">
 <meta property="og:url" content="http://tonytang1990.github.io/2020/06/08/Unity%E6%BB%9A%E5%8A%A8%E5%88%97%E8%A1%A8/index.html">
 <meta property="og:site_name" content="走停人生路">
-<meta property="og:description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。 列表什么是列表了？可以滚动，支持创建多个基于特定模板显示的单元格容器。 列表的功能需求(**(√)**表示本人已经实现的部分)？  滚动显示(支持滚动到指定位置)(√) 动态添加(支持任何位置添加元素)(√) 循">
+<meta property="og:description" content="前言多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。 觉得好用的可以购买淘宝商店版本支持作者： ScrollContainer滚动列表(淘宝) 列表什么是列表了？可以滚动，支持创建多个基于特定模板显示的单元格容器。 列表的功能需求(**(√)**表示本人已经实现的部">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/FancyScrollViewExhibition.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/SuperScrollViewExhibition.png">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/HorizontalContainerInspector.png">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/CellContainer/CellContainerUML.png">
 <meta property="article:published_time" content="2020-06-08T14:37:17.000Z">
-<meta property="article:modified_time" content="2026-07-10T09:30:14.307Z">
+<meta property="article:modified_time" content="2026-07-31T07:49:47.512Z">
 <meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary">
@@ -122,6 +122,8 @@
 		</div>
 		
 		<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>多年使用Unity经验的朋友对于列表单元肯定很熟悉，每个公司也都有着自己的一套单元格设计。本章节博客着重学习Unity里列表单元格框架的设计和实现，深入学习不同单元格框架的设计优劣。</p>
+<p>觉得好用的可以购买淘宝商店版本支持作者：</p>
+<p><a target="_blank" rel="noopener" href="https://item.taobao.com/item.htm?id=1069395295167&mi_id=0000KsDdeHxSmE69X3ysKSAIBWcVZ1y7ldOdOQhOIIXAXT0&spm=0.0.0.0&xxc=shop&skuId=6285052318360">ScrollContainer滚动列表(淘宝)</a></p>
 <h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><p>什么是列表了？<br>可以滚动，支持创建多个基于特定模板显示的单元格容器。</p>
 <p>列表的功能需求(**(√)**表示本人已经实现的部分)？</p>
 <ol>
