@@ -11,12 +11,12 @@
     
 
     
-    <meta name="description" content="Introduction游戏开发过程中，我们希望角色物体按固定路线移动，我们一般需要通过路点编辑器工具去预先编辑好所有路点，然后导出路点数据通过数学运算去移动角色物体。 结合以前学习的数学缓动和UnityEditor知识 本章节通过编写纯Editor的路点编辑器，从实战角度去利用数学缓动和UnityEditor知识实现我们需要的路点编辑器工具，以及基于路点编辑器数据的路线插值缓动系统。 路点编辑和">
+    <meta name="description" content="Introduction游戏开发过程中，我们希望角色物体按固定路线移动，我们一般需要通过路点编辑器工具去预先编辑好所有路点，然后导出路点数据通过数学运算去移动角色物体。 结合以前学习的数学缓动和UnityEditor知识 本章节通过编写纯Editor的路点编辑器，从实战角度去利用数学缓动和UnityEditor知识实现我们需要的路点编辑器工具，以及基于路点编辑器数据的路线插值缓动系统。 觉得好用的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="路点编辑和缓动">
 <meta property="og:url" content="http://tonytang1990.github.io/2023/04/09/%E8%B7%AF%E7%82%B9%E7%BC%96%E8%BE%91%E5%92%8C%E7%BC%93%E5%8A%A8/index.html">
 <meta property="og:site_name" content="走停人生路">
-<meta property="og:description" content="Introduction游戏开发过程中，我们希望角色物体按固定路线移动，我们一般需要通过路点编辑器工具去预先编辑好所有路点，然后导出路点数据通过数学运算去移动角色物体。 结合以前学习的数学缓动和UnityEditor知识 本章节通过编写纯Editor的路点编辑器，从实战角度去利用数学缓动和UnityEditor知识实现我们需要的路点编辑器工具，以及基于路点编辑器数据的路线插值缓动系统。 路点编辑和">
+<meta property="og:description" content="Introduction游戏开发过程中，我们希望角色物体按固定路线移动，我们一般需要通过路点编辑器工具去预先编辑好所有路点，然后导出路点数据通过数学运算去移动角色物体。 结合以前学习的数学缓动和UnityEditor知识 本章节通过编写纯Editor的路点编辑器，从实战角度去利用数学缓动和UnityEditor知识实现我们需要的路点编辑器工具，以及基于路点编辑器数据的路线插值缓动系统。 觉得好用的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/LineBezierIntroduction.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/BezierAnimation.gif">
@@ -34,9 +34,10 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/CustomPointDataInspector.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/CustomExportInspector.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/CustomPathDataExport.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/PathTweenerGameView.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PathPointTool/PassPointLogView.PNG">
 <meta property="article:published_time" content="2023-04-09T13:17:00.000Z">
-<meta property="article:modified_time" content="2026-08-03T05:06:10.994Z">
+<meta property="article:modified_time" content="2026-08-03T08:08:06.344Z">
 <meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="Editor">
 <meta name="twitter:card" content="summary">
@@ -125,6 +126,8 @@
 		<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>游戏开发过程中，我们希望角色物体按固定路线移动，我们一般需要通过路点编辑器工具去预先编辑好所有路点，然后导出路点数据通过数学运算去移动角色物体。</p>
 <p>结合以前学习的<a href="http://tonytang1990.github.io/2020/05/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%BC%93%E5%8A%A8/">数学缓动</a>和<a href="http://tonytang1990.github.io/2022/02/20/UnityEditor%E7%9F%A5%E8%AF%86/">UnityEditor知识</a></p>
 <p>本章节通过编写纯Editor的路点编辑器，从实战角度去利用数学缓动和UnityEditor知识实现我们需要的<strong>路点编辑器工具，以及基于路点编辑器数据的路线插值缓动系统</strong>。</p>
+<p>觉得好用的可以购买淘宝商店版本支持作者：</p>
+<p><a target="_blank" rel="noopener" href="https://item.taobao.com/item.htm?id=1072085941116&skuId=6286344683115">PathPointTool路点工具(淘宝)</a></p>
 <h1 id="路点编辑和缓动"><a href="#路点编辑和缓动" class="headerlink" title="路点编辑和缓动"></a>路点编辑和缓动</h1><p>实现一个工具，首先第一步，我们还是需要理清需求：</p>
 <ol>
 <li>纯Editor非运行时路点编辑器。</li>
@@ -137,6 +140,9 @@
 <li>路点编辑器要支持纯Editor模拟运行路点移动效果。</li>
 <li>路点编辑器编辑完成后的数据要支持运行时使用并模拟路线缓动，同时路线缓动要支持纯运行时构建使用。</li>
 <li>实现一个纯Editor的Tile可视化绘制脚本(方便路点编辑位置参考)。</li>
+<li><strong>不同路点类型要支持DIY数据定义加配置导出</strong>。</li>
+<li><strong>支持自定义导出的数据加载快速使用触发路点移动表现</strong>。</li>
+<li>路点移动要支持<strong>移动完成，经过路点，循环开始等回调</strong>。</li>
 </ol>
 <h2 id="Bezier曲线"><a href="#Bezier曲线" class="headerlink" title="Bezier曲线"></a>Bezier曲线</h2><p>我们路点编辑器要支持直线和曲线运动，说到曲线运动，这里就不得不提Bezier曲线。</p>
 <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-sg/%E8%B2%9D%E8%8C%B2%E6%9B%B2%E7%B7%9A"><strong>贝塞尔曲线</strong>是电脑图形学中相当重要的参数曲线。</a></p>
@@ -305,6 +311,7 @@
 <p>GameLauncher.cs</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 相应开始路线移动按钮点击</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnBtnStartPathMove</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">$&quot;GameLaucher:OnBtnStartPathMove()&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(mPathTweener != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        TPathTweenerManager.Singleton.RemovePathTween(mPathTweener);</span><br><span class="line">        mPathTweener = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(mLoadedPathDataExport == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(<span class="string">$&quot;没有加载有效的路点数据，无法开始路线缓动！&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    mPathTweener = TPathTweenerManager.Singleton.DoPathTweenByTPathDataExport(PathMoveGo.transform, mLoadedPathDataExport,</span><br><span class="line">                                                                              () =&gt;</span><br><span class="line">                                                                              &#123;</span><br><span class="line">                                                                                  Debug.Log(<span class="string">$&quot;运行时路线缓动完成！&quot;</span>);</span><br><span class="line">                                                                                  mPathTweener = <span class="literal">null</span>;</span><br><span class="line">                                                                              &#125;,</span><br><span class="line">                                                                              (index) =&gt;</span><br><span class="line">                                                                              &#123;</span><br><span class="line">                                                                                  Debug.Log(<span class="string">$&quot;经过路点:<span class="subst">&#123;index&#125;</span>&quot;</span>);</span><br><span class="line">                                                                                  <span class="keyword">var</span> pathPointData = mLoadedPathDataExport.GetPathPointData(index);</span><br><span class="line">                                                                                  <span class="keyword">if</span>(pathPointData != <span class="literal">null</span>)</span><br><span class="line">                                                                                  &#123;</span><br><span class="line">                                                                                      Debug.Log(<span class="string">$&quot;路点数据:<span class="subst">&#123;pathPointData.ToString()&#125;</span>&quot;</span>);</span><br><span class="line">                                                                                  &#125;</span><br><span class="line">                                                                              &#125;,</span><br><span class="line">                                                                              () =&gt;</span><br><span class="line">                                                                              &#123;</span><br><span class="line">                                                                                  Debug.Log(<span class="string">$&quot;路线缓动循环开始！&quot;</span>);</span><br><span class="line">                                                                              &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><img src="/img/Unity/PathPointTool/PathTweenerGameView.PNG" alt="PathTweenerGameView"></p>
 <p><img src="/img/Unity/PathPointTool/PassPointLogView.PNG" alt="PassPointLogView"></p>
 <p>可以看到通过对应回调我们访问对应路点数据已经可以拿到路点类型+自定义路点数据了，如果未来想根据路点类型进行DIY逻辑编写，则可以直接在回调里访问数据编写对应逻辑即可。</p>
 <p>TODO:</p>
