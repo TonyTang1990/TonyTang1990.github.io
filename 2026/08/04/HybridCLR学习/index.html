@@ -1,0 +1,907 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>代码热更原理 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="前言游戏发行后总是伴随着有bug或者功能需要发布出去，常规的方法是通过强更版本让玩家去商店下载新版本或者游戏内下载新版本安装，如果是资源bug可以通过资源热更的方式进行游戏内热更后再进入游戏即可。但C#在IOS上禁止热更(核心原因后续会聊)。 C#代码热更原理在深入学习HybridCLR之前，我们先了解下C#代码热更原理。 C#运行原理在聊C#为什么被IOS禁止热更前，我们要了解C#是如何从代码到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码热更原理">
+<meta property="og:url" content="http://tonytang1990.github.io/2026/08/04/HybridCLR%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="前言游戏发行后总是伴随着有bug或者功能需要发布出去，常规的方法是通过强更版本让玩家去商店下载新版本或者游戏内下载新版本安装，如果是资源bug可以通过资源热更的方式进行游戏内热更后再进入游戏即可。但C#在IOS上禁止热更(核心原因后续会聊)。 C#代码热更原理在深入学习HybridCLR之前，我们先了解下C#代码热更原理。 C#运行原理在聊C#为什么被IOS禁止热更前，我们要了解C#是如何从代码到">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HybridCLRTheory.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HybridCLRInstallFromURL.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HybridCLRInstallCompleted.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HybridCLRInstaller.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HybridInstallerEditorWindow.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HybridCLRFolderAfterWindowsInstaller.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/MainAssemblyDefinitionAsset.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HotUpdateAssemblyDefinitionAsset.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HotUpdateAssemblyDefinitionsSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/SettingScriptingBackendToIL2CPP.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HybridCLRGenerateAllDLL.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/AfterGenerateAllDLL.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/CopyHotUpdateDllToStreamingAssets.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HotUpdateEntryExecuteLog.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HybridCLRWindowsExeLog.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HotUpdateFuncLogInEditor.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HotUpdateFuncRecompileDllMenu.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HotUpdateFuncLogInWindowsExe.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/AOTGenericMissingMethodLog.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HotUpdateReferenceHybridCLRRuntimeSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/StripAssembleLocation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/CopyExtraAssembleToStreamingAssets.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/LoadMetadataForAOTAssembly.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/AOTGenericReferenceCSFile.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HotUpdateAssembleRefMainAssemble.PNG">
+<meta property="article:published_time" content="2026-08-04T02:29:00.000Z">
+<meta property="article:modified_time" content="2026-08-05T07:50:40.587Z">
+<meta property="article:author" content="Tony Tang">
+<meta property="article:tag" content="HotUpdate">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/CSharp/HotUpdate/HybridCLRTheory.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2026/08/04/HybridCLR学习/" title="代码热更原理" itemprop="url">代码热更原理</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2026-08-04T02:29:00.000Z" itemprop="datePublished"> 发表于 2026-08-04</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E4%BB%A3%E7%A0%81%E7%83%AD%E6%9B%B4%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">C#代码热更原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">C#运行原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IOS%E7%A6%81%E6%AD%A2JIT"><span class="toc-number">2.2.</span> <span class="toc-text">IOS禁止JIT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity-IL2CPP"><span class="toc-number">2.3.</span> <span class="toc-text">Unity IL2CPP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ILRuntime"><span class="toc-number">2.4.</span> <span class="toc-text">ILRuntime</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HybridCLR"><span class="toc-number">2.5.</span> <span class="toc-text">HybridCLR</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ILRuntime%E3%80%81HybridCLR%E4%B8%8E%E4%BC%A0%E7%BB%9F-JIT-%E7%9A%84%E6%9C%AC%E8%B4%A8%E5%8C%BA%E5%88%AB"><span class="toc-number">2.6.</span> <span class="toc-text">ILRuntime、HybridCLR与传统 JIT 的本质区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lua"><span class="toc-number">2.7.</span> <span class="toc-text">Lua</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">2.8.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HybridCLR%E5%AD%A6%E4%B9%A0"><span class="toc-number">3.</span> <span class="toc-text">HybridCLR学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HybridCLR%E5%AE%89%E8%A3%85"><span class="toc-number">3.1.</span> <span class="toc-text">HybridCLR安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HybridCLR%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">3.2.</span> <span class="toc-text">HybridCLR初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HybridCLR%E5%88%92%E5%88%86%E7%A8%8B%E5%BA%8F%E9%9B%86"><span class="toc-number">3.3.</span> <span class="toc-text">HybridCLR划分程序集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HybridCLR%E9%A1%B9%E7%9B%AE%E8%AE%BE%E7%BD%AE"><span class="toc-number">3.4.</span> <span class="toc-text">HybridCLR项目设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%83%AD%E6%9B%B4%E6%96%B0%E4%BB%A3%E7%A0%81"><span class="toc-number">3.5.</span> <span class="toc-text">创建热更新代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E7%83%AD%E6%9B%B4%E7%A8%8B%E5%BA%8F%E9%9B%86"><span class="toc-number">3.6.</span> <span class="toc-text">生成热更程序集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E5%B9%B6%E4%BD%BF%E7%94%A8%E7%83%AD%E6%9B%B4%E6%96%B0%E7%A8%8B%E5%BA%8F%E9%9B%86"><span class="toc-number">3.7.</span> <span class="toc-text">加载并使用热更新程序集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%83%AD%E6%9B%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%95%88"><span class="toc-number">3.8.</span> <span class="toc-text">修改热更代码生效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HybridCLR%E7%83%AD%E6%9B%B4%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">3.9.</span> <span class="toc-text">HybridCLR热更注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Monobehaviour%E7%83%AD%E6%9B%B4%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">3.9.1.</span> <span class="toc-text">Monobehaviour热更注意事项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E7%83%AD%E6%9B%B4%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">3.9.2.</span> <span class="toc-text">泛型热更注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%E5%85%83%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF"><span class="toc-number">3.9.2.1.</span> <span class="toc-text">补充元数据技术</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>游戏发行后总是伴随着有bug或者功能需要发布出去，常规的方法是通过强更版本让玩家去商店下载新版本或者游戏内下载新版本安装，如果是资源bug可以通过资源热更的方式进行游戏内热更后再进入游戏即可。但C#在IOS上禁止热更(核心原因后续会聊)。</p>
+<h2 id="C-代码热更原理"><a href="#C-代码热更原理" class="headerlink" title="C#代码热更原理"></a>C#代码热更原理</h2><p>在深入学习HybridCLR之前，我们先了解下C#代码热更原理。</p>
+<h3 id="C-运行原理"><a href="#C-运行原理" class="headerlink" title="C#运行原理"></a>C#运行原理</h3><p>在聊C#为什么被IOS禁止热更前，我们要了解C#是如何从代码到真机生效运行的。</p>
+<p><strong>C#-&gt;编译器-&gt;IL-&gt;.NET&#x2F;Mono-&gt;机器码(运行时IL转机器码(JIT))</strong></p>
+<p>IOS不允许应用在运行时随意生成机器码，也就是上述流程在<strong>IL-&gt;.NET&#x2F;Mono-&gt;机器码</strong>这一步禁止了。</p>
+<h3 id="IOS禁止JIT"><a href="#IOS禁止JIT" class="headerlink" title="IOS禁止JIT"></a>IOS禁止JIT</h3><p>JIT本质是运行时将IL转成对应机器码，也就等价于运行时生成代码。</p>
+<p>为什么IOS禁止运行时生成代码了？</p>
+<p>这和 iOS 的安全原则冲突。iOS 通常要求：</p>
+<ul>
+<li>可执行代码必须经过签名；</li>
+<li>App 能执行的原生代码应当在打包、签名时确定；</li>
+<li>普通应用不能随意创建“既可写又可执行”的内存；</li>
+<li>不能下载一段新的原生机器码后直接执行。</li>
+</ul>
+<p>这类限制通常可以从代码签名、W^X（Writable or Executable）和禁止动态生成可执行代码几个角度理解。</p>
+<p>JIT 的本质恰恰是“运行时动态生成新机器码”，所以普通 iOS App 无法使用传统的 Mono JIT 模式。</p>
+<h3 id="Unity-IL2CPP"><a href="#Unity-IL2CPP" class="headerlink" title="Unity IL2CPP"></a>Unity IL2CPP</h3><p>最初Unity使用的Mono来实现跨平台，后来推出了IL2CPP。</p>
+<p>为什么Unity会从Mono转向IL2CPP了？</p>
+<p> 因为不能依赖JIT，所以Unity选择把IL全部转换成C++代码(IL2CPP这一步)。</p>
+<p>使用IL2CPP流程就会变成如下：</p>
+<p><strong>C#-&gt;编译器-&gt;IL-&gt;IL2CPP-&gt;C++-&gt;Xcode&#x2F;Clang AOT 编译-&gt;ARM64&#x2F;ARMV7原生机器码</strong></p>
+<p><strong>但AOT带来的一个问题就是，如果新写的C#代码如果没经过IL2CPP-&gt;C++-&gt;ARM64-&gt;签名这条流程，那么在IOS上就没法直接热更运行。</strong></p>
+<h3 id="ILRuntime"><a href="#ILRuntime" class="headerlink" title="ILRuntime"></a>ILRuntime</h3><p>讲到这里，那顺便一提ILRuntime这个老牌C#热更框架，为什么ILRuntime能绕过IOS这个限制了？</p>
+<p>ILRuntime 的思路不是在手机上把新 IL 编译成机器码，而是：</p>
+<p><strong>用安装包中已经 AOT 编译并签名过的解释器，逐条解释热更新 DLL 的 IL 指令。</strong></p>
+<p>使用ILRuntime流程就会变成如下：</p>
+<p>热更新DLL-&gt;读取IL指令-&gt;ILRuntime解释器-&gt;逐条模拟IL的语义</p>
+<p><strong>真正被 CPU 执行的是提前打包、签名过的 ILRuntime 解释器。新下载的 DLL 在这个模型中更像是解释器读取的“指令数据”。</strong></p>
+<p>这也就是ILRuntime新的DLL为什么不走IL2CPP也能正常执行的原因。</p>
+<p>但ILRuntime代价也很明显：</p>
+<ul>
+<li>解释执行通常比原生代码慢；</li>
+<li>热更代码和主工程之间需要跨域调用；</li>
+<li>泛型、委托、继承、反射等场景需要适配；</li>
+<li>经常需要生成绑定代码来降低反射和跨域调用开销；</li>
+<li>调试体验与标准 CLR 有差异。</li>
+</ul>
+<h3 id="HybridCLR"><a href="#HybridCLR" class="headerlink" title="HybridCLR"></a>HybridCLR</h3><p>然后进入本章节的主题，HybridCLR，让我们来看看HybridCLR是如何从原理上实现支持C#热更的。</p>
+<p><strong>HybridCLR解决问题的思路更贴近标准 CLR。它扩展了 Unity 的 IL2CPP 运行时，使其具备执行热更新程序集 IL 的能力。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">AOT 程序集</span><br><span class="line">    → IL2CPP 提前编译为原生机器码</span><br><span class="line">    → 高性能执行</span><br><span class="line"></span><br><span class="line">热更新程序集</span><br><span class="line">    → 运行时加载 DLL</span><br><span class="line">    → HybridCLR 解释执行 IL</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/CSharp/HotUpdate/HybridCLRTheory.png" alt="HybridCLRTheory"></p>
+<p>也就是说，HybridCLR仍然遵守 iOS 的限制：</p>
+<ul>
+<li>不在运行时 JIT 生成新的 ARM64 代码；</li>
+<li>新下载的 DLL 主要以 IL 解释方式执行；</li>
+<li>CPU 实际执行的解释器和运行时本身已经随 App AOT 编译并签名。</li>
+</ul>
+<p>HybridCLR为什么还需要“补充元数据”？</p>
+<p>IL2CPP在打包时会对代码和元数据进行裁剪、转换。某些泛型方法虽然可以复用已有的 AOT 原生代码，但运行时可能缺少足够的类型元数据。</p>
+<p>例如热更新代码新增了一个调用：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;MyNewType&gt;</span><br></pre></td></tr></table></figure>
+
+<p>AOT 阶段未必知道未来会出现这个具体类型组合。相应泛型函数有时可以通过泛型共享机制复用，但运行时仍需要知道：</p>
+<ul>
+<li><code>MyNewType</code> 的字段布局；</li>
+<li>泛型参数信息；</li>
+<li>方法签名；</li>
+<li>类型关系；</li>
+<li>虚方法和反射信息。</li>
+</ul>
+<p>HybridCLR可以加载裁剪前 AOT 程序集的补充元数据，让运行时重新获得这些信息。需要注意：</p>
+<p><strong>补充元数据不是把新代码变成原生机器码。</strong></p>
+<p>它主要用于恢复类型和方法描述，使热更新 IL 能正确调用已有 AOT 泛型代码、反射能力和运行时设施。没有可复用 AOT 实现的热更新方法，仍然由解释器执行。</p>
+<h3 id="ILRuntime、HybridCLR与传统-JIT-的本质区别"><a href="#ILRuntime、HybridCLR与传统-JIT-的本质区别" class="headerlink" title="ILRuntime、HybridCLR与传统 JIT 的本质区别"></a>ILRuntime、HybridCLR与传统 JIT 的本质区别</h3><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>新 DLL 如何执行</th>
+<th>是否运行时生成原生机器码</th>
+<th>iOS 可行性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mono&#x2F;.NET JIT</td>
+<td>IL 即时编译为 ARM64</td>
+<td>是</td>
+<td>普通 App 不可行</td>
+</tr>
+<tr>
+<td>下载原生动态库</td>
+<td>直接执行新 ARM64 代码</td>
+<td>代码在安装包外生成</td>
+<td>通常不可行</td>
+</tr>
+<tr>
+<td>ILRuntime</td>
+<td>独立解释器解释 IL</td>
+<td>否</td>
+<td>可行</td>
+</tr>
+<tr>
+<td>HybridCLR</td>
+<td>IL2CPP 运行时扩展后解释 IL</td>
+<td>否</td>
+<td>可行</td>
+</tr>
+<tr>
+<td>原生 IL2CPP</td>
+<td>发布前把 IL 编译为 ARM64</td>
+<td>仅构建阶段生成</td>
+<td>可行，但不能代码热更</td>
+</tr>
+</tbody></table>
+<p>两种热更新技术的共同本质是：</p>
+<blockquote>
+<p><strong>把“运行时加载并执行新的机器码”，转换成“用已有、已签名的原生解释器读取并执行新的 IL 数据”。</strong></p>
+</blockquote>
+<p>区别主要在于：</p>
+<ul>
+<li>ILRuntime建立了一套相对独立的 IL 执行环境，和 IL2CPP 主工程之间存在明显的解释域边界。</li>
+<li>HybridCLR直接扩展 IL2CPP 运行时，类型系统、泛型、反射以及主工程与热更程序集的交互通常更接近正常 C# 开发体验。</li>
+</ul>
+<h3 id="Lua"><a href="#Lua" class="headerlink" title="Lua"></a>Lua</h3><p>说到这里提一下Lua为什么可以热更新，因为<strong>Lua是解释执行，代码内部已经包含Lua虚拟机，已经支持Lua代码的解析执行，Lua可以像代码一样热更后解释执行。</strong></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>C# 本身并不是不能热更新，真正的问题是：</p>
+<ol>
+<li>C# DLL通常包含的是 IL，不是CPU可以直接执行的ARM64机器码；</li>
+<li>传统 CLR需要 JIT 把新 IL 转成机器码；</li>
+<li>iOS 的代码签名和内存执行策略禁止普通 App 随意 JIT 或加载未签名原生代码；</li>
+<li>Unity因此使用 IL2CPP&#x2F;AOT，但 AOT 只能编译发布时已知的代码；</li>
+<li>发布后下载的新 DLL 没有对应的 AOT 机器码，因而无法直接运行；</li>
+<li>ILRuntime和HybridCLR通过“解释执行 IL”解决问题，不在运行时生成新的原生代码。</li>
+</ol>
+<h2 id="HybridCLR学习"><a href="#HybridCLR学习" class="headerlink" title="HybridCLR学习"></a>HybridCLR学习</h2><p><a target="_blank" rel="noopener" href="https://github.com/focus-creative-games/hybridclr">HybridCLR Github地址</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.hybridclr.cn/docs/intro">HybridCLR官方文档</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/focus-creative-games/hybridclr_trial">HybridCLR工程搭建事例</a></p>
+<h3 id="HybridCLR安装"><a href="#HybridCLR安装" class="headerlink" title="HybridCLR安装"></a>HybridCLR安装</h3><p>不知道是不是因为国外Unity和国内Unity分区了，国外PackageManager里没法直接搜索到HybridCLR，这里采用从Git URL的安装方式。</p>
+<p><img src="/img/CSharp/HotUpdate/HybridCLRInstallFromURL.PNG" alt="HybridCLRInstallFromURL"></p>
+<p><strong>注意地址要填:<strong><a target="_blank" rel="noopener" href="https://github.com/focus-creative-games/hybridclr_unity.git">https://github.com/focus-creative-games/hybridclr_unity.git</a></strong>而非官方Github地址，上面这个地址才是专门给Unity制作的Github安装包。</strong></p>
+<p>安装完成后如下:</p>
+<p><img src="/img/CSharp/HotUpdate/HybridCLRInstallCompleted.PNG" alt="HybridCLRInstallCompleted"></p>
+<h3 id="HybridCLR初始化"><a href="#HybridCLR初始化" class="headerlink" title="HybridCLR初始化"></a>HybridCLR初始化</h3><p><strong>安装好后初始化HybridCLR，点击菜单HybridCLR&#x2F;Installer…</strong></p>
+<p><img src="/img/CSharp/HotUpdate/HybridCLRInstaller.PNG" alt="HybridCLRInstaller"></p>
+<p><img src="/img/CSharp/HotUpdate/HybridInstallerEditorWindow.PNG" alt="HybridInstallerEditorWindow"></p>
+<p>安装完成后我们会看到项目工程目录下多了LocalIl2CppData-WindowsEditor目录(看得出是跟平台挂钩的，不同平台执行应该会复制到不一样的目录):</p>
+<p><img src="/img/CSharp/HotUpdate/HybridCLRFolderAfterWindowsInstaller.PNG" alt="HybridCLRFolderAfterWindowsInstaller"></p>
+<p>创建ConsoleToCreen.cs脚本(方便日志打印到屏幕验证流程)，复制以下代码:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ConsoleToScreen</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">int</span> maxLines = <span class="number">50</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">int</span> maxLineLength = <span class="number">120</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> _logStr = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> List&lt;<span class="built_in">string</span>&gt; _lines = <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> fontSize = <span class="number">15</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnEnable</span>()</span> &#123; Application.logMessageReceived += Log; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnDisable</span>()</span> &#123; Application.logMessageReceived -= Log; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Log</span>(<span class="params"><span class="built_in">string</span> logString, <span class="built_in">string</span> stackTrace, LogType type</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">var</span> line <span class="keyword">in</span> logString.Split(<span class="string">&#x27;\n&#x27;</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (line.Length &lt;= maxLineLength)</span><br><span class="line">            &#123;</span><br><span class="line">                _lines.Add(line);</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">var</span> lineCount = line.Length / maxLineLength + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; lineCount; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> ((i + <span class="number">1</span>) * maxLineLength &lt;= line.Length)</span><br><span class="line">                &#123;</span><br><span class="line">                    _lines.Add(line.Substring(i * maxLineLength, maxLineLength));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    _lines.Add(line.Substring(i * maxLineLength, line.Length - i * maxLineLength));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (_lines.Count &gt; maxLines)</span><br><span class="line">        &#123;</span><br><span class="line">            _lines.RemoveRange(<span class="number">0</span>, _lines.Count - maxLines);</span><br><span class="line">        &#125;</span><br><span class="line">        _logStr = <span class="built_in">string</span>.Join(<span class="string">&quot;\n&quot;</span>, _lines);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnGUI</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity,</span><br><span class="line">           <span class="keyword">new</span> Vector3(Screen.width / <span class="number">1200.0f</span>, Screen.height / <span class="number">800.0f</span>, <span class="number">1.0f</span>));</span><br><span class="line">        GUI.Label(<span class="keyword">new</span> Rect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">800</span>, <span class="number">370</span>), _logStr, <span class="keyword">new</span> GUIStyle() &#123; fontSize = Math.Max(<span class="number">10</span>, fontSize) &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="HybridCLR划分程序集"><a href="#HybridCLR划分程序集" class="headerlink" title="HybridCLR划分程序集"></a>HybridCLR划分程序集</h3><p>前面我们说过HybridCLR实现C#热更新原理是扩展IL2CPP运行时，将热更程序集IL通过扩展的IL2CPP利用已经打进包的类型数据信息进行解释执行。</p>
+<p>所以第一步我们需要针对热更和非热更进行程序集划分(以下只是学习热更目的所以划分的比较粗暴，实际工程会划分更细)：</p>
+<ol>
+<li><p>Main.asmdef(主AOT程序集)</p>
+<p><img src="/img/CSharp/HotUpdate/MainAssemblyDefinitionAsset.PNG" alt="MainAssemblyDefinitionAsset"></p>
+</li>
+<li><p>HotUpdate.asmdef(热更新程序集)</p>
+<p><img src="/img/CSharp/HotUpdate/HotUpdateAssemblyDefinitionAsset.PNG" alt="HotUpdateAssemblyDefinitionAsset"></p>
+<p><strong>如果Main.asmdef作为AOT不热更的程序集，最好关闭HotUpdate.asmdef的Auto Referenced避免出现失误引用热更新程序集导致打包失败的情况。</strong></p>
+</li>
+</ol>
+<p>将热更新程序集HotUpdate.asmdef设置成HybridCLR的热更新程序集：</p>
+<p>HybridCLR&#x2F;Settings&#x2F;Hot Update Assembly Definitions</p>
+<p><img src="/img/CSharp/HotUpdate/HotUpdateAssemblyDefinitionsSetting.PNG" alt="HotUpdateAssemblyDefinitionsSetting"></p>
+<h3 id="HybridCLR项目设置"><a href="#HybridCLR项目设置" class="headerlink" title="HybridCLR项目设置"></a>HybridCLR项目设置</h3><p>前面已经提到HybridCLR是通过扩展IL2CPP运行时来实现热更DLL解析执行的，那么我们想使用HybridCLR那么肯定必须将打包编译后台设置成IL2CPP:</p>
+<p><img src="/img/CSharp/HotUpdate/SettingScriptingBackendToIL2CPP.PNG" alt="SettingScriptingBackendToIL2CPP"></p>
+<h3 id="创建热更新代码"><a href="#创建热更新代码" class="headerlink" title="创建热更新代码"></a>创建热更新代码</h3><p>在热更新程序集(HotUpdate)目录下创建HotUpdateEntry.cs文件作为热更新入口代码:</p>
+<p>HotUpdateEntry.cs</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> HotUpdateEntry.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 热更新入口脚本</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HotUpdateEntry</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 热更新入口</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Entry</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;Hello, HybridCLR&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用GameLauncher.cs脚本(挂载在启动场景上)进行热更程序集(HotUpdate.dll)的资源加载和代码使用:</p>
+<p>GameLauncher.cs</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Reflection;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> GameLauncher.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 游戏启动脚本</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">GameLauncher</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 热更新程序集名</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">string</span> HotUpdateAssemblyName = <span class="string">&quot;HotUpdate&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">$&quot;GameLauncher.Start()&quot;</span>);</span><br><span class="line">        LoadHotUpdateDlls();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 加载热更新DLL</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">LoadHotUpdateDlls</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">$&quot;GameLauncher.LoadHotUpdateDlls()&quot;</span>);</span><br><span class="line">        <span class="comment">// Editor环境下，HotUpdate.dll.bytes已经被自动加载，不需要加载，重复加载反而会出问题。</span></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> !UNITY_EDITOR</span></span><br><span class="line">        Assembly hotUpdateAss = Assembly.Load(File.ReadAllBytes(<span class="string">$&quot;<span class="subst">&#123;Application.streamingAssetsPath&#125;</span>/<span class="subst">&#123;HotUpdateAssemblyName&#125;</span>.dll.bytes&quot;</span>));</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">      <span class="comment">// Editor下无需加载，直接查找获得HotUpdate程序集</span></span><br><span class="line">        Assembly hotUpdateAss = System.AppDomain.CurrentDomain.GetAssemblies().First(a =&gt; a.GetName().Name == HotUpdateAssemblyName);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="生成热更程序集"><a href="#生成热更程序集" class="headerlink" title="生成热更程序集"></a>生成热更程序集</h3><p>在HybridCLR里热更新程序集DLL是当做资源下载和加载的，所以在加载热更新程序集之前我们还要生成热更新程序集DLL，点击HybridCLR-&gt;Generate-&gt;All</p>
+<p><img src="/img/CSharp/HotUpdate/HybridCLRGenerateAllDLL.PNG" alt="HybridCLRGenerateAllDLL"></p>
+<p>生成后会在HybridCLRData&#x2F;HotUpdateDlls&#x2F;StandaloneWindows64目录下看到生成热更新Hotupdate.dll:</p>
+<p><img src="/img/CSharp/HotUpdate/AfterGenerateAllDLL.PNG" alt="AfterGenerateAllDLL"></p>
+<p>Note:</p>
+<ol>
+<li><strong>热更新的DLL要当做二进制文件加载，要给热更新DLL加.bytes后缀。</strong></li>
+</ol>
+<h3 id="加载并使用热更新程序集"><a href="#加载并使用热更新程序集" class="headerlink" title="加载并使用热更新程序集"></a>加载并使用热更新程序集</h3><p>在HybridCLR里，热更新DLL就相当于资源一样加载，所以热更新代码走的热更流程跟资源一样，当前我是测试方便就直接放在SteamingAsset目录下，同时热更新DLL直接走Assembly.Load加载程序集即可，所以首先将HyrbidCLR-&gt;Generate-&gt;All生产的HotUpdate.dll拷贝到StreamingAssets目录:</p>
+<p><img src="/img/CSharp/HotUpdate/CopyHotUpdateDllToStreamingAssets.PNG" alt="CopyHotUpdateDllToStreamingAssets"></p>
+<p><strong>HyrbidCLR-&gt;Generate-&gt;All同时会生成HybridCLR相关放裁剪文件。</strong></p>
+<p>拷贝到StreamingAssets目录后，在Editor下可以直接通过System.AppDomain.CurrentDomain.GetAssemblies()加载因为已经加载过了，非Editor则把热更程序集当做二进制数据加载:</p>
+<p>GameLauncher.cs</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Reflection;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> GameLauncher.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 游戏启动脚本</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">GameLauncher</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 热更新程序集名</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">string</span> HotUpdateAssemblyName = <span class="string">&quot;HotUpdate&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 热更新入口类型名</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">string</span> HotUpdateEntryTypeName = <span class="string">&quot;HotUpdateEntry&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 热更新入口方法名</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">string</span> HotUpdateEntryMethodName = <span class="string">&quot;Entry&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 热更新程序集</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> Assembly mHotUpdateAssembly;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">$&quot;GameLauncher.Start()&quot;</span>);</span><br><span class="line">        LoadHotUpdateDlls();</span><br><span class="line">        ExecuteHotUpdateEntry();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 加载热更新DLL</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">LoadHotUpdateDlls</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">$&quot;GameLauncher.LoadHotUpdateDlls()&quot;</span>);</span><br><span class="line">        <span class="comment">// Editor环境下，HotUpdate.dll.bytes已经被自动加载，不需要加载，重复加载反而会出问题。</span></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> !UNITY_EDITOR</span></span><br><span class="line">        <span class="keyword">var</span> hotUpdateBytes = File.ReadAllBytes(<span class="string">$&quot;<span class="subst">&#123;Application.streamingAssetsPath&#125;</span>/<span class="subst">&#123;HotUpdateAssemblyName&#125;</span>.dll.bytes&quot;</span>);</span><br><span class="line">        mHotUpdateAssembly = Assembly.Load(hotUpdateBytes);</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">      <span class="comment">// Editor下无需加载，直接查找获得HotUpdate程序集</span></span><br><span class="line">        mHotUpdateAssembly = System.AppDomain.CurrentDomain.GetAssemblies().First(a =&gt; a.GetName().Name == HotUpdateAssemblyName);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行热更新入口</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="built_in">bool</span> <span class="title">ExecuteHotUpdateEntry</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">$&quot;GameLauncher.ExecuteHotUpdateEntry()&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (mHotUpdateAssembly == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.LogError(<span class="string">$&quot;GameLauncher.ExecuteHotUpdateEntry() failed, HotUpdate assembly is null.&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> entryType = mHotUpdateAssembly.GetType(HotUpdateEntryTypeName);</span><br><span class="line">        <span class="keyword">if</span> (entryType == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.LogError(<span class="string">$&quot;GameLauncher.ExecuteHotUpdateEntry() failed, <span class="subst">&#123;HotUpdateEntryTypeName&#125;</span> type not found in HotUpdate assembly.&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> runMethod = entryType.GetMethod(HotUpdateEntryMethodName, BindingFlags.Public | BindingFlags.Static);</span><br><span class="line">        <span class="keyword">if</span> (runMethod == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.LogError(<span class="string">$&quot;GameLauncher.ExecuteHotUpdateEntry() failed, <span class="subst">&#123;HotUpdateEntryMethodName&#125;</span> method not found in Hello type.&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        runMethod.Invoke(<span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行项目就会看到热更新程序集入口我们加载成功并打印除了”Hello, HybridCLR”:</p>
+<p><img src="/img/CSharp/HotUpdate/HotUpdateEntryExecuteLog.PNG" alt="HotUpdateEntryExecuteLog"></p>
+<p>然后Editor打包Windows进行测试：</p>
+<p>File-&gt;Build Profiler-&gt;Build</p>
+<p>运行Windows打包Exe结果:</p>
+<p><img src="/img/CSharp/HotUpdate/HybridCLRWindowsExeLog.PNG" alt="HybridCLRWindowsExeLog"></p>
+<p><strong>可以看到即使是打包成Windows真机包，通过加载StreamingAssets目录下的热更新程序集也是能正确运行热更新代码的。</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>主工程不能直接引用热更新代码。有多种方式可以从主工程调用热更新程序集中的代码，比如反射来调用热更新代码。</strong></li>
+</ol>
+<h3 id="修改热更代码生效"><a href="#修改热更代码生效" class="headerlink" title="修改热更代码生效"></a>修改热更代码生效</h3><p>修改HotUpdateEntry.cs的方法，添加新的热更方法调用:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> HotUpdateEntry.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 热更新入口脚本</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HotUpdateEntry</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 热更新入口</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Entry</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;Hello, HybridCLR&quot;</span>);</span><br><span class="line">        HotUpdateFunc();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 热更新方法</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">HotUpdateFunc</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;HotUpdateFunc called&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Editor因为是直接编译，所以热更新程序集能实时生效：</p>
+<p><img src="/img/CSharp/HotUpdate/HotUpdateFuncLogInEditor.PNG" alt="HotUpdateFuncLogInEditor"></p>
+<p>但要想打包热更新程序集修改生效，还得走一次HybridCLR-&gt;CompileDll-&gt;ActiveBuildTarget(<strong>如果有明确需要触发重新编译的平台可以选对应平台菜单</strong>)触发重新编译热更新代码+新热更新程序集拷贝到StreamingAssets目录:</p>
+<p><img src="/img/CSharp/HotUpdate/HotUpdateFuncRecompileDllMenu.PNG" alt="HotUpdateFuncRecompileDllMenu"></p>
+<p>新生成的热更新程序集放到StreamingAssets目录后，重新打包运行EXE:</p>
+<p><img src="/img/CSharp/HotUpdate/HotUpdateFuncLogInWindowsExe.PNG" alt="HotUpdateFuncLogInWindowsExe"></p>
+<p>可以看到直接放入最新热更新程序集到StreammingAssets目录重新打包时能成功生效最新代码的，这个结果也是预期之类的，核心我们需要验证的是热更新热更程序集到包外后并加载看是否生效，这一点等后续接入热更新流程后再验证。</p>
+<h3 id="HybridCLR热更注意事项"><a href="#HybridCLR热更注意事项" class="headerlink" title="HybridCLR热更注意事项"></a>HybridCLR热更注意事项</h3><h4 id="Monobehaviour热更注意事项"><a href="#Monobehaviour热更注意事项" class="headerlink" title="Monobehaviour热更注意事项"></a>Monobehaviour热更注意事项</h4><ol>
+<li><strong>由于Unity资源管理系统的限制，热更新脚本所挂载的资源（prefab、scene、ScriptableObject资源）必须打成assetbundle，从ab包中实例化资源，才能正确还原脚本。</strong></li>
+<li><strong>如果将热更新脚本挂载到Resources等随主包的资源上，会发生scripting missing的错误！但如果先打成assetbundle包，再放到Resources下，运行时加载该随包assetbundle则没有问题。</strong></li>
+</ol>
+<h4 id="泛型热更注意事项"><a href="#泛型热更注意事项" class="headerlink" title="泛型热更注意事项"></a>泛型热更注意事项</h4><ol>
+<li><strong>使用热更新中定义的泛型类或函数，直接使用即可。</strong></li>
+<li><strong>AOT中已经有代码实例化过某个泛型类或者函数，则热更新中可以直接使用</strong></li>
+<li><strong>AOT中没有实例化过某个AOT泛型类或者函数，解决办法有以下几种:</strong><ol>
+<li>在AOT代码添加相应的实例化代码。(<strong>需要强更不合适</strong>)</li>
+<li><strong>补充元数据技术</strong>。 这是HybridCLR的专利技术，社区版本也能使用。</li>
+<li><strong>full generic sharing完全泛型共享技术</strong>，相比补充元数据技术，工作流更简单，既不需要随包携带或者下载补充元数据dll，也不需要加载补充元数据dll，包体大小和内存都明显降低。该技术目前<strong>只在商业化版本提供</strong>。</li>
+</ol>
+</li>
+</ol>
+<p>因为没买商业版这里主要针对<strong>补充元数据技术</strong>进行学习验证：</p>
+<h5 id="补充元数据技术"><a href="#补充元数据技术" class="headerlink" title="补充元数据技术"></a>补充元数据技术</h5><p>这里以热更新程序集泛型访问热更新程序集的类为例：</p>
+<p>首先我在HotUpdate程序集定义一个HotUpdateClass，然后在热更程序集尝试List<HotUpdateClass>。</p>
+<p>HotUpdate.cs</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> HotUpdateClass.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> HotUpdate程序集类</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span> </span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HotUpdateClass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 构造函数</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HotUpdateClass</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">$&quot;HotUpdateClass()&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 打印方法</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Print</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">$&quot;HotUpdateClass.Print()&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在热更新工程泛型访问HotUpdateClass:</p>
+<p>HotUpdateEntry.cs</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> HotUpdateEntry.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 热更新入口脚本</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HotUpdateEntry</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 热更新入口</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Entry</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;Hello, HybridCLR&quot;</span>);</span><br><span class="line">        HotUpdateFunc();</span><br><span class="line">        AccessHotUpdateGenericStruct();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 热更新方法</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">HotUpdateFunc</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;HotUpdateFunc called&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 访问热更程序集泛型Struct</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">AccessHotUpdateGenericStruct</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;AccessHotUpdateGenericStruct()&quot;</span>);</span><br><span class="line">        List&lt;HotUpdateStruct&gt; genricHotUpdateStructList = <span class="keyword">new</span> List&lt;HotUpdateStruct&gt;();</span><br><span class="line">        Debug.Log(<span class="string">&quot;List&lt;HotUpdateStruct&gt; genricHotUpdateStructList = new List&lt;HotUpdateStruct&gt;();&quot;</span>);</span><br><span class="line">        <span class="keyword">var</span> hotUpdateStructInstance = <span class="keyword">new</span> HotUpdateStruct();</span><br><span class="line">        genricHotUpdateStructList.Add(hotUpdateStructInstance);</span><br><span class="line">        hotUpdateStructInstance.Print();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后按照正常流程HybridCLR-&gt;CompileDll-&gt;ActiveBuildTarget，然后拷贝HotUpdate.dll到StreamingAssets的HotUpdate.dll.bytes，然后打包运行:</p>
+<p><img src="/img/CSharp/HotUpdate/AOTGenericMissingMethodLog.PNG" alt="AOTGenericMissingMethodLog"></p>
+<p>可以看到即使打包到真机在热更程序集访问一个主程序集里没用到泛型Struct依然不行，这个时候就需要用到补充元数据去补充List<T>这个类型的元数据，这个元数据位于mscorlib.dll里：</p>
+<p>GameLauncher.cs</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 需要补充元数据的Dll</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> List&lt;<span class="built_in">string</span>&gt; AotDllList = <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;mscorlib.dll&quot;</span>,</span><br><span class="line">    <span class="string">&quot;System.dll&quot;</span>,</span><br><span class="line">    <span class="string">&quot;System.Core.dll&quot;</span>, <span class="comment">// 如果使用了Linq，需要这个</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">$&quot;GameLauncher.Start()&quot;</span>);</span><br><span class="line">    <span class="comment">// 先补充元数据</span></span><br><span class="line">    LoadMetadataForAOTAssemblies();</span><br><span class="line">    ******</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 加载补充元数据</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">LoadMetadataForAOTAssemblies</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> aotDllName <span class="keyword">in</span> AotDllList)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">byte</span>[] dllBytes = File.ReadAllBytes(<span class="string">$&quot;<span class="subst">&#123;Application.streamingAssetsPath&#125;</span>/<span class="subst">&#123;aotDllName&#125;</span>.bytes&quot;</span>);</span><br><span class="line">        <span class="keyword">var</span> err = HybridCLR.RuntimeApi.LoadMetadataForAOTAssembly(dllBytes, HomologousImageMode.SuperSet);</span><br><span class="line">        Debug.Log(<span class="string">$&quot;LoadMetadataForAOTAssembly:<span class="subst">&#123;aotDllName&#125;</span>. ret:<span class="subst">&#123;err&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为使用到了HybridCLR相关的接口，所以主程序集还需要添加引用HybridCLR.Runtime的引用：</p>
+<p><img src="/img/CSharp/HotUpdate/HotUpdateReferenceHybridCLRRuntimeSetting.PNG" alt="HotUpdateReferenceHybridCLRRuntimeSetting"></p>
+<p>补充元数据的程序集可以通过HybridCLR&#x2F;Generate&#x2F;AotDlls之后在{project}&#x2F;HybridCLRData&#x2F;AssembliesPostIl2CppStrip&#x2F;{target}目录找到相关用于补充元数据的程序集：</p>
+<p><img src="/img/CSharp/HotUpdate/StripAssembleLocation.PNG" alt="StripAssembleLocation"></p>
+<p>然后生成热更新程序集并拷贝到StreamingAssets目录(<strong>补充元数据的程序集也要拷贝</strong>)并打包测试：</p>
+<p><img src="/img/CSharp/HotUpdate/CopyExtraAssembleToStreamingAssets.PNG" alt="CopyExtraAssembleToStreamingAssets"></p>
+<p><img src="/img/CSharp/HotUpdate/LoadMetadataForAOTAssembly.PNG" alt="LoadMetadataForAOTAssembly"></p>
+<p>可以看到通过补充元数据，我们正确访问到List<HotUpdateStruct>结构了。</p>
+<p>关于哪些Dll需要进行补充元数据，HybridCLR-&gt;Generate-&gt;AOTGenericReference时(包含在All里)会生成AOTGenericReferences.cs文件，里面有需要进行补充的元数据列表，如果不在意补充元数据过多的内存问题，可以直接使用这个列表作为依据：</p>
+<p><img src="/img/CSharp/HotUpdate/AOTGenericReferenceCSFile.PNG" alt="AOTGenericReferenceCSFile"></p>
+<p>HybridCLR的基础学习先到这，更多深入的学习以后实战用到深入学习。</p>
+<p>Note:</p>
+<ol>
+<li><p><strong>直接在热更新程序集里访问Main程序集会提示报错，因为HotUpdate程序集没设置引用Main程序集，所以我们需要给HotUpdate程序集添加Main程序集作为Assembly Definition References。</strong></p>
+<p><img src="/img/CSharp/HotUpdate/HotUpdateAssembleRefMainAssemble.PNG" alt="HotUpdateAssembleRefMainAssemble"></p>
+</li>
+<li><p><strong>因为主程序集有使用过List<T>相关，所以AOT可能已经有相关List泛型Class的元数据，在测试热更程序集的泛型访问问题时最好定义成Struct</strong></p>
+</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/HotUpdate/">HotUpdate</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/HotUpdate/">HotUpdate</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2026/08/04/HybridCLR%E5%AD%A6%E4%B9%A0/" data-title="代码热更原理 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2026/04/23/1988问答/"  title="1988问答">
+ <strong>下一篇：</strong><br/> 
+ <span>1988问答
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E4%BB%A3%E7%A0%81%E7%83%AD%E6%9B%B4%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">C#代码热更原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">C#运行原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IOS%E7%A6%81%E6%AD%A2JIT"><span class="toc-number">2.2.</span> <span class="toc-text">IOS禁止JIT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity-IL2CPP"><span class="toc-number">2.3.</span> <span class="toc-text">Unity IL2CPP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ILRuntime"><span class="toc-number">2.4.</span> <span class="toc-text">ILRuntime</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HybridCLR"><span class="toc-number">2.5.</span> <span class="toc-text">HybridCLR</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ILRuntime%E3%80%81HybridCLR%E4%B8%8E%E4%BC%A0%E7%BB%9F-JIT-%E7%9A%84%E6%9C%AC%E8%B4%A8%E5%8C%BA%E5%88%AB"><span class="toc-number">2.6.</span> <span class="toc-text">ILRuntime、HybridCLR与传统 JIT 的本质区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lua"><span class="toc-number">2.7.</span> <span class="toc-text">Lua</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">2.8.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HybridCLR%E5%AD%A6%E4%B9%A0"><span class="toc-number">3.</span> <span class="toc-text">HybridCLR学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HybridCLR%E5%AE%89%E8%A3%85"><span class="toc-number">3.1.</span> <span class="toc-text">HybridCLR安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HybridCLR%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">3.2.</span> <span class="toc-text">HybridCLR初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HybridCLR%E5%88%92%E5%88%86%E7%A8%8B%E5%BA%8F%E9%9B%86"><span class="toc-number">3.3.</span> <span class="toc-text">HybridCLR划分程序集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HybridCLR%E9%A1%B9%E7%9B%AE%E8%AE%BE%E7%BD%AE"><span class="toc-number">3.4.</span> <span class="toc-text">HybridCLR项目设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%83%AD%E6%9B%B4%E6%96%B0%E4%BB%A3%E7%A0%81"><span class="toc-number">3.5.</span> <span class="toc-text">创建热更新代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E7%83%AD%E6%9B%B4%E7%A8%8B%E5%BA%8F%E9%9B%86"><span class="toc-number">3.6.</span> <span class="toc-text">生成热更程序集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E5%B9%B6%E4%BD%BF%E7%94%A8%E7%83%AD%E6%9B%B4%E6%96%B0%E7%A8%8B%E5%BA%8F%E9%9B%86"><span class="toc-number">3.7.</span> <span class="toc-text">加载并使用热更新程序集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%83%AD%E6%9B%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%95%88"><span class="toc-number">3.8.</span> <span class="toc-text">修改热更代码生效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HybridCLR%E7%83%AD%E6%9B%B4%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">3.9.</span> <span class="toc-text">HybridCLR热更注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Monobehaviour%E7%83%AD%E6%9B%B4%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">3.9.1.</span> <span class="toc-text">Monobehaviour热更注意事项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E7%83%AD%E6%9B%B4%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">3.9.2.</span> <span class="toc-text">泛型热更注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%E5%85%83%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF"><span class="toc-number">3.9.2.1.</span> <span class="toc-text">补充元数据技术</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Game/" title="Game">Game<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2026 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
