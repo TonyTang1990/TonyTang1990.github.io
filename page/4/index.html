@@ -1120,10 +1120,12 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 <h3 id="依赖加载还原"><a href="#依赖加载还原" class="headerlink" title="依赖加载还原"></a>依赖加载还原</h3><p>还记得前面说到的依赖的Assest信息打包吗？<br>这里就需要加载出来并使用进行还原了。<br>这里接不细说加载还原了，主要就是通过存储的依赖信息把依赖的Asset加载进来并设置回去的过程(可以是手动设置回去也可以是Unity自动还原的方式)。</p>
 <p>这里主要要注意的是前面那张大图上给出的各种资源类型在Asset加载还原时采用的方式。<br>资源加载还原的方式主要有两种：</p>
 <ol>
-<li><p>复制+引用<br>UI – 复制(GameObject) + 引用(Components,Tranform等)<br>Material – 复制(材质自身) + 引用(Texture和Shader)</p>
-</li>
-<li><p>引用<br>Sprite – 引用<br>Audio – 引用<br>Texture – 引用<br>Shader – 引用<br>Material – 引用</p>
-</li>
+<li>复制+引用<br>UI – 复制(GameObject) + 引用(Components,Tranform等)<br>Material – 复制(材质自身) + 引用(Texture和Shader)</li>
+<li>引用<br>Sprite – 引用<br>Audio – 引用<br>Texture – 引用<br>Shader – 引用<br>Material – 引用</li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>除了GameObject使用对象绑定(考虑到对象池的情况，不好明确释放时机)，其他支援类型都建议使用引用计数</strong></li>
 </ol>
 <h3 id="AB加载相关API"><a href="#AB加载相关API" class="headerlink" title="AB加载相关API"></a>AB加载相关API</h3><ol>
 <li>AssetBundle(AB接口)</li>
@@ -1217,6 +1219,9 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 <li>老版异步加载没有考虑设计上支持逻辑层加载打断</li>
 <li>老版代码没有涉及考虑动态AB下载的设计(边玩边下)</li>
 <li>资源加载代码设计还比较混乱，不容易让人看懂看明白</li>
+<li>异步加载AB管理不严谨，异步加载过程中加载AB没有加计数，可能出现错误卸载问题</li>
+<li>同步加载没提供非回调式直接获取的方式</li>
+<li><strong>AB名字没带MD5信息，热更时可能出现CDN缓存问题(2026&#x2F;08&#x2F;12)</strong></li>
 </ol>
 <p>综合上面4个问题，新版资源加载管理将支持:</p>
 <ol>
@@ -1230,6 +1235,7 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 <li>加载流程重新设计，让代码更清晰</li>
 <li><strong>保留索引计数(Asset和AssetBundle级别)+对象绑定的设计(Asset和AssetBundle级别)+按AssetBundle级别卸载(依赖还原的Asset无法准确得知所以无法直接卸载Asset)+加载触发就提前计数(避免异步加载或异步加载打断情况下资源管理异常)</strong></li>
 <li><strong>支持非回调式的同步加载返回(通过抽象Loader支持LoadImmediately的方式实现)</strong></li>
+<li><strong>打包输出到临时目录，然后复制到临时目录统一添加MD5改名，根据改名后的文件信息生成VerifyABInfo.json和ABInfo.json文件，最后根据打包需求再将相关文件复制到目标目录(2026&#x2F;08&#x2F;12)</strong></li>
 </ol>
 <p>Note:</p>
 <ol>
@@ -1265,7 +1271,7 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 - AssetRequestHandle(Asset加载句柄)
 - AssetBundleRequestHandle(AssetBundle加载句柄)
 - AssetDatabaseAsyncRequest(AssetDatabase模式下异步加载模拟)
-- AssetBundlePath(AB资源路径相关 -- 处理多平台以及热更资源加载路径问题)
+- ResourcePath(AB资源路径相关 -- 处理多平台以及热更资源加载路径问题)
 - ResourceDebugWindow.cs(Editor运行模式下可视化查看资源加载(AssetBundle和AssetDatabase两种都支持)详细信息的辅助工具窗口)
 - ResourceConstData(资源打包加载相关常量数据)
 - ResourceLoadAnalyse(资源加载统计分析工具)
@@ -1358,6 +1364,11 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 <li><strong>不支持AB变体功能(ScriptableBuildPipeline也不支持变体功能)，AB后缀名统一由打包和加载平台统一添加</strong></li>
 <li><strong>老版AB依赖信息采用原始打包输出的*Manifest文件。新版ScriptableBuildPipeline采用自定义输出打包的CompatibilityAssetBundleManifest文件。</strong></li>
 <li><strong>打包面板里支持了是否支持代码加载的勾选(用于支持文件名(含后缀)的资源加载和优化需要支持代码主动加载而生成的AssetBuildInfoAsset.asset(AB模式)和EditorAssetInfoAsset.asset(AssetDatabase模式)的数据量问题)</strong></li>
+<li><strong>打包支持输出带MD5名字信息的AB文件，实际加载还是AssetBuildInfoAsset里记录的打包策略得出的AB名(带平台后缀)，同时打包会生成VerifyABInfo.json(用于校验热更的ABInfo.json文件)和ABInfo.json(存储了打包AB热更以及MD5换算相关信息)(2026&#x2F;08&#x2F;12)</strong></li>
+</ol>
+<p>Note:</p>
+<ol>
+<li><strong>最新的AB打包不再直接输出到StreammingAssets目录，而是先输出到一个临时打包目录，然后通过复制到临时复制进行改名实现带MD5名字AB生成，最后根据生成的MD5名字AB生成VerifyABInfo.json和ABInfo.json文件用于AB的热更新和真实MD5名字换算加载。(2026&#x2F;08&#x2F;12)</strong></li>
 </ol>
 <p>设计主要参考:</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/gmhevinci/MotionFramework">MotionFramework</a></p>
@@ -1435,7 +1446,7 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 <li>支持游戏内资源热更(完成 – 暂时限Android， IOS待测试)</li>
 <li>支持游戏内代码热更(未做)</li>
 </ol>
-<h4 id="热更测试说明"><a href="#热更测试说明" class="headerlink" title="热更测试说明"></a>热更测试说明</h4><p>之前是使用的<a target="_blank" rel="noopener" href="http://www.rejetto.com/hfs/">HFS</a>快速搭建的一个资源本地资源服务器，后来使用阿里的ISS静态资源服务器做了一个网络端的资源服务器。</p>
+<h4 id="热更测试说明"><a href="#热更测试说明" class="headerlink" title="热更测试说明"></a>热更测试说明</h4><p><strong>UnityWebRequest支持本机file:&#x2F;&#x2F;&#x2F;的访问方式，内网测试热更实用的file:&#x2F;&#x2F;&#x2F;，后来使用阿里的OSS静态资源服务器做了一个网络端的资源服务器。</strong></p>
 <p>版本强更流程：</p>
 <ol>
 <li>比较包内版本信息和包外版本信息检查是否强更过版本</li>
@@ -1447,56 +1458,47 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 </ol>
 <p>资源热更流程：</p>
 <ol>
-<li><p>初始化本地热更过的资源列表信息(暂时存储在:Application.persistentDataPath + “&#x2F;ResourceUpdateList&#x2F;ResourceUpdateList.txt”里)</p>
+<li><p>初始化本地ABInfo.json信息(优先包外)</p>
 </li>
 <li><p>通过资源服务器下载最新服务器版本信息(ServerVersionConfig.json)和本地资源版本号作对比，决定是否资源热更</p>
 </li>
 <li><p>结合最新版本号，最新资源版本号和资源服务器地址(Json配置)拼接出最终资源热更所在的资源服务器地址</p>
 </li>
-<li><p>下载对应地址下的AssetBundleMD5.txt(里面包含了对应详细资源MD5信息)</p>
-<p>AssetBundleMD5.txt</p>
-<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">assetbuildinfo.bundle|ca830d174533e87efad18f1640e5301d</span><br><span class="line">shaderlist.bundle|2ac2d75f7d91fda7880f447e21b2e289</span><br><span class="line">******</span><br></pre></td></tr></table></figure>
+<li><p>下载对应地址下的VerifyABInfo.json(里面包含热更下载ABInfo.json的校验信息)</p>
+<p>VerifyABInfo.json</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;ABInfoFileSize&quot;</span><span class="punctuation">:</span> <span class="number">11133</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ABInfoFileSha256&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ec28fd80d4a3dc44c95072555209dd22f7207e5e0d9e7456bf33ca2b69ebe44e&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>根据比较对应地址下的AssetBundleMD5.txt里的资源MD5信息和本地资源MD5信息(包外的MD5信息优先)得出需要更新下载的资源列表</p>
+<li><p>VerifyABInfo.json下载成功后根据比较对应地址下载ABInfo.json文件，下载下来的ABInfo.json先写入到本地临时热更目录(Stage目录)，根据热更ABInfo.json和本地的ABInfo.json信息比较得出需要更新下载的资源列表</p>
+<p>ABInfo.json</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;HotUpdateSingleABInfoList&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;ABRelativePath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Android&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;ABMD5&quot;</span><span class="punctuation">:</span> <span class="string">&quot;034739fc628faffa9024979c6d7d87d1&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;ABSize&quot;</span><span class="punctuation">:</span> <span class="number">4785</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;ABSha256&quot;</span><span class="punctuation">:</span> <span class="string">&quot;5d583b2dda00f5c842288e65fda0fe8aa70d9bde9d6d70f572621eef01367315&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        ******</span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>根据得出的需要更新的资源列表下载对应资源地址下的资源并存储在包外(Application.persistentDataPath + “&#x2F;Android&#x2F;“)，同时写入最新的资源MD5信息文件(本地AssetBundleMD5.txt)到本地</p>
+<li><p>根据得出的需要更新的资源列表下载对应资源地址下的资源下载先存储到临时热更目录(Stage目录)，通过ABInfo.json里的AB校验信息验证后移动到包外热更目录(Application.persistentDataPath + “&#x2F;Android&#x2F;“)</p>
 </li>
-<li><p>直到所有资源热更完成，退出重进游戏</p>
+<li><p>直到所有资源热更完成，我们将ABInfo.json移动到包外热更目录以供下次使用</p>
+</li>
+<li><p>写入最新的热更版本号和资源版本号到包外。</p>
+</li>
+<li><p>最后退出重进游戏，让热更新生效(或者等玩家自己下一次打开游戏时生效)</p>
 </li>
 </ol>
 <h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="/img/Unity/HotUpdate/HotUpdateFlowChat.png" alt="HotUpdateFlowChat"></p>
-<h4 id="热更新辅助工具"><a href="#热更新辅助工具" class="headerlink" title="热更新辅助工具"></a>热更新辅助工具</h4><p>Tools-&gt;HotUpdate-&gt;热更新操作工具</p>
+<h4 id="热更新辅助工具"><a href="#热更新辅助工具" class="headerlink" title="热更新辅助工具"></a>热更新辅助工具</h4><p>Tools-&gt;AssetBundle-&gt;资源打包窗口</p>
 <p><img src="/img/Unity/HotUpdate/HotUpdateToolsUI.png" alt="HotUpdateToolsUI"></p>
-<p>主要分为以下2个阶段：</p>
-<ul>
-<li><p>热更新准备阶段:</p>
+<p>主要分为以下几个步骤：</p>
 <ol>
-<li>每次资源打包会在包内Resource目录生成一个AssetBundleMd5.txt文件用于记录和对比哪些资源需要热更</li>
+<li>AB打包(每次AB打包都输出到一个临时目录)</li>
+<li>将AB打包的AB资源复制到临时改名目录</li>
+<li>根据AB改名后的AB文件信息生成VerifyABInfo.json和ABInfo.json文件信息</li>
+<li>根据打包用途(e.g. 母包构建和热更构建)，将AB改名文件，VerifyABInfo.json和ABInfo.json文件复制到对应目标目录(比如母包构建移动到包内和Resources。热更构建移动到热更新准备目录)</li>
 </ol>
-<p>​    <img src="/img/Unity/HotUpdate/AssetBundleMD5File.png" alt="AssetBundleMD5File"></p>
-<ol start="2">
-<li>执行热更新准备操作，生成热更新所需服务器最新版本信息文件(ServerVersionConfig.json)并将包内对应平台资源拷贝到热更新准备目录</li>
-</ol>
-<p><img src="/img/Unity/HotUpdate/HotUpdatePreparationFolder.png" alt="HotUpdatePreparationFolder"></p>
-</li>
-<li><p>热更新判定阶段</p>
-<ol>
-<li><p>初始化包内(AssetBundleMd5.txt)和包外(AssetBundleMd5.txt)热更新的AssetBundle MD5信息(先读包内后读包外以包外为准)</p>
-</li>
-<li><p>游戏运行拉去服务器版本和资源版本信息进行比较是否需要版本强更或资源热更新</p>
-</li>
-<li><p>需要资源热更新则拉去对应最新资源版本的资源MD5信息文件(AssetBundleMD5.txt)进行和本地资源MD5信息进行比较判定哪些资源需要热更新</p>
-</li>
-<li><p>拉去所有需要热更新的资源，完成后进入游戏</p>
-</li>
-</ol>
-</li>
-</ul>
-<p>Note:</p>
-<ol>
-<li>每次打包版本时会拷贝一份AssetBundleMD5.txt到打包输出目录(保存一份方便查看每个版本的资源MD5信息)</li>
-</ol>
-<h4 id="热更包外目录结构"><a href="#热更包外目录结构" class="headerlink" title="热更包外目录结构"></a>热更包外目录结构</h4><p>PersistentAsset -&gt; HotUpdate -&gt; Platform(资源热更新目录)<br>PersistentAsset -&gt; HotUpdate -&gt; AssetBundleMd5.txt(记录热更新的AssetBundle路径和MD5信息–兼顾进游戏前资源热更和动态资源热更)(格式:热更AB路径:热更AB的MD5&#x2F;n热更AB路径:热更AB的MD5******)<br>PersistentAsset -&gt; Config -&gt; VersionConfig.json(包外版本信息–用于进游戏前强更和热更判定)</p>
+<p>打包临时目录结构:</p>
+<p><img src="/img/Unity/HotUpdate/AssetBundleBuildTempFolderStructure.png" alt="AssetBundleBuildTempFolderStructure"></p>
+<p>热更新准备目录结构:</p>
+<p><img src="/img/Unity/HotUpdate/HotUpdatePreparationFolder1.png" alt="HotUpdatePreparationFolder1"></p>
+<p><img src="/img/Unity/HotUpdate/HotUpdatePreparationFolder2.png" alt="HotUpdatePreparationFolder2"></p>
+<h4 id="热更包外目录结构"><a href="#热更包外目录结构" class="headerlink" title="热更包外目录结构"></a>热更包外目录结构</h4><p>PersistentAsset -&gt; HotUpdate -&gt; Platform(资源热更新目录)</p>
+<p>PersistentAsset -&gt; HotUpdate -&gt; Stage(资源热更临时目录)</p>
+<p>PersistentAsset -&gt; HotUpdate -&gt; Platform -&gt; ABInfo.json(<strong>记录最新AB的资源信息(含AB相对路径(含平台后缀)，文件MD5，文件大小，文件Sha256等</strong>)<br>PersistentAsset -&gt; Config -&gt; VersionConfig.json(包外版本信息–用于进游戏前强更和热更判定)</p>
 <p>PersistentAsset -&gt; HotUpdate -&gt; 版本强更包</p>
 <h2 id="资源辅助工具"><a href="#资源辅助工具" class="headerlink" title="资源辅助工具"></a>资源辅助工具</h2><p>资源辅助工具五件套：</p>
 <ul>
@@ -1522,6 +1524,8 @@ TableList -- 表示按表格列表形式显示(DrawScrollView = true, MaxScrollV
 <li>打包策略是根据游戏类型，根据实际情况而定。</li>
 <li>AB压缩格式选择取决于内存和加载性能以及包体大小等方面的抉择。</li>
 <li>资源管理策略而言，主要分为基于Asset管理(AssetBundle.Unload(false))还是基于AB管理(AssetBundle.Unload(true))，前者容易出现内存中多份重复资源，后者需要确保严格的管理机制(比如索引计数))</li>
+<li><strong>要避免热更CDN缓存问题，AB名需要带上MD5信息(Sha256过长所以选MD5)(2026&#x2F;08&#x2F;12)</strong></li>
+<li><strong>没有采用Unity原生的注入MD5到AB名的打包参数是因为AB热更新相关的信息无论如何都还是需要自行收集(ABInfo.json文件)，自己掌控AB名添加MD5流程比较好控制(2026&#x2F;08&#x2F;12)</strong></li>
 </ol>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://github.com/tangzx/ABSystem">tangzx&#x2F;ABSystem</a><br><a target="_blank" rel="noopener" href="https://github.com/mr-kelly/KEngine">mr-kelly&#x2F;KEngine</a><br><a target="_blank" rel="noopener" href="https://github.com/Unity-Technologies/AssetBundles-Browser">AssetBundles-Browser</a></p>
 
