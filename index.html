@@ -94,7 +94,7 @@
 </header>
     <div class="article-content">
         
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>游戏开发过程中打包是一个很频繁和复杂的事。打包除了设计资源打包流程，还涉及到APK，IPA，小游戏打包等平台分类。不同平台接入第三方SDK等库又不一样，不同渠道又有不同的SDK要接入。每次打包如果都是打开Unity的打包窗口去设置这些详细打包参数，那对于打包维护成本来说就很高。本章节就是详细深入**CI&#x2F;CD(持续集成和持续交付&#x2F;部署)**的实战，<strong>目标是打造易用性，易扩展维护性，支持快速持续打包部署交付的自动化打包流程。</strong></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>游戏开发过程中打包是一个很频繁和复杂的事。打包除了涉及资源打包流程，还涉及到APK，IPA，小游戏打包等平台分类。不同平台接入第三方SDK等库又不一样，不同渠道又有不同的SDK要接入。每次打包如果都是打开Unity的打包窗口去设置这些详细打包参数，那对于打包维护成本来说就很高。本章节就是详细深入**CI&#x2F;CD(持续集成和持续交付&#x2F;部署)**的实战，<strong>目标是打造易用性，易扩展维护性，支持快速持续打包部署交付的自动化打包流程。</strong></p>
 <h2 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h2><p><a target="_blank" rel="noopener" href="https://www.jenkins.io/">The leading open source automation server, Jenkins provides hundreds of plugins to support building, deploying and automating any project.</a></p>
 <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Jenkins_(%E8%BD%AF%E4%BB%B6)">Jenkins是一个用Java编写的开源的持续集成工具。</a></p>
 <p>从介绍可以看出Jenkins是一个免费开源的支持数百个插件用于打包，部署，自动化的自动化服务器。</p>
@@ -115,7 +115,7 @@
 <p>为了确保后续Jenkins权限服务正常，优先选择Logon Type为<strong>Run service as local or domain user:</strong>，选择这个后需要输入本机的用户名和密码(<strong>这里的用户名和密码我尝试了各种用户名和密码好像都不对</strong>)，考虑到为了避免使用现有用户名可能因为现有用户名的一些权限修改影响Jenkins运行，最终我决定新建一个用户名作为Jenkins独立使用的用户名，Win10家庭版添加用户名流程：</p>
 <p><strong>设置-&gt;账户-&gt;家庭和其他用户-&gt;将其他人添加到这台电脑-&gt;输入新用户名和密码</strong></p>
 <p><img src="/img/CICD/Win10AddNewUserForJenkins.PNG" alt="Win10AddNewUserForJenkins"></p>
-<p>然后我们使用这个用户名和密码作为Jenkins安装的用户名，如果确认用户名密码都数对饿了，但还是提示Test Credential失败如下:</p>
+<p>然后我们使用这个用户名和密码作为Jenkins安装的用户名，如果确认用户名密码都数对了，但还是提示Test Credential失败如下:</p>
 <p><img src="/img/CICD/TestCredentialsFailed.PNG" alt="TestCredentialsFailed"></p>
 <p><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/installing/windows/#invalid-service-logon-credentials">按照官网的说法是指定的用户名没有Logon as a service的权限解决办法</a></p>
 <p>如果是家庭版Win10好像没有secpol.msc这个时候我们要使用以下方案：</p>
