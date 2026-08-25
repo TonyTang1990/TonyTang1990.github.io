@@ -1,0 +1,1226 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>从0搭建Jenkins打包 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="前言游戏开发过程中打包是一个很频繁和复杂的事。打包除了设计资源打包流程，还涉及到APK，IPA，小游戏打包等平台分类。不同平台接入第三方SDK等库又不一样，不同渠道又有不同的SDK要接入。每次打包如果都是打开Unity的打包窗口去设置这些详细打包参数，那对于打包维护成本来说就很高。本章节就是详细深入**CI&#x2F;CD(持续集成和持续交付&#x2F;部署)**的实战，目标是打造易用性，易扩展维">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从0搭建Jenkins打包">
+<meta property="og:url" content="http://tonytang1990.github.io/2026/08/19/%E4%BB%8E0%E6%90%AD%E5%BB%BAJenkins%E6%89%93%E5%8C%85/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="前言游戏开发过程中打包是一个很频繁和复杂的事。打包除了设计资源打包流程，还涉及到APK，IPA，小游戏打包等平台分类。不同平台接入第三方SDK等库又不一样，不同渠道又有不同的SDK要接入。每次打包如果都是打开Unity的打包窗口去设置这些详细打包参数，那对于打包维护成本来说就很高。本章节就是详细深入**CI&#x2F;CD(持续集成和持续交付&#x2F;部署)**的实战，目标是打造易用性，易扩展维">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JavaHomeEnvSettting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JavaBinEnvSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JavaVersionInPowerShell.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JenkinsInstallLocation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/Win10AddNewUserForJenkins.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/TestCredentialsFailed.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ChooseRunServiceAsLocalSystem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/SetJenkinsPort.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ChooseJavaJDKLocaltion.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JenkinsJavaVersionRequired.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JavaHomeAndPathConfiguration.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/TestJava21Configuration.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JenkinsServiceInfo.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ChangeJenkinsUserAccountInfo.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/CreateJenkinsBuildUser.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ChangeJenkinsUserAndLaunch.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/RunJenkinsWithPassword.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/InstallRecomendedPlugins.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JenkinsRecomendPluginsInstallFailed.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/CreateJenkinsAdminAccount.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JenkinsURLConfig.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/CompleteJenkinsSetting.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ReinstallJenkinsPlugin.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JenkinsPluginDownloadProgress.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ReLaunchJenkinsFailed.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JenkinsFolderAuthSettingProblem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/SetJenkinBuildUserAuth.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ReLaunchJenkinsSuccess.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/StopJenkinsService.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/StartJenkinsService.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ChangeJenkinsFolderSuccess.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ManageJenkinsPage.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/BuildinNodeWarning.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/PipelineSnippetGenerator.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JenkinsConsoleCommandRun.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ConfigGlobalSystemManageEmailAdress.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ConfigureGlobalGitInstallations.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/GlobalGitConfigurationBuildFailed.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/GitHostKeyWithSSHAnd443.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ConfigHostKeyVerificationStrategy.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/AddSSHUsernameWithPrivateKey.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/ConfigSSHUsernameWithPrivateKey.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/AfterSSHConfigComplete.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/GitHttpAndSSHHostKeyConfiguration.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/CreateNewAgentEntrance.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/CreateUnityNativeFrameworkBuildAgent.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/FinalAgentSetting1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/FinalAgentSetting2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/AfterCreateAgentButDisplayOffline.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/RunAgentWithCommandLine.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/LaunchAgentFromPowerShell.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/LaunchAgentSuccess.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/InstallPipelinePlugins.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/CreateNewItemEntrance.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/SelectPipelineItemType.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/PipelineConfiguration1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/PipelineConfiguration2.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/PipelineConfiguration1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/PipelineConfiguration1.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/NoJenkinsfileBuildError.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/BuildFailedAfterConfigureSSHWithPrivateKey.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JenkinsBuildWithParametersPage.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/BuildFailedAfterFixGitProblem.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/RunBatchModeBuildSuccessLog.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JenkinsPipelineBuildSuccess.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JenkinsBuildAPKLocation.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/JenkinsBuildInstallSuccess.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/SuccessArchivingArtifacts.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/PipelineWaitForExector.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/CreateAgentFromAgent.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/BuildAgent2Create.PNG">
+<meta property="og:image" content="http://tonytang1990.github.io/img/CICD/MultiplePipelineRunConcurrently.PNG">
+<meta property="article:published_time" content="2026-08-19T13:38:00.000Z">
+<meta property="article:modified_time" content="2026-08-25T03:32:15.140Z">
+<meta property="article:author" content="Tony Tang">
+<meta property="article:tag" content="CI&#x2F;CD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/CICD/JavaHomeEnvSettting.PNG">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2026/08/19/从0搭建Jenkins打包/" title="从0搭建Jenkins打包" itemprop="url">从0搭建Jenkins打包</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2026-08-19T13:38:00.000Z" itemprop="datePublished"> 发表于 2026-08-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jenkins"><span class="toc-number">2.</span> <span class="toc-text">Jenkins</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Jenkins%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.</span> <span class="toc-text">Jenkins安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9Jenkins%E4%B8%BB%E7%9B%AE%E5%BD%95"><span class="toc-number">2.2.</span> <span class="toc-text">修改Jenkins主目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Managing-Jenkins"><span class="toc-number">2.3.</span> <span class="toc-text">Managing Jenkins</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#System-Configuration"><span class="toc-number">2.3.1.</span> <span class="toc-text">System Configuration</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">系统配置</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE"><span class="toc-number">2.3.1.2.</span> <span class="toc-text">全局工具配置</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="toc-number">2.3.1.3.</span> <span class="toc-text">插件管理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E5%92%8C%E4%BA%91%E7%AE%A1%E7%90%86"><span class="toc-number">2.3.1.4.</span> <span class="toc-text">节点和云管理</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Controller"><span class="toc-number">2.3.1.4.1.</span> <span class="toc-text">Controller</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Nodes"><span class="toc-number">2.3.1.4.2.</span> <span class="toc-text">Nodes</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Agents"><span class="toc-number">2.3.1.4.3.</span> <span class="toc-text">Agents</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Executors"><span class="toc-number">2.3.1.4.4.</span> <span class="toc-text">Executors</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Clouds"><span class="toc-number">2.3.1.5.</span> <span class="toc-text">Clouds</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Appearance"><span class="toc-number">2.3.1.6.</span> <span class="toc-text">Appearance</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Security"><span class="toc-number">2.3.2.</span> <span class="toc-text">Security</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Security-1"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">Security</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Credentials"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">Credentials</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Credential-Providers"><span class="toc-number">2.3.2.3.</span> <span class="toc-text">Credential Providers</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Users"><span class="toc-number">2.3.2.4.</span> <span class="toc-text">Users</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Status-Information"><span class="toc-number">2.3.3.</span> <span class="toc-text">Status Information</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF"><span class="toc-number">2.3.3.1.</span> <span class="toc-text">系统信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97"><span class="toc-number">2.3.3.2.</span> <span class="toc-text">系统日志</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B4%9F%E8%BD%BD%E7%BB%9F%E8%AE%A1"><span class="toc-number">2.3.3.3.</span> <span class="toc-text">负载统计</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#About-Jenkins"><span class="toc-number">2.3.3.4.</span> <span class="toc-text">About Jenkins</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jenkins-Pipeline"><span class="toc-number">2.4.</span> <span class="toc-text">Jenkins Pipeline</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFPipeline"><span class="toc-number">2.4.1.</span> <span class="toc-text">什么是Pipeline</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81Pipeline"><span class="toc-number">2.4.2.</span> <span class="toc-text">为什么要Pipeline</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Pipeline"><span class="toc-number">2.4.3.</span> <span class="toc-text">如何使用Pipeline</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Pipeline%E5%B7%A5%E5%85%B7"><span class="toc-number">2.4.4.</span> <span class="toc-text">Pipeline工具</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity%E6%89%93%E5%8C%85CI-CD-Pipeline%E5%AE%9E%E6%88%98"><span class="toc-number">2.5.</span> <span class="toc-text">Unity打包CI&#x2F;CD+Pipeline实战</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE-1"><span class="toc-number">2.5.1.</span> <span class="toc-text">系统配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE-1"><span class="toc-number">2.5.2.</span> <span class="toc-text">全局工具配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Security-2"><span class="toc-number">2.5.3.</span> <span class="toc-text">Security</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Credentials-1"><span class="toc-number">2.5.4.</span> <span class="toc-text">Credentials</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0SSH-Credential"><span class="toc-number">2.5.4.1.</span> <span class="toc-text">添加SSH Credential</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAAgent"><span class="toc-number">2.5.5.</span> <span class="toc-text">创建Agent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8Agent"><span class="toc-number">2.5.6.</span> <span class="toc-text">启动Agent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B"><span class="toc-number">2.5.7.</span> <span class="toc-text">搭建打包流程</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAPipeline"><span class="toc-number">2.5.7.1.</span> <span class="toc-text">创建Pipeline</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Pipeline%E6%89%93%E5%8C%85"><span class="toc-number">2.5.7.2.</span> <span class="toc-text">Pipeline打包</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#No-Jenkinsfile%E6%89%93%E5%8C%85%E6%8A%A5%E9%94%99"><span class="toc-number">2.5.7.2.1.</span> <span class="toc-text">No Jenkinsfile打包报错</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Jenkinsfile%E7%BC%96%E5%86%99"><span class="toc-number">2.5.7.2.2.</span> <span class="toc-text">Jenkinsfile编写</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99"><span class="toc-number">2.5.7.2.3.</span> <span class="toc-text">打包脚本编写</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Git-SSH%E8%AE%BF%E9%97%AE%E6%8A%A5%E9%94%99"><span class="toc-number">2.5.7.2.4.</span> <span class="toc-text">Git SSH访问报错</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%89%93%E5%8C%85CS%E8%84%9A%E6%9C%AC%E4%BC%A0%E6%BC%8F%E6%8A%A5%E9%94%99"><span class="toc-number">2.5.7.2.5.</span> <span class="toc-text">打包CS脚本传漏报错</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Jenkins%E6%B2%A1%E8%BE%93%E5%87%BAUnity%E6%97%A5%E5%BF%97%E9%97%AE%E9%A2%98"><span class="toc-number">2.5.7.2.6.</span> <span class="toc-text">Jenkins没输出Unity日志问题</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Unity%E4%B8%AD%E6%96%87%E6%97%A5%E5%BF%97%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98"><span class="toc-number">2.5.7.2.7.</span> <span class="toc-text">Unity中文日志乱码问题</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E6%88%90%E5%8A%9F"><span class="toc-number">2.5.7.2.8.</span> <span class="toc-text">打包成功</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Pipeline%E6%89%93%E5%8C%85%E5%BD%92%E6%A1%A3"><span class="toc-number">2.5.7.3.</span> <span class="toc-text">Pipeline打包归档</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%9AAgent%E5%A4%9APipeline%E6%89%93%E5%8C%85"><span class="toc-number">2.5.7.4.</span> <span class="toc-text">多Agent多Pipeline打包</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">3.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>游戏开发过程中打包是一个很频繁和复杂的事。打包除了设计资源打包流程，还涉及到APK，IPA，小游戏打包等平台分类。不同平台接入第三方SDK等库又不一样，不同渠道又有不同的SDK要接入。每次打包如果都是打开Unity的打包窗口去设置这些详细打包参数，那对于打包维护成本来说就很高。本章节就是详细深入**CI&#x2F;CD(持续集成和持续交付&#x2F;部署)**的实战，<strong>目标是打造易用性，易扩展维护性，支持快速持续打包部署交付的自动化打包流程。</strong></p>
+<h2 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h2><p><a target="_blank" rel="noopener" href="https://www.jenkins.io/">The leading open source automation server, Jenkins provides hundreds of plugins to support building, deploying and automating any project.</a></p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Jenkins_(%E8%BD%AF%E4%BB%B6)">Jenkins是一个用Java编写的开源的持续集成工具。</a></p>
+<p>从介绍可以看出Jenkins是一个免费开源的支持数百个插件用于打包，部署，自动化的自动化服务器。</p>
+<p><strong>以前学习了解过Jenkins的打包流程，这一次准备从0到1搭建Unity游戏开发的全自动化打包流程(包含不同打包需求，不同平台，不同渠道，不同SDK等)。</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/">Jenkins官网文档</a></p>
+<h3 id="Jenkins安装"><a href="#Jenkins安装" class="headerlink" title="Jenkins安装"></a>Jenkins安装</h3><p>因为Jenkins是基于Java编写的，所以我们要先安装Java环境：</p>
+<p><a target="_blank" rel="noopener" href="https://www.java.com/en/download/manual.jsp">Java下载地址</a></p>
+<p>关于Java环境变量设置参考网上说明，最终配置好后:</p>
+<p><img src="/img/CICD/JavaHomeEnvSettting.PNG" alt="JavaHomeEnvSettting"></p>
+<p><img src="/img/CICD/JavaBinEnvSetting.PNG" alt="JavaBinEnvSetting"></p>
+<p><strong>后续会将Path里的全路径修改成访问JAVA_HOME的相对路径方便统一修改Java版本。</strong></p>
+<p>验证是否设置Java环境变量成功可以在PowerShell里输入”java -version”查看java版本信息:</p>
+<p><img src="/img/CICD/JavaVersionInPowerShell.PNG" alt="JavaVersionInPowerShell"></p>
+<p>搭建Jenkins自动化打包第一步安装Jenkins:</p>
+<p><a target="_blank" rel="noopener" href="https://www.jenkins.io/download/">Jenkins下载地址</a></p>
+<p>考虑到C盘硬盘容量有限，我安装到了其他盘:</p>
+<p><img src="/img/CICD/JenkinsInstallLocation.PNG" alt="JenkinsInstallLocation"></p>
+<p>为了确保后续Jenkins权限服务正常，优先选择Logon Type为<strong>Run service as local or domain user:</strong>，选择这个后需要输入本机的用户名和密码(<strong>这里的用户名和密码我尝试了各种用户名和密码好像都不对</strong>)，考虑到为了避免使用现有用户名可能因为现有用户名的一些权限修改影响Jenkins运行，最终我决定新建一个用户名作为Jenkins独立使用的用户名，Win10家庭版添加用户名流程：</p>
+<p><strong>设置-&gt;账户-&gt;家庭和其他用户-&gt;将其他人添加到这台电脑-&gt;输入新用户名和密码</strong></p>
+<p><img src="/img/CICD/Win10AddNewUserForJenkins.PNG" alt="Win10AddNewUserForJenkins"></p>
+<p>然后我们使用这个用户名和密码作为Jenkins安装的用户名，如果确认用户名密码都数对饿了，但还是提示Test Credential失败如下:</p>
+<p><img src="/img/CICD/TestCredentialsFailed.PNG" alt="TestCredentialsFailed"></p>
+<p><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/installing/windows/#invalid-service-logon-credentials">按照官网的说法是指定的用户名没有Logon as a service的权限解决办法</a></p>
+<p>如果是家庭版Win10好像没有secpol.msc这个时候我们要使用以下方案：</p>
+<p><a target="_blank" rel="noopener" href="https://www.itechtics.com/enable-gpedit-windows-10-home/#enable-gpeditmsc-in-windows-10-home">How To Enable Group Policy Editor (gpedit.msc) In Windows 10 Home</a></p>
+<p><strong>经过测试上述方案命令行有报错，无法正确安装gpedit.msc，也就无法给用户名添加Logon as a service权限，最后AI的建议是先通过LocalSystem模式安装，安装完成后就能有services.msc工具，同时也能从LocalSystem指定切换用户，相当于最终又回到Run service as local or domain user的方式！</strong></p>
+<ol>
+<li><p>以LocalSystem安装Jenkins</p>
+<p><img src="/img/CICD/ChooseRunServiceAsLocalSystem.PNG" alt="ChooseRunServiceAsLocalSystem"></p>
+</li>
+<li><p>设置默认Jenkins端口号到8080</p>
+<p><img src="/img/CICD/SetJenkinsPort.PNG" alt="SetJenkinsPort"></p>
+</li>
+<li><p>设置Java SDK位置</p>
+<p><img src="/img/CICD/ChooseJavaJDKLocaltion.PNG" alt="ChooseJavaJDKLocaltion"></p>
+<p><strong>这一步Jenkins对Java版本有要求，需要下对应版本的Java JDK</strong></p>
+<p><img src="/img/CICD/JenkinsJavaVersionRequired.PNG" alt="JenkinsJavaVersionRequired"></p>
+<p>这里本人安装一个Java 21，安装完成后要将JAVA_HOME重新指向最新的Java 21目录，这样本机默认使用的才是Java 21，<strong>为了保持Java Path配置一致性顺带将Path里的路修改成%JAVA_HOME%\bin的方式</strong>:</p>
+<p><img src="/img/CICD/JavaHomeAndPathConfiguration.PNG" alt="JavaHomeAndPathConfiguration"></p>
+<p>打开PowerShell输入”java -version”测试是否配置成功：</p>
+<p><img src="/img/CICD/TestJava21Configuration.PNG" alt="TestJava21Configuration"></p>
+</li>
+<li><p>Jenkins安装成功后我们就能在**本地服务(Ctrl+R然后输入services.msc运行)**看到Jenkins服务了，属于自动启动也就意味着开机Jenkins服务就会自动运行起来</p>
+<p><img src="/img/CICD/JenkinsServiceInfo.PNG" alt="JenkinsServiceInfo"></p>
+</li>
+<li><p>本地服务里选中Jenkins右键-&gt;属性-&gt;登录，输入要切换的用户名和密码进行用户名切换，从而切换到前面我们无法使用的Run service as local or domain的方式:</p>
+<p><img src="/img/CICD/ChangeJenkinsUserAccountInfo.PNG" alt="ChangeJenkinsUserAccountInfo"></p>
+<p><strong>这一步貌似直接使用现成的用户名和密码好像无法正确启动Jenkins，AI说因为我使用的账户是MicrosoftAccount账户，需要单独创建一个用户作为Jenkins的用户</strong></p>
+</li>
+<li><p>创建新用户，设置-&gt;账号-&gt;家庭和其他用户-&gt;将其他人添加到这台电脑</p>
+<p><img src="/img/CICD/CreateJenkinsBuildUser.PNG" alt="CreateJenkinsBuildUser"></p>
+</li>
+<li><p>然后我们再次去设置Jenkins服务的用户到jenkins-build这个用户并启动Jenkins服务</p>
+<p><img src="/img/CICD/ChangeJenkinsUserAndLaunch.PNG" alt="ChangeJenkinsUserAndLaunch"></p>
+<p>可以看到经历千辛万苦我们终于给Jenkins指定新用户且启动起来了。</p>
+</li>
+<li><p>本地测试下Jenkins是否运作正常，在浏览器输入localhost:8080进行测试</p>
+<p><img src="/img/CICD/RunJenkinsWithPassword.PNG" alt="RunJenkinsWithPassword"></p>
+<p>默认密码存在于<strong>C:\ProgramData\Jenkins.jenkins\secrets\initialAdminPassword</strong>我们复制输入后进入Jenkins初始化设置界面</p>
+</li>
+<li><p>由于第一次安装也不确定安装哪些Jenkins插件，所以这里我默认安装推荐的插件模式(安装好后进入Jenkins后续我们还能根据自己需求去自行删除和安装插件)</p>
+<p><img src="/img/CICD/InstallRecomendedPlugins.PNG" alt="InstallRecomendedPlugins"></p>
+<p>安装过程中会发现有大量插件安装失败：</p>
+<p><img src="/img/CICD/JenkinsRecomendPluginsInstallFailed.PNG" alt="JenkinsRecomendPluginsInstallFailed"></p>
+<p>这个我们可以后续再自行安装。</p>
+</li>
+<li><p>Jenkins插件安装完成后，我们需要创建我们第一个<strong>Jenkins管理员账号</strong></p>
+<p><img src="/img/CICD/CreateJenkinsAdminAccount.PNG" alt="CreateJenkinsAdminAccount"></p>
+</li>
+<li><p>接下来配置Jenkins的访问URL</p>
+<p><img src="/img/CICD/JenkinsURLConfig.PNG" alt="JenkinsURLConfig"></p>
+</li>
+<li><p>完成Jenkins设置可以开始使用Jenkins了</p>
+<p><img src="/img/CICD/CompleteJenkinsSetting.PNG" alt="CompleteJenkinsSetting"></p>
+</li>
+<li><p>考虑到刚才有很多插件安装失败了，所以开始Jenkins使用的第一件事就是打开Manage Jenkins进行插件安装</p>
+<p><img src="/img/CICD/ReinstallJenkinsPlugin.PNG" alt="ReinstallJenkinsPlugin"></p>
+<p>关于到底哪些插件安装失败了，可以打开Download progress查看到:</p>
+<p><img src="/img/CICD/JenkinsPluginDownloadProgress.PNG" alt="JenkinsPluginDownloadProgress"></p>
+<p><strong>部分插件貌似需要重启Jenkins</strong>，但重启Jenkins的我发现又报错了:</p>
+<p><img src="/img/CICD/ReLaunchJenkinsFailed.PNG" alt="ReLaunchJenkinsFailed"></p>
+<p>核心原因是我们前面设置的用户jenkins-build没有对C盘jenkins目录和安装Jenkins目录(含jenkins.exe)的读写权限:</p>
+<p><img src="/img/CICD/JenkinsFolderAuthSettingProblem.PNG" alt="JenkinsFolderAuthSettingProblem"></p>
+<p>所以我们需要对这两个目录右键-&gt;属性-&gt;安全-&gt;编辑-&gt;添加jenkins-build用户(并设置对应权限)</p>
+<p><img src="/img/CICD/SetJenkinBuildUserAuth.PNG" alt="SetJenkinBuildUserAuth"></p>
+<p><strong>上面为了确保jenkins-build用户权限足够，我把对应两个目录的所有权限都勾上了。</strong></p>
+<p>然后再次重启Jenkins会发现成功启动:</p>
+<p><img src="/img/CICD/ReLaunchJenkinsSuccess.PNG" alt="ReLaunchJenkinsSuccess"></p>
+</li>
+<li><p><strong>然后再次打开Jenkins Manage Plugins惊奇的发现起始之前大部分插件已经安装成功了！</strong></p>
+</li>
+</ol>
+<p><strong>在真正开始使用Jenkins之前我们先了解下Managing Jenkins和Jenkins Pipeline。</strong></p>
+<p>Note：</p>
+<ol>
+<li><strong>Jenkins作为Service启动在Windows上，必须确保Jenkins服务账户拥有<code>Log on as a service</code> 权限</strong></li>
+<li><strong>Jenkins的安装对Windows的.NET Framwork版本也有要求，Jenkins 2.238起要求.Net Framework 4.0，之前要求.Net Framework 2.0</strong></li>
+</ol>
+<h3 id="修改Jenkins主目录"><a href="#修改Jenkins主目录" class="headerlink" title="修改Jenkins主目录"></a>修改Jenkins主目录</h3><p>在了解Manageing Jenkins和Jenkins Pipeline之前，我先修改Jenkins的默认工作目录(因为我的C盘硬盘不够了)，默认是在**%ProgramData%\Jenkins.jenkins**路径。</p>
+<p>迁移流程如下:</p>
+<ol>
+<li><p>打开PowerShell(<strong>必须以管理员身份运行</strong>)输入”net stop Jenkins”将Jenkins服务停止</p>
+<p><img src="/img/CICD/StopJenkinsService.PNG" alt="StopJenkinsService"></p>
+</li>
+<li><p>复制所有%ProgramData%\Jenkins.jenkins目录下的文件到新的Jenkins目录</p>
+</li>
+<li><p>修改Jenkins目录下的jenkins.xml里的<env name="JENKINS_HOME" value="%ProgramData%\Jenkins\.jenkins"/>的value到新路径</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">&quot;JENKINS_HOME&quot;</span> <span class="attr">value</span>=<span class="string">&quot;G:\Software\JenkinsHome&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开PowerShell(<strong>必须以管理员身份运行</strong>)输入”net start Jenkins”将Jenkins服务开启</p>
+<p><img src="/img/CICD/StartJenkinsService.PNG" alt="StartJenkinsService"></p>
+</li>
+<li><p>然后再次在页面上打开jenkins的Manage Jenkins配置可以看到Jenkins的工作目录已经切换到我们的新目录了</p>
+<p><img src="/img/CICD/ChangeJenkinsFolderSuccess.PNG" alt="ChangeJenkinsFolderSuccess"></p>
+<p><strong>注意给新的Jenkins目录添加jenkins-build等使用用户的操作权限(这一步请先停止jenkins服务先，如果有部分文件权限修改报错如果能正常启起来Jenkins可以先不管，AI说是有写保护文件无法添加完全控制权限)</strong></p>
+</li>
+</ol>
+<p><strong>至此我们成功切换了Jenkins的工作目录，再也不用担心Jenkins的使用让我的C盘不够用了。</strong></p>
+<h3 id="Managing-Jenkins"><a href="#Managing-Jenkins" class="headerlink" title="Managing Jenkins"></a>Managing Jenkins</h3><p>打开Jenkins，点击Manage Jenkins我们会看到Jenkins的管理界面：</p>
+<p><img src="/img/CICD/ManageJenkinsPage.PNG" alt="ManageJenkinsPage"></p>
+<p>接下来分别理解下这个页面上的各个入口是做什么的。</p>
+<h4 id="System-Configuration"><a href="#System-Configuration" class="headerlink" title="System Configuration"></a>System Configuration</h4><h5 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h5><p><strong>给Jenkins Controller配置全局设置和路径</strong></p>
+<p>比如配置Jenkins主目录，Jenkins URL，系统管理员邮箱等</p>
+<p><strong>目前我只添加了一个系统管理员邮件地址</strong></p>
+<h5 id="全局工具配置"><a href="#全局工具配置" class="headerlink" title="全局工具配置"></a>全局工具配置</h5><p><strong>工具配置，包括它们的位置和自动化安装器</strong></p>
+<h5 id="插件管理"><a href="#插件管理" class="headerlink" title="插件管理"></a>插件管理</h5><p><strong>添加，删除，禁用或启用Jenkins功能扩展插件</strong></p>
+<p><strong>推荐把Jenkins推荐安装的插件都先安了，方便后续直接开工搭建自动化打包流程</strong></p>
+<h5 id="节点和云管理"><a href="#节点和云管理" class="headerlink" title="节点和云管理"></a>节点和云管理</h5><p><strong>添加，删除，控制和监视系统运行任务的节点</strong></p>
+<p>这里我们需要深入理解下Jenkins的几个概念<strong>Controller，Nodes，Agents，Executors</strong></p>
+<h6 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h6><p><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/managing/nodes/">The Jenkins controller is the Jenkins service itself and where Jenkins is installed. It is also a web server that also acts as a “brain” for deciding how, when, and where to run tasks. Management tasks such as configuration, authorization, and authentication are executed on the controller, which serves HTTP requests. Files written when a Pipeline executes are written to the filesystem on the controller, unless they are off-loaded to an artifact repository such as Nexus or Artifactory.</a></p>
+<p>从介绍来看，<strong>Jenkins Controller是Jenkins本身，是作为一个总管理者和调度中心的角色存在</strong>，比如管理任务调度，任务配置，任务权限等。</p>
+<h6 id="Nodes"><a href="#Nodes" class="headerlink" title="Nodes"></a>Nodes</h6><p><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/managing/nodes/">Nodes are the “machines” on which build agents run. Jenkins monitors each attached node for disk space, free temp space, free swap, clock time&#x2F;sync, and response time. A node is taken offline if any of these values go outside the configured threshold. Jenkins supports two types of nodes:</a></p>
+<p>从介绍来看，<strong>Jenkins Nodes是构建机器，Jenkins负责管理这些构建机器的磁盘空间，系统时间，磁盘释放等。</strong></p>
+<p>Jenkins Nodes分为一下两种:</p>
+<ol>
+<li><p>agents</p>
+</li>
+<li><p>build-in node</p>
+<p><strong>build-in node好像是Controller里默认的一个节点，从安全，性能，可扩展性等方面来说官方不建议直接使用build-in node</strong></p>
+<p>我想这就是为什么我在Manage Jenkins页面看到以下警告的原因:</p>
+<p><img src="/img/CICD/BuildinNodeWarning.PNG" alt="BuildinNodeWarning"></p>
+</li>
+</ol>
+<h6 id="Agents"><a href="#Agents" class="headerlink" title="Agents"></a>Agents</h6><p><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/managing/nodes/">Agents manage the task execution on behalf of the Jenkins controller by using executors.</a></p>
+<p>从介绍看，<strong>Agents是通过使用Executors帮Controllers管理任务执行的</strong>。</p>
+<h6 id="Executors"><a href="#Executors" class="headerlink" title="Executors"></a>Executors</h6><p><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/managing/nodes/">An executor is a slot for the execution of tasks. Effectively, it is a thread in the agent. The number of executors on a node defines the number of concurrent tasks that can run. In other words, this determines the number of concurrent Pipeline <code>stages</code> that can execute at the same time. </a></p>
+<p>从介绍看，<strong>Excecutor是真正执行任务的执行者，agent有多少个executor就表示能同时执行多少个任务。</strong></p>
+<p>官方建议如下:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/managing/nodes/">One executor per node is the safest configuration.</a>(一个node最安全的配置是一个executor)</li>
+<li><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/managing/nodes/">One executor per CPU core can work well, if the tasks running are small.</a>(一个executor对应一个CPU core工作最好)</li>
+<li><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/managing/nodes/">Monitor I&#x2F;O performance, CPU load, memory usage, and I&#x2F;O throughput carefully when running multiple executors on a node.</a>(如果一个node运行多个executor需要注意I&#x2F;O，CPU负载，内存使用等情况)</li>
+</ul>
+<p><strong>通过上面的介绍，可以看出当我们搭建CI&#x2F;CD工作流的时候，为了安全，性能和可扩展性最好不要直接使用Build-in node，我们应该去创建我们自己的Agent去针对性配置。</strong></p>
+<h5 id="Clouds"><a href="#Clouds" class="headerlink" title="Clouds"></a>Clouds</h5><p><strong>添加，移除，配置远端提供Agent能力的实例</strong></p>
+<h5 id="Appearance"><a href="#Appearance" class="headerlink" title="Appearance"></a>Appearance</h5><p><strong>配置Jenkins外观样子</strong></p>
+<h4 id="Security"><a href="#Security" class="headerlink" title="Security"></a>Security</h4><h5 id="Security-1"><a href="#Security-1" class="headerlink" title="Security"></a>Security</h5><p><strong>保护Jenkins，配置谁被允许访问和使用Jenkins系统</strong></p>
+<p>这里有一项关于Git验证方式的配置<strong>Host Key Verification Strategy</strong>有以下几个选项:</p>
+<ol>
+<li><p><strong>Know hosts file(default)</strong></p>
+<p>使用.ssh\known_hosts文件进行验证(<strong>我们单独给Jenkins配置了jenkins-build用户，所以这个文件可能压根没有，也就是后续我们添加了SSH Credential后依然无法正常访问Git SSH地址的原因</strong>)</p>
+</li>
+<li><p><strong>Accept first connection</strong></p>
+<p>第一次连接时接受并记录GitHub提供的Host Key，后续Host Key变化时拒绝连接。</p>
+</li>
+<li><p><strong>Manually provided keys</strong></p>
+<p><strong>利用手动添加到这里的Host key进行验证(后续为了避免不同WIndows用户名的SSH配置问题，这里会采用这个方案)</strong></p>
+</li>
+<li><p><strong>No verification(not recommended)</strong></p>
+<p>不验证Host Key</p>
+</li>
+</ol>
+<h5 id="Credentials"><a href="#Credentials" class="headerlink" title="Credentials"></a>Credentials</h5><p><strong>配置证书相关</strong></p>
+<p><strong>这里用于全局存放打包相关证书的地方，Agent Pipeline里通过全局变量访问，不要把证书信息直接写进Agent打包流程里！</strong></p>
+<h5 id="Credential-Providers"><a href="#Credential-Providers" class="headerlink" title="Credential Providers"></a>Credential Providers</h5><p><strong>配置证书提供者和类型</strong></p>
+<h5 id="Users"><a href="#Users" class="headerlink" title="Users"></a>Users</h5><p><strong>创建，删除，修改可以登录到Jenkins的用户信息</strong></p>
+<h4 id="Status-Information"><a href="#Status-Information" class="headerlink" title="Status Information"></a>Status Information</h4><h5 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h5><p><strong>显示系统环境信息</strong></p>
+<h5 id="系统日志"><a href="#系统日志" class="headerlink" title="系统日志"></a>系统日志</h5><p><strong>所有Jenkins通过java.util.loggins捕获到的日志信息</strong></p>
+<h5 id="负载统计"><a href="#负载统计" class="headerlink" title="负载统计"></a>负载统计</h5><p><strong>显示Jenkins的资源使用情况</strong></p>
+<h5 id="About-Jenkins"><a href="#About-Jenkins" class="headerlink" title="About Jenkins"></a>About Jenkins</h5><p><strong>查看Jenkins的版本和许可证信息</strong></p>
+<h3 id="Jenkins-Pipeline"><a href="#Jenkins-Pipeline" class="headerlink" title="Jenkins Pipeline"></a>Jenkins Pipeline</h3><p>在真正开始使用Jenkins之前我们先了解下Jenkins Pipeline，。</p>
+<p>这里直接搬运下以前Jenkins Pipeline的学习记录。</p>
+<h4 id="什么是Pipeline"><a href="#什么是Pipeline" class="headerlink" title="什么是Pipeline"></a>什么是Pipeline</h4><p><a target="_blank" rel="noopener" href="https://jenkins.io/doc/">Jenkins Pipeline is a suite of plugins which supports implementing and integrating continuous delivery pipelines into Jenkins. Pipeline provides an extensible set of tools for modeling simple-to-complex delivery pipelines “as code”.</a>(这里的Pipeline是一套插件，用于支持持续自动化集成编写。好比脚本文件定义一系列的自动化流程，但并不等价于脚本。)</p>
+<p>那么Pipeline是用什么语言编写了？<br>Jenkins是基于Java的，Pipeline的编写是基于Groovy。<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Groovy">Groovy是Java平台上设计的面向对象编程语言。这门动态语言拥有类似Python、Ruby和Smalltalk中的一些特性，可以作为Java平台的脚本语言使用。</a></p>
+<p>这里了解几个Pipeline的概念<strong>Node，Stage，Step</strong>：</p>
+<ol>
+<li><p><strong>Node</strong></p>
+<p>这个就是前面讲到的Node概念，用于运行Pipeline的Node</p>
+</li>
+<li><p><strong>Stage</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/pipeline/">A <code>stage</code> block defines a conceptually distinct subset of tasks performed through the entire Pipeline (e.g. “Build”, “Test” and “Deploy” stages), which is used by many plugins to visualize or present Jenkins Pipeline status&#x2F;progress. </a></p>
+<p>Stage是将Pipeline细分成几个任务流程(比如Build，Test，Deploy)</p>
+</li>
+<li><p><strong>Step</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/pipeline/">A single task. Fundamentally, a step tells Jenkins <em>what</em> to do at a particular point in time (or “step” in the process).</a></p>
+<p>Step是运行任务的最小单位，是告诉Jenkins在什么时间点执行什么的任务步骤，比如执行指定shell命令或者python脚本</p>
+</li>
+</ol>
+<h4 id="为什么要Pipeline"><a href="#为什么要Pipeline" class="headerlink" title="为什么要Pipeline"></a>为什么要Pipeline</h4><p>为什么需要Pipeline？</p>
+<ol>
+<li>Code – 可管理可编辑可视化的自动化流程脚本</li>
+<li>Durable – 可持续化开发</li>
+<li>Pausable – 可以自动也可以停止等待输入</li>
+<li>Versatile – 支持复杂的持续交付需求</li>
+<li>Extensible – “The Pipeline plugin supports custom extensions to its DSL [5: Domain-Specific<br>Language] and multiple options for integration with other plugins.”(支持DSL语言的自定义扩展)</li>
+</ol>
+<h4 id="如何使用Pipeline"><a href="#如何使用Pipeline" class="headerlink" title="如何使用Pipeline"></a>如何使用Pipeline</h4><p>接下来让我们看看如何创建一个Pipeline。</p>
+<p>首先我们<strong>必须安装Pipeline插件(这一步在安装推荐插件的时候完成了，没安装的可以去Manage Plugins的插件管理界面自行安装)</strong></p>
+<p>关于创建Pipeline有两种方式:</p>
+<ol>
+<li><strong>Through the classic UI(Jenkins提供的UI操作)</strong></li>
+<li><strong>In SCM(可以直接手动编写Jenkinsfile文件)</strong></li>
+</ol>
+<p><strong>前者生成的Jenkinsfile文件在Jenkins的目录，后者的好处是可以打包流水线流程可以直接进入Git版本管理，就算电脑出问题了Jenkins的流水线也不会丢。</strong></p>
+<p>这里我们先了解几个Pipeline里编写的几个大的概念:</p>
+<ol>
+<li><strong>Node(这个就是我们创建Agent对应的Node概念，在Jenkinsfile里表示指定流程可动态申请一个Executor执行，并在node流程块执行完后释放)</strong></li>
+<li><strong>environment(表示当前Pipeline流程里可全局访问的环境变量)</strong></li>
+<li><strong>parameters(表示Pipeline流程里可以通过页面配置显示的参数数据)</strong></li>
+<li><strong>Stage(定义一个流程块，包含一系列相关任务，比如Build，Test，Deploy等流程块</strong></li>
+<li><strong>Step(单个任务步骤，包含具体的任务执行)</strong></li>
+<li><strong>post (支持在特定step后指定运行状态下执行特定操作，比如将我们打包产物归档)</strong></li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/pipeline/syntax/#environment">详细Pipeline语法关键词介绍参考</a></p>
+<h4 id="Pipeline工具"><a href="#Pipeline工具" class="headerlink" title="Pipeline工具"></a>Pipeline工具</h4><p><a target="_blank" rel="noopener" href="http://localhost:8080/pipeline-syntax/">Snippet Generator</a><br><img src="/img/Unity/PipelineSnippetGenerator.PNG" alt="PipelineSnippetGenerator"><br>这是一个很有用帮助快速编写Pipeline的工具,他可以帮助我们把我们熟悉的自动化脚本转换成Pipeline格式的语句，也可以快速生成一些特定功能的脚本(比如邮件功能等)。(Jenkins提供)</p>
+<p><strong>脚本命令行(Jenkins-&gt;Manage Jenkins-&gt;脚本命令行)</strong></p>
+<p><strong>可以进行Jenkins代码编写和快速测试！</strong></p>
+<p>比如访问所有node并打印node名字:</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Jenkins.get().nodes.each &#123; node -&gt;</span><br><span class="line">    println(<span class="string">&quot;节点名称：$&#123;node.nodeName&#125;&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/CICD/JenkinsConsoleCommandRun.PNG" alt="JenkinsConsoleCommandRun"></p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8080/pipeline-syntax/globals">Pipiline全局环境变量</a></p>
+<h3 id="Unity打包CI-CD-Pipeline实战"><a href="#Unity打包CI-CD-Pipeline实战" class="headerlink" title="Unity打包CI&#x2F;CD+Pipeline实战"></a>Unity打包CI&#x2F;CD+Pipeline实战</h3><h4 id="系统配置-1"><a href="#系统配置-1" class="headerlink" title="系统配置"></a>系统配置</h4><p>有些配置(比如磁盘监控警告限制配置，管理员通知邮箱)不归属单个Agent而是全局生效的</p>
+<p><img src="/img/CICD/ConfigGlobalSystemManageEmailAdress.PNG" alt="ConfigGlobalSystemManageEmailAdress"></p>
+<h4 id="全局工具配置-1"><a href="#全局工具配置-1" class="headerlink" title="全局工具配置"></a>全局工具配置</h4><p>有些东西是属于所有Agent都要统一使用的工具(比如Git，JDK，Gradle等)，这些东西应该配置在全局而非但Agent里。</p>
+<p><strong>为了明确给Jenkins指定Git使用还是配置上路径避免用默认的。</strong></p>
+<p>比如配置Git：</p>
+<p>Manage Plugins-&gt;全局工具配置-&gt;Git installations</p>
+<p><img src="/img/CICD/ConfigureGlobalGitInstallations.PNG" alt="ConfigureGlobalGitInstallations"></p>
+<p><strong>如果不确定本地安装Git位置，可以打开cmd输入where git查看</strong></p>
+<p><strong>如果不配置Git将会使用系统默认能找到的Git</strong></p>
+<p><strong>如果发现配置了全局Git，但打包日志里依然有”Selected Git installation does not exist. Using Default. The recommended git tool is:None”日志，但Git.exe工具拉去地址后续又显示正确可以先不管，具体原因不明但功能看起来正常。</strong></p>
+<p>配置全局Git后发现打包Git拉取报错如下:</p>
+<p><img src="/img/CICD/GlobalGitConfigurationBuildFailed.PNG" alt="GlobalGitConfigurationBuildFailed"></p>
+<p>这是因为我们给Jenkins创建的jenkins-build用于没有配置过Git相关的.ssh配置，所以默认访问了SSH 22端口。</p>
+<p>那为什么用默认的Git没报错？</p>
+<p><strong>AI给出的回答是我们创建的Agent是在TonyTang用户名下通过bat运行的，所以能读取到TonyTang\.ssh\config的配置，所以读取了443端口。(不确定是否是这个原因)</strong></p>
+<p>TonyTang\.ssh\config内容如下:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">Hostname ssh.github.com</span><br><span class="line">Port 443</span><br></pre></td></tr></table></figure>
+
+<p>总之我们给Pipeline配置Git地址时，准确写明是使用443端口即可:</p>
+<p>原本Git地址:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git@github.com:TonyTang1990/UnityNativeFramework.git</span><br></pre></td></tr></table></figure>
+
+<p>修改到SSH 443端口后Git地址:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh://git@ssh.github.com:443/TonyTang1990/UnityNativeFramework.git</span><br></pre></td></tr></table></figure>
+
+<p><strong>主动配置SSH 443的Git地址时，全局Security的git的Host Keys也要配置成对应的包含ssh和443端口的地址：</strong></p>
+<p><img src="/img/CICD/GitHostKeyWithSSHAnd443.PNG" alt="GitHostKeyWithSSHAnd443"></p>
+<p>Note:</p>
+<ol>
+<li><strong>Unity打包自带下载了JDK，NDK，Gradle，所以一般Agent要使用对应的JDK，NDK而非全局配置的。</strong></li>
+</ol>
+<h4 id="Security-2"><a href="#Security-2" class="headerlink" title="Security"></a>Security</h4><p>这里重点讲一下前面提到的关于<strong>Git Host Key Verification Stratefy(Git Host Key验证策略)<strong>配置，这里为了避免不同Windows用户带来的SSH访问验证问题，这里选择</strong>Manually provided keys策略</strong>:</p>
+<p><img src="/img/CICD/ConfigHostKeyVerificationStrategy.PNG" alt="ConfigHostKeyVerificationStrategy"></p>
+<p>这里我们将我们访问Git的**Host Key(注意不是SSH的公钥)**配置上即可。</p>
+<p>具体Git的Host Key值是哪一个在这里查看:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints">GitHubs SSH key fingerprints</a></p>
+<p>选择符合加密方式的那个key fingerprints即可，这里我用的是ED25519算法，所以Host key为:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl</span><br></pre></td></tr></table></figure>
+
+<h4 id="Credentials-1"><a href="#Credentials-1" class="headerlink" title="Credentials"></a>Credentials</h4><p>像重要的一些比如打包Keystore，Apple证书，Git SSH用户名秘钥等都不要直接配置在Agent里，避免泄露，这些东西都统一配置在全局Credentials里，然后Agent里指向使用。</p>
+<p>这里简单了解下<a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/using/using-credentials/">Jenkins添加Credentials的方式类型</a>：</p>
+<ol>
+<li><strong>Secret Text(比如API token或者GitHub个人访问token)</strong></li>
+<li><strong>Username and password(比如配置用户名和密码，格式”用户名:密码”)</strong></li>
+<li><strong>Secret file(包含Secret内容的文件)</strong></li>
+<li><strong>SSH Username with private key(SSH链接包含用户名和私有Key，适用于Github SSH链接时的授权)</strong></li>
+<li><strong>Certificate(某些证书文件，暂时不清楚具体用处)</strong></li>
+<li><strong>Docker Host Certificate Authentication(Docker的证书授权)</strong></li>
+</ol>
+<p><strong>每一个在Jenkins Credential里配置的Credential都有一个Credential ID，我们通过Credential ID可以在Jenkinsfile里访问</strong></p>
+<h5 id="添加SSH-Credential"><a href="#添加SSH-Credential" class="headerlink" title="添加SSH Credential"></a>添加SSH Credential</h5><p>这里我首先添加我的Git证书，考虑到用SSH访问，这里添加<strong>SSH username with private key</strong>的方式：</p>
+<p>Jenkins-&gt;Manage Jenkins-&gt;Credentials-&gt;Add Credentials</p>
+<p><img src="/img/CICD/AddSSHUsernameWithPrivateKey.PNG" alt="AddSSHUsernameWithPrivateKey"></p>
+<p>给SSH username with private key配置生效范围和访问ID:</p>
+<p>这里考虑到为了方便范围就配成Global，ID根据自己需求取一个唯一值后续会在Jenkinsfile里使用访问Credential，关于Github如何生成SSH Key这个自行搜索了解下。</p>
+<p><img src="/img/CICD/ConfigSSHUsernameWithPrivateKey.PNG" alt="ConfigSSHUsernameWithPrivateKey"></p>
+<p><strong>SSH Key默认是在C:\\User\\用户名\.ssh\目录下的，要求填的密码是创建私钥时的一个密码，如果忘记密码可以在改目录下输入以下命令”ssh-keygen -y -f 私钥文件”进行尝试。</strong></p>
+<p><strong>添加Github SSH的时候注意Username要填写git(AI说的具体不确定是不是必须)</strong></p>
+<p>添加完成后就能看到Jenkins-&gt;Manage Jenkins-&gt;Credentials下方出现我们配置的Credential了：</p>
+<p><img src="/img/CICD/AfterSSHConfigComplete.PNG" alt="AfterSSHConfigComplete"></p>
+<p>在Jenkinsfile里访问Credential:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">credentials(&#x27;***&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>上面的配置是配置了SSH Credential的相关信息，但并不保证我们新建Windows的jenkins-build用户就能正确使用，因为我之前是在TonyTang这个用户下工作，所以所有的git SSH key相关都是操作保存在C:\\User\\TonyTang\\.ssh目录下的，现在Jenkins以jenkins-build用户在工作，默认全局的Security的Host Key Verification Stratety(Git的验证策略配置)是Known hosts file，也就是使用C:\\User\\USER_NAME\.ssh目录下的known_hosts文件进行验证。所以我们前面Credentials需要将Security的Host Key Verification Stratety修改成SSH Username with private key。</strong></p>
+<p><strong>配置Git Host Key Verification Configuration的Manually provideed keys时注意要把http和ssh访问git的Host Keys都添加上。</strong></p>
+<p><img src="/img/CICD/GitHttpAndSSHHostKeyConfiguration.PNG" alt="GitHttpAndSSHHostKeyConfiguration"></p>
+<h4 id="创建Agent"><a href="#创建Agent" class="headerlink" title="创建Agent"></a>创建Agent</h4><p>结合前面提到的官方不建议使用默认的build-in Node，所以我们首先要先创建我们自己的Agent，打开Jenkins主页-&gt;Set up an agent:</p>
+<p><img src="/img/CICD/CreateNewAgentEntrance.PNG" alt="CreateNewAgentEntrance"></p>
+<p>接下来分别讲讲创建Agent里的各个参数的含义。</p>
+<ol>
+<li><p><strong>名字(Agent的唯一Id)</strong></p>
+<p>比如我的项目名称是UnityNativeFramework，所以我创建的Agent名称叫UnityNativeFrameworkBuild</p>
+<p><img src="/img/CICD/CreateUnityNativeFrameworkBuildAgent.PNG" alt="CreateUnityNativeFrameworkBuildAgent"></p>
+</li>
+<li><p><strong>描述(Agent的一个文本描述)</strong></p>
+</li>
+<li><p><strong>Number of executors(Agent拥有多少的Executors，官方建议1个Agent对应1个Executor最佳)</strong></p>
+</li>
+<li><p><strong>远程工作目录(Agent所在工作目录，不要放到JENKINS_HOME下)</strong></p>
+</li>
+<li><p><strong>标签(用于Pipeline指定Agent Lable时的识别标签，符合相同标签的可以被公用，比如多个工程同一个项目建了多个Agent，指定相同的标签能自动利用空闲Agent触发打包)</strong></p>
+</li>
+<li><p><strong>用法(限定节点的使用方式)</strong></p>
+</li>
+<li><p><strong>启动方式(限定Agent的启动方式)</strong></p>
+</li>
+<li><p><strong>可用性(限定Agent的可用状态)</strong></p>
+</li>
+</ol>
+<p>关于节点属性选项：</p>
+<ol>
+<li><p><strong>Disable deferred wipeout on this node</strong></p>
+<p>来至Workspace Cleanup插件，用于删除整个Workspace时采用延迟擦除的方式优化速度(<strong>不推荐勾选</strong>，避免一些奇怪的问题)</p>
+</li>
+<li><p><strong>Disk Space Monitoring Thresholds</strong></p>
+<p>用于设置该Agent的磁盘空间阈值，避免特定硬盘空间情况可以发出警告或直接终止打包(<strong>推荐勾选</strong>，设置合理阈值)</p>
+</li>
+<li><p><strong>Enviroment variables</strong></p>
+<p>配置只运行在当前Agent的一些环境变量数据，比如Unity.exe路径，后续Pipeline里编写时可以通过%*%访问环境变量值，<strong>这里不要放证书相关数据，证书相关放到配置Security的Credentials里</strong>(<strong>推荐勾选</strong>，按需设置必要的环境变量)</p>
+</li>
+<li><p><strong>Tool Locations</strong></p>
+<p>用于覆盖 Jenkins全局工具在这个Node上的实际安装位置。(<strong>不推荐勾选</strong>，，当前Agent和全局Controller配置工具没有特殊情况都使用统一的，比如Git使用统一配置)</p>
+</li>
+</ol>
+<p>最终设置结果:</p>
+<p><img src="/img/CICD/FinalAgentSetting1.PNG" alt="FinalAgentSetting1"></p>
+<p><img src="/img/CICD/FinalAgentSetting2.PNG" alt="FinalAgentSetting2.PNG"></p>
+<p>Note:</p>
+<ol>
+<li><strong>Agent的远程工作目录不要放到JENKINS_HOME</strong></li>
+<li><strong>一个Agent推荐1个Executor，这是官方建议最稳妥的方式，避免一些I&#x2F;O，CPU或内存的负载问题</strong></li>
+<li><strong>新建一个统一放Jenkins Agent的目录，记着把该目录的修改权限添加给jenkins-build用户</strong></li>
+<li><strong>标签里的名字默认不能与Agent名同名，因为默认Jenkinsfile里就能用Agent名字指定特定Agent</strong></li>
+</ol>
+<h4 id="启动Agent"><a href="#启动Agent" class="headerlink" title="启动Agent"></a>启动Agent</h4><p>创建完成后会发现我们新建的Unity NativeFrameworkBuild还处于离线状态:</p>
+<p><img src="/img/CICD/AfterCreateAgentButDisplayOffline.PNG" alt="AfterCreateAgentButDisplayOffline"></p>
+<p><strong>这是因为我们只是保存了Agent配置，Agent进程还没启动。</strong></p>
+<p>点击UnityNativeFrameworkBuild的Agent名字，点击状态，我们会看到启动Agent的办法:</p>
+<p><img src="/img/CICD/RunAgentWithCommandLine.PNG" alt="RunAgentWithCommandLine"></p>
+<p><strong>多行命令复制粘贴到PowerShell会有问题，需要自己一行一行的复制执行:</strong></p>
+<p><img src="/img/CICD/LaunchAgentFromPowerShell.PNG" alt="LaunchAgentFromPowerShell"></p>
+<p>可以看到我们成功启动了我们新建的UnityNativeFrameworkBuild的Agent:</p>
+<p><img src="/img/CICD/LaunchAgentSuccess.PNG" alt="LaunchAgentSuccess"></p>
+<p>我们新建的Agent的启动方式之前设置的是<strong>Launch agent by connecting it to the controller</strong>，为了避免每次重启电脑我们自己创建的Agent都要重新执行命令启动，我们需要利用WinSW将长期Unity构建的Jenkins Agent注册为Windows服务，考虑到注册服务也挺麻烦的，这里暂时将启动命令做成start-UnityNavitveFrameworkBuild-agent.bat运行:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line">curl.exe -sO http://localhost:8080/jnlpJars/agent.jar</span><br><span class="line">java -jar agent.jar -url http://localhost:8080/ -secret 00577401b16f73577726ed1cc37efdd02c39a31f1a9f5dec1c94dfcb426351a2 -name UnityNavitveFrameworkBuild -webSocket -workDir <span class="string">&quot;G:\Software\JenkinsAgent\UnityNavitveFrameworkBuild&quot;</span></span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
+
+<p>Note:</p>
+<ol>
+<li><strong>如果不想每个Agent都独立注册Windows服务，可以选择Luanch agent via SSH的方式，配置好SSH Server和SSH Key让所有Agent一次性自动全启动</strong></li>
+<li><strong>bat启动这个方式目前的bat代码是窗口关闭Agent就断开连接离线</strong></li>
+</ol>
+<h4 id="搭建打包流程"><a href="#搭建打包流程" class="headerlink" title="搭建打包流程"></a>搭建打包流程</h4><p>搭建打包流程前，我们需要深入理解一个概念<strong>Pipeline</strong>，详情参考前面的介绍。</p>
+<p>Jenkins搭建打包流程只要通过定义Pipeline，Pipeline有两种方式定义：</p>
+<ol>
+<li><p><strong>通过网页可视化界面</strong></p>
+<p><strong>这种方式生成的Jenkinsfile默认在JENKINS_HOME文件夹下，不方便可视化+版本管理</strong></p>
+</li>
+<li><p><strong>手写Jenkinsfile文件</strong></p>
+<p><strong>这种方式好处是可以提交版本管理，同一个项目多个Agent可以快速重用同一个Agent，不同考虑Jenkinsfile流程同步问题</strong></p>
+</li>
+</ol>
+<h5 id="创建Pipeline"><a href="#创建Pipeline" class="headerlink" title="创建Pipeline"></a>创建Pipeline</h5><p><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/pipeline/getting-started/">In SCM Jenkinsfile官方文档</a></p>
+<p>创建Jenkinsfile流程如何：</p>
+<ol>
+<li><p>确保Pipeline插件安装好<br><img src="/img/CICD/InstallPipelinePlugins.PNG" alt="InstallPipelinePlugins"></p>
+</li>
+<li><p>New Item – 新建Pipeline(选择Pipeline类型)<br><img src="/img/CICD/CreateNewItemEntrance.PNG" alt="CreateNewItemEntrance"></p>
+<p><img src="/img/CICD/SelectPipelineItemType.PNG" alt="SelectPipelineItemType"></p>
+</li>
+<li><p>Configure Pipeline</p>
+<p>这里简单讲几个重要的基础配置含义：</p>
+<ol>
+<li><p><strong>Discard old builds(丢弃旧的构建，用于自动丢弃时长过久的构建，确保硬盘空间够)</strong></p>
+<p><strong>为了避免构建的包被意外清除，不推荐勾选</strong></p>
+</li>
+<li><p><strong>Do not allow concurrent builds(多个构建发起时的响应策略，用于确保不会同时并发执行多个构建或者后一个覆盖前一个构建等设置)</strong></p>
+<p><strong>一般来说单个Unity工程只允许启动一个Batch mode打包，推荐勾选</strong></p>
+</li>
+<li><p><strong>Do not allow the pipeline to resume if the controller restarts(是否不允许Pipeline在controller重启后继续)</strong></p>
+<p><strong>一般来说打包流水线必须要完整执行才不容易出问题，推荐勾选</strong></p>
+</li>
+<li><p><strong>GitHub project(用于关联一个Github项目URL，为部分插件提供上下文)</strong></p>
+<p><strong>一般来说项目打包都是走自己的Git操作流程，不推荐勾选</strong></p>
+</li>
+<li><p><strong>This project is parameterized(这个项目是否允许参数配置化打包)</strong></p>
+<p><strong>参数配置化打包也就是Jenkins里常见的页面可视化参数配置，然后打包时传入Unity进行对应打包参数控制，推荐勾上</strong></p>
+</li>
+</ol>
+<p>这里简单讲几个重要触发时机配置介绍：</p>
+<ol>
+<li><p><strong>Build after other projects are build(是否在其他工程打包完成后自动触发打包)</strong></p>
+<p><strong>适用于多个打包流程顺序合作构建的情况，目前Untiy打包暂时不需要，不推荐勾选</strong></p>
+</li>
+<li><p><strong>Build periodically(固定间隔时间或者固定时间自动构建)</strong></p>
+<p><strong>主要用于每隔一段时间自动触发构建进行连续打包测试跟进</strong></p>
+<p><strong>Unity开发过程中提交情况比较复杂，每隔一段时间打包很可能出现提交不完全导致打包失败等情况，建议还是自己主动找合适时机触发打包，不推荐勾选</strong></p>
+</li>
+</ol>
+<p>关于Pipeline的详细配置介绍：</p>
+<ol>
+<li><strong>定义选择Pipeline script form SCM而非Pipeline script(因为我们打算走本地jenkinsfile的方式而非网页可视化配置界面)</strong></li>
+<li><strong>SCM类型选择Git，目前我使用的是Git，Jenkins显示支持的选项也只有Git，其他方式估计要安装对应插件</strong></li>
+<li><strong>Repository URL(jenkinsfile文件所在git地址，一般来说jenkinsfile文件都是放到Git项目根目录)</strong></li>
+<li><strong>Credentials(Git地址访问权限证书，这个也就是我们需要配置Git证书之后才能选择的了，证书添加参考前面的Credentials)</strong></li>
+</ol>
+<p>最终Pipeline创建配置如下:</p>
+<p><img src="/img/CICD/PipelineConfiguration1.PNG" alt="PipelineConfiguration1"></p>
+<p><img src="/img/CICD/PipelineConfiguration2.PNG" alt="PipelineConfiguration2"></p>
+<p><img src="/img/CICD/PipelineConfiguration1.PNG" alt="PipelineConfiguration3"></p>
+<p><img src="/img/CICD/PipelineConfiguration1.PNG" alt="PipelineConfiguration4"></p>
+</li>
+</ol>
+<h5 id="Pipeline打包"><a href="#Pipeline打包" class="headerlink" title="Pipeline打包"></a>Pipeline打包</h5><h6 id="No-Jenkinsfile打包报错"><a href="#No-Jenkinsfile打包报错" class="headerlink" title="No Jenkinsfile打包报错"></a>No Jenkinsfile打包报错</h6><p>我们直接点击<strong>Build Now</strong>会发现没有打包参数界面直接就开始打包并报错:</p>
+<p><img src="/img/CICD/NoJenkinsfileBuildError.PNG" alt="NoJenkinsfileBuildError"></p>
+<p><strong>这是因为我们选择了SCM Jenkinsfile的方式，但我们还没有自己在仓库根目录创建Jenkinsfile文件上传导致的，所以我们需要在Git仓库下方自己创建Jenkinsfile并编写内容上传。</strong></p>
+<h6 id="Jenkinsfile编写"><a href="#Jenkinsfile编写" class="headerlink" title="Jenkinsfile编写"></a>Jenkinsfile编写</h6><p>Jenkinsfile初版内容如下:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    agent &#123;</span><br><span class="line">        // 指定用UnityNavitveFrameworkBuild的Agent的标签打包</span><br><span class="line">        // 方便后续创建多个符合的Agent做Agent池</span><br><span class="line">        label &#x27;windows <span class="built_in">&amp;</span><span class="built_in">&amp;</span> unity <span class="built_in">&amp;</span><span class="built_in">&amp;</span> android&#x27;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    parameters &#123;</span><br><span class="line">        // bool值的是否生成开发版本参数</span><br><span class="line">        booleanParam(</span><br><span class="line">            name: &#x27;DEVELOPMENT<span class="built_in">_</span>BUILD&#x27;,</span><br><span class="line">            defaultValue: true,</span><br><span class="line">            description: &#x27;是否生成Development Build&#x27;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        // 版本号</span><br><span class="line">        string(</span><br><span class="line">            name: &#x27;VERSION<span class="built_in">_</span>CODE&#x27;,</span><br><span class="line">            defaultValue: &#x27;1&#x27;,</span><br><span class="line">            description: &#x27;版本号(格式:*.**)&#x27;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        // 资源版本号</span><br><span class="line">        string(</span><br><span class="line">            name: &#x27;RESOURCE<span class="built_in">_</span>CODE&#x27;,</span><br><span class="line">            defaultValue: &#x27;1&#x27;,</span><br><span class="line">            description: &#x27;资源版本号(格式:*)&#x27;</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    options &#123;</span><br><span class="line">        // 让Pipeline打包输出Log带时间戳信息</span><br><span class="line">        timestamps()</span><br><span class="line"></span><br><span class="line">        // 禁止同时并发多个Build</span><br><span class="line">        disableConcurrentBuilds()</span><br><span class="line"></span><br><span class="line">        // 配置Pipeline打包超时时长</span><br><span class="line">        timeout(</span><br><span class="line">            time: 120,</span><br><span class="line">            unit: &#x27;MINUTES&#x27;</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    environment &#123;</span><br><span class="line">        // 环境变量配置</span><br><span class="line">        UNITY<span class="built_in">_</span>PROJECT<span class="built_in">_</span>DIR = &#x27;UnityNativeFramework&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    stages &#123;</span><br><span class="line">        // 验证Pipeline相关环境变量数据流程</span><br><span class="line">        stage(&#x27;Verify Pipeline&#x27;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                // 打印打包相关变量信息</span><br><span class="line">                bat &#x27;&#x27;&#x27;</span><br><span class="line">                echo NODE<span class="built_in">_</span>NAME=<span class="comment">%NODE_NAME%</span></span><br><span class="line">                echo NODE<span class="built_in">_</span>LABELS=<span class="comment">%NODE_LABELS%</span></span><br><span class="line">                echo WORKSPACE=<span class="comment">%WORKSPACE%</span></span><br><span class="line">                echo UNITY<span class="built_in">_</span>PROJECT<span class="built_in">_</span>DIR=<span class="comment">%UNITY_PROJECT_DIR%</span></span><br><span class="line">                echo DEVELOPMENT<span class="built_in">_</span>BUILD=<span class="comment">%DEVELOPMENT_BUILD%</span></span><br><span class="line">                echo VERSION<span class="built_in">_</span>CODE=<span class="comment">%VERSION_CODE%</span></span><br><span class="line">                echo RESOURCE<span class="built_in">_</span>CODE=<span class="comment">%RESOURCE_CODE%</span></span><br><span class="line">                &#x27;&#x27;&#x27;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 打包流程</span><br><span class="line">        stage(&#x27;Build&#x27;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                dir(&quot;<span class="built_in">$</span>&#123;env.UNITY<span class="built_in">_</span>PROJECT<span class="built_in">_</span>DIR&#125;&quot;) &#123;</span><br><span class="line">                  bat &#x27;&#x27;&#x27;</span><br><span class="line">                        @echo off</span><br><span class="line">                        rem 将Windows CMD代码页切换为UTF-8</span><br><span class="line">                        chcp 65001 &gt;nul</span><br><span class="line"></span><br><span class="line">                        rem 强制Python标准输入输出使用UTF-8</span><br><span class="line">                        set PYTHONIOENCODING=utf-8</span><br><span class="line">                            </span><br><span class="line">                        echo &#x27;进入项目工程目录！&#x27;</span><br><span class="line">                        echo Current directory: <span class="comment">%CD%</span></span><br><span class="line"></span><br><span class="line">                        python -u &quot;BuildScripts<span class="keyword">\\</span>BatchBuildAndroid.py&quot; <span class="built_in">^</span></span><br><span class="line">                                   -isDevelopment <span class="comment">%DEVELOPMENT_BUILD% ^</span></span><br><span class="line">                                   -versionCode <span class="comment">%VERSION_CODE% ^</span></span><br><span class="line">                                   -resourceVersionCode <span class="comment">%RESOURCE_CODE%</span></span><br><span class="line">                        echo &#x27;打包结束！&#x27;</span><br><span class="line">                    &#x27;&#x27;&#x27;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Jenkinsfile负责编写打包流程，将所有打包流程串联起来。</strong></p>
+<p><strong>Jenkins将可视化配置的打包参数一个一个传递给BatchBuildAndroid.py打包脚本打包。</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong><a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/book/pipeline/syntax/">详细的Pipeline参数语法参考</a></strong></li>
+<li><a target="_blank" rel="noopener" href="http://localhost:8080/pipeline-syntax/globals">Pipiline全局环境变量查看(需要启动Jenkins服务)</a></li>
+</ol>
+<h6 id="打包脚本编写"><a href="#打包脚本编写" class="headerlink" title="打包脚本编写"></a>打包脚本编写</h6><p>BatchBuildAndroid.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;将 Jenkins 参数逐个转交给 Unity Batch Mode。&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建机固定配置：更换 Unity 版本或静态打包入口时只修改这里。</span></span><br><span class="line">UNITY_EDITOR = Path(</span><br><span class="line">    <span class="string">r&quot;G:\Software\UnityAllVersions\2022.3.62f3\2022.3.62f3\Editor\Unity.exe&quot;</span></span><br><span class="line">)</span><br><span class="line">UNITY_EXECUTE_METHOD = <span class="string">&quot;BuildTool.DoBuildFromCommands&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">parse_args</span>() -&gt; argparse.Namespace:</span><br><span class="line">    parser = argparse.ArgumentParser()</span><br><span class="line">    parser.add_argument(<span class="string">&quot;-isDevelopment&quot;</span>, required=<span class="literal">True</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;-versionCode&quot;</span>, required=<span class="literal">True</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;-resourceVersionCode&quot;</span>, required=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> parser.parse_args()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>() -&gt; <span class="built_in">int</span>:</span><br><span class="line">    args  = parse_args()</span><br><span class="line">    project_path = Path.cwd().resolve()</span><br><span class="line">    unity_editor = UNITY_EDITOR.resolve()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;project_path:<span class="subst">&#123;project_path&#125;</span>&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;unity_editor:<span class="subst">&#123;unity_editor&#125;</span>&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> unity_editor.is_file():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Unity Editor executable was not found: <span class="subst">&#123;unity_editor&#125;</span>&quot;</span>, file=sys.stderr)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    required_directories = (<span class="string">&quot;Assets&quot;</span>, <span class="string">&quot;Packages&quot;</span>, <span class="string">&quot;ProjectSettings&quot;</span>)</span><br><span class="line">    missing = [name <span class="keyword">for</span> name <span class="keyword">in</span> required_directories <span class="keyword">if</span> <span class="keyword">not</span> (project_path / name).is_dir()]</span><br><span class="line">    <span class="keyword">if</span> missing:</span><br><span class="line">        <span class="built_in">print</span>(</span><br><span class="line">            <span class="string">f&quot;Not a valid Unity project: <span class="subst">&#123;project_path&#125;</span>. &quot;</span></span><br><span class="line">            <span class="string">f&quot;Missing directories: <span class="subst">&#123;<span class="string">&#x27;, &#x27;</span>.join(missing)&#125;</span>&quot;</span>,</span><br><span class="line">            file=sys.stderr,</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    command = [</span><br><span class="line">        <span class="built_in">str</span>(unity_editor),</span><br><span class="line">        <span class="string">&quot;-batchmode&quot;</span>,</span><br><span class="line">        <span class="string">&quot;-nographics&quot;</span>,</span><br><span class="line">        <span class="string">&quot;-quit&quot;</span>,</span><br><span class="line">        <span class="string">&quot;-logFile&quot;</span>,</span><br><span class="line">        <span class="string">&quot;-&quot;</span>,</span><br><span class="line">        <span class="string">&quot;-projectPath&quot;</span>,</span><br><span class="line">        <span class="built_in">str</span>(project_path),</span><br><span class="line">        <span class="string">&quot;-executeMethod&quot;</span>,</span><br><span class="line">        UNITY_EXECUTE_METHOD,</span><br><span class="line">        <span class="string">&quot;-buildTarget&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Android&quot;</span>,</span><br><span class="line">        <span class="string">&quot;-isDevelopment&quot;</span>,</span><br><span class="line">        args.isDevelopment,</span><br><span class="line">        <span class="string">&quot;-versionCode&quot;</span>,</span><br><span class="line">        args.versionCode,</span><br><span class="line">        <span class="string">&quot;-resourceVersionCode&quot;</span>,</span><br><span class="line">        args.resourceVersionCode,</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Unity Command: <span class="subst">&#123;subprocess.list2cmdline(command)&#125;</span>&quot;</span>, flush=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将Unity打包日志获取输出到控制台(以便Jenkins可以获取到Unity Batch Mode打包的日志)</span></span><br><span class="line">    process = subprocess.Popen(</span><br><span class="line">        command,</span><br><span class="line">        stdout=subprocess.PIPE,</span><br><span class="line">        stderr=subprocess.STDOUT,</span><br><span class="line">        universal_newlines=<span class="literal">True</span>,</span><br><span class="line">        encoding=<span class="string">&quot;utf-8&quot;</span>,</span><br><span class="line">        errors=<span class="string">&quot;replace&quot;</span>,</span><br><span class="line">        bufsize=<span class="number">1</span>,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> process.stdout <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> process.stdout:</span><br><span class="line">            <span class="built_in">print</span>(line, end=<span class="string">&quot;&quot;</span>, flush=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    return_code = process.wait()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> return_code != <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(</span><br><span class="line">            <span class="string">f&quot;Unity build failed with exit code <span class="subst">&#123;return_code&#125;</span>.&quot;</span>,</span><br><span class="line">            file=sys.stderr,</span><br><span class="line">            flush=<span class="literal">True</span>,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> return_code</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">raise</span> SystemExit(run())</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>BatchBuildAndroid.py脚本负责接收Jenkins打包传过来的参数并解析，然后利用Unity Batch Build模式将Unity启动起来触发打包并将打包参数传递进打包代码。</strong></p>
+<h6 id="Git-SSH访问报错"><a href="#Git-SSH访问报错" class="headerlink" title="Git SSH访问报错"></a>Git SSH访问报错</h6><p>上传Jenkinsfile后再次打包会发现依然打包报错：</p>
+<p><img src="/img/CICD/BuildFailedAfterConfigureSSHWithPrivateKey.PNG" alt="BuildFailedAfterConfigureSSHWithPrivateKey"></p>
+<p><strong>这是因为我们配置Git Host Key的Host Keys只添加了支持http访问的Host Key而没有添加SSH访问的Host Key</strong>，按照前面添加SSH Credential的方式添加上后，我们再次打开新建的Agent会看到Jenkins的参数配置界面显示出来了：</p>
+<p><img src="/img/CICD/JenkinsBuildWithParametersPage.PNG" alt="JenkinsBuildWithParametersPage"></p>
+<h6 id="打包CS脚本传漏报错"><a href="#打包CS脚本传漏报错" class="headerlink" title="打包CS脚本传漏报错"></a>打包CS脚本传漏报错</h6><p>修改SSH访问的Host Key后我们再次触发打包：</p>
+<p><img src="/img/CICD/BuildFailedAfterFixGitProblem.PNG" alt="BuildFailedAfterFixGitProblem"></p>
+<p>发现依然打包失败，但我们打包流程里无论是Jenkins的打印输出还是BatchBuildAndroid.py里的打印输出都成功打印了，从日志可以看到我们触发了Unity Batch Mode打包，但过了一会就打包失败了，<strong>这里是因为我忘记上传打包相关脚本了，Git仓库上根本没有BuildTool.DoBuiuldFromCommands的代码文件。</strong></p>
+<h6 id="Jenkins没输出Unity日志问题"><a href="#Jenkins没输出Unity日志问题" class="headerlink" title="Jenkins没输出Unity日志问题"></a>Jenkins没输出Unity日志问题</h6><p>原因如下:</p>
+<ol>
+<li><p>Unity Batch Mode运行模式需要添加**-logFile -**参数，表示将将日志输出到控制台。</p>
+</li>
+<li><p><strong>通过Jenkins-&gt;cmd.exe-&gt;Python-&gt;Untiy这个打包流程后，Unity没能正确得到能写入的stdout</strong></p>
+</li>
+</ol>
+<p>方案：</p>
+<ol>
+<li><strong>我们需要再Python里显示去获取Unity日志并转发打印到Jenkins控制台</strong></li>
+</ol>
+<p>通过在打包脚本BatchBuildAndroid.py里添加以下代码，将</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">process = subprocess.Popen(</span><br><span class="line">    command,</span><br><span class="line">    stdout=subprocess.PIPE,</span><br><span class="line">    stderr=subprocess.STDOUT,</span><br><span class="line">    universal_newlines=<span class="literal">True</span>,</span><br><span class="line">    encoding=<span class="string">&quot;utf-8&quot;</span>,</span><br><span class="line">    errors=<span class="string">&quot;replace&quot;</span>,</span><br><span class="line">    bufsize=<span class="number">1</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> process.stdout <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> process.stdout:</span><br><span class="line">        <span class="built_in">print</span>(line, end=<span class="string">&quot;&quot;</span>, flush=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="Unity中文日志乱码问题"><a href="#Unity中文日志乱码问题" class="headerlink" title="Unity中文日志乱码问题"></a>Unity中文日志乱码问题</h6><p>原因如下:</p>
+<ol>
+<li><strong>Windows控制台，Python，Jenkins使用的字符编码不一致造成的。</strong></li>
+</ol>
+<p>方案：</p>
+<ol>
+<li><strong>在打包流程脚本里统一字符编码格式</strong></li>
+</ol>
+<p>Jenkinsfile(<strong>统一Jenkins bat的字符编码到UTF-8，并将Python输入输出指定为UTF-8</strong>)</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">bat &#x27;&#x27;&#x27;</span><br><span class="line">	@echo off</span><br><span class="line">    rem 将Windows CMD代码页切换为UTF-8</span><br><span class="line">    chcp 65001 &gt;nul</span><br><span class="line"></span><br><span class="line">    rem 强制Python标准输入输出使用UTF-8(确保Python向Jenkins输出使用UTF-8)</span><br><span class="line">    set PYTHONIOENCODING=utf-8</span><br><span class="line">    </span><br><span class="line">    ******</span><br><span class="line">&#x27;&#x27;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>BatchBuildAndroid.py(<strong>确保Python保持UTF-8解码</strong>)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">process = subprocess.Popen(</span><br><span class="line">    command,</span><br><span class="line">    stdout=subprocess.PIPE,</span><br><span class="line">    stderr=subprocess.STDOUT,</span><br><span class="line">    universal_newlines=<span class="literal">True</span>,</span><br><span class="line">    encoding=<span class="string">&quot;utf-8&quot;</span>,</span><br><span class="line">    errors=<span class="string">&quot;replace&quot;</span>,</span><br><span class="line">    bufsize=<span class="number">1</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="打包成功"><a href="#打包成功" class="headerlink" title="打包成功"></a>打包成功</h6><p>上传打包文件后再次触发Jenkins打包：</p>
+<p><img src="/img/CICD/RunBatchModeBuildSuccessLog.PNG" alt="RunBatchModeBuildSuccessLog"></p>
+<p><strong>可以看到我们终于正确触发Unity Batch Mode打包并打包成功：</strong></p>
+<p><img src="/img/CICD/JenkinsPipelineBuildSuccess.PNG" alt="JenkinsPipelineBuildSuccess"></p>
+<p>最后在JenkinsAgent对应Agent和Pipeline目录下找到了打包输出的APK文件:</p>
+<p><img src="/img/CICD/JenkinsBuildAPKLocation.PNG" alt="JenkinsBuildAPKLocation"></p>
+<p>安装运行成功：</p>
+<p><img src="/img/CICD/JenkinsBuildInstallSuccess.PNG" alt="JenkinsBuildInstallSuccess"></p>
+<p><strong>上述打包流程相关配置和代码暂时只处理了三个打包参数配置(IsDevelopment，VersionCode，ResourceVersionCode)后续更多参数配置扩展Jenkinsfile和打包相关脚本即可。</strong></p>
+<h5 id="Pipeline打包归档"><a href="#Pipeline打包归档" class="headerlink" title="Pipeline打包归档"></a>Pipeline打包归档</h5><p><strong>Pipeline打包归档是指我们打包生成的APK等产物，默认生成在JenkinsAgent对应Agent对应Pipeline项目工程下的特定位置，这种位置会受项目Git拉取，Jenkins清理工作区等操作影响。所以最好的方式就是Jenkins打包的最终产物统一放到一个独立长期保存的位置，这个就是Pipeline打包归档。</strong></p>
+<p><strong>设置好打包归档后我们能在Jenkins对应Pipeline页面点击Build Artifacts里找到所有打包产物。</strong></p>
+<p><strong>归档后的存储位置在%JENKINS_HOME%\jobs\任务名\builds\构件编号\archive路径下。</strong></p>
+<p><img src="/img/CICD/SuccessArchivingArtifacts.PNG" alt="SuccessArchivingArtifacts"></p>
+<p><strong>可以看到打包成功后Jenkins成功将打包产物符合的文件全部归档到了%JENKINS_HOME%目录对应目录下。</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>归档成功后没在Jenkins页面看到相关入口，原因不明</strong></li>
+</ol>
+<h5 id="多Agent多Pipeline打包"><a href="#多Agent多Pipeline打包" class="headerlink" title="多Agent多Pipeline打包"></a>多Agent多Pipeline打包</h5><p>之前我们只创建了一个UnityNativeFrameworkBuild Agent(只有1个Executor)，但我们却创建了2个指定Agent Lable是UnityNativeFrameworkBuild的Pipeline，如果我们同时触发这2个Pipeline打包会发生什么？</p>
+<p><strong>答案是排队等待。</strong></p>
+<p><img src="/img/CICD/PipelineWaitForExector.PNG" alt="PipelineWaitForExector"></p>
+<p>还记着我们之前给Pipeline设置的禁止并发打包吗？</p>
+<p>创建的Agent只有1个Executor且禁止并发打包，这就是为什么2个Pipeline触发打包会排队等待的原因。</p>
+<p>解决方案：</p>
+<p><strong>创建多个可用的Agent并启起来，2个Pipeline指向的Agent Lable多个Agent都符合，那么就会选空闲的Agent的executor进行打包。</strong></p>
+<p><strong>为了快速创建相似的Agent，我们可以通过Jenkins-&gt;Manage Jenkins-&gt;Nodes-&gt;New Node-&gt;复制现有节点：</strong></p>
+<p><img src="/img/CICD/CreateAgentFromAgent.PNG" alt="CreateAgentFromAgent"></p>
+<p><img src="/img/CICD/BuildAgent2Create.PNG" alt="BuildAgent2Create"></p>
+<p><strong>取名UnityNativeFrameworkBuild2</strong></p>
+<p><strong>编写启动UnityNativeFrameworkBuild2的Agent的start-UnityNavitveFrameworkBuild2-agent.bat:</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line">curl.exe -sO http://localhost:8080/jnlpJars/agent.jar</span><br><span class="line">java -jar agent.jar -url http://localhost:8080/ -secret ****** -name UnityNavitveFrameworkBuild2 -webSocket -workDir <span class="string">&quot;G:\Software\JenkinsAgent\UnityNavitveFrameworkBuild&quot;</span></span><br><span class="line">pause</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>启动后新Agent就可用了。</p>
+<p>这是我们再次同时触发2个Pipeline打包会发现，2个Agent都同时运作起来，2个Pipeline也同时开始了打包流程：</p>
+<p><img src="/img/CICD/MultiplePipelineRunConcurrently.PNG" alt="MultiplePipelineRunConcurrently"></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/CI-CD/">CI/CD</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/CI-CD/">CI/CD</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2026/08/19/%E4%BB%8E0%E6%90%AD%E5%BB%BAJenkins%E6%89%93%E5%8C%85/" data-title="从0搭建Jenkins打包 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2026/08/04/代码热更/"  title="代码热更">
+ <strong>下一篇：</strong><br/> 
+ <span>代码热更
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jenkins"><span class="toc-number">2.</span> <span class="toc-text">Jenkins</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Jenkins%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.</span> <span class="toc-text">Jenkins安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9Jenkins%E4%B8%BB%E7%9B%AE%E5%BD%95"><span class="toc-number">2.2.</span> <span class="toc-text">修改Jenkins主目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Managing-Jenkins"><span class="toc-number">2.3.</span> <span class="toc-text">Managing Jenkins</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#System-Configuration"><span class="toc-number">2.3.1.</span> <span class="toc-text">System Configuration</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">系统配置</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE"><span class="toc-number">2.3.1.2.</span> <span class="toc-text">全局工具配置</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="toc-number">2.3.1.3.</span> <span class="toc-text">插件管理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E5%92%8C%E4%BA%91%E7%AE%A1%E7%90%86"><span class="toc-number">2.3.1.4.</span> <span class="toc-text">节点和云管理</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Controller"><span class="toc-number">2.3.1.4.1.</span> <span class="toc-text">Controller</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Nodes"><span class="toc-number">2.3.1.4.2.</span> <span class="toc-text">Nodes</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Agents"><span class="toc-number">2.3.1.4.3.</span> <span class="toc-text">Agents</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Executors"><span class="toc-number">2.3.1.4.4.</span> <span class="toc-text">Executors</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Clouds"><span class="toc-number">2.3.1.5.</span> <span class="toc-text">Clouds</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Appearance"><span class="toc-number">2.3.1.6.</span> <span class="toc-text">Appearance</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Security"><span class="toc-number">2.3.2.</span> <span class="toc-text">Security</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Security-1"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">Security</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Credentials"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">Credentials</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Credential-Providers"><span class="toc-number">2.3.2.3.</span> <span class="toc-text">Credential Providers</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Users"><span class="toc-number">2.3.2.4.</span> <span class="toc-text">Users</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Status-Information"><span class="toc-number">2.3.3.</span> <span class="toc-text">Status Information</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF"><span class="toc-number">2.3.3.1.</span> <span class="toc-text">系统信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97"><span class="toc-number">2.3.3.2.</span> <span class="toc-text">系统日志</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B4%9F%E8%BD%BD%E7%BB%9F%E8%AE%A1"><span class="toc-number">2.3.3.3.</span> <span class="toc-text">负载统计</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#About-Jenkins"><span class="toc-number">2.3.3.4.</span> <span class="toc-text">About Jenkins</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jenkins-Pipeline"><span class="toc-number">2.4.</span> <span class="toc-text">Jenkins Pipeline</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFPipeline"><span class="toc-number">2.4.1.</span> <span class="toc-text">什么是Pipeline</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81Pipeline"><span class="toc-number">2.4.2.</span> <span class="toc-text">为什么要Pipeline</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Pipeline"><span class="toc-number">2.4.3.</span> <span class="toc-text">如何使用Pipeline</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Pipeline%E5%B7%A5%E5%85%B7"><span class="toc-number">2.4.4.</span> <span class="toc-text">Pipeline工具</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity%E6%89%93%E5%8C%85CI-CD-Pipeline%E5%AE%9E%E6%88%98"><span class="toc-number">2.5.</span> <span class="toc-text">Unity打包CI&#x2F;CD+Pipeline实战</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE-1"><span class="toc-number">2.5.1.</span> <span class="toc-text">系统配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE-1"><span class="toc-number">2.5.2.</span> <span class="toc-text">全局工具配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Security-2"><span class="toc-number">2.5.3.</span> <span class="toc-text">Security</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Credentials-1"><span class="toc-number">2.5.4.</span> <span class="toc-text">Credentials</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0SSH-Credential"><span class="toc-number">2.5.4.1.</span> <span class="toc-text">添加SSH Credential</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAAgent"><span class="toc-number">2.5.5.</span> <span class="toc-text">创建Agent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8Agent"><span class="toc-number">2.5.6.</span> <span class="toc-text">启动Agent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B"><span class="toc-number">2.5.7.</span> <span class="toc-text">搭建打包流程</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAPipeline"><span class="toc-number">2.5.7.1.</span> <span class="toc-text">创建Pipeline</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Pipeline%E6%89%93%E5%8C%85"><span class="toc-number">2.5.7.2.</span> <span class="toc-text">Pipeline打包</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#No-Jenkinsfile%E6%89%93%E5%8C%85%E6%8A%A5%E9%94%99"><span class="toc-number">2.5.7.2.1.</span> <span class="toc-text">No Jenkinsfile打包报错</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Jenkinsfile%E7%BC%96%E5%86%99"><span class="toc-number">2.5.7.2.2.</span> <span class="toc-text">Jenkinsfile编写</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99"><span class="toc-number">2.5.7.2.3.</span> <span class="toc-text">打包脚本编写</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Git-SSH%E8%AE%BF%E9%97%AE%E6%8A%A5%E9%94%99"><span class="toc-number">2.5.7.2.4.</span> <span class="toc-text">Git SSH访问报错</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%89%93%E5%8C%85CS%E8%84%9A%E6%9C%AC%E4%BC%A0%E6%BC%8F%E6%8A%A5%E9%94%99"><span class="toc-number">2.5.7.2.5.</span> <span class="toc-text">打包CS脚本传漏报错</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Jenkins%E6%B2%A1%E8%BE%93%E5%87%BAUnity%E6%97%A5%E5%BF%97%E9%97%AE%E9%A2%98"><span class="toc-number">2.5.7.2.6.</span> <span class="toc-text">Jenkins没输出Unity日志问题</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Unity%E4%B8%AD%E6%96%87%E6%97%A5%E5%BF%97%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98"><span class="toc-number">2.5.7.2.7.</span> <span class="toc-text">Unity中文日志乱码问题</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E6%88%90%E5%8A%9F"><span class="toc-number">2.5.7.2.8.</span> <span class="toc-text">打包成功</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Pipeline%E6%89%93%E5%8C%85%E5%BD%92%E6%A1%A3"><span class="toc-number">2.5.7.3.</span> <span class="toc-text">Pipeline打包归档</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%9AAgent%E5%A4%9APipeline%E6%89%93%E5%8C%85"><span class="toc-number">2.5.7.4.</span> <span class="toc-text">多Agent多Pipeline打包</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">3.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/CI-CD/" title="CI/CD">CI/CD<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Game/" title="Game">Game<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2026 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
