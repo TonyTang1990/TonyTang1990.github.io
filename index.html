@@ -618,6 +618,9 @@
 <p><img src="/img/CICD/JenkinsBuildAndroidInstallSuccess" alt="JenkinsBuildAndroidInstallSuccess"></p>
 <p><img src="/img/CICD/JenkinsFinalAndroidRun.PNG" alt="JenkinsFinalAndroidRun"></p>
 <p><strong>可以看出我们Android Jenkins打包无论是打包名设置，Keystore设置还是Android图标设置都成功并打包运行成功了。</strong></p>
+<p>这里顺带编写一个纯Editor打包的编辑器窗口BuildWindow.cs，这里就不放代码了，详细去Github看。这个工具是直接让AI写的，核心需求就是让所有BuildParameters里的属性参数都能在EditorWindow的打包窗口上配置并点击打包，打包时做必要的一些版本号和资源版本号合法性校验，以及一些二次确认。</p>
+<p>打包窗口打开流程Build-&gt;打包窗口:</p>
+<p><img src="/img/CICD/BuildWindow.PNG" alt="BuildWindow"></p>
 <p>Note:</p>
 <ol>
 <li><strong>考虑到Jenkins引入Keystore相关配置传递会有很多东西要配置，所以不同渠道所有相关东西的配置选择我准备全部做到Unity打包脚本里，通过AllPlatformChannelConfig.cs的ScriptableObject进行所有平台所有渠道的静态资源配置(比如)。</strong></li>
@@ -699,6 +702,24 @@
 <ol>
 <li><strong>复制Agent时远程目录记着要配套修改，不然就指向同一个远程目录了。</strong></li>
 </ol>
+<h5 id="多分支打包方案"><a href="#多分支打包方案" class="headerlink" title="多分支打包方案"></a>多分支打包方案</h5><p>常规游戏开发中我们都会创建不止一个分支，比如develop用于开发版本功能，release用于线上发布版本，main作为主分支存在。</p>
+<p>那么我们在Jenkins里如何支持多分支的打包操作了？</p>
+<p>方案1：</p>
+<p>使用Jenkins的<strong>Multiplebranch Pipeline</strong>默认支持多分支自由选择打包。</p>
+<p>实战：</p>
+<p>创建Multiplebranch Pipline:</p>
+<p><img src="/img/CICD/MultipleBranchPipelineCreate.PNG" alt="MultipleBranchPipelineCreate"></p>
+<p>配置Git仓库地址:</p>
+<p><img src="/img/CICD/MultiplebranchPipelineConfig.PNG" alt="MultiplebranchPipelineConfig"></p>
+<p>可以看到Multiplebranch Pipeline可以配置自动发现分支，也就说我们不需要去配置具体有哪些分支，它可以自行发现供我们打包时选择打包哪个分支。</p>
+<p>创建后Multiplebranch Pipeline会自行开始检测多分支并开始任务，这个我们自行停止下。然后我们进入Multiplebranch Pipiline页面会看到有多个分支的Pipeline选择：</p>
+<p><img src="/img/CICD/MultiplebranchPipelinePage.PNG" alt="MultiplebranchPipelinePage"></p>
+<p>随便点一个分支名字进去后会发现跟我们创建的普通Pipeline分支没区别，后续就走正常流程打包即可：</p>
+<p><img src="/img/CICD/MultiplebranchDevelopBrachPage.PNG" alt="MultiplebranchDevelopBrachPage"></p>
+<p>方案2：</p>
+<p>新建多个普通Pipeline，每个用于固定分支的打包。</p>
+<p>实战2：</p>
+<p><strong>方案2实战没什么好说的，就是在配置Pipeline的分支名字时设置成对应分支名字即可。</strong></p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2>
         
         
