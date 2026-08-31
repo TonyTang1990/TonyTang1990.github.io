@@ -81,6 +81,132 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2025/03/10/博客搭建/" title="博客搭建" itemprop="url">博客搭建</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2025-03-09T16:47:00.000Z" itemprop="datePublished"> 发表于 2025-03-10</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>基于Hexo搭建的博客用了很多年，最近因为一些原因更新了NodeJs相关导致搭建好的Hexo博客无法正常使用，本章节再次记录从零搭建Hexo在Github上的博客流程，分享和记录Hexo的博客搭建流程。</p>
+<h1 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h1><p><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">Hexo是快速、簡單且強大的網誌框架 · 超級快速. Node.js 帶給您超級快的檔案產生速度，上百個檔案只需幾秒就能建立完成。</a></p>
+<p><strong>所以Hexo是我们生成博客网页相关的关键之一。</strong></p>
+<h1 id="Github-Pages"><a href="#Github-Pages" class="headerlink" title="Github Pages"></a>Github Pages</h1><p><a target="_blank" rel="noopener" href="https://mini-pi.github.io/2024/02/28/how-to-make-blog-wedsite/">GitHub Pages 是一项静态站点托管服务，它直接从 GitHub 上获取 HTML、CSS 和 JavaScript 文件，通过构建过程运行文件，然后发布网站</a></p>
+<p><strong>可以理解GitHub支持我们不熟静态网页的一个功能，所以Github Pages这是我们上传Github搭建博客的关键之一。</strong></p>
+<h1 id="博客搭建"><a href="#博客搭建" class="headerlink" title="博客搭建"></a>博客搭建</h1><p>了解了核心的Hexo和Github Pages概念和原理，接下来让我们开始搭建属于我们自己的博客。</p>
+<ul>
+<li><p>安装Node.js</p>
+<p>本人已经安装好了，直接去下载安装<a target="_blank" rel="noopener" href="https://nodejs.org/en/download/">Node.js</a>即可</p>
+</li>
+<li><p>安装Hexo</p>
+<p>打开命令行，输入<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">npm install hexo-cli -g</a>，不识别npm的先去处理npm环境</p>
+</li>
+<li><p>使用Hexo初始化博客</p>
+<p>打开空目录，然后打开命令行，输入命令:hexo init blog</p>
+<p><img src="/img/Blog/HexoBlogInit.PNG" alt="HexoBlogInit"></p>
+</li>
+<li><p>生成新博客</p>
+<p>Hexo初始化博客所在目录打开命令行，输入hexo new TestBlog，会看到我们成功生成了一片新博客</p>
+<p><img src="/img/Blog/HexoNewBlog.PNG" alt="HexoNewBlog"></p>
+</li>
+<li><p>生成博客静态网页</p>
+<p>Hexo初始化博客所在目录打开命令行，输入hexo g，会看到public目录生成了静态网页相关文件</p>
+<p><img src="/img/Blog/HexoBlogGenerate.PNG" alt="HexoBlogGenerate"></p>
+</li>
+<li><p>在Github上创建***.github.io的仓库(使用Github Pages服务)</p>
+<p>详情参考<a target="_blank" rel="noopener" href="https://pages.github.com/">Github Pages</a></p>
+</li>
+<li><p>配置Hexo博客发布到Github的***.github.io仓库</p>
+<p>打开Hexo初始化博客所在目录的_config.yml文件，将发布相关配置修改成如下:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">#</span> Deployment</span><br><span class="line"><span class="params">##</span> Docs: https://hexo.io/docs/one-command-deployment</span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: 这里填上面Github生成的博客仓库.github.io</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>发布博客到***.github.io仓库</p>
+<p>Hexo初始化博客所在目录打开命令行，输入hexo d，会发现提示不是被的Deployer not found:git</p>
+<p><img src="/img/Blog/HexoDeployGitError.PNG" alt="HexoDeployGitError"></p>
+<p>这里我们需要安装git相关的hexo部署插件</p>
+<p><strong>注意repo填写的仓库地址要SSH而非HTTPS的地址</strong></p>
+</li>
+<li><p>安装Hexo git部署插件</p>
+<p>Hexo初始化博客所在目录打开命令行，输入npm install hexo-deployer-git –save</p>
+<p>让后再次输入hexo d我们就会看到部署提示我们输入Github的密码</p>
+<p><img src="/img/Blog/HexoDeployEnterPassword.PNG" alt="HexoDeployEnterPassword"></p>
+<p>输入完成后回车即可完成博客上传部署。</p>
+</li>
+<li><p>默认Hexo的博客主题很简陋，这里我们需要去下一个喜欢的主题</p>
+<p><a target="_blank" rel="noopener" href="https://hexo.io/themes/">Hexo Themes</a></p>
+<p>这里我下载了一个叫jacman的主题:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wuchong/jacman">jacman</a></p>
+<p>下载完成后，我们需要在_config.yml文件里配置theme使用刚下的主题</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">#</span> Extensions</span><br><span class="line"><span class="params">##</span> Plugins: https://hexo.io/plugins/</span><br><span class="line"><span class="params">##</span> Themes: https://hexo.io/themes/</span><br><span class="line">theme: jacman</span><br></pre></td></tr></table></figure>
+
+<p><strong>下载的主题文件放在themes文件夹下</strong></p>
+</li>
+<li><p>如果想本地测试查看博客效果</p>
+<p>Hexo初始化博客所在目录打开命令行，输入hexo server，然后在网页输入localhost:4000即可查看本地效果</p>
+<p><img src="/img/Blog/HexoLocalServerPreview.PNG" alt="HexoLocalServerPreview"></p>
+</li>
+<li><p><strong>关于博客的一些名字修改，自己打开_config.yml修改对应地方即可</strong></p>
+<p>配置说明详细参考:<a target="_blank" rel="noopener" href="https://hexo.io/docs/configuration">configuration</a></p>
+</li>
+</ul>
+<p>Note:</p>
+<ol>
+<li><strong>关于Git的配置上述略过了</strong></li>
+<li><strong>博客编写的图片路径要放在当前使用主题下的source目录</strong></li>
+</ol>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26625249">Github+Hexo搭建个人网站详细教程</a></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Other/">Other</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Other/">Other</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2025/01/01/AI工具/" title="AI工具" itemprop="url">AI工具</a>
   </h1>
   <p class="article-author">By
@@ -2577,116 +2703,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2022/06/01/Excel深入学习/" title="Excel深入学习" itemprop="url">Excel深入学习</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
-		
-  <p class="article-time">
-    <time datetime="2022-06-01T15:00:00.000Z" itemprop="datePublished"> 发表于 2022-06-01</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>游戏开发过程中用到的数据我们通常会采用Excel进行配置，这个归功于Excel强大的数据处理和表达能力。无论是Excel的自带的公式计算还是Excel内嵌支持的VBA自定义编程都使得Excel成为了数据配置的一大利器，用好Excel也是数值策划必备的技能之一。本章节通过深入学习Excel的使用，为未来自己的独立游戏的数据配置数值搭建打好基础。</p>
-<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
-<li><strong>单表之间数值计算公式编写</strong></li>
-<li><strong>跨表数据关联公式计算编写</strong></li>
-<li><strong>自定义程序功能VBA编写(e.g. 导表)</strong></li>
-</ol>
-<h2 id="Excel介绍"><a href="#Excel介绍" class="headerlink" title="Excel介绍"></a>Excel介绍</h2><p><a target="_blank" rel="noopener" href="https://www.w3schools.com/EXCEL/index.php">Excel is the world’s most used spreadsheet program</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.w3schools.com/EXCEL/index.php">Excel is a powerful tool to use for mathematical functions</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.w3schools.com/EXCEL/excel_introduction.php">Excel is pronounced “Eks - sel” It is a spreadsheet program developed by Microsoft. Excel organizes data in columns and rows and allows you to do mathematical functions. It runs on Windows, macOS, Android and iOS.</a></p>
-<p>从上面教程的Excel简单介绍可以看出Excel的强大和运用广泛，<strong>本人用Excel主要用于游戏开发，核心目的是实现数值系统(即数据管理)</strong>。接下来我会跟着教程一步一步深入学习Excel，从基础的Excel使用到Excel公式，甚至自定义VBA编写程序来实现我们在游戏开发过程中的种种需求。</p>
-<h2 id="Excel基础学习"><a href="#Excel基础学习" class="headerlink" title="Excel基础学习"></a>Excel基础学习</h2><h3 id="Excel自带功能"><a href="#Excel自带功能" class="headerlink" title="Excel自带功能"></a>Excel自带功能</h3><ul>
-<li><p>一个简单的数学运算运用</p>
-<p><img src="/img/Excel/BasicExcelFunction.PNG" alt="BasicExcelFunction"></p>
-</li>
-<li><p>Excel主要由标题栏和Sheet组成</p>
-<p><img src="/img/Excel/ExcelComponents.PNG" alt="ExcelComponents"></p>
-<p><strong>标题栏为Excel工具栏，可以实现各种Excel操作。而Sheet为Excel数据部分主要有多行多列组成，我们平时编写的行列数据都在Sheet里，一个Excel可以包含多个Sheet。</strong></p>
-</li>
-<li><p>Excel公式运算</p>
-<p>Excel公式用于数学运算，通常由&#x3D;符号开始。</p>
-<p>用一个比较现实的问题举例，我们通常用Excel记账时，通过填入物品名称，单价和数量，我们会需要算出总价，这个时候我们可以利用公式实现总价根据前面数据进行自动计算的功能。</p>
-<p><img src="/img/Excel/PriceCaculation.PNG" alt="PriceCaculation"></p>
-<p>可以看到在总价那一列编写公式:&#x3D;B2*C2我们成功利用商品单价和数量自动计算出了商品总价。</p>
-<p>接下来我们利用Excel自带提供的函数计算所有价格，数量以及总价的总数。</p>
-<p><img src="/img/Excel/SUMFormular.png" alt="SUMFormular"></p>
-</li>
-<li><p>Excel引用</p>
-<p><strong>Excel的引用分为两种(Relative Reference和Absolute Reference)</strong></p>
-<ul>
-<li>Relative Reference(相对引用 e.g. A1)<br><a target="_blank" rel="noopener" href="https://www.w3schools.com/excel/excel_rel_ref.php">The relative reference makes the cells reference free. It gives the fill function freedom to continue the order without restrictions.</a><br>从上面的介绍来看，相对引用在拖拽填充时更加自由，会保持原有公式的相对计算规则。<br>好比前面我们通过SUM函数实现了总价总数的计算，然后我通过拖拽填充的方式自动实现了价格总数和数量总数的计算。<br><img src="/img/Excel/RelativeReferenceUsing.png" alt="RelativeReferenceUsing"></li>
-<li>Absolute Reference(绝对引用 e.g. $A$1)<br><a target="_blank" rel="noopener" href="https://www.w3schools.com/excel/excel_abs_ref.php">Absolute reference is when a reference has the dollar sign ($). It locks a reference in the formula.</a><br>从上面的介绍来看，绝对引用是通过加$符号标识的，加了$符号的绝对引用不会再拖拽填充的过程中变化，会一直保持原有定义。<br>接下来让我们把价格固定，然后利用绝对引用的方式，实现每个人不同购买数量的总价自动计算。<br><img src="/img/Excel/AbsoluteReferenceUsing.png" alt="AbsoluteReferenceUsing"><br><img src="/img/Excel/AbsoluteReference2Using.png" alt="AbsoluteReference2Using"><br>从上面可以看到，<strong>虽然我们通过拖拽填充的方式填充了C3到C5，但我们单价引用的$B$7是保持不变的，核心原因就是我们用的绝对引用。</strong></li>
-</ul>
-</li>
-<li><p>Excel自带函数<br>Excel的强大不单单是简单的加减乘除运算，更多的是Excel支持类似编程方式的函数库+VBA语言编写，从而使得Excel能实现很多强大的自定义功能。<br>接下来让我们学习几个Excel里常见的自带函数：</p>
-<ul>
-<li><strong>AND</strong>(<a target="_blank" rel="noopener" href="https://www.w3schools.com/excel/excel_and.php">The AND function is a premade function in Excel, which returns TRUE or FALSE based on two or more conditions.</a>)(可以看出AND类似编程语言Lua里的And运算符，但Excel里的AND运算符区别是用于返回true和false)</li>
-<li><strong>IF</strong>(<a target="_blank" rel="noopener" href="https://www.w3schools.com/excel/excel_if.php">The IF function is a premade function in Excel, which returns values based on a true or false condition.</a>)(可以看到IF类似编程语言里的IF，通过我们给出的条件的判定结果返回我们指定的两种情况的值)<br>接下来让我们结合前面的例子，通过Excel自带函数IF和AND实现自动判定总价超过10和(总价超过10+数量超过5)的数据统计。<br><img src="/img/Excel/IFFunctionUsing.png" alt="IFFunctionUsing"><br><img src="/img/Excel/IFFunctionUsing2.png" alt="IFFunctionUsing2"><br>从上面可以看到IF通过编写逻辑判定成功返回了我们自定义的YES和NO,而AND通过编写两个条件成功返回了TRUE和FALSE。</li>
-<li><strong>SUMIF</strong>(<a target="_blank" rel="noopener" href="https://www.w3schools.com/excel/excel_sumif.php">The SUMIF function is a premade function in Excel, which calculates the sum of values in a range based on a true or false condition.</a>)(可以看出SUMMIF是一个带范围带条件匹配的总和运算)</li>
-<li><strong>COUNTIF</strong>(<a target="_blank" rel="noopener" href="https://www.w3schools.com/excel/excel_countif.php">The COUNTIF function is a premade function in Excel, which counts cells as specified.</a>)(可以看出COUNTIF是一个带条件的统计符合条件数量的函数)<br>需求：<ul>
-<li>纵向代表每个人，横向表示每天，✔️表示吃了，✘表示没吃，每天吃了要出3元，不吃要出1.5元，最后统计每个月每人餐饮伙食费<br><img src="/img/Excel/SUMIFUsing.png" alt="SUMIFUsing"><br>可以看到通过SUMIF我们成功统计出了指定单元格到指定单元格里包含✔️和✘的数量，然后乘以对应的单价再相加即得到我们要的统计总和。<br>更多的自带函数学习参考:<a target="_blank" rel="noopener" href="https://www.w3schools.com/excel/excel_functions.php">Excel Function</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="Excel-VBA"><a href="#Excel-VBA" class="headerlink" title="Excel VBA"></a>Excel VBA</h3><p>常规的功能需求，Excel自带的函数和功能就能满足，但涉及到复杂的逻辑运算规则时，Excel自带的函数和功能就力不从心了，这时就需要VBA这样的编程语言的东西出马了。</p>
-<p>那么什么是VBA了？<br><a target="_blank" rel="noopener" href="http://www.tutorialspoint.com/vba/">VBA stands for Visual Basic for Applications, an event-driven programming language from Microsoft.</a><br>我个人的理解，VBA就是内嵌到Excel的VB，支持了Excel常规需求的一些API接口，我们可以利用这些API实现自定义功能。</p>
-<p>待学习……</p>
-<h2 id="重点知识"><a href="#重点知识" class="headerlink" title="重点知识"></a>重点知识</h2><h2 id="学习连接"><a href="#学习连接" class="headerlink" title="学习连接"></a>学习连接</h2><p><a target="_blank" rel="noopener" href="https://www.w3schools.com/EXCEL/index.php">Excel Tutorial</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.tutorialspoint.com/vba/index.htm">VBA Tutorial</a></p>
-<h2 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h2><p><a target="_blank" rel="noopener" href="https://github.com/TonyTang1990/ExcelStudy">ExcelStudy</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Database/">Database</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Other/">Other</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/">&lt;span&gt;&lt;&#x2F;span&gt;Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/">Next&lt;span&gt;&lt;&#x2F;span&gt;</a>
@@ -2793,6 +2809,10 @@
 		
 		  
 			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SDK/" title="SDK">SDK<sup>1</sup></a></li>
 		  
 		
 		  

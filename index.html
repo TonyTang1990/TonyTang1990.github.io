@@ -81,6 +81,403 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2026/08/20/原生和SDK接入/" title="原生和SDK接入" itemprop="url">原生和SDK接入</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2026-08-20T02:29:00.000Z" itemprop="datePublished"> 发表于 2026-08-20</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在游戏开发过程中，无论是做手游还是端游还是小游戏，我们或多或少都会需要接入第三方SDK去支持一些原生功能，不会全部都自己从0开发(比如<strong>广告SDK，统计SDK，支付SDK等</strong>)，本章节就是为了深入SDK接入实战，打通SDK接入流程，同时深入Unity+原生开发，了解原生开发过程中的理论和实践知识。</p>
+<h2 id="原生开发"><a href="#原生开发" class="headerlink" title="原生开发"></a>原生开发</h2><p>原生开发是指除了Unity提供的官方功能，我们还能在不同平台自己进行原生功能开发。</p>
+<h3 id="Android原生开发"><a href="#Android原生开发" class="headerlink" title="Android原生开发"></a>Android原生开发</h3><p>Android我们通过自定义MainActivity和编写原生Android功能代码实现原生功能，然后在Unity测通过AndroidJavaClass去访问原生Android Activty和调用原生代码功能。Untiy支持我们自己导出**AAR(包含代码和资源)<strong>或者</strong>Jar(仅仅包含代码)**然后放到Plugins&#x2F;Android&#x2F;libs目录下直接使用，接下来我将深入从0实战如何搭建一个能够自定义开发原生功能流程框架搭建。</p>
+<h4 id="Unity导出Gradle工程"><a href="#Unity导出Gradle工程" class="headerlink" title="Unity导出Gradle工程"></a>Unity导出Gradle工程</h4><p>为了方便参考Unity能正确使用的Gradle工程相关设置，在搭建我们自己的原生Android工程前，我通过代码打包给Unity Android设置好相关打包配置，然后通过Unity自带的Gradle打包导出一个Android工程。</p>
+<p>导出后我使用Android Studio打开发现报错：</p>
+<p><img src="/img/SDK/UnityExportGradleProjectOpenFailed.PNG" alt="UnityExportGradleProjectOpenFailed"></p>
+<p><strong>这是因为Unity 2022.3.62f3导出的Gradle工程的JDK默认使用的是JAVA_HOME指向的，而之前我为了配置Jenkins打包将JAVA_HOME指向了最新的Java 21。但Unity 2022.3.62f3导出的Gradle工程使用的是Gradle 7.5.1，Gradle 7.5.1不支持运行在Java 21上，所以导致出问题。</strong></p>
+<p><img src="/img/SDK/UnityExportGradleProjectUseEnvDefaultJSDK.PNG" alt="UnityExportGradleProjectUseEnvDefaultJSDK"></p>
+<p>所以我们需要将导出Gradle工程的JDK指向Unity对应版本的JDK(对于我本地来说是以下路径):</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">G:<span class="keyword">\Software</span><span class="keyword">\UnityAllVersions</span><span class="keyword">\2</span>022.3.62f3<span class="keyword">\2</span>022.3.62f3<span class="keyword">\Editor</span><span class="keyword">\Data</span><span class="keyword">\PlaybackEngines</span><span class="keyword">\AndroidPlayer</span><span class="keyword">\OpenJDK</span></span><br></pre></td></tr></table></figure>
+
+<p>修改后重新打开Gradle工程经历漫长的Gradle依赖下载后会发现工程能正确打开了：</p>
+<p><img src="/img/SDK/AfterSettingGradleProjectJDK.PNG" alt="AfterSettingGradleProjectJDK"></p>
+<p>接下来我们就能创建我们的原生Android工程，并参考导出的Gradle工程进行配置设置了。</p>
+<p><strong>Unity 2022.3.62f3用的Gradle版本是7.51，Android Gradle Plugin是7.4.2，JDK是11</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>Gradle相关东西大部分都需要翻墙下载，请确保网络环境支持</strong></li>
+<li><strong>Gradle 是通用构建系统。它不只用于 Android，也能构建普通 Java、Kotlin、Groovy 等项目</strong></li>
+<li><strong>Android Gradle Plugin，简称 AGP，是运行在 Gradle 上的 Android 构建插件</strong></li>
+</ol>
+<h4 id="创建原生Android工程"><a href="#创建原生Android工程" class="headerlink" title="创建原生Android工程"></a>创建原生Android工程</h4><p>Android工程分为两大类，一类是<strong>Application(用于打包APK)</strong>，另一类是<strong>library(用于导出AAR或Jar)</strong></p>
+<p>我们安装好Android Studio后，File-&gt;New-&gt;New Project-&gt;新建一个Empty Activity的NativeFramworkAndroidProject Android工程:</p>
+<p><img src="/img/CICD/CreateNativeFramworkAndroidProject.PNG" alt="CreateNativeFramworkAndroidProject"></p>
+<p><strong>创建后会发现工程里有很多kotlin相关的内容，比如MainActivity.kt，app&#x2F;build.gradle里有很多kotlin相关内容，这个好像是因为Android官方最新推的就是kotlin所以默认都带了。我们只是想扩展Unity的原生MainActivity去扩展编写原生功能，并不是想完全当做Android原生开发，所以我希望的还是走Android+java相关的原生开发方式，后续创建Android Library后会完全放弃并删除Android App相关。</strong></p>
+<p>创建完Android工程后我发现后台任务一直提示ImportingNativeFrameworkAndroidProject” Gradle Project，我打开View-&gt;Tool Window-&gt;Build看到好像在处理SDK 36相关的东西(AI说是工程默认用的AGP 9.0所以会去找SDK 36)，但我本机还没安装SDK 36：</p>
+<p><img src="/img/CICD/ImportingGradleProjectWithSDK36.PNG" alt="ImportingGradleProjectWithSDK36"></p>
+<p>为了让项目Import成功后使用New Module创建Android Library这里需要先打开Tools-&gt;SDK Manager-&gt;勾选SDK版本并安装(SDK 36):</p>
+<p><img src="/img/CICD/InstallSDK36.PNG" alt="InstallSDK36"></p>
+<p><strong>这里只是为了让Android工程导入通过，后续我会根据Unity导出的Gradle工程去严格修改Android相关工具配置！</strong></p>
+<p>安装完成后打开NativeFrameworkAndroidProject的Android工程经历漫长的导入，最终Android工程导入完成打开成功了:</p>
+<p><img src="/img/CICD/OpenAndroidProjectSuccess.PNG" alt="OpenAndroidProjectSuccess"></p>
+<p>Note:</p>
+<ol>
+<li><strong>创建Android工程的Build configuration language选项要选Groovy DSL，使用Groovy语言来编写.gradle文件(考虑到Unity导出Gradle工程也是用的Groovy)，虽然Android官方推荐选Kotlin DSL</strong></li>
+<li><strong>主要包名要和我们游戏里的包名保持一致</strong></li>
+<li><strong>Minimus SDK最好也保持和项目设置一致</strong></li>
+</ol>
+<h4 id="确保正确的Gradle，Android-Gradle-Plugin和JDK"><a href="#确保正确的Gradle，Android-Gradle-Plugin和JDK" class="headerlink" title="确保正确的Gradle，Android Gradle Plugin和JDK"></a>确保正确的Gradle，Android Gradle Plugin和JDK</h4><p><strong>接下来我们先确保前面提到的Gradle，Android Gradle Plugin和JDK使用和Unity对应版本一致先。</strong></p>
+<p>在修改各个目标文件之前，我们先看下AI给出的项目结构和各文件的作用说明:</p>
+<p><img src="/img/SDK/AndroidFolderStructure.PNG" alt="AndroidFolderStructure"></p>
+<p><img src="/img/SDK/AndroidProjectReponsibility.PNG" alt="AndroidProjectReponsibility"></p>
+<ul>
+<li><p>保持根gradle.properties内容和导出Gradle工程gradle.properties一致：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">org.gradle.jvmargs=-Xmx4096M</span><br><span class="line">org.gradle.parallel=true</span><br><span class="line">unityStreamingAssets=UnityServicesProjectConfiguration.json, google-services-desktop.json</span><br><span class="line"><span class="params">#</span> Android Resolver Properties Start</span><br><span class="line">android.useAndroidX=true</span><br><span class="line">android.enableJetifier=true</span><br><span class="line"><span class="params">#</span> Android Resolver Properties End</span><br><span class="line">unityTemplateVersion=7</span><br><span class="line">android.useAndroidX=true</span><br><span class="line">android.enableJetifier=true</span><br><span class="line">org.gradle.welcome=never</span><br><span class="line">android.aapt2FromMavenOverride=G<span class="keyword">\:</span><span class="keyword">\\</span>Software<span class="keyword">\\</span>UnityAllVersions<span class="keyword">\\</span>2022.3.62f3<span class="keyword">\\</span>2022.3.62f3<span class="keyword">\\</span>Editor<span class="keyword">\\</span>Data<span class="keyword">\\</span>PlaybackEngines<span class="keyword">\\</span>AndroidPlayer<span class="keyword">\\</span>SDK<span class="keyword">\\</span>build-tools<span class="keyword">\\</span>34.0.0<span class="keyword">\\</span>aapt2.exe</span><br></pre></td></tr></table></figure>
+
+<p><strong>我们会在build.gradle里指定buildToolsVersion版本，但如果不强制指定aapt2工具，Android Gradle Tool会选用默认依赖的相关工具导致出错，为了确保跟Unity版本使用工具一致这里还是需要明确指定aapt2FromMavenOverride工具</strong></p>
+</li>
+<li><p>保持JDK版本一致</p>
+<p>将项目的Gradle JDK设置(<strong>File-&gt;Settings-&gt;Build，Execution，Deployment-&gt;Build Tools-&gt;Gradle-&gt;Gradle JDK</strong>)成我们Unity对应版本需要的JDK路径：</p>
+<p><img src="/img/SDK/SetUnityGradleJDKLocation.PNG" alt="SetUnityGradleJDKLocation"></p>
+</li>
+<li><p>保持Gradle版本一致</p>
+<p>打开<strong>Android Project根目录下的gradle-wrapper.properties</strong>保持和Unity导出的Gradle工程设置一致如下:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distributionUrl=https<span class="keyword">\:</span>//services.gradle.org/distributions/gradle-7.5.1-bin.zip</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保持Android Gradle Plugin版本一致</p>
+<p>打开我们<strong>Android Project根目录下的build.gradle</strong>文件修改成如下:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Top-level build file where you can add configuration options common to all sub-projects/modules.</span><br><span class="line">plugins &#123;</span><br><span class="line">    alias(libs.plugins.android.application) apply false</span><br><span class="line">    alias(libs.plugins.android.library) apply false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果发现Sync Gradle报错如下:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.gradle.api.GradleException: Error resolving plugin [id: &#x27;com.android.application&#x27;, version: &#x27;9.0.1&#x27;]</span><br></pre></td></tr></table></figure>
+
+<p>这是因为我们创建的Android工程里的libs.version.toml里还起订了Android Gradle Plugin的版本信息，将libs.versions.toml里AGP版本修改到7.4.2：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[versions]</span><br><span class="line">agp = &quot;7.4.2&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>真正关联上Application和Library使用哪个Android Gradle Plugin版本的配置是在libs.version.toml</strong>：</p>
+<p><img src="/img/SDK/ConnectAndroidGradlePluginVersionConfig.PNG" alt="ConnectAndroidGradlePluginVersionConfig"></p>
+<p>再次Sync Gradle报错如下:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> problem occurred evaluating project &#x27;:app&#x27;.</span><br><span class="line">&gt; Could not find method compileSdk() for arguments [build<span class="built_in">_</span>6jjk1t0mf4mcnif7jl7frtd5s<span class="built_in">$</span><span class="built_in">_</span>run<span class="built_in">_</span>closure1<span class="built_in">$</span><span class="built_in">_</span>closure3@519d74c7] on extension &#x27;android&#x27; of type com.android.build.gradle.internal.dsl.BaseAppModuleExtension.</span><br></pre></td></tr></table></figure>
+
+<p>这是因为我们将Android Gradle Plugin版本改到7.4.2后，不识别app&#x2F;build.gradle(unitynativeframework&#x2F;build.gradle里同理)里的以下写法:</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">compileSdk &#123;</span><br><span class="line">    version = release(<span class="number">36</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要修改成如下:</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compileSdkVersion <span class="number">36</span></span><br></pre></td></tr></table></figure>
+
+<p>最终终于通过了Sync Gradle同步。</p>
+<p>我们通过View-&gt;Tool Windows-&gt;Gradle-&gt;Execute Gradle Task输入**:unitynativeframework:assembleRelease**执行Android Library生成AAR，报错如下:</p>
+<p><img src="/img/SDK/GenerateAndroidLibraryFailedLog.PNG" alt="GenerateAndroidLibraryFailedLog"></p>
+<p>根据AI的说法是我们虽然指定了AGP版本7.4.2，但没有显示指定Build Tools的版本，所以他默认去找配套的30.0.3版本Build Tools了，同时发现找不到，所以解决问题的关键是要配置跟Unity版本配套的Build Tools版本，在对应build.gradle里分别指定以下文本:</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">buildToolsVersion <span class="string">&#x27;34.0.0&#x27;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>Note:</p>
+<ol>
+<li><strong>注意将部分build.gradle里指定的minSdk和targetSdk也同步成我们目标需要的值</strong></li>
+</ol>
+<h4 id="添加Android-Library"><a href="#添加Android-Library" class="headerlink" title="添加Android Library"></a>添加Android Library</h4><p>接下来我们创建一个Android Liabrary:</p>
+<p><img src="/img/CICD/CreateAndroidLibraryProject.PNG" alt="CreateAndroidLibraryProject"></p>
+<p>添加Unity对应版本的classes.jar到Android Library的lib目录下：</p>
+<p><img src="/img/SDK/AddUnityClassJarToAndroidLibrary.PNG" alt="AddUnityClassJarToAndroidLibrary"></p>
+<p>添加自定义的MainActivity.java文件:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.tonytang.unitynativeframework;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.app.Activity;</span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.content.res.Configuration;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"><span class="keyword">import</span> android.util.DisplayMetrics;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.unity3d.player.UnityPlayer;</span><br><span class="line"><span class="keyword">import</span> com.unity3d.player.UnityPlayerActivity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MainActivity</span> <span class="keyword">extends</span> <span class="title class_">UnityPlayerActivity</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">mUnityCallBackHandler</span> <span class="operator">=</span> <span class="string">&quot;GameLauncher&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">Context</span> <span class="variable">mContext</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">Activity</span> <span class="variable">mCurrentActivity</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> mWidth;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> mHeight;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onCreate</span><span class="params">(Bundle savedInstanceState)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.onCreate(savedInstanceState);</span><br><span class="line"></span><br><span class="line">        Log.d(<span class="string">&quot;JNI&quot;</span>, <span class="string">&quot;onCreate()&quot;</span>);</span><br><span class="line">        mContext = <span class="built_in">this</span>.getApplicationContext();</span><br><span class="line">        mCurrentActivity = <span class="built_in">this</span>;</span><br><span class="line"></span><br><span class="line">        <span class="type">DisplayMetrics</span> <span class="variable">dm</span> <span class="operator">=</span> getResources().getDisplayMetrics();</span><br><span class="line">        mWidth = dm.widthPixels;</span><br><span class="line">        mHeight = dm.heightPixels;</span><br><span class="line">        Log.d(<span class="string">&quot;JNI&quot;</span>,<span class="string">&quot;mWidth :&quot;</span> + mWidth);</span><br><span class="line">        Log.d(<span class="string">&quot;JNI&quot;</span>,<span class="string">&quot;mHeight :&quot;</span> + mHeight);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onStart</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">super</span>.onStart();</span><br><span class="line"></span><br><span class="line">        Log.d(<span class="string">&quot;JNI&quot;</span>, <span class="string">&quot;onStart()&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onResume</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">super</span>.onResume();</span><br><span class="line"></span><br><span class="line">        Log.d(<span class="string">&quot;JNI&quot;</span>, <span class="string">&quot;onResume()&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onPause</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">super</span>.onPause();</span><br><span class="line"></span><br><span class="line">        Log.d(<span class="string">&quot;JNI&quot;</span>, <span class="string">&quot;onPause()&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onStop</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">super</span>.onStop();</span><br><span class="line"></span><br><span class="line">        Log.d(<span class="string">&quot;JNI&quot;</span>, <span class="string">&quot;onStop()&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onDestroy</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">super</span>.onDestroy();</span><br><span class="line"></span><br><span class="line">        Log.d(<span class="string">&quot;JNI&quot;</span>, <span class="string">&quot;onDestroy()&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onWindowFocusChanged</span><span class="params">(<span class="type">boolean</span> hasFocus)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">super</span>.onWindowFocusChanged(hasFocus);</span><br><span class="line"></span><br><span class="line">        Log.d(<span class="string">&quot;JNI&quot;</span>, <span class="string">&quot;onWindowFocusChanged(&quot;</span> + hasFocus + <span class="string">&quot;)&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onConfigurationChanged</span><span class="params">(Configuration newConfig)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">super</span>.onConfigurationChanged(newConfig);</span><br><span class="line">        Log.d(<span class="string">&quot;JNI&quot;</span>,<span class="string">&quot;onConfigurationChanged()&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//Unity call part</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">javaMethod</span><span class="params">(String csparam)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Log.d(<span class="string">&quot;JNI&quot;</span>, <span class="string">&quot;javaMethod() with parameter:&quot;</span> + csparam);</span><br><span class="line">        UnityPlayer.UnitySendMessage(mUnityCallBackHandler,<span class="string">&quot;resUnityMsg&quot;</span>, <span class="string">&quot;java param&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在Android Library的build.gradle里添加以下配置，将classes.jar仅编译但不导出避免和Unity的classes.jar出现双份冲突:</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    ******</span><br><span class="line">	compileOnly files(<span class="string">&#x27;libs/classes.jar&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Unity对应版本的classes.jar路径在对应版本安装目录下，不确实哪个可以直接拷贝导出的Gradle工程里的classes.jar</strong></p>
+<p>将导出的Gradle工程下的unityLibrary的AndroidManifest.xml拷贝到Unity项目Plugins&#x2F;Android目录下作为基准AndroidManifest.xml使用，<strong>但要将android:name&#x3D;”com.unity3d.player.UnityPlayerActivity”修改成我们自己的包名android:name&#x3D;”com.tonytang.unitynativeframework.MainActivity”，这一步是将默认的Unity MainActivity修改成我们自定义的MainActivity的关键</strong>：</p>
+<p><img src="/img/SDK/CoreDataInAndroidManifestXML.PNG" alt="CoreDataInAndroidManifestXML"></p>
+<p><strong><intent-filter>*</intent-filter>符号包着的那一段是指定将com.tonytang.unitynativeframework.MainActivity作为启动Activity的相关配置</strong></p>
+<p><strong>为什么我们的Android Library工程不需要配置像Unity导出的Gradle工程相关的NDK配置？为什么 Unity 导出工程需要 NDK？</strong></p>
+<p>Unity 导出的 <code>unityLibrary/build.gradle</code> 不只是普通 Android Library，它包含：</p>
+<ul>
+<li>Unity Player 运行时；</li>
+<li>IL2CPP 生成的 C++；</li>
+<li>Unity 原生库；</li>
+<li>游戏程序集和资源；</li>
+<li>多个 CPU 架构的 <code>.so</code>；</li>
+<li>IL2CPP 编译任务。</li>
+</ul>
+<p><strong>而我们编译Android Library的工程只有Android Java代码，是构建一个纯Java Android Library的AAR所以不需要使用NDK工具，如果未来需要包含C++或者.so或者使用JNI啥的才需要NDK。</strong></p>
+<h4 id="导出Android-Library-AAR"><a href="#导出Android-Library-AAR" class="headerlink" title="导出Android Library AAR"></a>导出Android Library AAR</h4><p>打开Gradle窗口(<strong>View-&gt; Tool Windows -&gt; Gradle</strong>)，准备导出Library AAR:</p>
+<p><strong>点击Execute Gradle Task并输入:unitynativeframework:assembleRelease</strong></p>
+<p>等待执行完成后发现AAR生成成功：</p>
+<p><img src="/img/SDK/AndroidLibraryBuildSuccess.PNG" alt="AndroidLibraryBuildSuccess"></p>
+<p><strong>导出成功后我们将导出的unitynativeframework-release.aar放到Unity工程的Plugins&#x2F;Android&#x2F;libs目录下等待使用。</strong></p>
+<p><img src="/img/SDK/CopyAARToAndroidPluginsLibFolder.PNG" alt="CopyAARToAndroidPluginsLibFolder"></p>
+<p><strong>为什么Build Gradle Task输入:unitynativeframework:assembleRelease会有效？</strong></p>
+<p>因为<strong>assembleRelease 就是 Android Gradle Plugin 自动创建的任务</strong>，不需要你手写。</p>
+<p><strong>assemble：装配、打包构建产物。</strong></p>
+<p><strong>Release：构建 release 变体。</strong></p>
+<p>对于Android Library来说，</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">assembleRelease</span><br><span class="line">→ 编译 Release 代码和资源</span><br><span class="line">→ 处理 Manifest</span><br><span class="line">→ 打包 classes.jar</span><br><span class="line">→ 生成 Release AAR</span><br></pre></td></tr></table></figure>
+
+<p>对 Android Application 来说：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">assembleRelease</span><br><span class="line">→ 生成 Release APK</span><br></pre></td></tr></table></figure>
+
+<p>Task的名称来源于build.gradle里:</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">buildTypes &#123;</span><br><span class="line">    release &#123;</span><br><span class="line">        minifyEnabled <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>以上配置Android Gradle Plugin就会创建assembleRelease的任务。</strong></p>
+<h4 id="Unity访问原生代码"><a href="#Unity访问原生代码" class="headerlink" title="Unity访问原生代码"></a>Unity访问原生代码</h4><p>Android原生访问代码功能实例：</p>
+<p>AndroidNativeManager.cs</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">******</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> UNITY_ANDROID</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> AndroidNativeManager.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Android原生管理类</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AndroidNativeManager</span> : <span class="title">NativeManager</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Android主Activity对象 </span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> AndroidJavaObject mAndroidActivity;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 初始化</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">init</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;AndroidNativeManager:init()&quot;</span>);</span><br><span class="line">        Debug.Log(<span class="string">$&quot;Application.platform:<span class="subst">&#123;Application.platform&#125;</span>&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (Application.platform == RuntimePlatform.Android)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 这里使用using的目的是确保AndroidJavaClass对象尽快被删除</span></span><br><span class="line">            <span class="comment">// Unity访问原生Android的Java对象抽象(源码查看Unity官方的UntiyPlayer.java文件)</span></span><br><span class="line">            <span class="keyword">using</span> (AndroidJavaClass jc = <span class="keyword">new</span> AndroidJavaClass(<span class="string">&quot;com.unity3d.player.UnityPlayer&quot;</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 获得当前Activity(这里是为了获得MainActivity)</span></span><br><span class="line">                mAndroidActivity = jc.GetStatic&lt;AndroidJavaObject&gt;(<span class="string">&quot;currentActivity&quot;</span>);</span><br><span class="line">                <span class="keyword">if</span> (mAndroidActivity == <span class="literal">null</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    Debug.Log(<span class="string">&quot;获取UnityMainActivity::mAndroidActivity失败！&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    Debug.Log(<span class="string">&quot;获取UnityMainActivity::mAndroidActivity成功！&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 调用原生方法</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">callNativeMethod</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;AndroidNativeManager:callNativeMethod()&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (mAndroidActivity != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            mAndroidActivity.Call(<span class="string">&quot;javaMethod&quot;</span>, <span class="string">&quot;cs param&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>然后在按钮点击的时候调用:</p>
+<p>GameLauncher.cs</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 游戏入口</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">GameLauncher</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    ******</span><br><span class="line">    </span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 调用原生方法</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCallNativeMethodClick</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;onCallNativeMethodClick()&quot;</span>);</span><br><span class="line">        LogCallNativeMethodBtnClickEvent();</span><br><span class="line">        NativeManager.Singleton.callNativeMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打包安装运行：</p>
+<p><img src="/img/SDK/CustomMainActivityRunningLog.PNG" alt="CustomMainActivityRunningLog"></p>
+<p><strong>从日志可以看出我们成功实现了导出自定义AAR+指定我们自定义的MainActivity作为游戏启动Activity的功能。</strong></p>
+<p>我们点击按钮执行调用原生Android的javaMethod方法:</p>
+<p><img src="/img/SDK/CallAndroidNativeMethodSuccess.PNG" alt="CallAndroidNativeMethodSuccess"></p>
+<p><strong>从截图可以看出我们成功调用了我们在Android的MainActivity里自定义的javaMethod方法，同时我们通过UnityPlayer.UnitySendMessage的方式成功回调到了Unity测的NativeMessageHandler.resUnityMsg()方法和传参</strong></p>
+<p><strong>至此我们想要实现搭建Android Library导出AAR(含自定义MainActivity入口)的框架流程就算正式打通了。</strong></p>
+<h3 id="IOS原生开发"><a href="#IOS原生开发" class="headerlink" title="IOS原生开发"></a>IOS原生开发</h3><p>IOS原生开发同理，IOS也有属于自己的程序启动入口(UnityAppController.mm)，结合以前的学习(详情参考:<a href="https://tonytang1990.github.io/2016/12/11/Unity%E5%8E%9F%E7%94%9F/">Unity原生</a>])我们可以知道要想自定义IOS原生入口编写功能，我们需要编写一个继承至UnityAppController的类作为程序入口，目前IOS好像支持Objective-C和Swift，以下是以Objective-C为例:</p>
+<p>AppController.h</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 自定义Unity AppCOntroller</span><br><span class="line">//导入Unity的UnityAppController.h，自定义AppController需要继承至UnityAppController</span><br><span class="line">#import &quot;UnityAppController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface AppController : UnityAppController</span><br><span class="line">@property(nonatomic,strong) UINavigationController *naVC;</span><br><span class="line">-(void) createUI;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>AppController.mm</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">//自身的头文件</span><br><span class="line">#import &quot;AppController.h&quot;</span><br><span class="line">//导入我们自己写接口的类的.h文件，用于实现自定义的UIViewController</span><br><span class="line">#import &quot;UnityViewController.h&quot;</span><br><span class="line">//其他文件</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation AppController</span><br><span class="line">-(void) createUI</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;AppController:createUI()&quot;);</span><br><span class="line">    _rootController = [[UIViewController alloc]init];</span><br><span class="line">    _rootView = [[UIView alloc]initWithFrame:[UIScreen mainScreen].bounds];</span><br><span class="line">    _rootController.view = _rootView;</span><br><span class="line">        </span><br><span class="line">    //自定义viewcontroller添加到现有的viewcontroller上</span><br><span class="line">    UnityViewController *vc = [[UnityViewController alloc]init];</span><br><span class="line">    self.naVC =[[UINavigationController alloc]initWithRootViewController:vc];</span><br><span class="line">    </span><br><span class="line">    //添加自定义view到rootView上</span><br><span class="line">    [_rootView addSubview:self.naVC.view];</span><br><span class="line"></span><br><span class="line">    _window.rootViewController = _rootController;</span><br><span class="line">    [_window bringSubviewToFront:_rootView];</span><br><span class="line">    [_window makeKeyAndVisible];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//这是一个固定写法，因为这个代码，所以启动界面是从这里启动</span><br><span class="line">IMPL_APP_CONTROLLER_SUBCLASS(AppController);</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的代码，我们完成了下面两件事：</p>
+<ol>
+<li>自定义Unity IOS程序入口</li>
+<li>添加了自定义的View(绑定到自定义UIViewController上)到rootView上</li>
+</ol>
+<p>成功绑定到自定义UIViewController上后，我们就能通过自定义的UIViewController去和IOS打交道了。</p>
+<p>UnityViewController.h</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//自定义的UIViewController</span><br><span class="line">#import &quot;UnityAppController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface UnityViewController : UIViewController</span><br><span class="line">//权限申请</span><br><span class="line">- (void)audioAuthAction;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>UnityViewController.mm</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">//包含自身头文件</span><br><span class="line">#import &quot;UnityViewController.h&quot;</span><br><span class="line"></span><br><span class="line">//其他头文件</span><br><span class="line">#import &quot;UnityAppController+ViewHandling.h&quot;</span><br><span class="line">#import &lt;UI/UnityView.h&gt;</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#import &lt;AVFoundation/AVFoundation.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation UnityViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;UnityViewController:viewDidLoad()&quot;);</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    [self.view addSubview:GetAppController().unityView];</span><br><span class="line">    GetAppController().unityView.frame = self.view.frame;</span><br><span class="line">    </span><br><span class="line">    // Do any additional setup after loading the view.</span><br><span class="line">    // 权限申请相关</span><br><span class="line">    [self audioAuthAction];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//权限申请</span><br><span class="line">- (void)audioAuthAction</span><br><span class="line">&#123;</span><br><span class="line">    //麦克风权限申请</span><br><span class="line">    NSLog(@&quot;UnityViewController:audioAuthAction()&quot;);</span><br><span class="line">    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio completionHandler:^(BOOL granted) &#123;</span><br><span class="line">       NSLog(@&quot;%@&quot;,granted ? @&quot;麦克风准许&quot;:@&quot;麦克风不准许&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)viewWillAppear:(BOOL)animated&#123;</span><br><span class="line">    //隐藏导航条view</span><br><span class="line">    NSLog(@&quot;UnityViewController:viewWillAppear()&quot;);</span><br><span class="line">    self.navigationController.navigationBar.hidden = YES;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)viewDidDisappear:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;UnityViewController:viewDidDisappear()&quot;);</span><br><span class="line">    self.navigationController.navigationBar.hidden = NO;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>可以看到通过自定义的UIViewController，我们就可以直接编写对应原生功能(e.g. 权限申请)代码了。</p>
+<h2 id="SDK"><a href="#SDK" class="headerlink" title="SDK"></a>SDK</h2><p><a target="_blank" rel="noopener" href="https://vocus.cc/article/68dea5d5fd89780001071a04">SDK 是「Software Development Kit」的縮寫，中文稱為「軟體開發工具套件」</a></p>
+<p>很多跨平台功能需要处理原生的东西，且这些功能可以说是对大部分游戏都需求 统一的，所以很多时候这些功能(比如<strong>广告SDK，统计SDK，支付SDK等</strong>)会被做成SDK供我们直接集成使用。</p>
+<h3 id="Firebase"><a href="#Firebase" class="headerlink" title="Firebase"></a>Firebase</h3><p><strong>Firebase 是一组面向移动端的云服务和运营工具</strong>。它把账号、数据存储、云函数、崩溃收集、数据分析、远程配置、推送等常见能力组合在一起，并提供 Unity&#x2F;C++ SDK。</p>
+<p>Firebase能提供很多我游戏开发中会用到的一些SDK功能，比如<strong>崩溃统计，数据大大点，消息推送</strong>，登录授权等。</p>
+<p>在游戏开发过程中如果我们的<strong>游戏走海外移动端，基本都会选Firebase</strong>。但在国内受限于网络的原因，部分Firebase功能我们需要选择其他替代品。</p>
+<p>AI给出的国内外推荐服务选择:</p>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>海外版</th>
+<th>中国大陆版</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>崩溃监控</td>
+<td>Firebase Crashlytics</td>
+<td>Bugly、国内 APM、Sentry</td>
+</tr>
+<tr>
+<td>数据分析</td>
+<td>Firebase Analytics</td>
+<td>数数、神策、火山、友盟或自建</td>
+</tr>
+<tr>
+<td>远程配置</td>
+<td>Firebase Remote Config</td>
+<td>国内 CDN&#x2F;配置中心&#x2F;自建</td>
+</tr>
+<tr>
+<td>Android 推送</td>
+<td>FCM</td>
+<td>厂商推送或聚合推送</td>
+</tr>
+<tr>
+<td>iOS 推送</td>
+<td>FCM&#x2F;APNs</td>
+<td>优先评估直接 APNs</td>
+</tr>
+<tr>
+<td>登录</td>
+<td>Firebase Auth</td>
+<td>国内账号、渠道账号、自研</td>
+</tr>
+<tr>
+<td>云存档</td>
+<td>Firestore</td>
+<td>国内后端和数据库</td>
+</tr>
+<tr>
+<td>云函数</td>
+<td>Cloud Functions</td>
+<td>国内云函数或自建服务</td>
+</tr>
+<tr>
+<td>文件存储</td>
+<td>Firebase Storage</td>
+<td>国内对象存储和 CDN</td>
+</tr>
+<tr>
+<td>实时战斗</td>
+<td>专用游戏服务器</td>
+<td>专用游戏服务器</td>
+</tr>
+</tbody></table>
+<p>Note:</p>
+<ol>
+<li><strong>Firebase在PC端支持不太完善</strong></li>
+</ol>
+<h4 id="Firebase-Unity接入"><a href="#Firebase-Unity接入" class="headerlink" title="Firebase Unity接入"></a>Firebase Unity接入</h4><p>接下来以实战Unity接入Firebase的<strong>崩溃监控</strong>和<strong>数据</strong>功能为例。</p>
+<p>Firebase接入条件限制：</p>
+<ul>
+<li><p>安装 Unity 2021 LTS 或更高版本。更早的版本也可能兼容，但不享受积极支持。</p>
+</li>
+<li><p>（仅限 Apple 平台）安装以下各项：</p>
+<ul>
+<li>Xcode 16.2 版或更高版本</li>
+<li>CocoaPods 1.12.0 或更高版本</li>
+</ul>
+</li>
+<li><p>确保您的 Unity 项目满足以下要求：</p>
+<ul>
+<li><strong>对于 iOS</strong> - 目标为 iOS 15 或更高版本</li>
+<li><strong>对于 tvOS</strong> - 目标为 tvOS 15 或更高版本</li>
+<li><strong>对于 Android</strong> - 目标 API 级别为 23 (Marshmallow) 或更高版本</li>
+</ul>
+</li>
+<li><p>设置一台实体设备或使用模拟器运行您的应用。</p>
+<ul>
+<li><p><strong>对于 Apple 平台</strong> - 设置实体设备或使用 iOS 或 tvOS 模拟器。</p>
+<p>您是要用 Cloud Messaging？</p>
+</li>
+<li><p><strong>对于 Android</strong> - <a target="_blank" rel="noopener" href="https://developer.android.com/studio/run/managing-avds?hl=zh-cn">模拟器</a>必须使用包含 Google Play 的模拟器映像。</p>
+</li>
+</ul>
+</li>
+<li><p>使用您的 Google 账号<a target="_blank" rel="noopener" href="https://console.firebase.google.com/?hl=zh-cn">登录 Firebase</a></p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://firebase.google.com/docs/unity/setup">详细Firebase接入Unity文档</a></p>
+<h5 id="登录Firebase创建项目"><a href="#登录Firebase创建项目" class="headerlink" title="登录Firebase创建项目"></a>登录Firebase创建项目</h5><p><a target="_blank" rel="noopener" href="https://console.firebase.google.com/?hl=zh-cn&pli=1">Firebase项目创建</a></p>
+<p><img src="/img/SDK/CreateFirebaseProject.PNG" alt="CreateFirebaseProject"></p>
+<p>创建Firebase项目成功后可以看到我们创建的项目：</p>
+<p><img src="/img/SDK/CreateFirebaseProjectSuccess.PNG" alt="CreateFirebaseProjectSuccess"></p>
+<h5 id="在Firebase中注册应用"><a href="#在Firebase中注册应用" class="headerlink" title="在Firebase中注册应用"></a>在Firebase中注册应用</h5><p>打开我们创建的Firebase项目:</p>
+<p><img src="/img/SDK/OpenFirebaseProject.PNG" alt="OpenFirebaseProject"></p>
+<p>点击添加应用后选择对应平台，这里以Android平台为例:</p>
+<p><img src="/img/SDK/RegisterFirebaseAndroidApp.PNG" alt="RegisterFirebaseAndroidApp"></p>
+<p>根据要求下载google-services.json文件并放到项目Assets目录下:</p>
+<p><img src="/img/SDK/DownloadGoogleServicesJsonFile.PNG" alt="DownloadGoogleServicesJsonFile"></p>
+<p><img src="/img/SDK/SaveGoogleServicesJsonToAssetFolder.PNG" alt="SaveGoogleServicesJsonToAssetFolder"></p>
+<p>google-services.json内容：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;project_info&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;project_number&quot;</span><span class="punctuation">:</span> <span class="string">&quot;******&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;project_id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;unitynativeframework&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;storage_bucket&quot;</span><span class="punctuation">:</span> <span class="string">&quot;unitynativeframework.firebasestorage.app&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;client&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;client_info&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;mobilesdk_app_id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;******&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;android_client_info&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;package_name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;com.TonyTang.UnityNativeFramework&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;oauth_client&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;api_key&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;current_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;******&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;services&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;appinvite_service&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;other_platform_oauth_client&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;configuration_version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到根据我们注册应用传入的项目包名，Firebase生成了<strong>project_number，mobilesdk_app_id，api_key</strong>等相关的值。</p>
+<h5 id="添加Firebase-Unity-SDK"><a href="#添加Firebase-Unity-SDK" class="headerlink" title="添加Firebase Unity SDK"></a>添加Firebase Unity SDK</h5><p><a target="_blank" rel="noopener" href="https://firebase.google.com/download/unity?hl=zh-cn">下载Firebase Unity SDK</a></p>
+<p><img src="/img/SDK/DownloadAllFirebaseUnitySDK.PNG" alt="DownloadAllFirebaseUnitySDK"></p>
+<p>可以看到里面包含了各种Firebase提供的SDK包，这里我以**数据统计SDK(FirebaseAnalytics.unitypackage)**作为实战SDK。</p>
+<p>将FirebaseAnalytics.unitypackage导入Unity。</p>
+<p>导入过程中会问一些是否激活特定额外功能，这个根据需求选择，我目前都选择了No，但最后提示<strong>Enable Android Auto-resolution</strong>时要选择Enable，让他自行解决下Android的一些依赖冲突：</p>
+<p><img src="/img/SDK/EnableAndroidAutoResolution.PNG" alt="EnableAndroidAutoResolution"></p>
+<p>AI的说法是这一步会根据项目所有第三方插件配置文件进行分析，去下载相关依赖AAR，更新Unity的Gradle模版等操作。</p>
+<p><img src="/img/SDK/FirebaseAnalyticImportAndroidStaff.PNG" alt="FirebaseAnalyticImportAndroidStaff"></p>
+<p> <strong>FirebaseApp.androidlib</strong>不是Firebase Analytics SDK本体，它是Firebase项目配置资料库(比如AndroidManifest.xml(定义Firebase的Android Activity)和google-services.xml(定义一些Android资源icon名称))</p>
+<p><strong>mainTemplate.gradle</strong> 这是Unity Android 构建中的<strong>主 Android Library 模块 Gradle 模板，主要用于生成unityLibrary&#x2F;build.gradle</strong>。</p>
+<p><strong>settingsTemplate.gradle</strong>是根Gradle工程，主要负责配置一些内容去决定哪里寻找插件和依赖、工程包含哪些模块。</p>
+<p><strong>gradleTemplate.properties</strong>是Unity 生成gradle.properties的模版，它控制整个 Gradle 构建进程的属性。</p>
+<h5 id="确认Google-Play服务版本要求"><a href="#确认Google-Play服务版本要求" class="headerlink" title="确认Google Play服务版本要求"></a>确认Google Play服务版本要求</h5><p>需要再项目启动时找个时机添加一下CSharp代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Firebase.Extensions;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span> ()</span> &#123;</span><br><span class="line">    Debug.Log(<span class="string">&quot;GameLauncher:Start()&quot;</span>);</span><br><span class="line">    ******</span><br><span class="line"></span><br><span class="line">    FireBaseInitilization();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Firebase初始化</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">FireBaseInitilization</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 检查Google Play服务版本要求</span></span><br><span class="line">    Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =&gt; &#123;</span><br><span class="line">        <span class="keyword">var</span> dependencyStatus = task.Result;</span><br><span class="line">        <span class="keyword">if</span> (dependencyStatus == Firebase.DependencyStatus.Available) &#123;</span><br><span class="line">            <span class="comment">// Create and hold a reference to your FirebaseApp,</span></span><br><span class="line">            <span class="comment">// where app is a Firebase.FirebaseApp property of your application class.</span></span><br><span class="line">            <span class="keyword">var</span> app = Firebase.FirebaseApp.DefaultInstance;</span><br><span class="line">            Debug.Log(<span class="string">$&quot;Firebase app.Name:<span class="subst">&#123;app.Name&#125;</span> dependencyStatus：<span class="subst">&#123;dependencyStatus&#125;</span>&quot;</span>);</span><br><span class="line">            OnFirebaseCheckComplete();</span><br><span class="line">            <span class="comment">// Set a flag here to indicate whether Firebase is ready to use by your app.</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            UnityEngine.Debug.LogError(System.String.Format(</span><br><span class="line">                <span class="string">&quot;Could not resolve all Firebase dependencies: &#123;0&#125;&quot;</span>, dependencyStatus));</span><br><span class="line">            <span class="comment">// Firebase Unity SDK is not safe to use here.</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>FireBaseInitilization()里的代码就是Firebase Analytics检查Google Play服务版本要求的核心代码，注意看我们在打点登录事件调用是放在检查通过以后，原因是在Google Play服务版本要求检查通过之前，我们是不允许使用打点功能的。</strong></p>
+<h5 id="打包测试Firebase-Analytics"><a href="#打包测试Firebase-Analytics" class="headerlink" title="打包测试Firebase Analytics"></a>打包测试Firebase Analytics</h5><p>打包失败提示如下：</p>
+<p><img src="/img/SDK/FirebaseAnalyticsBuildFailed.PNG" alt="FirebaseAnalyticsBuildFailed"></p>
+<p>字面意思我们设置的Android最低版本是22，但Firebase Analytics要求Android最低版本是23，所以修改我们打包时设置的Android最低版本到23即可：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel23;</span><br></pre></td></tr></table></figure>
+
+<p>再次触发打包，依然报错:</p>
+<p><img src="/img/SDK/FirebaseBuildErrorLog2.PNG" alt="FirebaseBuildErrorLog2"></p>
+<p>根据AI的说法是Unity 2022.3自带的AGP 7.4.2&#x2F;D8版本较久。旧D8在解析时出错，建议我<strong>将minSdkVersion设置成24后终于打包成功了</strong>。</p>
+<p>安装测试可以看到Firebase Analytic的Google Play服务检查通过了：</p>
+<p><img src="/img/SDK/FirebaseCheckGooglePlayServiceSuccess.PNG" alt="FirebaseCheckGooglePlayServiceSuccess"></p>
+<p>Note:</p>
+<ol>
+<li><strong>我使用的Unity版本是2022.3.62f3，Unity Firebase SDK版本是13.15.0</strong></li>
+</ol>
+<h5 id="Unity版Firebase-Analytics使用入门"><a href="#Unity版Firebase-Analytics使用入门" class="headerlink" title="Unity版Firebase Analytics使用入门"></a>Unity版Firebase Analytics使用入门</h5><p><a target="_blank" rel="noopener" href="https://firebase.google.com/docs/analytics/unity/get-started?hl=zh-cn">Unity版Google Analytics使用入门</a></p>
+<p>Unity接入Firebase Analytics成功后，我们就能使用Firebase Analytics进行数据打点。</p>
+<p>定义一个FBAParameters去定义我们Firebase Analytics自定义打点的参数名常量定义:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> FBAParameters.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Firebase Analytics参数定义静态类</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FBAParameters</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 设备唯一标识符</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="built_in">string</span> DeviceUid = <span class="string">&quot;device_uid&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 调用原生方法按钮点击事件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="built_in">string</span> CallNativeMethodBtnClick = <span class="string">&quot;call_native_method_btn_click&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>比如我打点一个登录事件打点，打点数据参数是用户设备UID:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 设备唯一标识符</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">private</span> <span class="built_in">string</span> DeviceUid;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span> ()</span> &#123;</span><br><span class="line">    Debug.Log(<span class="string">&quot;GameLauncher:Start()&quot;</span>);</span><br><span class="line">    DeviceUid = SystemInfo.deviceUniqueIdentifier;</span><br><span class="line">    Debug.Log(<span class="string">$&quot;Device UID: <span class="subst">&#123;DeviceUid&#125;</span>&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    ******</span><br><span class="line">	FireBaseInitilization();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Firebase初始化</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">FireBaseInitilization</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 检查Google Play服务版本要求</span></span><br><span class="line">    Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =&gt; &#123;</span><br><span class="line">        <span class="keyword">var</span> dependencyStatus = task.Result;</span><br><span class="line">        <span class="keyword">if</span> (dependencyStatus == Firebase.DependencyStatus.Available) &#123;</span><br><span class="line">            <span class="comment">// Create and hold a reference to your FirebaseApp,</span></span><br><span class="line">            <span class="comment">// where app is a Firebase.FirebaseApp property of your application class.</span></span><br><span class="line">            <span class="keyword">var</span> app = Firebase.FirebaseApp.DefaultInstance;</span><br><span class="line">            Debug.Log(<span class="string">$&quot;Firebase app.Name:<span class="subst">&#123;app.Name&#125;</span> dependencyStatus：<span class="subst">&#123;dependencyStatus&#125;</span>&quot;</span>);</span><br><span class="line">            OnFirebaseCheckComplete();</span><br><span class="line">            <span class="comment">// Set a flag here to indicate whether Firebase is ready to use by your app.</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            UnityEngine.Debug.LogError(System.String.Format(</span><br><span class="line">                <span class="string">&quot;Could not resolve all Firebase dependencies: &#123;0&#125;&quot;</span>, dependencyStatus));</span><br><span class="line">            <span class="comment">// Firebase Unity SDK is not safe to use here.</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Firebase检查完成回调</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnFirebaseCheckComplete</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">&quot;OnFirebaseCheckComplete()&quot;</span>);</span><br><span class="line">    LogLoginEvent();</span><br><span class="line">    TryCustomEvent();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 打点登录事件</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">LogLoginEvent</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">&quot;LogLoginEvent()&quot;</span>);</span><br><span class="line">    FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLogin, FBAParameters.DeviceUid, DeviceUid);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 尝试记录自定义事件</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TryCustomEvent</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">&quot;TryCustomEvent()&quot;</span>);</span><br><span class="line">    FirebaseAnalytics.LogEvent(FBAParameters.CustomEvent, FBAParameters.DeviceUid, DeviceUid);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时在打一个DIY的调用本地方法按钮点击次数统计：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 点击调用原生方法按钮事件</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">LogCallNativeMethodBtnClickEvent</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">&quot;LogCallNativeMethodBtnClickEvent()&quot;</span>);</span><br><span class="line">    FirebaseAnalytics.LogEvent(FBAParameters.CallNativeMethodBtnClick, FBAParameters.DeviceUid, DeviceUid);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 调用原生方法</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCallNativeMethodClick</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Debug.Log(<span class="string">&quot;onCallNativeMethodClick()&quot;</span>);</span><br><span class="line">    LogCallNativeMethodBtnClickEvent();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打包后验证：</p>
+<p><img src="/img/SDK/FirebaseAnalyticLogEventRuntime.PNG" alt="FirebaseAnalyticLogEventRuntime"></p>
+<p>可以看到登录日志打点已经出发了，紧接着我点了两次调用Java方法按钮去触发原生方法按钮点击统计打点。(<strong>因为代码有点问题反复修改代码测试了多次，导致部分事件统计了多次</strong>)</p>
+<p>我们打开Firebase对应项目，搜索Events(如果刚发送的没能立刻看到可以搜索Realtime Analytics):</p>
+<p><img src="/img/SDK/FirebaseAnalyticEventsPage.PNG" alt="FirebaseAnalyticEventsPage"></p>
+<p>可以看到无论是官方定义的事件明还是我们自定义的事件名都成功发送统计到了Firebase Analytics后台。</p>
+<p><strong>但奇怪的一点是我在Firebase Analytics Events页面上好像只有部分事件能看到我传递的自定义参数:</strong></p>
+<p><img src="/img/SDK/FirebaseEventLogParamsDetail.PNG" alt="FirebaseEventLogParamsDetail"></p>
+<p><img src="/img/SDK/CustomLogEventParams.PNG" alt="CustomLogEventParams"></p>
+<p>总的来说，<strong>Firebase Analytics的功能集成和使用算是基本成功，Firebase Analytics的接入告一段落。</strong></p>
+<h3 id="AdMob"><a href="#AdMob" class="headerlink" title="AdMob"></a>AdMob</h3><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://firebase.google.com/docs/unity/setup?hl=zh-cn#add-config-file">将 Firebase 添加到您的 Unity 项目</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2023.1/Manual/android-modify-gradle-project-files-templates.html">Modify Gradle project files with Gradle template files</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2023.1/Manual/android-gradle-overview.html">Gradle for Android</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2023.1/Manual/android-manifest.html">Android App Manifest</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/cn/2023.1/Manual/android-custom-activity.html">Create a custom activity</a></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/SDK/">SDK</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/SDK/">SDK</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2026/08/19/从0搭建Jenkins打包/" title="从0搭建Jenkins打包" itemprop="url">从0搭建Jenkins打包</a>
   </h1>
   <p class="article-author">By
@@ -3490,132 +3887,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2025/03/10/博客搭建/" title="博客搭建" itemprop="url">博客搭建</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
-		
-  <p class="article-time">
-    <time datetime="2025-03-09T16:47:00.000Z" itemprop="datePublished"> 发表于 2025-03-10</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>基于Hexo搭建的博客用了很多年，最近因为一些原因更新了NodeJs相关导致搭建好的Hexo博客无法正常使用，本章节再次记录从零搭建Hexo在Github上的博客流程，分享和记录Hexo的博客搭建流程。</p>
-<h1 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h1><p><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">Hexo是快速、簡單且強大的網誌框架 · 超級快速. Node.js 帶給您超級快的檔案產生速度，上百個檔案只需幾秒就能建立完成。</a></p>
-<p><strong>所以Hexo是我们生成博客网页相关的关键之一。</strong></p>
-<h1 id="Github-Pages"><a href="#Github-Pages" class="headerlink" title="Github Pages"></a>Github Pages</h1><p><a target="_blank" rel="noopener" href="https://mini-pi.github.io/2024/02/28/how-to-make-blog-wedsite/">GitHub Pages 是一项静态站点托管服务，它直接从 GitHub 上获取 HTML、CSS 和 JavaScript 文件，通过构建过程运行文件，然后发布网站</a></p>
-<p><strong>可以理解GitHub支持我们不熟静态网页的一个功能，所以Github Pages这是我们上传Github搭建博客的关键之一。</strong></p>
-<h1 id="博客搭建"><a href="#博客搭建" class="headerlink" title="博客搭建"></a>博客搭建</h1><p>了解了核心的Hexo和Github Pages概念和原理，接下来让我们开始搭建属于我们自己的博客。</p>
-<ul>
-<li><p>安装Node.js</p>
-<p>本人已经安装好了，直接去下载安装<a target="_blank" rel="noopener" href="https://nodejs.org/en/download/">Node.js</a>即可</p>
-</li>
-<li><p>安装Hexo</p>
-<p>打开命令行，输入<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">npm install hexo-cli -g</a>，不识别npm的先去处理npm环境</p>
-</li>
-<li><p>使用Hexo初始化博客</p>
-<p>打开空目录，然后打开命令行，输入命令:hexo init blog</p>
-<p><img src="/img/Blog/HexoBlogInit.PNG" alt="HexoBlogInit"></p>
-</li>
-<li><p>生成新博客</p>
-<p>Hexo初始化博客所在目录打开命令行，输入hexo new TestBlog，会看到我们成功生成了一片新博客</p>
-<p><img src="/img/Blog/HexoNewBlog.PNG" alt="HexoNewBlog"></p>
-</li>
-<li><p>生成博客静态网页</p>
-<p>Hexo初始化博客所在目录打开命令行，输入hexo g，会看到public目录生成了静态网页相关文件</p>
-<p><img src="/img/Blog/HexoBlogGenerate.PNG" alt="HexoBlogGenerate"></p>
-</li>
-<li><p>在Github上创建***.github.io的仓库(使用Github Pages服务)</p>
-<p>详情参考<a target="_blank" rel="noopener" href="https://pages.github.com/">Github Pages</a></p>
-</li>
-<li><p>配置Hexo博客发布到Github的***.github.io仓库</p>
-<p>打开Hexo初始化博客所在目录的_config.yml文件，将发布相关配置修改成如下:</p>
-<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">#</span> Deployment</span><br><span class="line"><span class="params">##</span> Docs: https://hexo.io/docs/one-command-deployment</span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: 这里填上面Github生成的博客仓库.github.io</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>发布博客到***.github.io仓库</p>
-<p>Hexo初始化博客所在目录打开命令行，输入hexo d，会发现提示不是被的Deployer not found:git</p>
-<p><img src="/img/Blog/HexoDeployGitError.PNG" alt="HexoDeployGitError"></p>
-<p>这里我们需要安装git相关的hexo部署插件</p>
-<p><strong>注意repo填写的仓库地址要SSH而非HTTPS的地址</strong></p>
-</li>
-<li><p>安装Hexo git部署插件</p>
-<p>Hexo初始化博客所在目录打开命令行，输入npm install hexo-deployer-git –save</p>
-<p>让后再次输入hexo d我们就会看到部署提示我们输入Github的密码</p>
-<p><img src="/img/Blog/HexoDeployEnterPassword.PNG" alt="HexoDeployEnterPassword"></p>
-<p>输入完成后回车即可完成博客上传部署。</p>
-</li>
-<li><p>默认Hexo的博客主题很简陋，这里我们需要去下一个喜欢的主题</p>
-<p><a target="_blank" rel="noopener" href="https://hexo.io/themes/">Hexo Themes</a></p>
-<p>这里我下载了一个叫jacman的主题:</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/wuchong/jacman">jacman</a></p>
-<p>下载完成后，我们需要在_config.yml文件里配置theme使用刚下的主题</p>
-<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">#</span> Extensions</span><br><span class="line"><span class="params">##</span> Plugins: https://hexo.io/plugins/</span><br><span class="line"><span class="params">##</span> Themes: https://hexo.io/themes/</span><br><span class="line">theme: jacman</span><br></pre></td></tr></table></figure>
-
-<p><strong>下载的主题文件放在themes文件夹下</strong></p>
-</li>
-<li><p>如果想本地测试查看博客效果</p>
-<p>Hexo初始化博客所在目录打开命令行，输入hexo server，然后在网页输入localhost:4000即可查看本地效果</p>
-<p><img src="/img/Blog/HexoLocalServerPreview.PNG" alt="HexoLocalServerPreview"></p>
-</li>
-<li><p><strong>关于博客的一些名字修改，自己打开_config.yml修改对应地方即可</strong></p>
-<p>配置说明详细参考:<a target="_blank" rel="noopener" href="https://hexo.io/docs/configuration">configuration</a></p>
-</li>
-</ul>
-<p>Note:</p>
-<ol>
-<li><strong>关于Git的配置上述略过了</strong></li>
-<li><strong>博客编写的图片路径要放在当前使用主题下的source目录</strong></li>
-</ol>
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26625249">Github+Hexo搭建个人网站详细教程</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Other/">Other</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Other/">Other</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">Next&lt;span&gt;&lt;&#x2F;span&gt;</a>
@@ -3722,6 +3993,10 @@
 		
 		  
 			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SDK/" title="SDK">SDK<sup>1</sup></a></li>
 		  
 		
 		  
