@@ -54,7 +54,7 @@
 <meta property="og:image" content="http://tonytang1990.github.io/img/SDK/FirebaseEventLogParamsDetail.PNG">
 <meta property="og:image" content="http://tonytang1990.github.io/img/SDK/CustomLogEventParams.PNG">
 <meta property="article:published_time" content="2026-08-20T02:29:00.000Z">
-<meta property="article:modified_time" content="2026-08-31T10:11:40.751Z">
+<meta property="article:modified_time" content="2026-09-01T08:05:34.318Z">
 <meta property="article:author" content="Tony Tang">
 <meta property="article:tag" content="SDK">
 <meta name="twitter:card" content="summary">
@@ -287,6 +287,12 @@
 <p><img src="/img/SDK/CallAndroidNativeMethodSuccess.PNG" alt="CallAndroidNativeMethodSuccess"></p>
 <p><strong>从截图可以看出我们成功调用了我们在Android的MainActivity里自定义的javaMethod方法，同时我们通过UnityPlayer.UnitySendMessage的方式成功回调到了Unity测的NativeMessageHandler.resUnityMsg()方法和传参</strong></p>
 <p><strong>至此我们想要实现搭建Android Library导出AAR(含自定义MainActivity入口)的框架流程就算正式打通了。</strong></p>
+<p><strong>如果打包后发现访问原生Java代码提示方法不存在，可能是因为我们打包时开启了Java代码压缩&#x2F;混淆(PlayerSettings.Android.minifyRelease &#x3D; true)，此时需要去Android Library工程添加consumer-rules.pro指定需要不混淆的规则。</strong></p>
+<p>comsumer-rules.pro</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">#</span> Unity invokes this Activity and its bridge methods through the Android manifest</span><br><span class="line"><span class="params">#</span> and AndroidJavaObject/JNI, so R8 cannot discover the call sites statically.</span><br><span class="line">-keep class com.tonytang.unitynativeframework.MainActivity &#123; *; &#125;</span><br></pre></td></tr></table></figure>
+
+
+
 <h3 id="IOS原生开发"><a href="#IOS原生开发" class="headerlink" title="IOS原生开发"></a>IOS原生开发</h3><p>IOS原生开发同理，IOS也有属于自己的程序启动入口(UnityAppController.mm)，结合以前的学习(详情参考:<a href="https://tonytang1990.github.io/2016/12/11/Unity%E5%8E%9F%E7%94%9F/">Unity原生</a>])我们可以知道要想自定义IOS原生入口编写功能，我们需要编写一个继承至UnityAppController的类作为程序入口，目前IOS好像支持Objective-C和Swift，以下是以Objective-C为例:</p>
 <p>AppController.h</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 自定义Unity AppCOntroller</span><br><span class="line">//导入Unity的UnityAppController.h，自定义AppController需要继承至UnityAppController</span><br><span class="line">#import &quot;UnityAppController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface AppController : UnityAppController</span><br><span class="line">@property(nonatomic,strong) UINavigationController *naVC;</span><br><span class="line">-(void) createUI;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
@@ -513,6 +519,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2026/09/20/UGUI适配/" title="UGUI适配">
+  <strong>上一篇：</strong><br/>
+  <span>
+  UGUI适配</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2026/08/19/从0搭建Jenkins打包/"  title="从0搭建Jenkins打包">
@@ -640,6 +654,10 @@
 		
 		  
 			<li><a href="/categories/SDK/" title="SDK">SDK<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/UGUI/" title="UGUI">UGUI<sup>1</sup></a></li>
 		  
 		
 		  

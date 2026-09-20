@@ -1,0 +1,737 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>UGUI适配 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="前言本章节是深入UGUI多分辨率，特殊屏幕(刘海屏，水滴屏，异形屏等)和安全区等不同机型的UI适配解决方案深入实战学习。 用到的东西: Unity6000.3.19f1，CodeX，VSCode，Copilot，URP UGUI适配UGUI的UI适配核心目的是让我们的UI内容在不同的分辨率和特殊屏幕能在合适的位置显示给玩家，不至于出现核心内容看不到或者UI按钮被遮挡等显示问题。 适配结果有几个基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UGUI适配">
+<meta property="og:url" content="http://tonytang1990.github.io/2026/09/20/UGUI%E9%80%82%E9%85%8D/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="前言本章节是深入UGUI多分辨率，特殊屏幕(刘海屏，水滴屏，异形屏等)和安全区等不同机型的UI适配解决方案深入实战学习。 用到的东西: Unity6000.3.19f1，CodeX，VSCode，Copilot，URP UGUI适配UGUI的UI适配核心目的是让我们的UI内容在不同的分辨率和特殊屏幕能在合适的位置显示给玩家，不至于出现核心内容看不到或者UI按钮被遮挡等显示问题。 适配结果有几个基础">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/SetReferenceResolution.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/1920X1080ResolutionDisplay.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/2520X1080ResolutionDisplay.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/2304X1440ResolutionDisplay1.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/2304X1440ResolutionDisplay2.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/LiuHaiPingExample.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/ShuiDiPingExample.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/WaKongPingExample.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/AppleIphoneXSMaxDeviceSimulator.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/SafeAreaExample.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/AppleIphoneXSMaxUIAdaptionLog.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/AppleIphoneXSMaxSimulatorDisplay.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/AppleIphoneXSMaxSceneDisplay.png">
+<meta property="article:published_time" content="2026-09-20T08:03:00.000Z">
+<meta property="article:modified_time" content="2026-09-20T14:01:16.804Z">
+<meta property="article:author" content="Tony Tang">
+<meta property="article:tag" content="UGUI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/Unity/UIAdaption/SetReferenceResolution.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2026/09/20/UGUI适配/" title="UGUI适配" itemprop="url">UGUI适配</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2026-09-20T08:03:00.000Z" itemprop="datePublished"> 发表于 2026-09-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UGUI%E9%80%82%E9%85%8D"><span class="toc-number">2.</span> <span class="toc-text">UGUI适配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%88%86%E8%BE%A8%E7%8E%87%E9%80%82%E9%85%8D"><span class="toc-number">3.</span> <span class="toc-text">多分辨率适配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%BD%A2%E5%B1%8F%E9%80%82%E9%85%8D"><span class="toc-number">4.</span> <span class="toc-text">异形屏适配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UGUI%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88"><span class="toc-number">5.</span> <span class="toc-text">UGUI适配方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本章节是深入UGUI多分辨率，特殊屏幕(刘海屏，水滴屏，异形屏等)和安全区等不同机型的UI适配解决方案深入实战学习。</p>
+<p>用到的东西:</p>
+<p>Unity6000.3.19f1，CodeX，VSCode，Copilot，URP</p>
+<h2 id="UGUI适配"><a href="#UGUI适配" class="headerlink" title="UGUI适配"></a>UGUI适配</h2><p><strong>UGUI的UI适配核心目的是让我们的UI内容在不同的分辨率和特殊屏幕能在合适的位置显示给玩家，不至于出现核心内容看不到或者UI按钮被遮挡等显示问题。</strong></p>
+<p>适配结果有几个基础需求要满足：</p>
+<ol>
+<li><strong>UI必须充满屏幕，不能有黑边</strong></li>
+<li><strong>UI必须在屏幕中，不能超出屏幕</strong></li>
+<li><strong>UI在多分辨率下的位置和尺寸保持一致</strong></li>
+<li><strong>UI不能变形</strong></li>
+<li><strong>重要信息UI不能出现在特殊位置(比如刘海屏矩形刘海，水滴屏摄像头，挖孔屏特殊挖空等)</strong></li>
+</ol>
+<h2 id="多分辨率适配"><a href="#多分辨率适配" class="headerlink" title="多分辨率适配"></a>多分辨率适配</h2><p>先不考虑特殊屏幕的前提下，来看看UGUI的多分辨率适配方案是怎样的。</p>
+<p><strong>设计分辨率这里我选择1920X1080(16:9)，所以我把Canvas Scaler的Reference Resolution设置成1920X1080，Canvas Scales的Screen Match Mode设置成Match Width Or Height，Match设置成0(Width适配)</strong></p>
+<p><img src="/img/Unity/UIAdaption/SetReferenceResolution.png" alt="SetReferenceResolution"></p>
+<p>此时策划说我们要做一个窗口，包含一张全屏背景图(<strong>美术出了一张1920X1080的背景图</strong>)，左上角显示玩家名字文本，左下，左中，右下，右中，右上和上中分别显示一个操作按钮。</p>
+<p>所以我做了一个背景图片设置成固定宽高为1920X1080的Image和根据位置设置指定轴心(Pivot)和锚点(Anchors)去适配目标位置显示，如果设备分辨率就是1920X1080则内容完美显示:</p>
+<p><img src="/img/Unity/UIAdaption/1920X1080ResolutionDisplay.png" alt="1920X1080ResolutionDisplay"></p>
+<p>此时如果我将分辨率调整成<strong>2520X1080(21:9)</strong>:</p>
+<p><img src="/img/Unity/UIAdaption/2520X1080ResolutionDisplay.png" alt="2520X1080ResolutionDisplay"></p>
+<p><strong>此时设备分辨率宽高比例大于设计分辨率宽高比例</strong>，可以看到背景图因为前面的适配方式是**Match Width Or Height(Match值为0适配宽度)**的自适应后背景图变成宽度铺满显示但高度上下被裁剪显示，这样能符合背景图片不拉伸但铺满的需求，只是因为上下被裁剪不少所以设计全屏1920X1080背景图时要注意上下流出一部分可裁剪空间。</p>
+<p>如果我将分辨率调整成<strong>2304X1440(16:10)</strong>:</p>
+<p><img src="/img/Unity/UIAdaption/2304X1440ResolutionDisplay1.png" alt="2304X1440ResolutionDisplay1"></p>
+<p><strong>此时设备分辨率宽高比例小于设计分辨率宽高比例</strong>，可以看到背景图因为前面的适配方式是**Match Width Or Height(Match值为0适配宽度)**的自适应后背景图编程宽度铺满但高度显示不全镂空显示，这并不符合我们不希望背景图铺满的需求。</p>
+<p>此时为了全屏背景不拉伸能铺满，我们应该采取<strong>Match Width Or Height(Match值为1适配高度)</strong>：</p>
+<p><img src="/img/Unity/UIAdaption/2304X1440ResolutionDisplay2.png" alt="2304X1440ResolutionDisplay2"></p>
+<p>可以看到修改成Match值为1适配高度后，高度铺满了符合背景铺满不拉伸的需求，只是背景图左右两边被裁剪了一部分，只是因为左右被裁剪不少所以设计全屏1920X1080背景图时要注意左右流出一部分可裁剪空间。</p>
+<p>从上面可以看出关于屏幕适配，我们的<strong>Canvas Scaler的Match Width Or Height的Match值不是一层不变的。在屏幕宽高分辨率大于设计宽高分辨率时我们要适配宽度(Match值为0)从而实现上下裁剪全屏铺满效果。在屏幕宽高分辨率小于设计宽高分辨率时我们要适配高度(Match值为1)从而实现左右裁剪全屏铺满效果。</strong></p>
+<p><strong>上述规则其实等价于将Canvas Scaler的Screen Match Mode设置成Shrink，至于为什么市面上大部分都选择代码动态计算Match Width Or Height的Match值，个人暂时还没想明白，目前我暂时直接使用Shrink的设置方式。</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>2026&#x2F;09&#x2F;20截止主流移动端设备分辨率为16:9，极端分辨率分别为21:9和16:10(含手机和平板)</strong></li>
+</ol>
+<h2 id="异形屏适配"><a href="#异形屏适配" class="headerlink" title="异形屏适配"></a>异形屏适配</h2><p>前面解决的多分辨率背景适配的问题，但后来移动设备除了很多各式各样的屏幕，比如刘海屏矩形刘海，水滴屏摄像头，挖孔屏特殊挖空等。</p>
+<ul>
+<li><p><strong>刘海屏: 在屏幕上方中间位置，有一块矩形刘海</strong></p>
+<p><img src="/img/Unity/UIAdaption/LiuHaiPingExample.png" alt="LiuHaiPingExample"></p>
+</li>
+<li><p><strong>水滴屏:在屏幕上方中间有一个水滴状摄像头</strong></p>
+<p><img src="/img/Unity/UIAdaption/ShuiDiPingExample.png" alt="ShuiDiPingExample"></p>
+</li>
+<li><p><strong>挖孔屏:屏幕上方不规则的挖空，一般是摄像头位置</strong></p>
+<p><img src="/img/Unity/UIAdaption/WaKongPingExample.png" alt="WaKongPingExample"></p>
+</li>
+</ul>
+<p>可以看出上述形状各异的屏幕，导致特殊区域如果显示UI会被遮挡看不到或无法操作。</p>
+<p><strong>Unity Editor提供了快速模拟移动设备显示的工具(Unity Editor-&gt;Window-&gt;General-&gt;Device Simulator)</strong>，让我们来模拟看看效果:</p>
+<p><img src="/img/Unity/UIAdaption/AppleIphoneXSMaxDeviceSimulator.png" alt="AppleIphoneXSMaxDeviceSimulator"></p>
+<p><strong>可以看到在Apple Iphone XS Max设备上模拟最右侧被所谓的刘海屏挡住了部分按钮显示，黄色的区域是我勾上Safe Area会指出来的安全区域</strong></p>
+<p>要解决上述问题，这里要引出一个概念<strong>安全区域</strong>。</p>
+<ul>
+<li><strong>安全区域:指的是一个可视窗口范围，处于安全区域的内容不受圆角(corners)、齐刘海(sensor housing)、小黑条(Home Indicator)的影响。</strong></li>
+</ul>
+<p>下方蓝色区域即为安全区域:</p>
+<p><img src="/img/Unity/UIAdaption/SafeAreaExample.png" alt="SafeAreaExample"></p>
+<p><strong>安全区域已经给出了安全显示内容的范围，那么我们处理异形屏的显示方案最简单的就是将窗口内容显示都放到这个安全区域即可。</strong></p>
+<p><strong>ScreenSafeAreaService.cs(负责统一处理安全区域的计算处理，挂载到游戏一开始就能启动的GameObejct身上)</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> Screen = UnityEngine.Device.Screen;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> ScreenSafeAreaService.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 全局安全区状态服务。挂在启动场景的专用根对象上，早于窗口初始化。</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 仅数据变化时通知窗口；无效的临时屏幕状态不会覆盖最后一次有效状态。</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">DefaultExecutionOrder(-1000)</span>]</span><br><span class="line">[<span class="meta">DisallowMultipleComponent</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">sealed</span> <span class="keyword">class</span> <span class="title">ScreenSafeAreaService</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 屏幕安全区快照结构体。包含屏幕宽高和安全区矩形信息</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="keyword">struct</span> Snapshot</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 屏幕宽度</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="built_in">int</span> ScreenWidth;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 屏幕高度</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="built_in">int</span> ScreenHeight;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 安全区矩形</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">readonly</span> Rect SafeArea;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 安全区最小锚点（左下角）</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> Vector2 AnchorMin</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Vector2(SafeArea.xMin / ScreenWidth, SafeArea.yMin / ScreenHeight);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 安全区最大锚点（右上角）</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> Vector2 AnchorMax</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Vector2(SafeArea.xMax / ScreenWidth, SafeArea.yMax / ScreenHeight);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 构造函数</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;screenWidth&quot;&gt;</span>屏幕宽度<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;screenHeight&quot;&gt;</span>屏幕高度<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;safeArea&quot;&gt;</span>安全区矩形<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Snapshot</span>(<span class="params"><span class="built_in">int</span> screenWidth, <span class="built_in">int</span> screenHeight, Rect safeArea</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            ScreenWidth = screenWidth;</span><br><span class="line">            ScreenHeight = screenHeight;</span><br><span class="line">            SafeArea = safeArea;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 获取全局唯一的屏幕安全区服务实例</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ScreenSafeAreaService Instance &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 当屏幕安全区发生变化时触发，传递最新的快照信息</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">event</span> Action&lt;Snapshot&gt; Changed;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 是否已经有有效的屏幕安全区快照</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">bool</span> HasSnapshot</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 当前的屏幕安全区快照信息</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> Snapshot Current</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (Instance != <span class="literal">null</span> &amp;&amp; Instance != <span class="keyword">this</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 只移除重复组件，不删除对象上的其他业务组件。</span></span><br><span class="line">            enabled = <span class="literal">false</span>;</span><br><span class="line">            Destroy(<span class="keyword">this</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Debug.Log(<span class="string">$&quot;ScreenSafeAreaService.Instance初始化完成!&quot;</span>);</span><br><span class="line">        Instance = <span class="keyword">this</span>;</span><br><span class="line">        DontDestroyOnLoad(gameObject);</span><br><span class="line">        CheckForChanges();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        CheckForChanges();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnDestroy</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (Instance == <span class="keyword">this</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Instance = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Changed = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 检查屏幕安全区是否发生变化，如果发生变化则更新快照并触发 Changed 事件</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CheckForChanges</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> width = Screen.width;</span><br><span class="line">        <span class="built_in">int</span> height = Screen.height;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (width &lt;= <span class="number">0</span> || height &lt;= <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Rect raw = Screen.safeArea;</span><br><span class="line">        <span class="built_in">float</span> xMin = Mathf.Clamp(raw.xMin, <span class="number">0f</span>, width);</span><br><span class="line">        <span class="built_in">float</span> yMin = Mathf.Clamp(raw.yMin, <span class="number">0f</span>, height);</span><br><span class="line">        <span class="built_in">float</span> xMax = Mathf.Clamp(raw.xMax, xMin, width);</span><br><span class="line">        <span class="built_in">float</span> yMax = Mathf.Clamp(raw.yMax, yMin, height);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 取反判断也会拒绝 NaN。</span></span><br><span class="line">        <span class="keyword">if</span> (!(xMax &gt; xMin) || !(yMax &gt; yMin))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Rect safeArea = Rect.MinMaxRect(xMin, yMin, xMax, yMax);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (HasSnapshot &amp;&amp;</span><br><span class="line">            Current.ScreenWidth == width &amp;&amp;</span><br><span class="line">            Current.ScreenHeight == height &amp;&amp;</span><br><span class="line">            Current.SafeArea.Equals(safeArea))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Current = <span class="keyword">new</span> Snapshot(width, height, safeArea);</span><br><span class="line">        HasSnapshot = <span class="literal">true</span>;</span><br><span class="line">        Changed?.Invoke(Current);</span><br><span class="line">        Debug.Log(<span class="string">$&quot;检测到屏幕分辨率变化，最新宽度: <span class="subst">&#123;width&#125;</span>, 最新高度: <span class="subst">&#123;height&#125;</span>, 安全区: <span class="subst">&#123;safeArea&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>WindowSafeAreaAdapter.cs(负责单个窗口的安全区域RectTransform设置，挂载到每一个需要安全区适配的窗口根节点上)</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> WindowSafeAreaAdapter.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 窗口创建时订阅，销毁时取消；隐藏期间仍接收普通 C# 事件。</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 仅支持主显示器的根 Overlay Canvas，其直接子节点作为内容根节点。</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 不绘制黑边、不裁剪内容、不改变相机视口。</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">DisallowMultipleComponent</span>]</span><br><span class="line">[<span class="meta">RequireComponent(typeof(Canvas))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">sealed</span> <span class="keyword">class</span> <span class="title">WindowSafeAreaAdapter</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 屏幕安全区服务实例</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> ScreenSafeAreaService service;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 内容RectTransform</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> RectTransform mContentRoot;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        mContentRoot = GetComponent&lt;RectTransform&gt;();</span><br><span class="line"></span><br><span class="line">        service = ScreenSafeAreaService.Instance;</span><br><span class="line">        <span class="keyword">if</span> (service == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.LogError(<span class="string">$&quot;必须先初始化并启用，再创建窗口。&quot;</span>, <span class="keyword">this</span>);</span><br><span class="line">            service = <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        service.Changed += Apply;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 只读取服务缓存，不要求服务重新采样。</span></span><br><span class="line">        <span class="keyword">if</span> (service.HasSnapshot)</span><br><span class="line">        &#123;</span><br><span class="line">            Apply(service.Current);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 响应销毁</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnDestroy</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (service != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            service.Changed -= Apply;</span><br><span class="line">        &#125;</span><br><span class="line">        service = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 应用屏幕安全区快照</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;snapshot&quot;&gt;</span>屏幕安全区快照<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Apply</span>(<span class="params">ScreenSafeAreaService.Snapshot snapshot</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (mContentRoot == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Vector2 min = snapshot.AnchorMin;</span><br><span class="line">        Vector2 max = snapshot.AnchorMax;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mContentRoot.anchorMin == min &amp;&amp;</span><br><span class="line">            mContentRoot.anchorMax == max &amp;&amp;</span><br><span class="line">            mContentRoot.offsetMin == Vector2.zero &amp;&amp;</span><br><span class="line">            mContentRoot.offsetMax == Vector2.zero)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mContentRoot.anchorMin = min;</span><br><span class="line">        mContentRoot.anchorMax = max;</span><br><span class="line">        mContentRoot.offsetMin = Vector2.zero;</span><br><span class="line">        mContentRoot.offsetMax = Vector2.zero;</span><br><span class="line">        Debug.Log(<span class="string">$&quot;应用屏幕安全区快照，AnchorMin: <span class="subst">&#123;min&#125;</span>, AnchorMax: <span class="subst">&#123;max&#125;</span>，OffsetMin: <span class="subst">&#123;mContentRoot.offsetMin&#125;</span>, OffsetMax: <span class="subst">&#123;mContentRoot.offsetMax&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>上面放了详细代码，就不详细介绍了，核心就是根据屏幕宽高和安全区域大小计算出窗口应该显示的位置大小从而实现将窗口只显示到安全区域内的显示。</strong></p>
+<p><img src="/img/Unity/UIAdaption/AppleIphoneXSMaxUIAdaptionLog.png" alt="AppleIphoneXSMaxUIAdaptionLog"></p>
+<p><img src="/img/Unity/UIAdaption/AppleIphoneXSMaxSimulatorDisplay.png" alt="AppleIphoneXSMaxSimulatorDisplay"></p>
+<p><img src="/img/Unity/UIAdaption/AppleIphoneXSMaxSceneDisplay.png" alt="AppleIphoneXSMaxSceneDisplay"></p>
+<p><strong>通过Unity的Device Simulator，我成功在Editor模拟了Apple Iphone XS Max的真机适配效果，可以看到因为我们通过得到的Screen.SafeArea计算出窗口的RectTransform显示范围，从而将所有有Pivot和Anchor适配的内容显示到了安全区域内，而背景图因为没设置适配所以只受Canvas Scaler的Screen Match Mode(Shrink)影响。</strong></p>
+<p>Note:</p>
+<ol>
+<li><strong>老版Untiy(Unity 6之前)屏幕宽高分辨率用UnityEngine.Screen.Width和UnityEngine.Screen.Height获取，新版Unity(含Unity 6和之后)屏幕宽高分辨率用UnityEngine.Device.Screen.Width和UnityEngine.Device.Screen.Height获取</strong></li>
+</ol>
+<h2 id="UGUI适配方案"><a href="#UGUI适配方案" class="headerlink" title="UGUI适配方案"></a>UGUI适配方案</h2><p>通过前面的学习我们得到UGUI适配方案如下:</p>
+<ol>
+<li><strong>将Canvas Scaler的UI Scale Mode设置成Scale With Screen Size，Screen Match Mode设置成Shrink(这个可以换成通过比较设备分辨率比例和设计分辨率比例的大小动态设置Screen Match Mode为Match Width Or Height的Match值来实现相同效果)，Reference Resolution设置成参考分辨率，背景图Image不设置适配，直接设置成设计分辨率大小，从而实现背景图自动适配铺满不拉伸的显示效果。</strong></li>
+<li><strong>利用Screen.SafeArea的安全区域信息，动态计算窗口应该显示的范围大小，从而避免UI内容显示到特殊区域影响操作或看不到的问题</strong></li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/463633574">Unity UI适配方案</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/429919656">【游戏交互】手游适配设计</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/UGUI/">UGUI</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/UGUI/">UGUI</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2026/09/20/UGUI%E9%80%82%E9%85%8D/" data-title="UGUI适配 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2026/08/20/原生和SDK接入/"  title="原生和SDK接入">
+ <strong>下一篇：</strong><br/> 
+ <span>原生和SDK接入
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UGUI%E9%80%82%E9%85%8D"><span class="toc-number">2.</span> <span class="toc-text">UGUI适配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%88%86%E8%BE%A8%E7%8E%87%E9%80%82%E9%85%8D"><span class="toc-number">3.</span> <span class="toc-text">多分辨率适配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%BD%A2%E5%B1%8F%E9%80%82%E9%85%8D"><span class="toc-number">4.</span> <span class="toc-text">异形屏适配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UGUI%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88"><span class="toc-number">5.</span> <span class="toc-text">UGUI适配方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/CI-CD/" title="CI/CD">CI/CD<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SDK/" title="SDK">SDK<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/UGUI/" title="UGUI">UGUI<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Game/" title="Game">Game<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2026 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
