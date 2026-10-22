@@ -1,0 +1,931 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>UnityAI工作流 | 走停人生路</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Tony Tang">
+    
+
+    
+    <meta name="description" content="前言随着AI越来越强大，纯AI参与制作的流程(AI Vibe Coding，AI自动拼UI，AI自动生图，AI自动生成Psd分层等)越来越多。虽然Unity 6已经推出了官方AI和CLI等AI相关工具，但目前国内使用Unity官方AI有很多门槛限制，所以本章节主要以使用第三方Github的unity-mcp+Codex的方式去搭建AI自动化流程。 本章节主要研究一下几个问题：  AI自动拆分效果图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UnityAI工作流">
+<meta property="og:url" content="http://tonytang1990.github.io/2026/09/29/UnityAI%E5%B7%A5%E4%BD%9C%E6%B5%81/index.html">
+<meta property="og:site_name" content="走停人生路">
+<meta property="og:description" content="前言随着AI越来越强大，纯AI参与制作的流程(AI Vibe Coding，AI自动拼UI，AI自动生图，AI自动生成Psd分层等)越来越多。虽然Unity 6已经推出了官方AI和CLI等AI相关工具，但目前国内使用Unity官方AI有很多门槛限制，所以本章节主要以使用第三方Github的unity-mcp+Codex的方式去搭建AI自动化流程。 本章节主要研究一下几个问题：  AI自动拆分效果图">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CheckPythonAndUVTools.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/InstallMCPForUnity.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/MCPForUnitySetupWindow.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/ConfigureMCPClients.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/MCPClientConfigurationSuccess.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/MCPForUnityEditorWindow.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/RunMCPForUnityFailed.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/MCPForUnityServerConnectSuccess.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/MCPForUnityCodexConfigContent.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/InstallCodexMCPForUnitySkills.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/InstallCodexMCPForUnitySkillsSuccess.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/MCPForUnityCodexSkillInstalled.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UsingCodexAndMCPToOperateUnity.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CodeCreateRedCubeDialog.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CodexCreateRedCubeInUnity.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/MCPForUnityEditorWindowTools.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CreateCustomToolForMCPForUnity.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UsingCustomMcpToolInCodex.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UsingCustomMcpToolInCodexLog.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/SaveNotoSansSCVariableFontAsset.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CodexCreateNotoSansSCTMPFontAsset.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CodexCreateNotoSansSCTMPFontAssetResult.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CodexCreateTMPMaterial.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CodexCreateTMPMaterialAsset.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/NotoSansSCVariableSDFTMPPreview.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CreateNonoSansSCBoldFontAsset.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CreateNonoSansSCBoldRelativeAssets.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/NonoScansSCBoldTMPResult.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CodexCreateCropImagesTool.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/OptimizeCodexCreateCropImagesTool.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UITemplate.jpg">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UseImageCropperToolSplitUI.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UIPictureSplitResult.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/SplitPictureInfo.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CreateUIPerfectSplitterSkill.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UIPerfectSplitterSkillUnderCodex.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UITemplate2.jpg">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UseUIAssetSplitterSkill.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UITemplate2New.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UIPictureSplitFinalResult.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/NewImportUISplitPicutres.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CreateUIPrefabByCodex.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/ImageAnchorsAndNewNodeProblem.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/AfterOptImageNode.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/FinalAutoCreateUIResult.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UITemplate2New.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CreateCommonPrefab.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UseCommonPrefabToAutoCreatePrefab.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/UseCommonPrefabToAutoCreatePrefabSuccess.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/AutoCreatePrefabSizeProblem.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/AutoCreatePrefabSizeProblemFix.png">
+<meta property="og:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/ComponentBinderInspector.png">
+<meta property="article:published_time" content="2026-09-29T07:21:00.000Z">
+<meta property="article:modified_time" content="2026-10-22T01:56:15.781Z">
+<meta property="article:author" content="Tony Tang">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tonytang1990.github.io/img/Unity/AIWorkflow/CheckPythonAndUVTools.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="走停人生路" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="走停人生路" title="走停人生路"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="走停人生路">走停人生路</a></h1>
+				<h2 class="blog-motto">做着独立游戏梦，坚持走在游戏开发道路上的人</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:tonytang1990.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2026/09/29/UnityAI工作流/" title="UnityAI工作流" itemprop="url">UnityAI工作流</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Tony Tang" target="_blank" itemprop="author">Tony Tang</a>
+		
+  <p class="article-time">
+    <time datetime="2026-09-29T07:21:00.000Z" itemprop="datePublished"> 发表于 2026-09-29</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MCP-for-Unity"><span class="toc-number">2.</span> <span class="toc-text">MCP for Unity</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85MCP-for-Unity"><span class="toc-number">2.1.</span> <span class="toc-text">安装MCP for Unity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8MCP-for-Unity-Server"><span class="toc-number">2.2.</span> <span class="toc-text">启动MCP for Unity Server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AECodex-Client"><span class="toc-number">2.3.</span> <span class="toc-text">配置Codex Client</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MCP-for-Unity%E4%BD%BF%E7%94%A8"><span class="toc-number">2.4.</span> <span class="toc-text">MCP for Unity使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89MCP-for-Unity%E5%B7%A5%E5%85%B7"><span class="toc-number">2.5.</span> <span class="toc-text">自定义MCP for Unity工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AI%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E6%88%98"><span class="toc-number">3.</span> <span class="toc-text">AI自动化实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%8C%87%E5%AE%9A%E5%AD%97%E4%BD%93%E7%9A%84TMP%E5%AD%97%E4%BD%93%E6%96%87%E4%BB%B6"><span class="toc-number">3.1.</span> <span class="toc-text">创建指定字体的TMP字体文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AI%E8%87%AA%E5%8A%A8%E6%8B%86%E5%88%86%E6%95%88%E6%9E%9C%E5%9B%BE"><span class="toc-number">3.2.</span> <span class="toc-text">AI自动拆分效果图</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%87%E5%9B%BE%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C"><span class="toc-number">3.2.1.</span> <span class="toc-text">切图工具制作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AI%E8%87%AA%E5%8A%A8%E6%8B%86%E5%88%86%E5%9B%BE%E7%89%87%E5%85%83%E7%B4%A0"><span class="toc-number">3.2.2.</span> <span class="toc-text">AI自动拆分图片元素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%B6%E4%BD%9CUI%E6%95%88%E6%9E%9C%E5%9B%BE%E5%85%83%E7%B4%A0%E6%8B%86%E5%88%86Skill"><span class="toc-number">3.2.3.</span> <span class="toc-text">制作UI效果图元素拆分Skill</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8ui-perfect-splitter-Skill"><span class="toc-number">3.2.4.</span> <span class="toc-text">使用ui-perfect-splitter Skill</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AI%E8%87%AA%E5%8A%A8%E6%8B%BCUI"><span class="toc-number">3.3.</span> <span class="toc-text">AI自动拼UI</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E7%94%A8%E5%B7%B2%E6%9C%89UI%E9%A2%84%E5%88%B6%E4%BB%B6%E6%8B%BCUI"><span class="toc-number">3.3.1.</span> <span class="toc-text">重用已有UI预制件拼UI</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Skill%E6%B7%BB%E5%8A%A0%E5%B7%B2%E6%9C%89%E9%A2%84%E5%88%B6%E4%BB%B6%E6%9C%8D%E7%94%A8%E8%A7%84%E5%88%99%E6%8F%8F%E8%BF%B0"><span class="toc-number">3.3.2.</span> <span class="toc-text">Skill添加已有预制件服用规则描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E9%A1%B9%E7%9B%AE%E5%B7%B2%E6%9C%89%E9%A2%84%E5%88%B6%E4%BB%B6%E7%9B%AE%E5%BD%95%E8%AF%BB%E5%8F%96%E8%A7%84%E5%88%99"><span class="toc-number">3.3.3.</span> <span class="toc-text">添加项目已有预制件目录读取规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%B6%E4%BD%9C%E9%80%9A%E7%94%A8%E9%A2%84%E5%88%B6%E4%BB%B6"><span class="toc-number">3.3.4.</span> <span class="toc-text">制作通用预制件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AI%E8%87%AA%E5%8A%A8%E7%94%A8%E5%B7%B2%E6%9C%89%E9%A2%84%E5%88%B6%E4%BB%B6%E6%8B%BCUI"><span class="toc-number">3.3.5.</span> <span class="toc-text">AI自动用已有预制件拼UI</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E5%8C%96"><span class="toc-number">3.4.</span> <span class="toc-text">逻辑代码自动化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E7%89%88-%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90"><span class="toc-number">3.4.1.</span> <span class="toc-text">模版+组件绑定代码生成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AI%E7%94%9F%E6%88%90%E9%80%BB%E8%BE%91%E4%BB%A3%E7%A0%81"><span class="toc-number">3.4.2.</span> <span class="toc-text">AI生成逻辑代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>随着AI越来越强大，纯AI参与制作的流程(AI Vibe Coding，AI自动拼UI，AI自动生图，AI自动生成Psd分层等)越来越多。虽然Unity 6已经推出了官方AI和CLI等AI相关工具，但目前国内使用Unity官方AI有很多门槛限制，所以本章节主要以使用第三方Github的<strong>unity-mcp</strong>+<strong>Codex</strong>的方式去<strong>搭建AI自动化流程</strong>。</p>
+<p>本章节主要研究一下几个问题：</p>
+<ol>
+<li><strong>AI自动拆分效果图(解决UI图片资源快速生成问题)</strong></li>
+<li><strong>AI自动拼UI(节省拼UI时间，提升开发效率)</strong></li>
+<li><strong>AI生成UI逻辑代码(节省些基础UI代码逻辑的时间，提升开发效率)</strong></li>
+</ol>
+<h2 id="MCP-for-Unity"><a href="#MCP-for-Unity" class="headerlink" title="MCP for Unity"></a>MCP for Unity</h2><p><strong>Unity MCP是通过使用Model Context Protocol协议让Unity Editor担任一个Server的角色，然后暴露工具，场景管理，脚本编辑，Console数据读取等能力给AI。</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/CoplayDev/unity-mcp/blob/beta/docs/i18n/README-zh.md">MCP for Unity 通过 Model Context Protocol 把 Claude、Cursor、VS Code、本地大模型等 AI 助手接入 Unity 编辑器，让它们直接帮你管理资源、搭场景、写脚本、跑测试，把开发流程里的重复活儿都包了。</a></p>
+<p><strong>从介绍可以看出，要想让CodeX，Claude Code之类的AI工具能访问Unity像人一样去使用Unity工具或者暴露的接口去做事，我们首先需要接入Unity MCP，这样AI工具才能和Unity通信使用对应工具做事。</strong></p>
+<p>Unity for MCP会给我们提供一下工具能力(以下说明来源<a target="_blank" rel="noopener" href="https://coplaydev.github.io/unity-mcp/getting-started">getting-started</a>):</p>
+<ul>
+<li><strong>40+ Unity Editor tools</strong> exposed over MCP — <code>manage_scene</code>, <code>manage_script</code>, <code>manage_gameobject</code>, <code>manage_material</code>, <code>manage_physics</code>, <code>run_tests</code>, and more.(通过MCP暴露很多Unity编辑器工具支持操作场景，脚本，GameObject，材质，物理，执行测试等)</li>
+<li><strong>25+ read-only resources</strong> for state introspection — <code>editor_state</code>, <code>gameobject_components</code>, <code>project_info</code>, <code>unity_instances</code>, etc.(能只读部分GameObject组件数据，项目信息等)</li>
+<li><strong>Auto-configuration</strong> for popular MCP clients — Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Cline, Codex, Qwen, Gemini CLI, Copilot CLI, OpenClaw.(能自动配置适配常规AI工具，比如Codex)</li>
+<li><strong>Multi-instance support</strong> — drive several Unity Editors from a single session via <code>set_active_instance</code>.(单对话能驱动多个Unity编辑器实例)</li>
+<li><strong>Two transports</strong> — HTTP (multi-agent, default) and stdio (single-agent legacy).(支持HTTP和stdio通信方式)</li>
+</ul>
+<h3 id="安装MCP-for-Unity"><a href="#安装MCP-for-Unity" class="headerlink" title="安装MCP for Unity"></a>安装MCP for Unity</h3><p>安装MCP for Unity的要求:</p>
+<ol>
+<li>Unity版本<strong>Unity 2021.3 LTS or newer</strong></li>
+<li>Python版本<strong>Python 3.10+</strong> with uv</li>
+<li><strong>An MCP client</strong></li>
+</ol>
+<p>检查Python版本和UV工具是否满足条件：</p>
+<p><img src="/img/Unity/AIWorkflow/CheckPythonAndUVTools.png" alt="CheckPythonAndUVTools"></p>
+<p>至于Unity我本机使用功能的Unity 6.000.3.19f1，MCP client本机用的Codex。</p>
+<p>通过Package Manager-&gt;Add package form git URL安装MCP for Unity:</p>
+<p>MCP for Unity git URL:”<a target="_blank" rel="noopener" href="https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main">https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main</a>“</p>
+<p><img src="/img/Unity/AIWorkflow/InstallMCPForUnity.png" alt="InstallMCPForUnity"></p>
+<h3 id="启动MCP-for-Unity-Server"><a href="#启动MCP-for-Unity-Server" class="headerlink" title="启动MCP for Unity Server"></a>启动MCP for Unity Server</h3><p>MCP for Unity是作为让Unity Editor担任Server的角色，所以安装完成后还需要我们主动启动MCP for Unity。</p>
+<p>安装好MCP for Unity如果没自动弹出后续使用引导，可以自行打开MCP for Unity设置界面:</p>
+<p>Window-&gt;MCP for Unity-&gt;Local Setup Window</p>
+<p><img src="/img/Unity/AIWorkflow/MCPForUnitySetupWindow.png" alt="MCPForUnitySetupWindow"></p>
+<p>可以看到我们已经满足了MCP for Unity的使用条件，点击Next配置MCP Client：</p>
+<p><img src="/img/Unity/AIWorkflow/ConfigureMCPClients.png" alt="ConfigureMCPClients"></p>
+<p>我本人主要用Codex和Copilot，所以自选了上述对应的MCP Client。</p>
+<p>点击Configure Selected确认MCP Client配置:</p>
+<p><img src="/img/Unity/AIWorkflow/MCPClientConfigurationSuccess.png" alt="MCPClientConfigurationSuccess"></p>
+<p>可以看到MCP Client也配置成功了。</p>
+<p>然后通过Window-&gt;MCP for Unity-&gt;Toggle MCP Window就能打开MCP for Unity的详细信息窗口:</p>
+<p><img src="/img/Unity/AIWorkflow/MCPForUnityEditorWindow.png" alt="MCPForUnityEditorWindow"></p>
+<p>从面板上看，MCP for Unity的Server已经启动起来了，但还没有激活连接。</p>
+<p>除了点击MCP for Unity的Start Server按钮也可以点击Copy复制手动启动的命令在PowerShell里执行:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:<span class="keyword">\Users</span><span class="keyword">\TonyTang</span><span class="keyword">\.</span>local<span class="keyword">\bin</span><span class="keyword">\uvx</span>.exe --from &quot;mcpforunityserver==10.2.0&quot; mcp-for-unity --transport http --http-url http://127.0.0.1:8080 --project-scoped-tools</span><br></pre></td></tr></table></figure>
+
+<p>但貌似启动失败了，好像是8080端口被占用了(应该是因为我们已经启动了一个MCP for Unity的Server占用了8080端口):</p>
+<p><img src="/img/Unity/AIWorkflow/RunMCPForUnityFailed.png" alt="RunMCPForUnityFailed"></p>
+<p>8080端口挺常见的，之前Jenkins搭建好像也是8080端口，为了避免端口冲突，我将MCP for Unity窗口上HTTP连接的端口修改成8081，MCP for Unity Server启动起来后我们点击MCP for Unity的Connect按钮，确认Server启动起来且能连接成功:</p>
+<p><img src="/img/Unity/AIWorkflow/MCPForUnityServerConnectSuccess.png" alt="MCPForUnityServerConnectSuccess"></p>
+<h3 id="配置Codex-Client"><a href="#配置Codex-Client" class="headerlink" title="配置Codex Client"></a>配置Codex Client</h3><p>要想Codex能使用MCP for Unity，我们首先要在MCP for Unity的Editor Window选中Codex并点击Configure配置相关配置到Codex的config.toml配置文件。</p>
+<p><img src="/img/Unity/AIWorkflow/MCPForUnityCodexConfigContent.png" alt="MCPForUnityCodexConfigContent"></p>
+<p>为了Codex这个MCP Client能很好的使用MCP for Unity，我们还需要通过MCP for Unity选中Codex作为Client后，点击Install Skills:</p>
+<p><img src="/img/Unity/AIWorkflow/InstallCodexMCPForUnitySkills.png" alt="InstallCodexMCPForUnitySkills"></p>
+<p>安装Codex MCP for Unity Skills成功:</p>
+<p><img src="/img/Unity/AIWorkflow/InstallCodexMCPForUnitySkillsSuccess.png" alt="InstallCodexMCPForUnitySkillsSuccess"></p>
+<p>打开Codex的Customize窗口点击Skills可以看到MCP for Unity给我们安装了一个Unity MCP Orchestrator的Skill:</p>
+<p><img src="/img/Unity/AIWorkflow/MCPForUnityCodexSkillInstalled.png" alt="MCPForUnityCodexSkillInstalled"></p>
+<h3 id="MCP-for-Unity使用"><a href="#MCP-for-Unity使用" class="headerlink" title="MCP for Unity使用"></a>MCP for Unity使用</h3><p>准备工作完成了，接下来我们测试下通过Codex用自然语言驱动Unity做事。</p>
+<p><img src="/img/Unity/AIWorkflow/UsingCodexAndMCPToOperateUnity.png" alt="UsingCodexAndMCPToOperateUnity"></p>
+<p><img src="/img/Unity/AIWorkflow/CodeCreateRedCubeDialog.png" alt="CodeCreateRedCubeDialog"></p>
+<p><img src="/img/Unity/AIWorkflow/CodexCreateRedCubeInUnity.png" alt="CodexCreateRedCubeInUnity"></p>
+<p>通过始终允许MCP for Unity使用功能一系列的工具后，Codex最终真的创建除了符合我们需求的红色Cube并保存到了我们描述的目录和指定的名字。</p>
+<p>走完这一步正面我们已经打通了Codex+MCP for Unity的AI自动化做事的基础流程。</p>
+<p>MCP for Unity自带的相关工具在MCP for Unity的Editor Window-&gt;Tools下可以看到:</p>
+<p><img src="/img/Unity/AIWorkflow/MCPForUnityEditorWindowTools.png" alt="MCPForUnityEditorWindowTools"></p>
+<h3 id="自定义MCP-for-Unity工具"><a href="#自定义MCP-for-Unity工具" class="headerlink" title="自定义MCP for Unity工具"></a>自定义MCP for Unity工具</h3><p>实际开发项目过程中，只使用MCP for Unity提供的自带工具还不满足需求，比如我们要想支持打包工具的调用。</p>
+<ol>
+<li><strong>首先我们需要再Editor下定义一个静态class且需要定义McpForUnityTool标签</strong>**</li>
+<li><strong>然后定义一个Class作为工具类型，工具类型里定义工具参数成员，工具参数成员必须带上ToolParameter属性标签</strong></li>
+<li><strong>带McpForUnityTool标签的静态class定义静态方法HandleCommand(JObject params)方法进行工具调用处理，需要返回SuccessResponse类表示成功，ErrorReesponse表示出错</strong></li>
+</ol>
+<p>实战定义一个BuildToolMcp.cs文件：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> BuildToolMcp.cs</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 打包工具MCP for Unity</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">McpForUnityTool(<span class="string">&quot;打包工具Mcp for Unity&quot;</span>)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">BuildToolMcp</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 打包工具参数</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BuildToolParams</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">ToolParameter(<span class="string">&quot;版本号&quot;</span>)</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">double</span> VersionCode</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span>;</span><br><span class="line">            <span class="keyword">set</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">ToolParameter(<span class="string">&quot;资源版本号&quot;</span>)</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">int</span> ResourceCode</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span>;</span><br><span class="line">            <span class="keyword">set</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">ToolParameter(<span class="string">&quot;是否重新构建AB&quot;</span>, Required = false)</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">bool</span> RebuildAB</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span>;</span><br><span class="line">            <span class="keyword">set</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 处理打包工具命令</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;parameters&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">object</span> <span class="title">HandleCommand</span>(<span class="params">JObject parameters</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> buildToolParams = parameters.ToObject&lt;BuildToolParams&gt;();</span><br><span class="line">        <span class="keyword">if</span>(buildToolParams.VersionCode &lt;= <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ErrorResponse(<span class="string">$&quot;版本号:<span class="subst">&#123;buildToolParams.VersionCode&#125;</span>必须大于0！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(buildToolParams.ResourceCode &lt;= <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ErrorResponse(<span class="string">$&quot;资源版本号:<span class="subst">&#123;buildToolParams.ResourceCode&#125;</span>必须大于0！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        DoBuild(buildToolParams);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SuccessResponse(<span class="string">&quot;Custom tool executed successfully!&quot;</span>, <span class="keyword">new</span></span><br><span class="line">        &#123;</span><br><span class="line">            buildToolParams.VersionCode,</span><br><span class="line">            buildToolParams.ResourceCode,</span><br><span class="line">            buildToolParams.RebuildAB,</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 执行打包操作</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;buildToolParams&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DoBuild</span>(<span class="params">BuildToolParams buildToolParams</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">$&quot;执行Mcp for Unity打包！打包参数: 版本号=<span class="subst">&#123;buildToolParams.VersionCode&#125;</span>, 资源版本号=<span class="subst">&#123;buildToolParams.ResourceCode&#125;</span>, 是否重新构建AB=<span class="subst">&#123;buildToolParams.RebuildAB&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>工具定义好后，我们需要确认下MCP for Unity是否自动检测添加了该自定义工具，打开MCP for Unity的Editor窗口-&gt;Tools-&gt;Custom Tools:</p>
+<p><img src="/img/Unity/AIWorkflow/CreateCustomToolForMCPForUnity.png" alt="CreateCustomToolForMCPForUnity"></p>
+<p>可以看到MCP for Unity已经自动检测到了我们定义的自定义工具，接下来我们去Codex测试主动使用自定义工具触发打包。</p>
+<p><img src="/img/Unity/AIWorkflow/UsingCustomMcpToolInCodex.png" alt="UsingCustomMcpToolInCodex"></p>
+<p><img src="/img/Unity/AIWorkflow/UsingCustomMcpToolInCodexLog.png" alt="UsingCustomMcpToolInCodexLog"></p>
+<p>可以看到我们成功使用Codex自然语言驱动调用了我们给MCP for Unity定义的自定义打包工具，打包参数也和我们描述的一样，日志正确。</p>
+<p><strong>至此打通了MCP for Unity自定义工具使用功能的流程，未来更多DIY的需求想支持AI使用，我们可以自定义MCP for Unity工具即可。</strong></p>
+<p><strong>如果Codex没发现该工具，可以重新启动下MCP for Unity Server和Codex的连接</strong></p>
+<p>如果有那种复杂的工具任务，没法单帧同步执行完成的，可以使用RequiresPolling标签属性去定义静态类工具，详情参考:</p>
+<p><a target="_blank" rel="noopener" href="https://coplaydev.github.io/unity-mcp/guides/custom-tools">Adding Custom Tools to MCP for Unity</a></p>
+<h2 id="AI自动化实战"><a href="#AI自动化实战" class="headerlink" title="AI自动化实战"></a>AI自动化实战</h2><h3 id="创建指定字体的TMP字体文件"><a href="#创建指定字体的TMP字体文件" class="headerlink" title="创建指定字体的TMP字体文件"></a>创建指定字体的TMP字体文件</h3><p>首先考虑到主要支持英文和中文，所以我需要下载Noto Sans Simplified Chinese字体文件作为游戏字体，下载地址:<a target="_blank" rel="noopener" href="https://fonts.google.com/noto/specimen/Noto+Sans+SC?preview.script=Hans">Noto+Sans+SC</a></p>
+<p>下载好后放到项目对应目录:</p>
+<p><img src="/img/Unity/AIWorkflow/SaveNotoSansSCVariableFontAsset.png" alt="SaveNotoSansSCVariableFontAsset"></p>
+<p>下载好后，我直接Codex通过MCP for Unity让AI自动制作一个基于NotoSansSC-Variable.ttf字体的TMP包含常用中文字的TMP字体文件:</p>
+<p><img src="/img/Unity/AIWorkflow/CodexCreateNotoSansSCTMPFontAsset.png" alt="CodexCreateNotoSansSCTMPFontAsset"></p>
+<p><img src="/img/Unity/AIWorkflow/CodexCreateNotoSansSCTMPFontAssetResult.png" alt="CodexCreateNotoSansSCTMPFontAssetResult"></p>
+<p>可以看到通过Codex+MCP for Unity，真的制作了符合需求的TMP字体文件。</p>
+<p>接下来我们让他基于创建的TMP字体文件，新创建一个有Outline的材质球用于有描边的字体使用情况:</p>
+<p><img src="/img/Unity/AIWorkflow/CodexCreateTMPMaterial.png" alt="CodexCreateTMPMaterial"></p>
+<p><img src="/img/Unity/AIWorkflow/CodexCreateTMPMaterialAsset.png" alt="CodexCreateTMPMaterialAsset"></p>
+<p>可以看到成功通过AI创建了基于前面创建的TMP字体文件的Outline材质球。</p>
+<p>但我发现即使我选择了Bold+50字号+Outline材质球，TMP文字依然看起来很细:</p>
+<p><img src="/img/Unity/AIWorkflow/NotoSansSCVariableSDFTMPPreview.png" alt="NotoSansSCVariableSDFTMPPreview"></p>
+<p>根据AI的说法是我下载的字体是包含Bold的，只是默认字体的wght值很小所以很细，要想支持粗一点的文字显示，我们需要将NotoSansSC-Variable.ttf使用相关工具制作一个wght&#x3D;700的Bold字体文件:</p>
+<p><img src="/img/Unity/AIWorkflow/CreateNonoSansSCBoldFontAsset.png" alt="CreateNonoSansSCBoldFontAsset"></p>
+<p>有了粗体的字体文件，我们重新走一遍前面的TMP字体Asset和Outline材质球流程：</p>
+<p><img src="/img/Unity/AIWorkflow/CreateNonoSansSCBoldRelativeAssets.png" alt="CreateNonoSansSCBoldRelativeAssets"></p>
+<p><img src="/img/Unity/AIWorkflow/NonoScansSCBoldTMPResult.png" alt="NonoScansSCBoldTMPResult"></p>
+<p>可以看到字体在没勾选Bold的情况，只是Outline材质都已经显示的比较粗了。</p>
+<p><strong>至此我们成功利用AI帮我制作了TMP字体Asset和字体材质球Asset。</strong></p>
+<h3 id="AI自动拆分效果图"><a href="#AI自动拆分效果图" class="headerlink" title="AI自动拆分效果图"></a>AI自动拆分效果图</h3><p><strong>一般工作流是我们从美术那里得到效果图(png)资源，美术将切个好的单个元素图片也给我们，让我们利用所有单个图片元素和效果图进行UI窗口效果还原。</strong></p>
+<p>而AI自动拆分效果图这一步主要是解决我们得到效果图(无论是美术给的还是AI自动生成的)，我们直接利用AI实现自动拆分单个元素图片，当我们把单个元素图片拆分得到后，我们才能进行下一步UI拼接效果图还原。</p>
+<h4 id="切图工具制作"><a href="#切图工具制作" class="headerlink" title="切图工具制作"></a>切图工具制作</h4><p><strong>根据AI的说法要想实现快速根据效果图自动切割拆分图片元素，且实现切割图片元素宽高是2或者4的倍数，要求切割的图片元素尽量少留空白，同时切割元素空白部分用透明提到，导出单张图片格式统一为png这个功能，我们需要先让AI制作一个能实现上述切割需求的脚本工具。</strong></p>
+<p><img src="/img/Unity/AIWorkflow/CodexCreateCropImagesTool.png" alt="CodexCreateCropImagesTool"></p>
+<p>可以看到生成的工具启动入口是crop.ps1这个是PowerShell的脚本程序，为了方便跨平台我后续又让AI优化成纯Python的版本:</p>
+<p><img src="/img/Unity/AIWorkflow/OptimizeCodexCreateCropImagesTool.png" alt="OptimizeCodexCreateCropImagesTool"></p>
+<p>可以看到这下支持上述需求的切割工具纯Python化算是完成了，接下来就是让AI使用这个工具去自动分析效果图切割出我们想要的所有单张元素图了。</p>
+<h4 id="AI自动拆分图片元素"><a href="#AI自动拆分图片元素" class="headerlink" title="AI自动拆分图片元素"></a>AI自动拆分图片元素</h4><p>这里我在网上下载了一张休闲游戏的UI主界面效果图用来测试:</p>
+<p><img src="/img/Unity/AIWorkflow/UITemplate.jpg" alt="UITemplate"></p>
+<p>为了避免切割出文字和带锁的元素图，我故意在描述词里去避免了这一点，因为游戏里锁定的置灰效果一般是通过切换置灰材质去实现的，而文本通常不做在图里而是文本单独添加。</p>
+<p><img src="/img/Unity/AIWorkflow/UseImageCropperToolSplitUI.png" alt="UseImageCropperToolSplitUI"></p>
+<p><img src="/img/Unity/AIWorkflow/UIPictureSplitResult.png" alt="UIPictureSplitResult"></p>
+<p><img src="/img/Unity/AIWorkflow/SplitPictureInfo.png" alt="SplitPictureInfo"></p>
+<p>可以看到AI根据我们的需求真的切割出了不带文字，单独切割锁图片，不太灰色元素图，图片宽高为2或4的倍数的所有单张元素图。</p>
+<p>但我发现AI切割出来的图片元素取名都是带数字?_abc.png的方式，实际开发中并不希望看到数字开头，所以让AI继续优化一版即可，描述词大概如下:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">目前切割出来的元素图片名字都是数字开头，能去掉数字开头直接按图片元素含义取对应名字吗？除非有雷同元素可以+数字结尾区分。</span><br></pre></td></tr></table></figure>
+
+<p>后面我发现切割出来的元素图没有保持在参考图里的相对像素大小，所以我有继续调优描述：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将附件效果图拆分出现的元素图片，要求切割的元素图片周边不要留太多透明空白区域，拆分的图片要符合宽高是2或者4的倍数，拆分的图片不能带文字，保证拆分后的图片内容的相对像素大小占比相对效果图里的大小不变，顺便再把效果图里的各文字的颜色信息和字号大小给输出一份介绍文档了。</span><br></pre></td></tr></table></figure>
+
+<p>制作过程中Codex需要自己造Python工具去辅助约束校验等，通过提示词允许他执行制造工具，后续工具会成为Skill的工作流的固定工具:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如果现有skill不支持，那就先单独写脚本完成我上述任务要求。</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="制作UI效果图元素拆分Skill"><a href="#制作UI效果图元素拆分Skill" class="headerlink" title="制作UI效果图元素拆分Skill"></a>制作UI效果图元素拆分Skill</h4><p>为了方便以后重用这个图片切割元素流程工具，顺势将这个流程用Codex做成Skill方便重用:</p>
+<p><img src="/img/Unity/AIWorkflow/CreateUIPerfectSplitterSkill.png" alt="CreateUIPerfectSplitterSkill"></p>
+<p><img src="/img/Unity/AIWorkflow/UIPerfectSplitterSkillUnderCodex.png" alt="UIPerfectSplitterSkillUnderCodex"></p>
+<p>可以看到我成功利用Codex的创建Skill的技能生成了ui-perfect-splitter的UI效果图元素切割Skill，这个Skill的核心目的就是限定根据根据效果图保持图片切割元素像素相对大小的正确切割，同时输出符合2或者4宽高倍数的元素切割图片还有一些不带文字的切割限制设定：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: ui-perfect-splitter</span><br><span class="line"><span class="section">description: 将用户上传的原始 UI 效果图拆成无文字透明 PNG，保持元素在原图中的真实像素大小与坐标，紧裁并按 2 或 4 的倍数补边，输出布局清单、回拼验收图及文字颜色字号说明。适用于要求像素比例准确的游戏或应用 UI 切图；不用于普通网格切图或重新设计整个界面</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># UI 像素保真拆图</span></span><br><span class="line"></span><br><span class="line">以用户上传的原始效果图为唯一像素基准。交付能按坐标回拼的素材，而不是凭视觉近似重新生成一套大小不同的图标</span><br><span class="line"></span><br><span class="line"><span class="strong">****</span><span class="strong">**</span></span><br></pre></td></tr></table></figure>
+
+<p>内容比较多就只粘贴了Skill的开头部分内容。</p>
+<h4 id="使用ui-perfect-splitter-Skill"><a href="#使用ui-perfect-splitter-Skill" class="headerlink" title="使用ui-perfect-splitter Skill"></a>使用ui-perfect-splitter Skill</h4><p>新下载的UI效果图:</p>
+<p><img src="/img/Unity/AIWorkflow/UITemplate2.jpg" alt="UITemplate2"></p>
+<p>使用Codex拆分指令：</p>
+<p><img src="/img/Unity/AIWorkflow/UseUIAssetSplitterSkill.png" alt="UseUIAssetSplitterSkill"></p>
+<p><strong>上面使用网上下的UI效果图资源，没注意图片大小问题，一般来说UI效果图使我们游戏选择的参考分辨率为基准来制作，所以我通过Codex将效果图修改成我要的参考分辨率1080X1920后再重新进行了UI元素切割流程。</strong></p>
+<p>最新制作的1080X1920的UI效果图资源:</p>
+<p><img src="/img/Unity/AIWorkflow/UITemplate2New.png" alt="UITemplate2New"></p>
+<p>最终拆分图片元素部分效果:</p>
+<p><img src="/img/Unity/AIWorkflow/UIPictureSplitFinalResult.png" alt="UIPictureSplitFinalResult"></p>
+<p>接下来将相关拆分出来的图片元素资源放到项目对应目录下:</p>
+<p><img src="/img/Unity/AIWorkflow/NewImportUISplitPicutres.png" alt="NewImportUISplitPicutres"></p>
+<p>后续就是准备让Codex+MCP for Unity利用这些资源和效果图进行自动拼UI了。</p>
+<h3 id="AI自动拼UI"><a href="#AI自动拼UI" class="headerlink" title="AI自动拼UI"></a>AI自动拼UI</h3><p>通过提示词描述让Codex利用对应效果图和切好的图片拼接UI预制件:</p>
+<p><img src="/img/Unity/AIWorkflow/CreateUIPrefabByCodex.png" alt="CreateUIPrefabByCodex"></p>
+<p>UI预制件拼出来了，但我发现很多Image节点都单独创建在一个独立的空节点下然后Anchors值设置很奇怪，同时部分Image设置的Sprite并非切割好的默认大小：</p>
+<p><img src="/img/Unity/AIWorkflow/ImageAnchorsAndNewNodeProblem.png" alt="ImageAnchorsAndNewNodeProblem"></p>
+<p>这里我强制给AI说明Image组件就直接做在排版的父节点上，没必要单独再创建一个节点进行防止Image组件，其次图片大小尽量用原图大小(实在对不上效果图大小用Scale调整匹配)，修改后：</p>
+<p><img src="/img/Unity/AIWorkflow/AfterOptImageNode.png" alt="AfterOptImageNode"></p>
+<p>经过一系列调优(比如锚点数字奇怪，统一到0或0.5或者1)自动拼UI，最终UI拼接效果:</p>
+<p><img src="/img/Unity/AIWorkflow/FinalAutoCreateUIResult.png" alt="FinalAutoCreateUIResult"></p>
+<p>对一下效果图:</p>
+<p><img src="/img/Unity/AIWorkflow/UITemplate2New.png" alt="UITemplate2New"></p>
+<p>可以看到AI自动拼的UI窗口效果已经八九不离十了，只有部分Slider组件或者是一些背景适配和细节字体位置还需要调整。</p>
+<p>后续我也将这个拼UI的流程制作成了<strong>ui-create-window-prefab</strong>的Skill，方便后续重用。</p>
+<h4 id="重用已有UI预制件拼UI"><a href="#重用已有UI预制件拼UI" class="headerlink" title="重用已有UI预制件拼UI"></a>重用已有UI预制件拼UI</h4><p>但真实开发环境中，我们不仅仅是让AI自己用最原始的组件进行效果图还原，我们还会开发很多通用预制件，很多效果图对应部件都应该使用对应通用预制件制作而非使用原始组件拼接，那么如何让AI知道我们的通用预制件和使用规则进行UI自动拼接了？</p>
+<p><strong>AI给的思路是在自动拼UI的Skill里添加已有预制件服用规则描述，让自动拼UI前先去读取AGENTS.md里指定的UI预制件目录表描述信息和规则。UI预制件目录表里会有详细当前项目预制件的信息介绍供AI读取。AI自动UI时就会优先使用符合的已有预制件进行UI制作拼接还原。</strong></p>
+<h4 id="Skill添加已有预制件服用规则描述"><a href="#Skill添加已有预制件服用规则描述" class="headerlink" title="Skill添加已有预制件服用规则描述"></a>Skill添加已有预制件服用规则描述</h4><p>首先让AI把以下预制件重用规则写入<strong>ui-create-window-prefab</strong>的Skill里(<strong>为了避免不必要的AI自动查找预制件重用匹配过程的token和后续问题，我强制要求了只从UI预制件目录表里去匹配</strong>)。</p>
+<p><strong>ui-create-window-prefab</strong>的Skill相关描述:</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">## 已有预制件复用</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 制作前必须读取适用的项目 AGENTS.md，并读取其中明确指定的 UI 预制件目录表；只有目录表存在且可读取时，才考虑复用其中明确列出的预制件。AGENTS.md 未指定目录表、指定文件不存在或无法读取时，跳过已有预制件复用，简要说明原因，直接使用指定素材和基础组件拼接，不为此阻塞制作或要求用户补建目录表</span><br><span class="line"><span class="bullet">-</span> 按效果图识别功能区域，为复用区域记录“区域描述或标注编号 → 源 Prefab 路径（可附 GUID）→ 实例父节点与名称 → 布局、内容和状态配置”。图像坐标需注明参考分辨率，再换算为 UI 布局；不要将图像比例坐标直接写为任意比例锚点</span><br><span class="line"><span class="bullet">-</span> 仅在上述目录表列出的资源内匹配用途、样式和状态；本次任务提供的区域映射用于选择表内资源，不扩展候选范围。没有适用条目或目录表为空时，直接使用指定素材与基础组件制作；条目资源不存在或不支持所需配置时，报告该条目问题并对该区域改用指定素材与基础组件，不搜索表外替代 Prefab</span><br><span class="line"><span class="bullet">-</span> 不扫描公共 UI 目录、素材目录中的其他 Prefab 或同类窗口寻找候选，不依据名称或外观相似引入表外预制件，也不自动创建或补全目录表。仅对表内与当前区域相关的候选检查实际层级、脚本组件、序列化引用、尺寸策略、支持状态、配置入口和运行时依赖；目录表明确关联的示例可按需查看</span><br><span class="line"><span class="bullet">-</span> 目录表需明确列出可复用资源的路径或 GUID，可补充用途与不适用场景、允许修改的实例属性、绑定入口和示例；不能把一个待扫描目录视为已列出的资源清单。预览图是可选辅助资料，不要求每个 Prefab 都有独立 PNG；缺少预览时可在隔离的临时 UI 环境实例化查看，不把 Project 缩略图当作已导出的预览文件</span><br><span class="line"><span class="bullet">-</span> 多个候选在功能和视觉上无法区分时，列出具体区域与候选差异并询问，继续完成不依赖该选择的区域；匹配明确时直接执行，不增加逐项确认流程</span><br><span class="line"><span class="bullet">-</span> 使用支持保留 Prefab 连接的 Unity MCP 接口或 Unity 编辑器 API 实例化，将其作为目标窗口的嵌套 Prefab 保存；不要 Unpack、复制成普通节点或按外观重新搭建来冒充复用，也不为复用自动生成 Variant</span><br><span class="line"><span class="bullet">-</span> 仅修改用户、项目约定或组件配置入口允许的实例属性，如位置、允许调整的尺寸、文字、图标与状态；未声明的结构性修改不默认允许。保留脚本、动画、内部节点名称、序列化引用和必要事件配置，不 Apply 回源资源</span><br><span class="line"><span class="bullet">-</span> 复用实例根节点仅在确认没有名称依赖且允许重命名时按窗口节点规范命名；否则保留原名，需要窗口侧布局或命名入口时可使用规范命名的外层容器。内部节点沿用源 Prefab 的命名、锚点和组件实现，不为统一 TMP/TUI 类型或通用样式规则重写其内部结构</span><br><span class="line"><span class="bullet">-</span> 窗口侧布局使用实例根节点允许覆盖的 RectTransform，或使用外层容器；组件内部尺寸与锚点交由其既有布局体系管理。检查布局驱动和尺寸限制，避免强行覆盖后在布局更新时被改回</span><br><span class="line"><span class="bullet">-</span> 先检查复用组件的封装与绑定约定：由独立控制组件或独立 Binder 管理的内部节点保留其绑定，窗口绑定对外入口；没有独立封装、项目约定由窗口管理的按钮、Toggle、文本和动态图片，按自动绑定规则加入窗口 Binder。实际生成器会合并的嵌套绑定仍检查最终作用域的名称冲突</span><br><span class="line"><span class="bullet">-</span> 复用授权涵盖所选预制件已有的 Sprite、字体、材质及其他必要资源引用，不代表可以任意取用其他目录的图片重新设计；不通过新建全局对象、修改窗口注册或资源加载配置来补足未接入的运行时依赖</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加项目已有预制件目录读取规则"><a href="#添加项目已有预制件目录读取规则" class="headerlink" title="添加项目已有预制件目录读取规则"></a>添加项目已有预制件目录读取规则</h4><p>然后我去手动给项目的AGENTS.md和PrefabCatalog.md添加规则和预制件说明信息。</p>
+<p><strong>AGENTS.md</strong>的UI制作相关描述:</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">## UI 制作</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> UI 预制件目录表：Docs/UI/PrefabCatalog.md</span><br><span class="line"><span class="bullet">-</span> 自动拼接 UI 时必须读取并遵循该目录表</span><br></pre></td></tr></table></figure>
+
+<p><strong>PrefabCatalog.md</strong>(预制件目录表描述信息文档)(<strong>以下只是示例，详细内容根据项目实际预制件而定</strong>):</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># UI 预制件目录表</span></span><br><span class="line"></span><br><span class="line"><span class="section">## currencyCounter</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 资源：Assets/UI/Common/CurrencyCounter.prefab</span><br><span class="line"><span class="bullet">-</span> GUID：填写实际资源 GUID</span><br><span class="line"><span class="bullet">-</span> 用途：顶部金币、钻石等货币数量显示</span><br><span class="line"><span class="bullet">-</span> 外观：左侧货币图标，中间数值，右侧加号</span><br><span class="line"><span class="bullet">-</span> 不适用：体力倒计时、商品购买按钮</span><br><span class="line"><span class="bullet">-</span> 推荐尺寸：240 × 72，单位为设计画布 UI 单位</span><br><span class="line"><span class="bullet">-</span> 尺寸策略：允许调整宽度；保持高度和图标比例</span><br><span class="line"><span class="bullet">-</span> 使用示例：WindowMainUI 中的金币栏</span><br><span class="line"><span class="bullet">-</span> 预览图：Docs/UI/Previews/CurrencyCounter.png</span><br><span class="line"></span><br><span class="line"><span class="section">### 配置入口</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> tmpAmount：修改显示数量</span><br><span class="line"><span class="bullet">-</span> imgCurrencyIcon：修改货币图标</span><br><span class="line"><span class="bullet">-</span> btnAdd：控制加号是否显示</span><br><span class="line"></span><br><span class="line"><span class="section">### 允许的实例修改</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 根节点位置、锚点和允许范围内的尺寸</span><br><span class="line"><span class="bullet">-</span> 数值文字</span><br><span class="line"><span class="bullet">-</span> 货币图标</span><br><span class="line"><span class="bullet">-</span> 加号显隐</span><br><span class="line"></span><br><span class="line"><span class="section">### 必须保留</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 组件脚本、内部节点名称和序列化引用</span><br><span class="line"><span class="bullet">-</span> 按钮已有的必要回调</span><br><span class="line"><span class="bullet">-</span> 内部 ComponentBinder 数据</span><br></pre></td></tr></table></figure>
+
+<h4 id="制作通用预制件"><a href="#制作通用预制件" class="headerlink" title="制作通用预制件"></a>制作通用预制件</h4><p>制作以下几个预制件:</p>
+<ol>
+<li><p>一个带图标和文本的通用按钮预制件(CommonIconBtn.prefab)</p>
+</li>
+<li><p>一个带底板，带图标和文本的通用按钮预制件(CommonBgBtn.prefab)</p>
+</li>
+<li><p>一个通用的红点预制件(RedDot.prefab)</p>
+</li>
+<li><p>一个通用资源栏预制件(CommonResBar.prefab)</p>
+</li>
+</ol>
+<p><img src="/img/Unity/AIWorkflow/CreateCommonPrefab.png" alt="CreateCommonPrefab"></p>
+<p>然后在Docs&#x2F;UI&#x2F;PrefabCatalog.md文档里编写预制件说明:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"># UI 预制件目录表</span><br><span class="line"></span><br><span class="line">## CommonIconBtn</span><br><span class="line"></span><br><span class="line">- 资源：Assets/Resources/prefabs/UI/Common/CommonIconBtn.prefab</span><br><span class="line">- 用途：仅包含一个图标和文本的按钮显示</span><br><span class="line">- 外观：中间图标，底部文本描述</span><br><span class="line">- 不适用：包含图标和文本以外节点或组件的按钮情况</span><br><span class="line">- 推荐尺寸：116 × 120，单位为设计画布 UI 单位</span><br><span class="line">- 尺寸策略：允许修改成适配图标大小的尺寸</span><br><span class="line">- 使用示例：无</span><br><span class="line">- 预览图：无</span><br><span class="line"></span><br><span class="line">### 配置入口</span><br><span class="line"></span><br><span class="line">- CommonIconBtn：修改图标</span><br><span class="line">- tmpDes：修改文本描述</span><br><span class="line"></span><br><span class="line">### 允许的实例修改</span><br><span class="line"></span><br><span class="line">- 根节点图标的Sprite和大小</span><br><span class="line">- tmpDes文本描述</span><br><span class="line"></span><br><span class="line">### 必须保留</span><br><span class="line"></span><br><span class="line">- 组件脚本、内部节点名称和序列化引用</span><br><span class="line">- 按钮已有的必要回调</span><br><span class="line">- 内部 ComponentBinder 数据</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## CommonBgBtn</span><br><span class="line"></span><br><span class="line">- 资源：Assets/Resources/prefabs/UI/Common/CommonBgBtn.prefab</span><br><span class="line">- 用途：仅包含一个底板，一个图标和文本的按钮显示</span><br><span class="line">- 外观：中间图标，底部文本描述，最里层背景图标</span><br><span class="line">- 不适用：包含背景，图标和文本以外节点或组件的按钮情况</span><br><span class="line">- 推荐尺寸：100 × 124，单位为设计画布 UI 单位</span><br><span class="line">- 尺寸策略：允许修改成适配底板和图标大小的尺寸</span><br><span class="line">- 使用示例：无</span><br><span class="line">- 预览图：无</span><br><span class="line"></span><br><span class="line">### 配置入口</span><br><span class="line"></span><br><span class="line">- CommonBgBtn：修改底板</span><br><span class="line">- imgIcon：修改图标</span><br><span class="line">- tmpDes：修改文本描述</span><br><span class="line"></span><br><span class="line">### 允许的实例修改</span><br><span class="line"></span><br><span class="line">- 根节点底板图标的Sprite和大小</span><br><span class="line">- imgIcon图标的Sprite和大小</span><br><span class="line">- tmpDes文本描述</span><br><span class="line"></span><br><span class="line">### 必须保留</span><br><span class="line"></span><br><span class="line">- 组件脚本、内部节点名称和序列化引用</span><br><span class="line">- 按钮已有的必要回调</span><br><span class="line">- 内部 ComponentBinder 数据</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## CommonResBar</span><br><span class="line"></span><br><span class="line">- 资源：Assets/Resources/prefabs/UI/Common/CommonResBar.prefab</span><br><span class="line">- 用途：顶部金币、钻石等货币数量显示</span><br><span class="line">- 外观：左侧货币图标，中间数值，右侧加号，背景底板图标</span><br><span class="line">- 不适用：体力倒计时、商品购买按钮</span><br><span class="line">- 推荐尺寸：240 × 56，单位为设计画布 UI 单位</span><br><span class="line">- 尺寸策略：允许调整宽度，保持高度</span><br><span class="line">- 使用示例：无</span><br><span class="line">- 预览图：无</span><br><span class="line"></span><br><span class="line">### 配置入口</span><br><span class="line"></span><br><span class="line">- imgResIcon：修改货币图标</span><br><span class="line">- imgResAmount：修改货币数量文本</span><br><span class="line">- btnResAdd：控制加号按钮是否显示</span><br><span class="line"></span><br><span class="line">### 允许的实例修改</span><br><span class="line"></span><br><span class="line">- 允许调整根节点宽度，保持高度</span><br><span class="line">- 货币数量文本</span><br><span class="line">- 货币图标</span><br><span class="line">- 加号显隐</span><br><span class="line"></span><br><span class="line">### 必须保留</span><br><span class="line"></span><br><span class="line">- 组件脚本、内部节点名称和序列化引用</span><br><span class="line">- 按钮已有的必要回调</span><br><span class="line">- 内部 ComponentBinder 数据</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## RedDot</span><br><span class="line"></span><br><span class="line">- 资源：Assets/Resources/prefabs/UI/Common/RedDot.prefab</span><br><span class="line">- 用途：各入口的红点显示</span><br><span class="line">- 外观：中间显示红点图标</span><br><span class="line">- 不适用：非红点显示</span><br><span class="line">- 推荐尺寸：36 × 36，单位为设计画布 UI 单位</span><br><span class="line">- 尺寸策略：允许调整宽度和高度保持相同比例</span><br><span class="line">- 使用示例：无</span><br><span class="line">- 预览图：无</span><br><span class="line"></span><br><span class="line">### 配置入口</span><br><span class="line"></span><br><span class="line">- imgRedDot：修改红点图标</span><br><span class="line"></span><br><span class="line">### 允许的实例修改</span><br><span class="line"></span><br><span class="line">- 根节点宽高保持比例调整</span><br><span class="line">- 红点图标</span><br><span class="line"></span><br><span class="line">### 必须保留</span><br><span class="line"></span><br><span class="line">- 组件脚本、内部节点名称和序列化引用</span><br><span class="line">- 内部 ComponentBinder 数据</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="AI自动用已有预制件拼UI"><a href="#AI自动用已有预制件拼UI" class="headerlink" title="AI自动用已有预制件拼UI"></a>AI自动用已有预制件拼UI</h4><p>然后基于已经制作的通用预制件和相关描述文件，我们重新AI自动拼接一次效果图：</p>
+<p><img src="/img/Unity/AIWorkflow/UseCommonPrefabToAutoCreatePrefab.png" alt="UseCommonPrefabToAutoCreatePrefab"></p>
+<p>可以看到Codex真的实现了按需使用指定规则的通用预制件进行效果图还原，但不知道为什么AI给每一层使用通用预制件的地方都单独定义了一个独立父节点，这一点我让AI将此问题优化写入最新的ui-create-window-prefab的Skill。</p>
+<p>然后我们再次重新AI自动拼接一次效果图：</p>
+<p><img src="/img/Unity/AIWorkflow/UseCommonPrefabToAutoCreatePrefabSuccess.png" alt="UseCommonPrefabToAutoCreatePrefabSuccess"></p>
+<p><strong>可以看到AI成功使用符合要求的预制件制作还原了效果图！</strong></p>
+<p>但我发现通用预制件虽然AI自动切换了底板，图标和文本，但底板和图标的显示大小确没有修改，所以细节上还并没有正确还原效果图:</p>
+<p><img src="/img/Unity/AIWorkflow/AutoCreatePrefabSizeProblem.png" alt="AutoCreatePrefabSizeProblem"></p>
+<p>通过进一步优化ui-create-window-prefab的Skill，再次重新AI自动拼接一次效果图：</p>
+<p><img src="/img/Unity/AIWorkflow/AutoCreatePrefabSizeProblemFix.png" alt="AutoCreatePrefabSizeProblemFix"></p>
+<p>可以看到图标的有效大小问题已经成功解决，可以说目前自动拼出来的预制件已经符合90%可用程度了。</p>
+<h3 id="逻辑代码自动化"><a href="#逻辑代码自动化" class="headerlink" title="逻辑代码自动化"></a>逻辑代码自动化</h3><p>这一步需要引入窗口和组件绑定相关代码，所以会根据我真实搭建的项目框架实践。</p>
+<p>逻辑代码自动化目前分为以下两步:</p>
+<ol>
+<li><strong>模版+组件绑定代码生成</strong></li>
+<li><strong>AI生成逻辑代码</strong></li>
+</ol>
+<h4 id="模版-组件绑定代码生成"><a href="#模版-组件绑定代码生成" class="headerlink" title="模版+组件绑定代码生成"></a>模版+组件绑定代码生成</h4><p>一般来说每个项目为了快速开发，都有配套的代码生成工具，比如窗口代码生成工具，子组件代码生成工具。</p>
+<p>我的项目使用了之前我写的ComponentBinder，根据ComponentBinder选择的组件绑定类型，会使用不同的代码模版进行配套的组件绑定partial class生成，详细参见截图：</p>
+<p><img src="/img/Unity/AIWorkflow/ComponentBinderInspector.png" alt="ComponentBinderInspector"></p>
+<p>窗口模版文件WindowUITemplate.txt：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * Description:             <span class="params">#</span>FileName<span class="params">#</span>.cs</span><br><span class="line"> * Author:                  <span class="params">#</span>Author<span class="params">#</span></span><br><span class="line"> * Create Date:             <span class="params">#</span>CreatedDate<span class="params">#</span></span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">using UnityEngine;</span><br><span class="line">using UnityEngine.UI;</span><br><span class="line">using TH.Modules.UI;</span><br><span class="line">using TMPro;</span><br><span class="line"></span><br><span class="line">namespace Game.Modules.UI</span><br><span class="line">&#123;</span><br><span class="line">	/// &lt;summary&gt;</span><br><span class="line">	/// <span class="params">#</span>ClassName<span class="params">#</span>.cs</span><br><span class="line">	/// <span class="params">#</span>ClassName<span class="params">#</span>窗口</span><br><span class="line">	/// &lt;/summary&gt;</span><br><span class="line">	public partial class <span class="params">#</span>ClassName<span class="params">#</span> : BaseWindow</span><br><span class="line">	&#123;</span><br><span class="line">		public <span class="params">#</span>ClassName<span class="params">#</span>()</span><br><span class="line">		&#123;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		/// &lt;summary&gt;</span><br><span class="line">		/// 添加监听</span><br><span class="line">		/// &lt;/summary&gt;</span><br><span class="line">		protected override void AddListeners()</span><br><span class="line">		&#123;</span><br><span class="line">			base.AddListeners();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		/// &lt;summary&gt;</span><br><span class="line">		/// 添加事件监听</span><br><span class="line">		/// &lt;/summary&gt;</span><br><span class="line">		protected override void AddEvents()</span><br><span class="line">		&#123;</span><br><span class="line">			base.AddEvents();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		/// &lt;summary&gt;</span><br><span class="line">		/// 窗口显示</span><br><span class="line">		/// &lt;/summary&gt;</span><br><span class="line">		protected override void OnShow()</span><br><span class="line">		&#123;</span><br><span class="line">			base.OnShow();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		/// &lt;summary&gt;</span><br><span class="line">		/// 窗口销毁</span><br><span class="line">		/// &lt;/summary&gt;</span><br><span class="line">		protected override void OnDestroy()</span><br><span class="line">		&#123;</span><br><span class="line">			base.OnDestroy();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>窗口组件绑定模版文件WindowUIBinder.txt：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * Description:             <span class="params">#</span>FileName<span class="params">#</span>.cs</span><br><span class="line"> * Author:                  <span class="params">#</span>Author<span class="params">#</span></span><br><span class="line"> * Create Date:             <span class="params">#</span>CreatedDate<span class="params">#</span></span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">using UnityEngine;</span><br><span class="line">using UnityEngine.UI;</span><br><span class="line">using TH.Modules.UI;</span><br><span class="line">using TUI;</span><br><span class="line">using TMPro;</span><br><span class="line"></span><br><span class="line">namespace Game.Modules.UI</span><br><span class="line">&#123;</span><br><span class="line">	/// &lt;summary&gt;</span><br><span class="line">	/// <span class="params">#</span>ClassName<span class="params">#</span>窗口的组件绑定</span><br><span class="line">	/// &lt;/summary&gt;</span><br><span class="line">    public partial class <span class="params">#</span>ClassName<span class="params">#</span> : BaseWindow</span><br><span class="line">    &#123;</span><br><span class="line">		 <span class="params">#</span>MEMBER<span class="built_in">_</span>DEFINITION<span class="built_in">_</span>LOOP<span class="params">#</span></span><br><span class="line">        /// &lt;summary&gt; <span class="params">#</span>NodeDes<span class="params">#</span> /// &lt;/summary&gt;</span><br><span class="line">        private <span class="params">#</span>NodeType<span class="params">#</span> <span class="params">#</span>NodeName<span class="params">#</span>;<span class="params">#</span>MEMBER<span class="built_in">_</span>DEFINITION<span class="built_in">_</span>LOOP<span class="params">#</span></span><br><span class="line">		   </span><br><span class="line">		/// &lt;summary&gt;</span><br><span class="line">		/// 缓存组件</span><br><span class="line">		/// &lt;/summary&gt;</span><br><span class="line">		protected override void CacheComponents()</span><br><span class="line">		&#123;</span><br><span class="line">			base.CacheComponents();</span><br><span class="line">            <span class="params">#</span>MEMBER<span class="built_in">_</span>INIT<span class="built_in">_</span>LOOP<span class="params">#</span></span><br><span class="line">            <span class="params">#</span>NodeName<span class="params">#</span> = <span class="params">#</span>NodeMemberName<span class="params">#</span>.NodeDatas[<span class="params">#</span>NodeIndex<span class="params">#</span>].NodeTarget as <span class="params">#</span>NodeType<span class="params">#</span>;<span class="params">#</span>MEMBER<span class="built_in">_</span>INIT<span class="built_in">_</span>LOOP<span class="params">#</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		/// &lt;summary&gt;</span><br><span class="line">		/// 释放组件</span><br><span class="line">		/// &lt;/summary&gt;</span><br><span class="line">		protected override void ClearComponents()</span><br><span class="line">		&#123;</span><br><span class="line">			base.ClearComponents();</span><br><span class="line">			<span class="params">#</span>MEMBER<span class="built_in">_</span>DISPOSE<span class="built_in">_</span>LOOP<span class="params">#</span></span><br><span class="line">            <span class="params">#</span>NodeName<span class="params">#</span> = null;<span class="params">#</span>MEMBER<span class="built_in">_</span>DISPOSE<span class="built_in">_</span>LOOP<span class="params">#</span></span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>最终窗口代码生成WindowTravelHandbook.cs：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             WindowTravelHandbook.cs</span></span><br><span class="line"><span class="comment"> * Author:                  TONYTANG</span></span><br><span class="line"><span class="comment"> * Create Date:             2026//10/13</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> TH.Modules.UI;</span><br><span class="line"><span class="keyword">using</span> System.Collections.ObjectModel;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Game.Modules.UI</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> WindowTravelHandbook.cs</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">WindowTravelHandbook</span> : <span class="title">BaseWindow</span></span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="title">WindowTravelHandbook</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 添加监听</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">AddListeners</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.AddListeners();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 移除监听</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">RemoveListeners</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">base</span>.RemoveListeners();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 添加事件监听</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">AddEvents</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.AddEvents();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 窗口显示</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnShow</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.OnShow();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 窗口销毁</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnDestroy</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.OnDestroy();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终窗口组件绑定代码生成WindowTravelHandbookBinder.cs：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Description:             WindowTravelHandbookBinder.cs</span></span><br><span class="line"><span class="comment"> * Author:                  TONYTANG</span></span><br><span class="line"><span class="comment"> * Create Date:             2026//10/19</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"><span class="keyword">using</span> TH.Modules.UI;</span><br><span class="line"><span class="keyword">using</span> TUI;</span><br><span class="line"><span class="keyword">using</span> TMPro;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Game.Modules.UI</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> WindowTravelHandbook窗口的组件绑定</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">WindowTravelHandbook</span> : <span class="title">BaseWindow</span></span><br><span class="line">    &#123;</span><br><span class="line">		 </span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 返回图鉴 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TButton tbtnBackButton;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 图鉴入口文字 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpBackTitleText;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 伙伴详情标题 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpPageTitleText;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 收藏状态 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TImage timgBookmarkStateIcon;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 收藏状态 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TButton tbtnBookmarkButton;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 伙伴场景图 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TImage timgPortraitSceneBackground;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 伙伴立绘 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TImage timgCompanionPortrait;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 伙伴图鉴编号 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpCompanionNumberText;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 伙伴中文名称 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpCompanionNameText;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 伙伴所属国旗 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TImage timgCountryFlagIcon;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 伙伴所属国家 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpCountryNameText;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 外形特点标题 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpFeaturesTitleText;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 外形特点一 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpFeature1Text;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 外形特点二 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpFeature2Text;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 外形特点描述 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpFeaturesDescriptionText;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 图鉴介绍标题 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpIntroductionTitleText;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 图鉴介绍内容 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpIntroductionDescriptionText;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 旅行知识标题 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpTravelTipTitleText;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 旅行知识内容 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TextMeshProUGUI tmpTravelTipDescriptionText;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span> 背景图图片 <span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> TImage timgPageBackground;</span><br><span class="line">		   </span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 缓存组件</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">CacheComponents</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.CacheComponents();</span><br><span class="line">            </span><br><span class="line">            tbtnBackButton = mComponentBinder.NodeDatas[<span class="number">0</span>].NodeTarget <span class="keyword">as</span> TButton;</span><br><span class="line">            tmpBackTitleText = mComponentBinder.NodeDatas[<span class="number">1</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            tmpPageTitleText = mComponentBinder.NodeDatas[<span class="number">2</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            timgBookmarkStateIcon = mComponentBinder.NodeDatas[<span class="number">3</span>].NodeTarget <span class="keyword">as</span> TImage;</span><br><span class="line">            tbtnBookmarkButton = mComponentBinder.NodeDatas[<span class="number">4</span>].NodeTarget <span class="keyword">as</span> TButton;</span><br><span class="line">            timgPortraitSceneBackground = mComponentBinder.NodeDatas[<span class="number">5</span>].NodeTarget <span class="keyword">as</span> TImage;</span><br><span class="line">            timgCompanionPortrait = mComponentBinder.NodeDatas[<span class="number">6</span>].NodeTarget <span class="keyword">as</span> TImage;</span><br><span class="line">            tmpCompanionNumberText = mComponentBinder.NodeDatas[<span class="number">7</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            tmpCompanionNameText = mComponentBinder.NodeDatas[<span class="number">8</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            timgCountryFlagIcon = mComponentBinder.NodeDatas[<span class="number">9</span>].NodeTarget <span class="keyword">as</span> TImage;</span><br><span class="line">            tmpCountryNameText = mComponentBinder.NodeDatas[<span class="number">10</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            tmpFeaturesTitleText = mComponentBinder.NodeDatas[<span class="number">11</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            tmpFeature1Text = mComponentBinder.NodeDatas[<span class="number">12</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            tmpFeature2Text = mComponentBinder.NodeDatas[<span class="number">13</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            tmpFeaturesDescriptionText = mComponentBinder.NodeDatas[<span class="number">14</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            tmpIntroductionTitleText = mComponentBinder.NodeDatas[<span class="number">15</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            tmpIntroductionDescriptionText = mComponentBinder.NodeDatas[<span class="number">16</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            tmpTravelTipTitleText = mComponentBinder.NodeDatas[<span class="number">17</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            tmpTravelTipDescriptionText = mComponentBinder.NodeDatas[<span class="number">18</span>].NodeTarget <span class="keyword">as</span> TextMeshProUGUI;</span><br><span class="line">            timgPageBackground = mComponentBinder.NodeDatas[<span class="number">19</span>].NodeTarget <span class="keyword">as</span> TImage;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> 释放组件</span></span><br><span class="line">		<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">ClearComponents</span>()</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">base</span>.ClearComponents();</span><br><span class="line">			</span><br><span class="line">            tbtnBackButton = <span class="literal">null</span>;</span><br><span class="line">            tmpBackTitleText = <span class="literal">null</span>;</span><br><span class="line">            tmpPageTitleText = <span class="literal">null</span>;</span><br><span class="line">            timgBookmarkStateIcon = <span class="literal">null</span>;</span><br><span class="line">            tbtnBookmarkButton = <span class="literal">null</span>;</span><br><span class="line">            timgPortraitSceneBackground = <span class="literal">null</span>;</span><br><span class="line">            timgCompanionPortrait = <span class="literal">null</span>;</span><br><span class="line">            tmpCompanionNumberText = <span class="literal">null</span>;</span><br><span class="line">            tmpCompanionNameText = <span class="literal">null</span>;</span><br><span class="line">            timgCountryFlagIcon = <span class="literal">null</span>;</span><br><span class="line">            tmpCountryNameText = <span class="literal">null</span>;</span><br><span class="line">            tmpFeaturesTitleText = <span class="literal">null</span>;</span><br><span class="line">            tmpFeature1Text = <span class="literal">null</span>;</span><br><span class="line">            tmpFeature2Text = <span class="literal">null</span>;</span><br><span class="line">            tmpFeaturesDescriptionText = <span class="literal">null</span>;</span><br><span class="line">            tmpIntroductionTitleText = <span class="literal">null</span>;</span><br><span class="line">            tmpIntroductionDescriptionText = <span class="literal">null</span>;</span><br><span class="line">            tmpTravelTipTitleText = <span class="literal">null</span>;</span><br><span class="line">            tmpTravelTipDescriptionText = <span class="literal">null</span>;</span><br><span class="line">            timgPageBackground = <span class="literal">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>这样绑定生成后，我们最基本的窗口代码就有了，同时也能通过直接访问生成的对应变量直接访问绑定的组件而不需要写任何一行代码。</strong></p>
+<p><strong>上面因为我绑定ComponentBinder的预制件叫WindowTravelHandbook，所以生成的窗口代码也叫WindowTravelHandbook</strong></p>
+<h4 id="AI生成逻辑代码"><a href="#AI生成逻辑代码" class="headerlink" title="AI生成逻辑代码"></a>AI生成逻辑代码</h4><p>上一步只是完成了代码模版和组件绑定的初步生成，真正的逻辑代码还需要借助AI进行根据需求描述进行代码生成。</p>
+<p>这一步需要结合代码生成+实际逻辑需求进行和AI对话生成，TODO。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://github.com/CoplayDev/unity-mcp">MCP for Unity</a></p>
+<p><a target="_blank" rel="noopener" href="https://coplaydev.github.io/unity-mcp/getting-started/install">MCP for Unity Getting Started</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/AI/">AI</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/AI/">AI</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://tonytang1990.github.io/2026/09/29/UnityAI%E5%B7%A5%E4%BD%9C%E6%B5%81/" data-title="UnityAI工作流 | 走停人生路" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2026/09/20/UGUI适配/"  title="UGUI适配">
+ <strong>下一篇：</strong><br/> 
+ <span>UGUI适配
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MCP-for-Unity"><span class="toc-number">2.</span> <span class="toc-text">MCP for Unity</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85MCP-for-Unity"><span class="toc-number">2.1.</span> <span class="toc-text">安装MCP for Unity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8MCP-for-Unity-Server"><span class="toc-number">2.2.</span> <span class="toc-text">启动MCP for Unity Server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AECodex-Client"><span class="toc-number">2.3.</span> <span class="toc-text">配置Codex Client</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MCP-for-Unity%E4%BD%BF%E7%94%A8"><span class="toc-number">2.4.</span> <span class="toc-text">MCP for Unity使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89MCP-for-Unity%E5%B7%A5%E5%85%B7"><span class="toc-number">2.5.</span> <span class="toc-text">自定义MCP for Unity工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AI%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E6%88%98"><span class="toc-number">3.</span> <span class="toc-text">AI自动化实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%8C%87%E5%AE%9A%E5%AD%97%E4%BD%93%E7%9A%84TMP%E5%AD%97%E4%BD%93%E6%96%87%E4%BB%B6"><span class="toc-number">3.1.</span> <span class="toc-text">创建指定字体的TMP字体文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AI%E8%87%AA%E5%8A%A8%E6%8B%86%E5%88%86%E6%95%88%E6%9E%9C%E5%9B%BE"><span class="toc-number">3.2.</span> <span class="toc-text">AI自动拆分效果图</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%87%E5%9B%BE%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C"><span class="toc-number">3.2.1.</span> <span class="toc-text">切图工具制作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AI%E8%87%AA%E5%8A%A8%E6%8B%86%E5%88%86%E5%9B%BE%E7%89%87%E5%85%83%E7%B4%A0"><span class="toc-number">3.2.2.</span> <span class="toc-text">AI自动拆分图片元素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%B6%E4%BD%9CUI%E6%95%88%E6%9E%9C%E5%9B%BE%E5%85%83%E7%B4%A0%E6%8B%86%E5%88%86Skill"><span class="toc-number">3.2.3.</span> <span class="toc-text">制作UI效果图元素拆分Skill</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8ui-perfect-splitter-Skill"><span class="toc-number">3.2.4.</span> <span class="toc-text">使用ui-perfect-splitter Skill</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AI%E8%87%AA%E5%8A%A8%E6%8B%BCUI"><span class="toc-number">3.3.</span> <span class="toc-text">AI自动拼UI</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E7%94%A8%E5%B7%B2%E6%9C%89UI%E9%A2%84%E5%88%B6%E4%BB%B6%E6%8B%BCUI"><span class="toc-number">3.3.1.</span> <span class="toc-text">重用已有UI预制件拼UI</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Skill%E6%B7%BB%E5%8A%A0%E5%B7%B2%E6%9C%89%E9%A2%84%E5%88%B6%E4%BB%B6%E6%9C%8D%E7%94%A8%E8%A7%84%E5%88%99%E6%8F%8F%E8%BF%B0"><span class="toc-number">3.3.2.</span> <span class="toc-text">Skill添加已有预制件服用规则描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E9%A1%B9%E7%9B%AE%E5%B7%B2%E6%9C%89%E9%A2%84%E5%88%B6%E4%BB%B6%E7%9B%AE%E5%BD%95%E8%AF%BB%E5%8F%96%E8%A7%84%E5%88%99"><span class="toc-number">3.3.3.</span> <span class="toc-text">添加项目已有预制件目录读取规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%B6%E4%BD%9C%E9%80%9A%E7%94%A8%E9%A2%84%E5%88%B6%E4%BB%B6"><span class="toc-number">3.3.4.</span> <span class="toc-text">制作通用预制件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AI%E8%87%AA%E5%8A%A8%E7%94%A8%E5%B7%B2%E6%9C%89%E9%A2%84%E5%88%B6%E4%BB%B6%E6%8B%BCUI"><span class="toc-number">3.3.5.</span> <span class="toc-text">AI自动用已有预制件拼UI</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E5%8C%96"><span class="toc-number">3.4.</span> <span class="toc-text">逻辑代码自动化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E7%89%88-%E7%BB%84%E4%BB%B6%E7%BB%91%E5%AE%9A%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90"><span class="toc-number">3.4.1.</span> <span class="toc-text">模版+组件绑定代码生成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AI%E7%94%9F%E6%88%90%E9%80%BB%E8%BE%91%E4%BB%A3%E7%A0%81"><span class="toc-number">3.4.2.</span> <span class="toc-text">AI生成逻辑代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/2D/" title="2D">2D<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/AI/" title="AI">AI<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Algorithm/" title="Algorithm">Algorithm<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Art/" title="Art">Art<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Automation/" title="Automation">Automation<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/CI-CD/" title="CI/CD">CI/CD<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Collision/" title="Collision">Collision<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Database/" title="Database">Database<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Excel/" title="Excel">Excel<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Game/" title="Game">Game<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/HotUpdate/" title="HotUpdate">HotUpdate<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Lua/" title="Lua">Lua<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Math/" title="Math">Math<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Native/" title="Native">Native<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Network/" title="Network">Network<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Optimization/" title="Optimization">Optimization<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Other/" title="Other">Other<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Plugin/" title="Plugin">Plugin<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming-Language/" title="Programming Language">Programming Language<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Rendering/" title="Rendering">Rendering<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/SDK/" title="SDK">SDK<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/UGUI/" title="UGUI">UGUI<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Unity/" title="Unity">Unity<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Unity/" title="Unity">Unity<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AI/" title="AI">AI<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Editor/" title="Editor">Editor<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Other/" title="Other">Other<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Rendering/" title="Rendering">Rendering<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Math/" title="Math">Math<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Resource/" title="Resource">Resource<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenGL/" title="OpenGL">OpenGL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Programming/" title="Programming">Programming<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/HotUpdate/" title="HotUpdate">HotUpdate<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Game/" title="Game">Game<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Art/" title="Art">Art<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Android/" title="Android">Android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UI/" title="UI">UI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C#">C#<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Database/" title="Database">Database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Shader/" title="Shader">Shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SubmlineText3/" title="SubmlineText3">SubmlineText3<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Native/" title="Native">Native<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2026 
+		
+		<a href="/about" target="_blank" title="Tony Tang">Tony Tang</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
